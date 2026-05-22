@@ -226,7 +226,10 @@ body.kiosk #kiosk-bar{display:block}
     </div>
     <div class="sr" style="border:none">
       <div><div class="sl">Volume</div><div class="ss" id="volsub">85%</div></div>
-      <input type="range" class="vslide" min="0" max="100" value="85" oninput="setVol(this.value)">
+      <div style="display:flex;gap:6px;align-items:center">
+        <button onclick="volDown()" style="width:32px;height:32px;border:none;border-radius:8px;background:#DBEAFE;color:#1D4ED8;font-size:1rem;cursor:pointer">🔉</button>
+        <button onclick="volUp()"   style="width:32px;height:32px;border:none;border-radius:8px;background:#DBEAFE;color:#1D4ED8;font-size:1rem;cursor:pointer">🔊</button>
+      </div>
     </div>
     <div class="ps">🔒 Carer Lock</div>
     <div class="sr">
@@ -266,24 +269,46 @@ body.kiosk #kiosk-bar{display:block}
 <div class="mov" id="recmod">
   <div class="mbox">
     <h2>⭐ Add custom button</h2>
+
+    <!-- Label -->
+    <input type="text" id="mlabel" placeholder="Button label (e.g. FARM, MOM, DRINK)" autocomplete="off">
+
+    <!-- Tab row -->
     <div class="tabrow">
-      <button class="tc on" id="teb" onclick="setTab('e')">😊 Emoji</button>
-      <button class="tc"    id="tpb" onclick="setTab('p')">📷 Photo</button>
+      <button class="tc on" id="teb" onclick="setTab('e')">😊 Pick Emoji</button>
+      <button class="tc"    id="tpb" onclick="setTab('p')">📷 My Photo</button>
     </div>
-    <input type="text" id="mlabel" placeholder="Button label (e.g. MOM, DRINK)" autocomplete="off">
+
+    <!-- EMOJI TAB -->
     <div id="etab">
       <div id="eprev">🎤</div>
-      <div id="estat">Type a label to get an emoji</div>
+      <div id="estat">Type label above OR tap any emoji below</div>
+      <!-- Emoji picker grid -->
+      <div id="epicker" style="display:flex;flex-wrap:wrap;gap:6px;max-height:160px;overflow-y:auto;padding:6px 0;justify-content:center"></div>
     </div>
+
+    <!-- PHOTO TAB -->
     <div id="ptab" style="display:none">
       <img id="pprev" class="pprev" src="" alt="">
-      <div class="pup"><input type="file" id="pfile" accept="image/*" onchange="onPhoto(this)"><div class="ph2">📷 Tap to choose a photo</div></div>
+      <div class="pup">
+        <input type="file" id="pfile" accept="image/*" onchange="onPhoto(this)">
+        <div class="ph2">📷 Tap to choose a photo from your camera roll</div>
+      </div>
+      <div id="photo-status" style="font-size:.72rem;color:#2D6A4F;text-align:center;margin-top:4px;min-height:16px"></div>
+      <div style="margin-top:8px">
+        <div style="font-size:.75rem;font-weight:900;color:#555;margin-bottom:4px">🔊 What should it say when tapped?</div>
+        <input type="text" id="mspeak" placeholder="e.g. I want to go to the farm" autocomplete="off" style="width:100%;padding:9px 11px;border:2px solid #eee;border-radius:10px;font-family:Nunito,sans-serif;font-size:.88rem;outline:none">
+        <div style="font-size:.68rem;color:#aaa;margin-top:3px">Leave blank to use the label as the spoken word</div>
+      </div>
     </div>
+
     <div class="mbts">
       <button class="mcanc" onclick="closeRec()">Cancel</button>
       <button class="msave" onclick="saveRec()">Save ✓</button>
     </div>
   </div>
+</div>
+
 </div>
 
 <script>
@@ -698,4 +723,203 @@ setTimeout(()=>{
 },2000);
 </script>
 </body>
-</html>
+</html>// ═══════════════════════
+// REC MODAL
+// ═══════════════════════
+// Full emoji library organised by category
+const EMOJI_LIBRARY = [
+  // Feelings
+  '😊','😢','😡','🤕','😴','😩','😨','😤','🥰','😎','🤒','😰','😮','🥺','😇',
+  // People & family
+  '👩','👨','👶','👧','👦','👵','👴','👩‍⚕️','👨‍⚕️','👩‍🏫','👨‍🏫','🧑','👫','👨‍👩‍👧','🐣',
+  // Animals
+  '🐱','🐶','🐰','🐟','🐦','🐹','🐴','🐮','🐷','🦆','🐘','🦁','🐯','🐻','🦊',
+  '🐸','🐢','🦋','🐝','🦄','🐙','🦀','🐠','🐬','🦓','🦒','🐊','🦔','🐿️','🦜',
+  // Food & drink
+  '🍎','🍌','🍊','🍇','🍓','🍕','🍔','🍟','🌮','🥪','🍞','🥛','💧','🧃','☕',
+  '🍦','🎂','🍪','🍫','🍬','🥗','🍲','🍚','🍝','🥚','🧀','🍗','🥩','🍜','🍱',
+  // Places & transport
+  '🏠','🏫','🏥','🌳','🛝','🏊','🏖️','🌄','🚗','🚌','✈️','🚂','🚲','🛒','⛪',
+  // Activities & objects
+  '🎮','📺','🎵','📚','🖍️','🎨','⚽','🏀','🎸','🎤','🧸','🪆','🎯','🎲','🎪',
+  '🛌','🛁','🚿','💊','🩹','📱','💻','🎒','👟','👗','🕐','📷','🔑','🪣','🧹',
+  // Nature & weather
+  '☀️','🌧️','❄️','🌙','⭐','🌸','🌻','🍁','🌈','⚡','🌊','🔥','🌿','🍄','🌵',
+  // Symbols & actions
+  '✅','❌','❤️','💚','💙','💛','🔔','🏆','🎁','🎉','💪','👍','👎','🙏','✋',
+  '🔒','🔓','⚙️','💡','🔍','📞','💰','🗓️','⏰','🚀','🌍','♿','🏳️','🎗️','💬',
+];
+
+const EMOJI_SEARCH = {
+  farm:'🐄',cow:'🐮',horse:'🐴',pig:'🐷',sheep:'🐑',chicken:'🐓',tractor:'🚜',
+  barn:'🏚️',field:'🌾',tree:'🌳',flower:'🌸',sun:'☀️',rain:'🌧️',
+  mom:'👩',mum:'👩',mother:'👩',dad:'👨',father:'👨',baby:'👶',
+  brother:'👦',sister:'👧',grandma:'👵',grandpa:'👴',friend:'🧑',
+  drink:'🥤',water:'💧',juice:'🧃',milk:'🥛',tea:'☕',coffee:'☕',
+  food:'🍽️',eat:'🍽️',snack:'🍪',bread:'🍞',apple:'🍎',banana:'🍌',
+  pizza:'🍕',burger:'🍔',cake:'🎂',chocolate:'🍫',
+  happy:'😊',sad:'😢',angry:'😡',scared:'😨',tired:'😩',
+  cat:'🐱',dog:'🐶',rabbit:'🐰',fish:'🐟',bird:'🐦',
+  home:'🏠',house:'🏠',school:'🏫',park:'🌳',hospital:'🏥',
+  play:'🎮',tv:'📺',music:'🎵',book:'📚',draw:'🖍️',
+  run:'🏃',swim:'🏊',dance:'💃',sleep:'😴',bath:'🛁',shower:'🚿',
+  phone:'📱',car:'🚗',bus:'🚌',ball:'⚽',toy:'🧸',
+  medicine:'💊',help:'🙏',wait:'✋',hello:'👋',sorry:'😞',
+  hot:'🔥',cold:'🥶',loud:'🔊',quiet:'🔇',toilet:'🚽',done:'✅',
+};
+
+function findEmoji(raw) {
+  const w = raw.toLowerCase().trim().replace(/[^a-z]/g,'');
+  if (EMOJI_SEARCH[w]) return EMOJI_SEARCH[w];
+  for (const [k,v] of Object.entries(EMOJI_SEARCH)) {
+    if (w.includes(k) || k.includes(w)) return v;
+  }
+  return null;
+}
+
+let selectedEmoji = '🎤';
+
+function buildEmojiPicker() {
+  const picker = document.getElementById('epicker');
+  picker.innerHTML = '';
+  EMOJI_LIBRARY.forEach(em => {
+    const btn = document.createElement('button');
+    btn.textContent = em;
+    btn.style.cssText = 'font-size:1.5rem;border:2px solid transparent;border-radius:8px;background:transparent;cursor:pointer;padding:3px;line-height:1;transition:all .15s';
+    btn.addEventListener('click', () => {
+      selectedEmoji = em;
+      document.getElementById('eprev').textContent = em;
+      document.getElementById('estat').textContent = 'Selected: ' + em;
+      picker.querySelectorAll('button').forEach(b => b.style.borderColor='transparent');
+      btn.style.borderColor = '#2D6A4F';
+      btn.style.background = '#E8F5E9';
+    });
+    picker.appendChild(btn);
+  });
+}
+
+function setTab(t) {
+  recTab = t;
+  document.getElementById('etab').style.display = t==='e' ? 'block' : 'none';
+  document.getElementById('ptab').style.display = t==='p' ? 'block' : 'none';
+  document.getElementById('teb').classList.toggle('on', t==='e');
+  document.getElementById('tpb').classList.toggle('on', t==='p');
+}
+
+function onPhoto(inp) {
+  const file = inp.files[0];
+  if (!file) return;
+  const status = document.getElementById('photo-status');
+  status.textContent = '⏳ Loading photo...';
+  
+  // Compress image to avoid localStorage size limits
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = new Image();
+    img.onload = () => {
+      // Resize to max 200x200 to keep storage small
+      const canvas = document.createElement('canvas');
+      const MAX = 200;
+      let w = img.width, h = img.height;
+      if (w > h) { if (w > MAX) { h = h*MAX/w; w = MAX; } }
+      else        { if (h > MAX) { w = w*MAX/h; h = MAX; } }
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      photoUrl = canvas.toDataURL('image/jpeg', 0.7); // compressed JPEG
+      const pv = document.getElementById('pprev');
+      pv.src = photoUrl;
+      pv.classList.add('show');
+      status.textContent = '✅ Photo ready — tap Save';
+      document.querySelector('.ph2').textContent = '✅ Photo loaded!';
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function openRec(pi, s) {
+  recPg = pi; recSl = s; photoUrl = null; recTab = 'e';
+  selectedEmoji = '🎤';
+  document.getElementById('mlabel').value = '';
+  document.getElementById('eprev').textContent = '🎤';
+  document.getElementById('estat').textContent = 'Type label above OR tap any emoji below';
+  document.getElementById('pprev').classList.remove('show');
+  document.getElementById('pprev').src = '';
+  document.getElementById('pfile').value = '';
+  document.getElementById('photo-status').textContent = '';
+  document.querySelector('.ph2').textContent = '📷 Tap to choose a photo from your camera roll';
+  document.getElementById('mspeak').value = '';
+  setTab('e');
+  buildEmojiPicker();
+  document.getElementById('recmod').classList.add('open');
+  setTimeout(() => document.getElementById('mlabel').focus(), 300);
+}
+
+function closeRec() {
+  document.getElementById('recmod').classList.remove('open');
+}
+
+document.getElementById('recmod').addEventListener('click', e => {
+  if (e.target.id === 'recmod') closeRec();
+});
+
+document.getElementById('mlabel').addEventListener('input', function() {
+  const v = this.value.trim();
+  if (!v) {
+    document.getElementById('eprev').textContent = selectedEmoji || '🎤';
+    document.getElementById('estat').textContent = 'Type label above OR tap any emoji below';
+    return;
+  }
+  const found = findEmoji(v);
+  if (found) {
+    selectedEmoji = found;
+    document.getElementById('eprev').textContent = found;
+    document.getElementById('estat').textContent = 'Suggested: ' + found + ' — or pick below';
+  }
+});
+
+function saveRec() {
+  const label = document.getElementById('mlabel').value.trim();
+  if (!label) {
+    alert('Please enter a label for this button');
+    return;
+  }
+
+  let icon, isPhoto = false;
+  let word = label.toLowerCase(); // default: speak the label
+
+  if (recTab === 'p' && photoUrl) {
+    icon = photoUrl;
+    isPhoto = true;
+    // Use custom speech text if provided
+    const speakText = document.getElementById('mspeak').value.trim();
+    if (speakText) word = speakText;
+  } else {
+    icon = selectedEmoji || '🎤';
+  }
+
+  const k = `${activeP}-${recPg}-${recSl}`;
+  const entry = { icon, label: label.toUpperCase(), word, isPhoto };
+  
+  try {
+    recData[k] = entry;
+    localStorage.setItem('aidova_rec', JSON.stringify(recData));
+    closeRec();
+    renderRec(recPg);
+    resize();
+  } catch(e) {
+    // localStorage full — likely due to large photo
+    // Try saving without the photo
+    if (isPhoto) {
+      if (confirm('Photo too large to save. Save with emoji instead?')) {
+        recData[k] = { icon: selectedEmoji || '🎤', label: label.toUpperCase(), word: label.toLowerCase(), isPhoto: false };
+        localStorage.setItem('aidova_rec', JSON.stringify(recData));
+        closeRec(); renderRec(recPg); resize();
+      }
+    } else {
+      alert('Could not save. Please try again.');
+    }
+  }
+}
+
+
