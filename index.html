@@ -2,1103 +2,691 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Aidova">
 <meta name="theme-color" content="#2D6A4F">
 <link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon-192.png">
-<title>Aidova — Say It Your Way</title>
+<title>Aidova</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Baloo+2:wght@700;800&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 <style>
-/* ════════════════════════════════
-   RESET & ROOT
-════════════════════════════════ */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-:root {
-  --green:   #2D6A4F;
-  --green-l: #52B788;
-  --amber:   #E76F51;
-  --c-feel:  #FFCCBC;
-  --c-need:  #B3E5FC;
-  --c-plac:  #FFF9C4;
-  --c-soc:   #E1BEE7;
-  --c-rec:   #E8F5E9;
-  --white:   #FFFFFF;
-  --bg:      #F8FAF8;
-  --shadow:  0 4px 16px rgba(0,0,0,.10);
-}
-html, body {
-  width: 100%; height: 100%;
-  overflow: hidden;
-  background: var(--bg);
-  font-family: 'Nunito', sans-serif;
-}
-#app {
-  display: flex;
-  flex-direction: column;
-  height: 100dvh;
-  height: 100vh;
-  overflow: hidden;
-}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{width:100%;height:100%;overflow:hidden;background:#F8FAF8;font-family:'Nunito',sans-serif}
 
-/* ════════════════════════════════
-   SPLASH
-════════════════════════════════ */
-#splash {
-  position: fixed; inset: 0; z-index: 1000;
-  background: linear-gradient(160deg, #e8f5e9 0%, #f1f8f4 60%, #e0f2f1 100%);
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center; gap: 0;
-  transition: opacity .6s ease;
-}
-#splash.hide { opacity: 0; pointer-events: none; }
-.splash-bubble {
-  width: 80px; height: 80px;
-  background: linear-gradient(135deg, #52B788, #2D6A4F);
-  border-radius: 22px 22px 22px 4px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 2.2rem; margin-bottom: 16px;
-  box-shadow: 0 12px 32px rgba(45,106,79,.3);
-  animation: splashPop .6s cubic-bezier(.34,1.56,.64,1) both;
-}
-@keyframes splashPop { from{transform:scale(0);opacity:0;} to{transform:scale(1);opacity:1;} }
-.splash-name { font-family:'Dancing Script',cursive; font-size:3rem; font-weight:700; color:#1B2A1F; animation:fadeUp .5s .3s both; }
-.splash-sub  { font-size:.82rem; font-weight:800; color:#666; margin-top:6px; animation:fadeUp .5s .4s both; }
-.splash-sub b { color:var(--green); } .splash-sub .gold { color:var(--amber); }
-.splash-tag  { font-size:.75rem; color:#999; margin-top:8px; font-style:italic; animation:fadeUp .5s .5s both; }
-.splash-bar  { margin-top:36px; width:50px; height:3px; background:#ddd; border-radius:2px; overflow:hidden; animation:fadeUp .4s .6s both; }
-.splash-bar::after { content:''; display:block; width:0; height:100%; background:var(--green); border-radius:2px; animation:loadbar 1.9s .7s ease-in-out forwards; }
-@keyframes loadbar { to{width:100%;} }
-@keyframes fadeUp { from{transform:translateY(12px);opacity:0;} to{transform:translateY(0);opacity:1;} }
+/* ── SPLASH ── */
+#splash{position:fixed;inset:0;z-index:999;background:linear-gradient(160deg,#e8f5e9,#f1f8f4,#e0f2f1);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s}
+#splash.hide{opacity:0;pointer-events:none}
+.sp-bubble{width:72px;height:72px;background:linear-gradient(135deg,#52B788,#2D6A4F);border-radius:20px 20px 20px 4px;display:flex;align-items:center;justify-content:center;font-size:2rem;margin-bottom:14px;box-shadow:0 12px 32px rgba(45,106,79,.3);animation:spop .6s cubic-bezier(.34,1.56,.64,1)}
+@keyframes spop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+.sp-name{font-family:'Dancing Script',cursive;font-size:2.8rem;font-weight:700;color:#1B2A1F;animation:fup .5s .3s both}
+.sp-by{font-size:.8rem;font-weight:800;color:#666;margin-top:6px;animation:fup .5s .4s both}
+.sp-by b{color:#2D6A4F}.sp-by .gold{color:#E76F51}
+.sp-tag{font-size:.72rem;color:#999;margin-top:6px;font-style:italic;animation:fup .5s .5s both}
+.sp-bar{margin-top:32px;width:48px;height:3px;background:#ddd;border-radius:2px;overflow:hidden;animation:fup .4s .6s both}
+.sp-bar::after{content:'';display:block;width:0;height:100%;background:#2D6A4F;border-radius:2px;animation:lbar 2s .7s ease-in-out forwards}
+@keyframes lbar{to{width:100%}}
+@keyframes fup{from{transform:translateY(10px);opacity:0}to{transform:translateY(0);opacity:1}}
 
-/* ════════════════════════════════
-   KIOSK BAR
-════════════════════════════════ */
-#kiosk-bar {
-  display: none; background: #1B5E20; color: #fff;
-  text-align: center; font-size: .72rem; font-weight: 900;
-  padding: 4px; letter-spacing: .5px;
-}
-body.kiosk-mode #kiosk-bar { display: block; }
+/* ── APP SHELL ── */
+#app{display:flex;flex-direction:column;height:100dvh;height:100vh;overflow:hidden;opacity:0;transition:opacity .4s}
+#app.ready{opacity:1}
 
-/* ════════════════════════════════
-   FIXED TOP
-════════════════════════════════ */
-#fixed-top {
-  flex-shrink: 0;
-  background: #fff;
-  box-shadow: 0 2px 12px rgba(0,0,0,.08);
-  z-index: 20;
-  padding: 8px 10px 6px;
-}
+/* ── KIOSK BAR ── */
+#kiosk-bar{display:none;background:#1B5E20;color:#fff;text-align:center;font-size:.72rem;font-weight:900;padding:4px;letter-spacing:.5px;flex-shrink:0}
+body.kiosk #kiosk-bar{display:block}
 
-/* Brand row */
-#brand-row {
-  display: flex; align-items: center;
-  justify-content: space-between;
-  margin-bottom: 7px;
-}
-.brand-logo {
-  display: flex; align-items: center; gap: 5px;
-  font-family: 'Dancing Script', cursive;
-  font-size: 1.3rem; font-weight: 700; color: var(--green);
-}
-.brand-bubble {
-  width: 22px; height: 22px;
-  background: linear-gradient(135deg, #52B788, #2D6A4F);
-  border-radius: 6px 6px 6px 2px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: .65rem;
-}
-.brand-right { display: flex; align-items: center; gap: 6px; }
-.brand-sub { font-size: .55rem; font-weight: 900; color: #aaa; }
-.brand-sub b { color: var(--green); } .brand-sub .gold { color: var(--amber); }
+/* ── TOP PANEL ── */
+#top{flex-shrink:0;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.08);padding:8px 10px 6px;z-index:10}
 
-/* Top icon buttons */
-.top-icon {
-  width: 34px; height: 34px;
-  border: none; border-radius: 10px;
-  background: #F5F5F5; cursor: pointer;
-  font-size: .85rem; display: flex;
-  align-items: center; justify-content: center;
-  transition: all .15s; font-weight: 900;
-}
-.top-icon:active { transform: scale(.88); }
+/* Brand */
+#brand{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+.brand-logo{display:flex;align-items:center;gap:5px;font-family:'Dancing Script',cursive;font-size:1.25rem;font-weight:700;color:#2D6A4F}
+.brand-dot{width:20px;height:20px;background:linear-gradient(135deg,#52B788,#2D6A4F);border-radius:5px 5px 5px 2px;display:flex;align-items:center;justify-content:center;font-size:.6rem}
+.brand-credit{font-size:.52rem;font-weight:900;color:#bbb}
+.brand-credit b{color:#2D6A4F}.brand-credit .gold{color:#E76F51}
 
 /* Big 4 */
-#big-four {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  gap: 8px;
-  margin-bottom: 6px;
-}
-.big-btn {
-  border: none; border-radius: 16px;
-  font-family: 'Baloo 2', cursive;
-  font-weight: 800;
-  cursor: pointer;
-  box-shadow: var(--shadow);
-  transition: transform .12s, box-shadow .12s;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  gap: 3px; line-height: 1;
-  padding: 10px 4px;
-}
-.big-btn:active { transform: scale(.91); box-shadow: 0 2px 6px rgba(0,0,0,.1); }
-.big-icon { font-size: clamp(1.4rem, 4vw, 2rem); }
-.big-label { font-size: clamp(.8rem, 2.5vw, 1.1rem); }
-#btn-iam   { background: #A5D6A7; color: #1B5E20; }
-#btn-iwant { background: #FFE082; color: #5D4037; }
-#btn-yes   { background: #C8E6C9; color: #1B5E20; }
-#btn-no    { background: #FFCDD2; color: #B71C1C; }
+#big4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:7px;margin-bottom:6px}
+.bb{border:none;border-radius:14px;font-family:'Baloo 2',cursive;font-weight:800;cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,.1);transition:transform .12s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;line-height:1;padding:10px 4px;min-height:60px}
+.bb:active{transform:scale(.91)}
+.bb-icon{font-size:clamp(1.3rem,3.5vw,1.8rem)}
+.bb-lbl{font-size:clamp(.78rem,2.2vw,1rem);font-weight:900}
+#b-iam{background:#A5D6A7;color:#1B5E20}
+#b-iw{background:#FFE082;color:#5D4037}
+#b-yes{background:#C8E6C9;color:#1B5E20}
+#b-no{background:#FFCDD2;color:#B71C1C}
 
-/* Controls row */
-#ctrl-row {
-  display: flex; gap: 7px; align-items: center;
-}
-.ctrl {
-  height: 38px; border: none; border-radius: 12px;
-  cursor: pointer; display: flex;
-  align-items: center; justify-content: center;
-  transition: transform .13s; flex-shrink: 0;
-  font-weight: 900; font-family: 'Nunito', sans-serif;
-}
-.ctrl:active { transform: scale(.88); }
-#c-voldn { width: 38px; background: #DBEAFE; color: #1D4ED8; font-size: 1.1rem; }
-#c-volup { width: 38px; background: #DBEAFE; color: #1D4ED8; font-size: 1.1rem; }
-#c-voice { flex: 1; background: #F3E8FF; color: #7E22CE; font-size: .82rem; padding: 0 8px; min-width: 90px; }
-#c-settings { width: 38px; background: #F5F5F5; color: #555; font-size: 1rem; }
+/* Controls */
+#ctrls{display:flex;gap:6px;align-items:center}
+.ctrl{height:38px;border:none;border-radius:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .12s;font-family:'Nunito',sans-serif;font-weight:900;font-size:.85rem;flex-shrink:0}
+.ctrl:active{transform:scale(.88)}
+#c-vdn{width:38px;background:#DBEAFE;color:#1D4ED8;font-size:1.1rem}
+#c-vup{width:38px;background:#DBEAFE;color:#1D4ED8;font-size:1.1rem}
+#c-voice{flex:1;background:#F3E8FF;color:#6D28D9;padding:0 8px}
+#c-cfg{width:38px;background:#F3F4F6;color:#374151;font-size:1rem}
 
-/* ════════════════════════════════
-   CATEGORY TABS
-════════════════════════════════ */
-#tabs {
-  display: flex;
-  background: #F0F0F0;
-  flex-shrink: 0;
-  padding: 5px 6px 0;
-  gap: 5px;
-}
-.tab {
-  flex: 1;
-  border: none;
-  background: transparent;
-  font-family: 'Nunito', sans-serif;
-  font-weight: 900;
-  cursor: pointer;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  gap: 2px;
-  padding: 8px 4px 7px;
-  border-radius: 12px 12px 0 0;
-  color: #999;
-  transition: all .2s;
-  border-bottom: 3px solid transparent;
-  min-height: 52px;
-}
-.tab:active { transform: scale(.95); }
-.tab-em  { font-size: clamp(1.1rem, 3.5vw, 1.5rem); line-height: 1; }
-.tab-lbl { font-size: clamp(.62rem, 1.8vw, .85rem); line-height: 1; }
-.tab.active { background: #fff; color: #333; box-shadow: 0 -2px 8px rgba(0,0,0,.05); }
-.tab[data-idx="0"].active { color: #C62828; border-bottom-color: #C62828; }
-.tab[data-idx="1"].active { color: #1565C0; border-bottom-color: #1565C0; }
-.tab[data-idx="2"].active { color: #E65100; border-bottom-color: #E65100; }
-.tab[data-idx="3"].active { color: #6A1B9A; border-bottom-color: #6A1B9A; }
+/* ── TABS ── */
+#tabs{display:flex;background:#F0F0F0;flex-shrink:0;padding:5px 6px 0;gap:5px}
+.tab{flex:1;border:none;background:transparent;font-family:'Nunito',sans-serif;font-weight:900;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:8px 4px 7px;border-radius:10px 10px 0 0;color:#999;border-bottom:3px solid transparent;min-height:50px;transition:all .18s}
+.tab:active{transform:scale(.95)}
+.t-em{font-size:clamp(1rem,3vw,1.4rem);line-height:1}
+.t-lbl{font-size:clamp(.6rem,1.8vw,.82rem);line-height:1}
+.tab.on{background:#fff;color:#333}
+.tab[data-i="0"].on{color:#C62828;border-bottom-color:#C62828}
+.tab[data-i="1"].on{color:#1565C0;border-bottom-color:#1565C0}
+.tab[data-i="2"].on{color:#E65100;border-bottom-color:#E65100}
+.tab[data-i="3"].on{color:#6A1B9A;border-bottom-color:#6A1B9A}
 
-/* ════════════════════════════════
-   SWIPE PAGES
-════════════════════════════════ */
-#pages-wrap { flex: 1; overflow: hidden; position: relative; min-height: 0; height: 0; }
-#pages-track {
-  display: flex; height: 100%;
-  transition: transform .32s cubic-bezier(.4,0,.2,1);
-  will-change: transform;
-}
-.page {
-  flex-shrink: 0; width: 100vw; height: 100%;
-  overflow-y: auto; overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
-  padding: 10px;
-  display: flex; flex-direction: column; gap: 8px;
-}
-.page::-webkit-scrollbar { width: 3px; }
-.page::-webkit-scrollbar-thumb { background: #ddd; border-radius: 4px; }
+/* ── PAGES ── */
+#pw{flex:1;overflow:hidden;position:relative;min-height:0}
+#pt{display:flex;height:100%;transition:transform .3s cubic-bezier(.4,0,.2,1)}
+.page{flex-shrink:0;width:100vw;height:100%;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;padding:8px;gap:8px}
+.page::-webkit-scrollbar{width:3px}
+.page::-webkit-scrollbar-thumb{background:#ddd;border-radius:4px}
 
-/* ════════════════════════════════
-   BUTTON GRID
-════════════════════════════════ */
-.btn-grid {
-  display: grid !important;
-  grid-template-columns: repeat(3, 1fr) !important;
-  gap: 12px;
-  justify-items: center;
-  align-items: center;
-}
+/* ── BUTTON GRID ── */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%}
 
-/* ════════════════════════════════
-   CIRCLE BUTTONS — clean & beautiful
-════════════════════════════════ */
-.circ {
-  aspect-ratio: 1;
-  border-radius: 50%;
-  border: 2px solid rgba(0,0,0,.07);
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  cursor: pointer; user-select: none;
-  position: relative; overflow: hidden;
-  box-shadow: 0 3px 10px rgba(0,0,0,.10);
-  transition: transform .13s, box-shadow .13s;
-  padding: 4px;
-}
-.circ:active { transform: scale(.87); box-shadow: 0 1px 4px rgba(0,0,0,.1); }
-.circ.pop { animation: pop .35s cubic-bezier(.36,.07,.19,.97); }
-@keyframes pop {
-  0%{transform:scale(1);}
-  35%{transform:scale(1.18) rotate(-3deg);}
-  65%{transform:scale(.94) rotate(2deg);}
-  85%{transform:scale(1.05);}
-  100%{transform:scale(1);}
-}
-.circ-icon  { font-size: clamp(1.6rem, 6vw, 2.4rem); line-height: 1; pointer-events: none; }
-.circ-label {
-  font-weight: 900;
-  font-size: clamp(.55rem, 2vw, .72rem);
-  text-align: center; line-height: 1.1;
-  color: #333; pointer-events: none;
-  margin-top: 3px; text-transform: uppercase;
-}
+/* ── CIRCLES ── */
+.circ{border-radius:50%;border:2px solid rgba(0,0,0,.07);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;user-select:none;position:relative;overflow:hidden;box-shadow:0 3px 10px rgba(0,0,0,.09);transition:transform .12s;padding:4px}
+.circ:active{transform:scale(.87)}
+.circ.pop{animation:pop .35s cubic-bezier(.36,.07,.19,.97)}
+@keyframes pop{0%{transform:scale(1)}35%{transform:scale(1.16) rotate(-3deg)}65%{transform:scale(.94) rotate(2deg)}85%{transform:scale(1.05)}100%{transform:scale(1)}}
+.ci{line-height:1;pointer-events:none}
+.cl{font-weight:900;text-align:center;line-height:1.1;color:#333;pointer-events:none;margin-top:3px;text-transform:uppercase}
+.c-feel{background:#FFCCBC}.c-need{background:#B3E5FC}.c-plac{background:#FFF9C4}.c-soc{background:#E1BEE7}
+.c-rec{background:#E8F5E9;border:2px dashed #A5D6A7}.c-empty{background:#FAFAFA;border:2px dashed #E0E0E0}.c-prem{background:#FFF8E1;border:2px dashed #FFE082}
+.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.55);transform:scale(0);animation:rip .44s linear;pointer-events:none}
+@keyframes rip{to{transform:scale(4);opacity:0}}
+.conf{position:fixed;width:9px;height:9px;border-radius:2px;pointer-events:none;z-index:9999;animation:cf 1.1s ease-out forwards}
+@keyframes cf{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(260px) rotate(720deg);opacity:0}}
+.sec{font-size:.6rem;font-weight:900;color:#bbb;text-transform:uppercase;letter-spacing:.5px;padding:0 2px}
 
-/* Category colours */
-.cat-feel { background: #FFCCBC; }
-.cat-need { background: #B3E5FC; }
-.cat-plac { background: #FFF9C4; }
-.cat-soc  { background: #E1BEE7; }
-.cat-rec  { background: #E8F5E9; border: 2px dashed #A5D6A7; }
-.cat-rec-empty { background: #FAFAFA; border: 2px dashed #E0E0E0; }
-.cat-premium   { background: #FFF8E1; border: 2px dashed #FFE082; }
+/* ── PANEL ── */
+.pov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;backdrop-filter:blur(4px);align-items:flex-end}
+.pov.open{display:flex}
+.panel{background:#fff;border-radius:24px 24px 0 0;padding:20px 18px 36px;width:100%;max-height:88vh;overflow-y:auto;animation:sup .3s cubic-bezier(.34,1.2,.64,1)}
+@keyframes sup{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.ph{width:36px;height:4px;background:#E0E0E0;border-radius:2px;margin:0 auto 18px}
+.ps{font-family:'Baloo 2',cursive;font-size:1.1rem;color:#222;margin:14px 0 10px}
+.sr{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid #F5F5F5}
+.sl{font-weight:800;font-size:.86rem;color:#333}
+.ss{font-size:.68rem;color:#aaa;margin-top:1px}
+.tog{width:44px;height:24px;background:#E0E0E0;border-radius:12px;position:relative;cursor:pointer;border:none;transition:background .2s;flex-shrink:0}
+.tog.on{background:#2D6A4F}
+.tog::after{content:'';position:absolute;width:18px;height:18px;background:#fff;border-radius:50%;top:3px;left:3px;transition:transform .2s;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.tog.on::after{transform:translateX(20px)}
+.vslide{width:100px;accent-color:#2D6A4F}
+.prow{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px}
+.pc{flex:1;min-width:68px;padding:11px 6px;border:2px solid #E0E0E0;border-radius:12px;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;transition:all .15s;font-size:.7rem;font-weight:900;color:#555;text-align:center}
+.pc.on{border-color:#2D6A4F;background:#E8F5E9;color:#1B5E20}
+.pc .pav{font-size:1.5rem}
+.padd{border-style:dashed;color:#ccc}
 
-/* Ripple */
-.ripple {
-  position: absolute; border-radius: 50%;
-  background: rgba(255,255,255,.55);
-  transform: scale(0); animation: rip .44s linear;
-  pointer-events: none;
-}
-@keyframes rip { to{transform:scale(4);opacity:0;} }
+/* ── PIN ── */
+.pinov{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);align-items:center;justify-content:center}
+.pinov.open{display:flex}
+.pinbox{background:#fff;border-radius:22px;padding:26px 20px;width:min(88vw,290px);text-align:center;animation:mz .25s cubic-bezier(.34,1.56,.64,1)}
+@keyframes mz{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+.pt{font-family:'Baloo 2',cursive;font-size:1.15rem;color:#222;margin-bottom:4px}
+.psub{font-size:.73rem;color:#aaa;margin-bottom:16px}
+.pdots{display:flex;justify-content:center;gap:10px;margin-bottom:18px}
+.pdot{width:13px;height:13px;border-radius:50%;background:#E0E0E0;transition:background .15s}
+.pdot.f{background:#2D6A4F}
+.ppad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pk{aspect-ratio:1;border:none;border-radius:12px;background:#F5F5F5;font-family:'Nunito',sans-serif;font-size:1.25rem;font-weight:900;cursor:pointer;transition:all .12s;display:flex;align-items:center;justify-content:center}
+.pk:active{transform:scale(.88);background:#E0E0E0}
+.pk.del{background:#FFEBEE;color:#B71C1C;font-size:.95rem}
+.pk.zer{grid-column:2}
+.pk.cnc{background:#F5F5F5;color:#999;font-size:.78rem}
+.perr{color:#B71C1C;font-size:.73rem;margin-top:8px;min-height:16px}
 
-/* Confetti */
-.conf {
-  position: fixed; width: 9px; height: 9px; border-radius: 2px;
-  pointer-events: none; z-index: 9999;
-  animation: cf 1.1s ease-out forwards;
-}
-@keyframes cf {
-  0%{transform:translateY(0) rotate(0);opacity:1;}
-  100%{transform:translateY(260px) rotate(720deg);opacity:0;}
-}
-
-/* Section label */
-.sec-label {
-  font-size: .62rem; font-weight: 900;
-  color: #bbb; text-transform: uppercase;
-  letter-spacing: .5px; padding: 2px 4px 0;
-}
-
-/* ════════════════════════════════
-   PANELS & MODALS
-════════════════════════════════ */
-.panel-ov {
-  display: none; position: fixed; inset: 0;
-  background: rgba(0,0,0,.5); z-index: 200;
-  backdrop-filter: blur(4px);
-  align-items: flex-end;
-}
-.panel-ov.open { display: flex; }
-.panel {
-  background: #fff; border-radius: 24px 24px 0 0;
-  padding: 20px 18px 36px; width: 100%;
-  max-height: 88vh; overflow-y: auto;
-  animation: slideUp .3s cubic-bezier(.34,1.2,.64,1);
-}
-@keyframes slideUp { from{transform:translateY(100%);} to{transform:translateY(0);} }
-.panel-handle { width:36px;height:4px;background:#E0E0E0;border-radius:2px;margin:0 auto 18px; }
-.panel-sec { font-family:'Baloo 2',cursive;font-size:1.1rem;color:#222;margin:16px 0 10px; }
-.setting-row { display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid #F5F5F5; }
-.setting-label { font-weight:800;font-size:.88rem;color:#333; }
-.setting-sub   { font-size:.7rem;color:#aaa;margin-top:1px; }
-.toggle { width:46px;height:26px;background:#E0E0E0;border-radius:13px;position:relative;cursor:pointer;border:none;transition:background .2s;flex-shrink:0; }
-.toggle.on { background:var(--green); }
-.toggle::after { content:'';position:absolute;width:20px;height:20px;background:#fff;border-radius:50%;top:3px;left:3px;transition:transform .2s;box-shadow:0 1px 4px rgba(0,0,0,.2); }
-.toggle.on::after { transform:translateX(20px); }
-.vol-slider { width:100px; accent-color:var(--green); }
-.p-row { display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px; }
-.p-card { flex:1;min-width:72px;padding:12px 6px;border:2px solid #E0E0E0;border-radius:14px;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;transition:all .15s;font-size:.72rem;font-weight:900;color:#555;text-align:center; }
-.p-card.active { border-color:var(--green);background:#E8F5E9;color:#1B5E20; }
-.p-card .pav { font-size:1.6rem; }
-.p-add { border-style:dashed;color:#ccc; }
-
-/* Modal */
-.modal-ov { display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:300;align-items:center;justify-content:center;backdrop-filter:blur(5px); }
-.modal-ov.open { display:flex; }
-.modal { background:#fff;border-radius:22px;padding:22px 18px;width:min(90vw,340px);box-shadow:0 20px 60px rgba(0,0,0,.3);animation:mzoom .28s cubic-bezier(.34,1.56,.64,1); }
-@keyframes mzoom { from{transform:scale(.7);opacity:0;} to{transform:scale(1);opacity:1;} }
-.modal h2 { font-family:'Baloo 2',cursive;font-size:1.15rem;color:#333;margin-bottom:10px; }
-.modal input { width:100%;padding:10px 12px;border:2px solid #eee;border-radius:10px;font-family:'Nunito',sans-serif;font-size:.9rem;margin-bottom:8px;outline:none;transition:border-color .2s; }
-.modal input:focus { border-color:var(--green); }
-.modal-btns { display:flex;gap:8px;margin-top:8px; }
-.modal-btns button { flex:1;padding:10px;border:none;border-radius:10px;font-family:'Nunito',sans-serif;font-weight:900;font-size:.88rem;cursor:pointer; }
-.btn-cancel { background:#eee;color:#666; }
-.btn-save   { background:var(--green);color:#fff; }
-.tab-row { display:flex;gap:6px;margin-bottom:10px; }
-.tab-choice { flex:1;padding:8px;border:2px solid #eee;border-radius:10px;background:#fff;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:800;font-size:.78rem;color:#888;text-align:center;transition:all .15s; }
-.tab-choice.active { border-color:var(--green);background:#E8F5E9;color:#1B5E20; }
-#emoji-preview { font-size:2.6rem;text-align:center;padding:10px;background:#F9F9F9;border-radius:12px;margin-bottom:6px;min-height:66px;display:flex;align-items:center;justify-content:center; }
-#emoji-status  { font-size:.72rem;color:#aaa;text-align:center;margin-bottom:8px;min-height:16px; }
-.photo-upload-area { width:100%;padding:14px;border:2px dashed #C8E6C9;border-radius:12px;text-align:center;cursor:pointer;margin-bottom:8px;transition:border-color .2s,background .2s;position:relative;overflow:hidden; }
-.photo-upload-area:hover { border-color:var(--green);background:#F1F8E9; }
-.photo-upload-area input[type=file] { position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;margin:0;padding:0;border:none; }
-.photo-preview { width:72px;height:72px;border-radius:50%;object-fit:cover;display:none;margin:0 auto 8px;border:3px solid var(--green); }
-.photo-preview.show { display:block; }
-.upload-hint { font-size:.78rem;color:#aaa; }
-.upload-hint span { font-size:1.3rem;display:block;margin-bottom:4px; }
-
-/* PIN */
-.pin-ov { display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);align-items:center;justify-content:center; }
-.pin-ov.open { display:flex; }
-.pin-box { background:#fff;border-radius:24px;padding:28px 22px;width:min(88vw,300px);text-align:center;animation:mzoom .25s cubic-bezier(.34,1.56,.64,1); }
-.pin-title { font-family:'Baloo 2',cursive;font-size:1.2rem;color:#222;margin-bottom:4px; }
-.pin-sub   { font-size:.75rem;color:#aaa;margin-bottom:18px; }
-.pin-dots  { display:flex;justify-content:center;gap:10px;margin-bottom:20px; }
-.pin-dot   { width:13px;height:13px;border-radius:50%;background:#E0E0E0;transition:background .15s; }
-.pin-dot.filled { background:var(--green); }
-.pin-pad   { display:grid;grid-template-columns:repeat(3,1fr);gap:9px; }
-.pin-key   { aspect-ratio:1;border:none;border-radius:13px;background:#F5F5F5;font-family:'Nunito',sans-serif;font-size:1.3rem;font-weight:900;cursor:pointer;transition:all .12s;display:flex;align-items:center;justify-content:center; }
-.pin-key:active { transform:scale(.88);background:#E0E0E0; }
-.pin-del  { background:#FFEBEE;color:#B71C1C;font-size:1rem; }
-.pin-cncl { background:#F5F5F5;color:#999;font-size:.8rem; }
-.pin-zero { grid-column:2; }
-.pin-err  { color:#B71C1C;font-size:.75rem;margin-top:10px;min-height:18px; }
-
-/* ══ VOICE SELECTOR ══ */
-.voice-select {
-  width: 100%;
-  padding: 10px 12px;
-  border: 2px solid #E0E0E0;
-  border-radius: 12px;
-  font-family: 'Nunito', sans-serif;
-  font-weight: 700;
-  font-size: .88rem;
-  color: #333;
-  background: #fff;
-  cursor: pointer;
-  margin-top: 6px;
-  outline: none;
-  transition: border-color .2s;
-  appearance: auto;
-}
-.voice-select:focus { border-color: var(--green); }
-.voice-preview-btn {
-  width: 100%; margin-top: 6px;
-  padding: 9px; border: none;
-  border-radius: 10px;
-  background: var(--green); color: #fff;
-  font-family: 'Nunito', sans-serif;
-  font-weight: 900; font-size: .82rem;
-  cursor: pointer;
-}
-.voice-preview-btn:active { opacity: .85; }
-
+/* ── REC MODAL ── */
+.mov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:300;align-items:center;justify-content:center;backdrop-filter:blur(5px)}
+.mov.open{display:flex}
+.mbox{background:#fff;border-radius:20px;padding:20px 16px;width:min(90vw,320px);animation:mz .28s cubic-bezier(.34,1.56,.64,1)}
+.mbox h2{font-family:'Baloo 2',cursive;font-size:1.1rem;color:#333;margin-bottom:10px}
+.mbox input{width:100%;padding:10px 11px;border:2px solid #eee;border-radius:10px;font-family:'Nunito',sans-serif;font-size:.9rem;margin-bottom:8px;outline:none;transition:border-color .2s}
+.mbox input:focus{border-color:#2D6A4F}
+.mbts{display:flex;gap:7px;margin-top:8px}
+.mbts button{flex:1;padding:10px;border:none;border-radius:10px;font-family:'Nunito',sans-serif;font-weight:900;font-size:.86rem;cursor:pointer}
+.mcanc{background:#eee;color:#666}.msave{background:#2D6A4F;color:#fff}
+.tabrow{display:flex;gap:5px;margin-bottom:9px}
+.tc{flex:1;padding:7px;border:2px solid #eee;border-radius:9px;background:#fff;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:800;font-size:.75rem;color:#888;text-align:center;transition:all .15s}
+.tc.on{border-color:#2D6A4F;background:#E8F5E9;color:#1B5E20}
+#eprev{font-size:2.4rem;text-align:center;padding:10px;background:#F9F9F9;border-radius:11px;margin-bottom:5px;min-height:62px;display:flex;align-items:center;justify-content:center}
+#estat{font-size:.7rem;color:#aaa;text-align:center;margin-bottom:7px;min-height:14px}
+.pup{width:100%;padding:12px;border:2px dashed #C8E6C9;border-radius:11px;text-align:center;cursor:pointer;margin-bottom:7px;transition:border-color .2s;position:relative;overflow:hidden}
+.pup:hover{border-color:#2D6A4F;background:#F1F8E9}
+.pup input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.pup .ph2{font-size:.78rem;color:#aaa}
+.pprev{width:66px;height:66px;border-radius:50%;object-fit:cover;display:none;margin:0 auto 7px;border:3px solid #2D6A4F}
+.pprev.show{display:block}
 </style>
 </head>
 <body>
 
 <!-- SPLASH -->
 <div id="splash">
-  <div class="splash-bubble">💬</div>
-  <div class="splash-name">Aidova</div>
-  <div class="splash-sub">by <b>CHEW</b><span class="gold">AID</span>®</div>
-  <div class="splash-tag">Talking Therapies — To Say It Your Way</div>
-  <div class="splash-bar"></div>
+  <div class="sp-bubble">💬</div>
+  <div class="sp-name">Aidova</div>
+  <div class="sp-by">by <b>CHEW</b><span class="gold">AID</span>®</div>
+  <div class="sp-tag">Talking Therapies — To Say It Your Way</div>
+  <div class="sp-bar"></div>
 </div>
 
-<!-- MAIN APP -->
+<!-- APP -->
 <div id="app">
+  <div id="kiosk-bar">🔒 KIOSK MODE — Carer PIN required to exit</div>
 
-  <!-- KIOSK BAR -->
-  <div id="kiosk-bar">🔒 KIOSK MODE — Enter carer PIN to exit</div>
-
-  <!-- FIXED TOP -->
-  <div id="fixed-top">
-    <div id="brand-row">
-      <div class="brand-logo"><div class="brand-bubble">💬</div>Aidova</div>
-      <div class="brand-sub">by <b>CHEW</b><span class="gold">AID</span>®</div>
-      <div class="brand-right"></div>
+  <!-- TOP -->
+  <div id="top">
+    <div id="brand">
+      <div class="brand-logo"><div class="brand-dot">💬</div>Aidova</div>
+      <div class="brand-credit">by <b>CHEW</b><span class="gold">AID</span>®</div>
     </div>
-
-    <div id="big-four">
-      <button class="big-btn" id="btn-iam"   onclick="pressBig('I am',   this)"><span class="big-icon">🧍</span><span class="big-label">I AM</span></button>
-      <button class="big-btn" id="btn-iwant" onclick="pressBig('I want', this)"><span class="big-icon">🙋</span><span class="big-label">I WANT</span></button>
-      <button class="big-btn" id="btn-yes"   onclick="pressBig('yes',    this); confetti();"><span class="big-icon">✅</span><span class="big-label">YES</span></button>
-      <button class="big-btn" id="btn-no"    onclick="pressBig('no',     this)"><span class="big-icon">❌</span><span class="big-label">NO</span></button>
+    <div id="big4">
+      <button class="bb" id="b-iam"  onclick="say('I am')"><span class="bb-icon">🧍</span><span class="bb-lbl">I AM</span></button>
+      <button class="bb" id="b-iw"   onclick="say('I want')"><span class="bb-icon">🙋</span><span class="bb-lbl">I WANT</span></button>
+      <button class="bb" id="b-yes"  onclick="say('yes');confetti()"><span class="bb-icon">✅</span><span class="bb-lbl">YES</span></button>
+      <button class="bb" id="b-no"   onclick="say('no')"><span class="bb-icon">❌</span><span class="bb-lbl">NO</span></button>
     </div>
-
-    <div id="ctrl-row">
-      <button class="ctrl" id="c-voldn" onclick="changeVol(-10)" title="Volume down">🔉</button>
-      <button class="ctrl" id="c-volup" onclick="changeVol(+10)" title="Volume up">🔊</button>
-      <button class="ctrl" id="c-voice" onclick="toggleGender()">👩 Female</button>
-      <button class="ctrl" id="c-settings" onclick="openPanel()" title="Settings">⚙️</button>
+    <div id="ctrls">
+      <button class="ctrl" id="c-vdn"   onclick="volDown()">🔉</button>
+      <button class="ctrl" id="c-vup"   onclick="volUp()">🔊</button>
+      <button class="ctrl" id="c-voice" onclick="toggleVoice()">👩 Female</button>
+      <button class="ctrl" id="c-cfg"   onclick="openPanel()">⚙️</button>
     </div>
   </div>
 
   <!-- TABS -->
   <div id="tabs">
-    <button class="tab active" data-idx="0" onclick="goPage(0,this)">
-      <span class="tab-em">😊</span><span class="tab-lbl">Feelings</span>
-    </button>
-    <button class="tab" data-idx="1" onclick="goPage(1,this)">
-      <span class="tab-em">🍎</span><span class="tab-lbl">Needs</span>
-    </button>
-    <button class="tab" data-idx="2" onclick="goPage(2,this)">
-      <span class="tab-em">🏠</span><span class="tab-lbl">Places</span>
-    </button>
-    <button class="tab" data-idx="3" onclick="goPage(3,this)">
-      <span class="tab-em">🤝</span><span class="tab-lbl">Social</span>
-    </button>
+    <button class="tab on" data-i="0" onclick="goTab(0,this)"><span class="t-em">😊</span><span class="t-lbl">Feelings</span></button>
+    <button class="tab"    data-i="1" onclick="goTab(1,this)"><span class="t-em">🍎</span><span class="t-lbl">Needs</span></button>
+    <button class="tab"    data-i="2" onclick="goTab(2,this)"><span class="t-em">🏠</span><span class="t-lbl">Places</span></button>
+    <button class="tab"    data-i="3" onclick="goTab(3,this)"><span class="t-em">🤝</span><span class="t-lbl">Social</span></button>
   </div>
 
   <!-- PAGES -->
-  <div id="pages-wrap">
-    <div id="pages-track">
-      <div class="page">
-        <div class="btn-grid" id="g-feel"></div>
-        <div class="sec-label">⭐ My custom buttons</div>
-        <div class="btn-grid" id="r-0"></div>
-      </div>
-      <div class="page">
-        <div class="btn-grid" id="g-need"></div>
-        <div class="sec-label">⭐ My custom buttons</div>
-        <div class="btn-grid" id="r-1"></div>
-      </div>
-      <div class="page">
-        <div class="btn-grid" id="g-plac"></div>
-        <div class="sec-label">⭐ My custom buttons</div>
-        <div class="btn-grid" id="r-2"></div>
-      </div>
-      <div class="page">
-        <div class="btn-grid" id="g-soc"></div>
-        <div class="sec-label">⭐ My custom buttons</div>
-        <div class="btn-grid" id="r-3"></div>
-      </div>
+  <div id="pw">
+    <div id="pt">
+      <div class="page"><div class="grid" id="gf"></div><div class="sec">⭐ My custom buttons</div><div class="grid" id="r0"></div></div>
+      <div class="page"><div class="grid" id="gn"></div><div class="sec">⭐ My custom buttons</div><div class="grid" id="r1"></div></div>
+      <div class="page"><div class="grid" id="gp"></div><div class="sec">⭐ My custom buttons</div><div class="grid" id="r2"></div></div>
+      <div class="page"><div class="grid" id="gs"></div><div class="sec">⭐ My custom buttons</div><div class="grid" id="r3"></div></div>
     </div>
   </div>
 </div>
 
 <!-- SETTINGS PANEL -->
-<div class="panel-ov" id="main-panel" onclick="if(event.target===this)closePanel()">
+<div class="pov" id="panel" onclick="if(event.target===this)closePanel()">
   <div class="panel">
-    <div class="panel-handle"></div>
-
-    <div class="panel-sec">👤 Profiles</div>
-    <div class="p-row" id="profile-row"></div>
-
-    <div class="panel-sec">🔊 Voice & Volume</div>
-    <div class="setting-row">
-      <div><div class="setting-label">Volume</div><div class="setting-sub" id="vol-sub">85%</div></div>
-      <input type="range" class="vol-slider" min="0" max="100" value="85" oninput="setVol(this.value)">
+    <div class="ph"></div>
+    <div class="ps">👤 Profiles</div>
+    <div class="prow" id="profrow"></div>
+    <div class="ps">🔊 Voice & Volume</div>
+    <div class="sr">
+      <div><div class="sl">Voice</div><div class="ss" id="vsub">Female</div></div>
+      <button class="tog on" id="vtog" onclick="toggleVoicePanel(this)"></button>
     </div>
-    <div class="setting-row" style="border:none;flex-direction:column;align-items:flex-start;gap:6px">
-      <div class="setting-label">🎙️ Choose voice</div>
-      <div class="setting-sub">Pick the clearest voice for this child</div>
-      <select class="voice-select" id="voice-picker" onchange="selectVoice(this.value)">
-        <option value="">Loading voices...</option>
-      </select>
-      <button class="voice-preview-btn" onclick="previewVoice()">▶ Preview selected voice</button>
+    <div class="sr" style="border:none">
+      <div><div class="sl">Volume</div><div class="ss" id="volsub">85%</div></div>
+      <input type="range" class="vslide" min="0" max="100" value="85" oninput="setVol(this.value)">
     </div>
-    <div style="display:none">
-      <div id="voice-sub">Female</div>
-      <button class="toggle on" id="voice-toggle"></button>
+    <div class="ps">🔒 Carer Lock</div>
+    <div class="sr">
+      <div><div class="sl">Lock settings with PIN</div><div class="ss">Prevents child changing settings</div></div>
+      <button class="tog" id="ltog" onclick="toggleLock(this)"></button>
     </div>
-
-    <div class="panel-sec">🔒 Carer Lock</div>
-    <div class="setting-row">
-      <div><div class="setting-label">Lock settings with PIN</div><div class="setting-sub">Prevents child changing settings</div></div>
-      <button class="toggle" id="lock-toggle" onclick="toggleLock(this)"></button>
+    <div class="sr" style="border:none">
+      <div><div class="sl">📺 Kiosk mode</div><div class="ss">Fullscreen — PIN to exit</div></div>
+      <button class="tog" id="ktog" onclick="toggleKiosk(this)"></button>
     </div>
-    <div class="setting-row" style="border:none">
-      <div><div class="setting-label">📺 Kiosk mode</div><div class="setting-sub">Fullscreen lock — PIN to exit to home screen</div></div>
-      <button class="toggle" id="kiosk-toggle" onclick="toggleKiosk(this)"></button>
+    <div class="ps">⭐ Premium</div>
+    <div class="sr" style="border:none">
+      <div><div class="sl" id="pstat">🆓 Free plan</div><div class="ss">Tap to see plans & unlock</div></div>
+      <button onclick="showPlans()" style="border:none;background:#2D6A4F;color:#fff;padding:7px 12px;border-radius:9px;font-family:'Nunito',sans-serif;font-weight:900;font-size:.78rem;cursor:pointer">Plans</button>
     </div>
-
-    <div class="panel-sec">⭐ Premium</div>
-    <div class="setting-row" style="border:none">
-      <div><div class="setting-label" id="premium-status">Free plan</div><div class="setting-sub">Enter code to unlock custom buttons</div></div>
-      <button onclick="enterPremiumCode()" style="border:none;background:var(--green);color:#fff;padding:8px 14px;border-radius:10px;font-family:'Nunito',sans-serif;font-weight:900;font-size:.8rem;cursor:pointer;">Unlock</button>
-    </div>
-
-    <div style="font-size:.6rem;color:#ccc;text-align:center;margin-top:20px">Aidova by CHEWAID® · Talking Therapies · To Say It Your Way</div>
+    <div style="font-size:.58rem;color:#ddd;text-align:center;margin-top:18px">Aidova by CHEWAID® · Talking Therapies · To Say It Your Way</div>
   </div>
 </div>
 
-<!-- PIN OVERLAY -->
-<div class="pin-ov" id="pin-ov">
-  <div class="pin-box">
-    <div class="pin-title" id="pin-title">🔒 Carer PIN</div>
-    <div class="pin-sub"   id="pin-sub">Enter your 4-digit PIN</div>
-    <div class="pin-dots">
-      <div class="pin-dot" id="pd0"></div><div class="pin-dot" id="pd1"></div>
-      <div class="pin-dot" id="pd2"></div><div class="pin-dot" id="pd3"></div>
+<!-- PIN -->
+<div class="pinov" id="pinov">
+  <div class="pinbox">
+    <div class="pt" id="pintitle">🔒 Carer PIN</div>
+    <div class="psub" id="pinsub">Enter your 4-digit PIN</div>
+    <div class="pdots"><div class="pdot" id="d0"></div><div class="pdot" id="d1"></div><div class="pdot" id="d2"></div><div class="pdot" id="d3"></div></div>
+    <div class="ppad">
+      <button class="pk" onclick="pk('1')">1</button><button class="pk" onclick="pk('2')">2</button><button class="pk" onclick="pk('3')">3</button>
+      <button class="pk" onclick="pk('4')">4</button><button class="pk" onclick="pk('5')">5</button><button class="pk" onclick="pk('6')">6</button>
+      <button class="pk" onclick="pk('7')">7</button><button class="pk" onclick="pk('8')">8</button><button class="pk" onclick="pk('9')">9</button>
+      <button class="pk del" onclick="pdel()">⌫</button><button class="pk zer" onclick="pk('0')">0</button><button class="pk cnc" onclick="pcancel()">✕</button>
     </div>
-    <div class="pin-pad">
-      <button class="pin-key" onclick="pk('1')">1</button><button class="pin-key" onclick="pk('2')">2</button><button class="pin-key" onclick="pk('3')">3</button>
-      <button class="pin-key" onclick="pk('4')">4</button><button class="pin-key" onclick="pk('5')">5</button><button class="pin-key" onclick="pk('6')">6</button>
-      <button class="pin-key" onclick="pk('7')">7</button><button class="pin-key" onclick="pk('8')">8</button><button class="pin-key" onclick="pk('9')">9</button>
-      <button class="pin-key pin-del" onclick="pdel()">⌫</button>
-      <button class="pin-key pin-zero" onclick="pk('0')">0</button>
-      <button class="pin-key pin-cncl" onclick="pcancel()">✕</button>
-    </div>
-    <div class="pin-err" id="pin-err"></div>
+    <div class="perr" id="perr"></div>
   </div>
 </div>
 
 <!-- REC MODAL -->
-<div class="modal-ov" id="rec-modal">
-  <div class="modal">
-    <h2>⭐ Add a custom button</h2>
-    <div class="tab-row">
-      <button class="tab-choice active" id="tab-emoji-btn" onclick="switchRecTab('emoji')">😊 Emoji</button>
-      <button class="tab-choice"        id="tab-photo-btn" onclick="switchRecTab('photo')">📷 Photo</button>
+<div class="mov" id="recmod">
+  <div class="mbox">
+    <h2>⭐ Add custom button</h2>
+    <div class="tabrow">
+      <button class="tc on" id="teb" onclick="setTab('e')">😊 Emoji</button>
+      <button class="tc"    id="tpb" onclick="setTab('p')">📷 Photo</button>
     </div>
-    <input type="text" id="m-label" placeholder="Button label (e.g. MOM, DRINK)" autocomplete="off">
-    <div id="rec-tab-emoji">
-      <div id="emoji-preview">🎤</div>
-      <div id="emoji-status">Type a label above</div>
+    <input type="text" id="mlabel" placeholder="Button label (e.g. MOM, DRINK)" autocomplete="off">
+    <div id="etab">
+      <div id="eprev">🎤</div>
+      <div id="estat">Type a label to get an emoji</div>
     </div>
-    <div id="rec-tab-photo" style="display:none">
-      <img id="photo-preview" class="photo-preview" src="" alt="preview">
-      <div class="photo-upload-area">
-        <input type="file" id="photo-input" accept="image/*" onchange="handlePhoto(this)">
-        <div class="upload-hint"><span>📷</span>Tap to choose a photo</div>
-      </div>
+    <div id="ptab" style="display:none">
+      <img id="pprev" class="pprev" src="" alt="">
+      <div class="pup"><input type="file" id="pfile" accept="image/*" onchange="onPhoto(this)"><div class="ph2">📷 Tap to choose a photo</div></div>
     </div>
-    <div class="modal-btns">
-      <button class="btn-cancel" onclick="closeRecModal()">Cancel</button>
-      <button class="btn-save"   onclick="saveRec()">Save ✓</button>
+    <div class="mbts">
+      <button class="mcanc" onclick="closeRec()">Cancel</button>
+      <button class="msave" onclick="saveRec()">Save ✓</button>
     </div>
   </div>
 </div>
 
 <script>
-// ═══════════════════════════════════
+// ═══════════════════════════
 // DATA
-// ═══════════════════════════════════
-const BTNS = {
-  feel:[
-    {i:'😊',l:'HAPPY',  w:'happy'},   {i:'😢',l:'SAD',   w:'sad'},
-    {i:'😡',l:'ANGRY',  w:'angry'},   {i:'🤕',l:'HURT',  w:'hurting'},
-    {i:'😴',l:'SLEEPY', w:'sleepy'},  {i:'😩',l:'TIRED', w:'tired'},
-    {i:'😨',l:'SCARED', w:'scared'},  {i:'😤',l:'FRUSTRATED',w:'frustrated'},
-    {i:'🥰',l:'LOVED',  w:'loved'},
-  ],
-  need:[
-    {i:'🍽️',l:'HUNGRY',  w:'hungry'},    {i:'💧',l:'THIRSTY',w:'thirsty'},
-    {i:'🚽',l:'BATHROOM',w:'bathroom'},  {i:'🚿',l:'SHOWER', w:'shower'},
-    {i:'💊',l:'MEDICINE',w:'medicine'},  {i:'🤗',l:'HUG',    w:'a hug'},
-    {i:'🔊',l:'TOO LOUD',w:'too loud'},  {i:'🛌',l:'REST',   w:'rest'},
-    {i:'🍪',l:'SNACK',   w:'snack'},
-  ],
-  plac:[
-    {i:'🚪',l:'GO OUT',w:'go out'},   {i:'🏠',l:'HOME',  w:'home'},
-    {i:'🎮',l:'PLAY',  w:'play'},     {i:'📺',l:'TV',    w:'TV'},
-    {i:'🎵',l:'MUSIC', w:'music'},    {i:'📚',l:'BOOK',  w:'book'},
-    {i:'🌳',l:'PARK',  w:'park'},     {i:'🏫',l:'SCHOOL',w:'school'},
-    {i:'🖍️',l:'DRAW',  w:'draw'},
-  ],
-  soc:[
-    {i:'🙏',l:'HELP',    w:'help'},      {i:'✋',l:'WAIT',    w:'wait'},
-    {i:'🫶',l:'THANK YOU',w:'thank you'},{i:'🧘',l:'ME TIME', w:'me time'},
-    {i:'👋',l:'HELLO',   w:'hello'},     {i:'👍',l:'OKAY',    w:'okay'},
-    {i:'😞',l:'SORRY',   w:'sorry'},     {i:'🙌',l:'DONE',    w:'done'},
-    {i:'🔇',l:'QUIET',   w:'quiet'},
-  ],
+// ═══════════════════════════
+const DATA = {
+  f:[{i:'😊',l:'HAPPY',w:'happy'},{i:'😢',l:'SAD',w:'sad'},{i:'😡',l:'ANGRY',w:'angry'},
+     {i:'🤕',l:'HURT',w:'hurting'},{i:'😴',l:'SLEEPY',w:'sleepy'},{i:'😩',l:'TIRED',w:'tired'},
+     {i:'😨',l:'SCARED',w:'scared'},{i:'😤',l:'FRUSTRATED',w:'frustrated'},{i:'🥰',l:'LOVED',w:'loved'}],
+  n:[{i:'🍽️',l:'HUNGRY',w:'hungry'},{i:'💧',l:'THIRSTY',w:'thirsty'},{i:'🚽',l:'BATHROOM',w:'bathroom'},
+     {i:'🚿',l:'SHOWER',w:'shower'},{i:'💊',l:'MEDICINE',w:'medicine'},{i:'🤗',l:'HUG',w:'a hug'},
+     {i:'🔊',l:'TOO LOUD',w:'too loud'},{i:'🛌',l:'REST',w:'rest'},{i:'🍪',l:'SNACK',w:'snack'}],
+  p:[{i:'🚪',l:'GO OUT',w:'go out'},{i:'🏠',l:'HOME',w:'home'},{i:'🎮',l:'PLAY',w:'play'},
+     {i:'📺',l:'TV',w:'TV'},{i:'🎵',l:'MUSIC',w:'music'},{i:'📚',l:'BOOK',w:'book'},
+     {i:'🌳',l:'PARK',w:'park'},{i:'🏫',l:'SCHOOL',w:'school'},{i:'🖍️',l:'DRAW',w:'draw'}],
+  s:[{i:'🙏',l:'HELP',w:'help'},{i:'✋',l:'WAIT',w:'wait'},{i:'🫶',l:'THANK YOU',w:'thank you'},
+     {i:'🧘',l:'ME TIME',w:'me time'},{i:'👋',l:'HELLO',w:'hello'},{i:'👍',l:'OKAY',w:'okay'},
+     {i:'😞',l:'SORRY',w:'sorry'},{i:'🙌',l:'DONE',w:'done'},{i:'🔇',l:'QUIET',w:'quiet'}]
 };
 
-// ═══════════════════════════════════
-// STATE
-// ═══════════════════════════════════
-let volume=.85, useFemale=true, curPage=0;
-let recData   = JSON.parse(localStorage.getItem('aac_rec7')||'{}');
-let profiles  = JSON.parse(localStorage.getItem('aac_profiles')||'[{"name":"Child 1","av":"🧒"},{"name":"Child 2","av":"👧"}]');
-let activeP   = parseInt(localStorage.getItem('aac_activep')||'0');
-let locked    = localStorage.getItem('aac_locked')==='true';
-let pin       = localStorage.getItem('aac_pin')||'';
-let kioskMode = localStorage.getItem('aac_kiosk')==='true';
-let isPremium = localStorage.getItem('aac_premium')==='true';
-let pinBuf='', pinMode='', pinCb=null;
-let recPage=null, recSlot=null, recTab='emoji', photoDataUrl=null;
+const EM={mom:'👩',mum:'👩',mother:'👩',dad:'👨',father:'👨',baby:'👶',brother:'👦',sister:'👧',grandma:'👵',grandpa:'👴',friend:'🧑',teacher:'👩‍🏫',doctor:'👨‍⚕️',nurse:'👩‍⚕️',drink:'🥤',water:'💧',juice:'🧃',milk:'🥛',tea:'☕',coffee:'☕',food:'🍽️',snack:'🍪',cookie:'🍪',bread:'🍞',apple:'🍎',banana:'🍌',pizza:'🍕',cake:'🎂',chocolate:'🍫',sweets:'🍬',happy:'😊',sad:'😢',angry:'😡',scared:'😨',tired:'😩',sleepy:'😴',hurt:'🤕',sick:'🤒',calm:'😌',excited:'🤩',loved:'🥰',cat:'🐱',dog:'🐶',rabbit:'🐰',fish:'🐟',bird:'🐦',home:'🏠',school:'🏫',park:'🌳',hospital:'🏥',play:'🎮',tv:'📺',music:'🎵',book:'📚',draw:'🖍️',run:'🏃',swim:'🏊',dance:'💃',phone:'📱',car:'🚗',ball:'⚽',toy:'🧸',sun:'☀️',rain:'🌧️',snow:'❄️',moon:'🌙',star:'⭐',flower:'🌸',medicine:'💊',help:'🙏',wait:'✋',hello:'👋',sorry:'😞',thanks:'🫶',hot:'🔥',cold:'🥶',loud:'🔊',quiet:'🔇',toilet:'🚽',done:'✅'};
+function emoji(raw){
+  const w=raw.toLowerCase().replace(/[^a-z]/g,'');
+  if(EM[w])return EM[w];
+  for(const[k,v]of Object.entries(EM))if(w.includes(k)||k.includes(w))return v;
+  return '🎤';
+}
 
-// ═══════════════════════════════════
+// ═══════════════════════════
+// STATE
+// ═══════════════════════════
+let vol=.85, female=true, curTab=0;
+let locked   = localStorage.getItem('aidova_locked')==='true';
+let pin      = localStorage.getItem('aidova_pin')||'';
+let kiosk    = localStorage.getItem('aidova_kiosk')==='true';
+let premium  = localStorage.getItem('aidova_premium')==='true';
+let premplus = localStorage.getItem('aidova_premplus')==='true';
+let profiles = JSON.parse(localStorage.getItem('aidova_profiles')||'[{"n":"Child 1","a":"🧒"},{"n":"Child 2","a":"👧"}]');
+let activeP  = parseInt(localStorage.getItem('aidova_activep')||'0');
+let recData  = JSON.parse(localStorage.getItem('aidova_rec')||'{}');
+let pinBuf='', pinMode='', pinCb=null;
+let recPg=null, recSl=null, recTab='e', photoUrl=null;
+
+function slots(){ return premplus?10:premium?3:0; }
+
+// ═══════════════════════════
 // RENDER
-// ═══════════════════════════════════
-function mkCirc(icon, label, word, cat, clickFn) {
-  const el = document.createElement('div');
-  el.className = `circ cat-${cat}`;
-  el.innerHTML = `<span class="circ-icon">${icon}</span><span class="circ-label">${label}</span>`;
-  el.addEventListener('click', e => { animCirc(el,e); clickFn && clickFn(e); });
+// ═══════════════════════════
+function mkCirc(icon,label,word,cat,fn){
+  const el=document.createElement('div');
+  el.className=`circ ${cat}`;
+  el.innerHTML=`<span class="ci">${icon}</span><span class="cl">${label}</span>`;
+  el.addEventListener('click',e=>{anim(el,e);fn&&fn();});
   return el;
 }
-
-function renderGrid(id, data, cat) {
-  const g = document.getElementById(id); if(!g) return;
-  g.innerHTML = '';
-  data.forEach(d => g.appendChild(mkCirc(d.i, d.l, d.w, cat, () => speakWord(d.w))));
+function renderGrid(id,data,cat){
+  const g=document.getElementById(id);g.innerHTML='';
+  data.forEach(d=>g.appendChild(mkCirc(d.i,d.l,d.w,cat,()=>say(d.w))));
 }
-
-function renderRec(pi) {
-  const g = document.getElementById(`r-${pi}`); if(!g) return;
-  g.innerHTML = '';
-  for (let s=0; s<3; s++) {
-    const key=`${activeP}-${pi}-${s}`, sv=recData[key];
-    const el = document.createElement('div');
-    if (!isPremium) {
-      el.className = 'circ cat-premium';
-      el.innerHTML = '<span class="circ-icon" style="font-size:1.4rem">⭐</span><span class="circ-label">PREMIUM</span>';
-      el.addEventListener('click', enterPremiumCode);
-    } else if (sv) {
-      el.className = 'circ cat-rec';
-      if (sv.isPhoto && sv.icon && sv.icon.startsWith('data:')) {
-        el.innerHTML = `<img src="${sv.icon}" style="width:60%;height:60%;object-fit:cover;border-radius:50%;margin-bottom:3px"><span class="circ-label">${sv.label}</span>`;
+function renderRec(pi){
+  const g=document.getElementById('r'+pi);g.innerHTML='';
+  const n=slots();
+  if(n===0){
+    for(let s=0;s<3;s++){
+      const el=document.createElement('div');
+      el.className='circ c-prem';
+      el.innerHTML='<span class="ci" style="font-size:1.3rem">⭐</span><span class="cl">PREMIUM</span>';
+      el.addEventListener('click',showPlans);
+      g.appendChild(el);
+    }
+    return;
+  }
+  for(let s=0;s<n;s++){
+    const key=`${activeP}-${pi}-${s}`,sv=recData[key];
+    const el=document.createElement('div');
+    if(sv){
+      el.className='circ c-rec';
+      if(sv.isPhoto&&sv.icon&&sv.icon.startsWith('data:')){
+        el.innerHTML=`<img src="${sv.icon}" style="width:58%;height:58%;object-fit:cover;border-radius:50%;margin-bottom:3px"><span class="cl">${sv.label}</span>`;
       } else {
-        el.innerHTML = `<span class="circ-icon">${sv.icon}</span><span class="circ-label">${sv.label}</span>`;
+        el.innerHTML=`<span class="ci">${sv.icon}</span><span class="cl">${sv.label}</span>`;
       }
-      el.addEventListener('click', e => { animCirc(el,e); speakWord(sv.word); });
+      el.addEventListener('click',e=>{anim(el,e);say(sv.word);});
     } else {
-      el.className = 'circ cat-rec-empty';
-      if (locked) {
-        el.innerHTML = '<span class="circ-icon" style="font-size:1.2rem;color:#ccc">🔒</span><span class="circ-label" style="color:#ccc">LOCKED</span>';
-        el.addEventListener('click', () => requirePin(() => openRecModal(pi,s)));
-      } else {
-        el.innerHTML = '<span class="circ-icon" style="font-size:1.3rem;color:#ccc">+</span><span class="circ-label" style="color:#ccc">ADD</span>';
-        el.addEventListener('click', () => openRecModal(pi,s));
-      }
+      el.className='circ c-empty';
+      const isLocked=locked;
+      el.innerHTML=isLocked
+        ?'<span class="ci" style="font-size:1.1rem;color:#ccc">🔒</span><span class="cl" style="color:#ccc">LOCKED</span>'
+        :'<span class="ci" style="font-size:1.2rem;color:#ccc">+</span><span class="cl" style="color:#ccc">ADD</span>';
+      el.addEventListener('click',()=>isLocked?requirePin(()=>openRec(pi,s)):openRec(pi,s));
     }
     g.appendChild(el);
   }
 }
-
-function renderAll() {
-  renderGrid('g-feel', BTNS.feel, 'feel');
-  renderGrid('g-need', BTNS.need, 'need');
-  renderGrid('g-plac', BTNS.plac, 'plac');
-  renderGrid('g-soc',  BTNS.soc,  'soc');
+function renderAll(){
+  renderGrid('gf',DATA.f,'c-feel');
+  renderGrid('gn',DATA.n,'c-need');
+  renderGrid('gp',DATA.p,'c-plac');
+  renderGrid('gs',DATA.s,'c-soc');
   [0,1,2,3].forEach(renderRec);
-  sizeAll();
+  resize();
 }
-
-function renderProfiles() {
-  const row = document.getElementById('profile-row'); row.innerHTML='';
-  profiles.forEach((p,i) => {
-    const el = document.createElement('div');
-    el.className = `p-card${i===activeP?' active':''}`;
-    el.innerHTML = `<span class="pav">${p.av}</span><span>${p.name}</span>`;
-    el.onclick = () => { activeP=i; localStorage.setItem('aac_activep',i); renderAll(); renderProfiles(); };
+function renderProfiles(){
+  const row=document.getElementById('profrow');row.innerHTML='';
+  profiles.forEach((p,i)=>{
+    const el=document.createElement('div');
+    el.className='pc'+(i===activeP?' on':'');
+    el.innerHTML=`<span class="pav">${p.a}</span><span>${p.n}</span>`;
+    el.onclick=()=>{activeP=i;localStorage.setItem('aidova_activep',i);renderAll();renderProfiles();};
     row.appendChild(el);
   });
-  if (profiles.length<3) {
-    const add = document.createElement('div');
-    add.className='p-card p-add';
-    add.innerHTML='<span class="pav">➕</span><span>Add</span>';
-    add.onclick=addProfile;
-    row.appendChild(add);
+  if(profiles.length<3){
+    const a=document.createElement('div');
+    a.className='pc padd';
+    a.innerHTML='<span class="pav">➕</span><span>Add</span>';
+    a.onclick=addProfile;
+    row.appendChild(a);
   }
 }
-
-function addProfile() {
-  const name=prompt('Child name:'); if(!name) return;
+function addProfile(){
+  const n=prompt('Child name:');if(!n)return;
   const avs=['👦','👧','🧒','🧑','👶'];
-  profiles.push({name,av:avs[profiles.length%avs.length]});
-  localStorage.setItem('aac_profiles',JSON.stringify(profiles));
+  profiles.push({n,a:avs[profiles.length%avs.length]});
+  localStorage.setItem('aidova_profiles',JSON.stringify(profiles));
   renderProfiles();
 }
 
-// ═══════════════════════════════════
-// DYNAMIC SIZING — fits everything
-// ═══════════════════════════════════
-function sizeAll() {
-  const W     = window.innerWidth;
-  const H     = window.innerHeight;
-  const topH  = (document.getElementById('fixed-top')||{offsetHeight:170}).offsetHeight;
-  const tabH  = (document.getElementById('tabs')||{offsetHeight:52}).offsetHeight;
-  const gap   = 10;
-  const secH  = 26;
-  const pad   = 16;
-
-  const availH = H - topH - tabH - pad;
-  const availW = W - pad;
-
-  // 3 cols, 4 rows — fill ALL available space
-  const byW = Math.floor((availW - 2 * gap) / 3);
-  const byH = Math.floor((availH - secH - 3 * gap) / 4);
-  const sz  = Math.min(byW, byH);
-
-  if (sz < 40) return;
-
-  // Apply size to every circle
-  document.querySelectorAll('.circ').forEach(c => {
-    c.style.width  = sz + 'px';
-    c.style.height = sz + 'px';
-  });
-
-  // Set grid to use exact pixel columns so it fills the width perfectly
-  const totalW   = sz * 3 + gap * 2;
-  const sidePad  = Math.floor((availW - totalW) / 2);
-  document.querySelectorAll('.btn-grid').forEach(g => {
-    g.style.setProperty('grid-template-columns',
-      `repeat(3, ${sz}px)`, 'important');
-    g.style.gap     = gap + 'px';
-    g.style.padding = `0 ${sidePad}px`;
-  });
-  // Also set page padding to match
-  document.querySelectorAll('.page').forEach(p => {
-    p.style.padding = `${pad/2}px 0`;
-    p.style.gap     = (gap) + 'px';
-  });
-
-  // Scale icon and label
-  document.querySelectorAll('.circ-icon').forEach(e =>
-    e.style.fontSize = Math.round(sz * 0.40) + 'px');
-  document.querySelectorAll('.circ-label').forEach(e =>
-    e.style.fontSize = Math.max(10, Math.round(sz * 0.12)) + 'px');
+// ═══════════════════════════
+// RESIZE — fills screen
+// ═══════════════════════════
+function resize(){
+  const W=window.innerWidth, H=window.innerHeight;
+  const topH=document.getElementById('top')?.offsetHeight||150;
+  const tabH=document.getElementById('tabs')?.offsetHeight||50;
+  const kioskH=document.getElementById('kiosk-bar')?.offsetHeight||0;
+  const avH=H-topH-tabH-kioskH-12;
+  const avW=W-16;
+  const gap=8, secH=22, rows=4;
+  const byW=Math.floor((avW-2*gap)/3);
+  const byH=Math.floor((avH-secH-3*gap)/rows);
+  const sz=Math.min(byW,byH);
+  if(sz<30)return;
+  document.querySelectorAll('.circ').forEach(c=>{c.style.width=sz+'px';c.style.height=sz+'px';});
+  document.querySelectorAll('.grid').forEach(g=>{g.style.gap=gap+'px';});
+  document.querySelectorAll('.ci').forEach(e=>e.style.fontSize=Math.round(sz*.40)+'px');
+  document.querySelectorAll('.cl').forEach(e=>e.style.fontSize=Math.max(9,Math.round(sz*.12))+'px');
 }
-window.addEventListener('load',   sizeAll);
-window.addEventListener('resize', sizeAll);
-document.addEventListener('DOMContentLoaded', sizeAll);
-setTimeout(sizeAll, 300);
-setTimeout(sizeAll, 800);
-setTimeout(sizeAll, 2500);
+window.addEventListener('load',resize);
+window.addEventListener('resize',resize);
+setTimeout(resize,300);
+setTimeout(resize,800);
+setTimeout(resize,2600);
 
-// ═══════════════════════════════════
-// SPEECH — with user voice selection
-// ═══════════════════════════════════
-let selectedVoiceName = localStorage.getItem('aac_voice') || '';
-
-function loadVoicePicker() {
-  const picker = document.getElementById('voice-picker');
-  if (!picker) return;
-  const vs = window.speechSynthesis.getVoices();
-  // Filter to English voices only, sorted: local first, then remote
-  const enVoices = vs.filter(v => v.lang.startsWith('en'))
-    .sort((a,b) => {
-      if (a.localService && !b.localService) return -1;
-      if (!a.localService && b.localService) return 1;
-      return a.name.localeCompare(b.name);
-    });
-  picker.innerHTML = '';
-  // Add a default option
-  const def = document.createElement('option');
-  def.value = ''; def.textContent = '— Auto select best voice —';
-  picker.appendChild(def);
-  enVoices.forEach(v => {
-    const opt = document.createElement('option');
-    opt.value = v.name;
-    // Show if local (clearer) or remote
-    const quality = v.localService ? '⭐ ' : '';
-    opt.textContent = `${quality}${v.name} (${v.lang})`;
-    if (v.name === selectedVoiceName) opt.selected = true;
-    picker.appendChild(opt);
-  });
-  if (!selectedVoiceName && enVoices.length > 0) {
-    // Auto-pick best: prefer local English voices with gentle names
-    const best = enVoices.find(v=>v.localService&&/samantha|karen|daniel|alex|moira|victoria|fiona|rishi/i.test(v.name))
-      || enVoices.find(v=>v.localService)
-      || enVoices[0];
-    if (best) {
-      selectedVoiceName = best.name;
-      picker.value = best.name;
-      localStorage.setItem('aac_voice', best.name);
-    }
+// ═══════════════════════════
+// SPEECH
+// ═══════════════════════════
+function getVoice(){
+  const vs=window.speechSynthesis.getVoices();
+  if(female){
+    return vs.find(v=>/samantha|karen|moira|victoria|zira|hazel|female/i.test(v.name))
+      ||vs.find(v=>v.lang.startsWith('en')&&v.localService)||vs[0];
   }
+  return vs.find(v=>/daniel|alex|fred|tom|david|male/i.test(v.name))
+    ||vs.find(v=>v.lang.startsWith('en')&&v.localService)||vs[0];
 }
-
-function selectVoice(name) {
-  selectedVoiceName = name;
-  localStorage.setItem('aac_voice', name);
-}
-
-function previewVoice() {
-  speakWord('Hello, I am Aidova. I will help you say what you need.');
-}
-
-function getVoice() {
-  const vs = window.speechSynthesis.getVoices();
-  if (selectedVoiceName) {
-    const found = vs.find(v => v.name === selectedVoiceName);
-    if (found) return found;
-  }
-  // Fallback: best local English voice
-  const enLocal = vs.filter(v => v.lang.startsWith('en') && v.localService);
-  return enLocal[0] || vs.find(v => v.lang.startsWith('en')) || vs[0];
-}
-
-function speakWord(w) {
+function say(w){
   window.speechSynthesis.cancel();
-  const trySpeak = () => {
-    const u = new SpeechSynthesisUtterance(w);
-    u.lang = 'en-GB';
-    u.rate   = 0.82;   // slightly slower — clearer for children
-    u.pitch  = 1.0;    // neutral pitch — less robotic
-    u.volume = volume;
-    const v = getVoice();
-    if (v) { u.voice = v; u.lang = v.lang; }
+  const go=()=>{
+    const u=new SpeechSynthesisUtterance(w);
+    u.lang='en-GB';u.rate=.84;u.pitch=female?1.12:.88;u.volume=vol;
+    const v=getVoice();if(v)u.voice=v;
     window.speechSynthesis.speak(u);
   };
-  if (window.speechSynthesis.getVoices().length === 0) {
-    window.speechSynthesis.onvoiceschanged = () => {
-      window.speechSynthesis.onvoiceschanged = null;
-      loadVoicePicker();
-      trySpeak();
-    };
-  } else trySpeak();
+  window.speechSynthesis.getVoices().length?go():(window.speechSynthesis.onvoiceschanged=()=>{window.speechSynthesis.onvoiceschanged=null;go();});
 }
 
-// ═══════════════════════════════════
-// BIG BUTTONS
-// ═══════════════════════════════════
-function pressBig(word, btn) {
-  speakWord(word);
-  document.querySelectorAll('.big-btn').forEach(b=>b.style.outline='');
-  btn.style.outline = '3px solid #333';
-  setTimeout(()=>btn.style.outline='', 800);
+// ═══════════════════════════
+// CONTROLS — each does ONE thing only
+// ═══════════════════════════
+function volDown(){ vol=Math.max(0,vol-.1); document.getElementById('volsub').textContent=Math.round(vol*100)+'%'; }
+function volUp()  { vol=Math.min(1,vol+.1); document.getElementById('volsub').textContent=Math.round(vol*100)+'%'; }
+function setVol(v){ vol=v/100; document.getElementById('volsub').textContent=v+'%'; }
+
+function toggleVoice(){
+  female=!female;
+  document.getElementById('c-voice').textContent=female?'👩 Female':'👨 Male';
+  document.getElementById('vsub').textContent=female?'Female':'Male';
+  document.getElementById('vtog').classList.toggle('on',female);
+  say(female?'Female voice':'Male voice');
+}
+function toggleVoicePanel(btn){
+  female=!female;
+  btn.classList.toggle('on',female);
+  document.getElementById('c-voice').textContent=female?'👩 Female':'👨 Male';
+  document.getElementById('vsub').textContent=female?'Female':'Male';
 }
 
-// ═══════════════════════════════════
-// CONTROLS
-// ═══════════════════════════════════
-function changeVol(d) {
-  volume = Math.min(1, Math.max(0, volume+d/100));
-  document.getElementById('vol-sub').textContent = Math.round(volume*100)+'%';
-}
-function setVol(v) { volume=v/100; document.getElementById('vol-sub').textContent=v+'%'; }
-function toggleGender() {
-  // Open panel to choose voice instead
-  openPanel();
-}
-function toggleGenderPanel(btn) {
-  // kept for compatibility
-}
-
-// ═══════════════════════════════════
-// PAGE NAV + SWIPE
-// ═══════════════════════════════════
-function goPage(idx, tabEl) {
-  curPage=idx;
-  document.getElementById('pages-track').style.transform=`translateX(-${idx*100}vw)`;
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  (tabEl||document.querySelectorAll('.tab')[idx]).classList.add('active');
+// ═══════════════════════════
+// TABS + SWIPE
+// ═══════════════════════════
+function goTab(i,el){
+  curTab=i;
+  document.getElementById('pt').style.transform=`translateX(-${i*100}vw)`;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  (el||document.querySelectorAll('.tab')[i]).classList.add('on');
 }
 let tx0=0;
-document.getElementById('pages-wrap').addEventListener('touchstart',e=>{tx0=e.touches[0].clientX;},{passive:true});
-document.getElementById('pages-wrap').addEventListener('touchend',e=>{
+document.getElementById('pw').addEventListener('touchstart',e=>{tx0=e.touches[0].clientX;},{passive:true});
+document.getElementById('pw').addEventListener('touchend',e=>{
   const dx=e.changedTouches[0].clientX-tx0;
-  if(Math.abs(dx)>50) goPage(dx<0?Math.min(curPage+1,3):Math.max(curPage-1,0),null);
+  if(Math.abs(dx)>50)goTab(dx<0?Math.min(curTab+1,3):Math.max(curTab-1,0),null);
 },{passive:true});
 
-// ═══════════════════════════════════
+// ═══════════════════════════
 // PANEL
-// ═══════════════════════════════════
-function openPanel() {
-  if(locked) { requirePin(()=>{ renderProfiles(); loadVoicePicker(); document.getElementById('main-panel').classList.add('open'); }); return; }
+// ═══════════════════════════
+function openPanel(){
+  if(locked){requirePin(()=>{renderProfiles();document.getElementById('panel').classList.add('open');});return;}
   renderProfiles();
-  loadVoicePicker();
-  document.getElementById('main-panel').classList.add('open');
+  document.getElementById('panel').classList.add('open');
 }
-function closePanel() { document.getElementById('main-panel').classList.remove('open'); }
+function closePanel(){ document.getElementById('panel').classList.remove('open'); }
 
-// ═══════════════════════════════════
-// CARER LOCK + PIN
-// ═══════════════════════════════════
-function toggleLock(btn) {
-  if (!locked) {
-    pinMode='set'; pinBuf='';
-    document.getElementById('pin-title').textContent='🔒 Set Carer PIN';
-    document.getElementById('pin-sub').textContent='Choose a 4-digit PIN';
-    document.getElementById('pin-err').textContent='';
-    updDots(); document.getElementById('pin-ov').classList.add('open');
-    pinCb=p=>{ pin=p; locked=true; localStorage.setItem('aac_pin',p); localStorage.setItem('aac_locked','true'); btn.classList.add('on'); [0,1,2,3].forEach(renderRec); document.getElementById('c-lang')&&(document.getElementById('c-lang').textContent='🔒'); };
+// ═══════════════════════════
+// CARER LOCK
+// ═══════════════════════════
+function toggleLock(btn){
+  if(!locked){
+    pinMode='set';pinBuf='';
+    document.getElementById('pintitle').textContent='🔒 Set Carer PIN';
+    document.getElementById('pinsub').textContent='Choose a 4-digit PIN';
+    document.getElementById('perr').textContent='';
+    updDots();document.getElementById('pinov').classList.add('open');
+    pinCb=p=>{pin=p;locked=true;localStorage.setItem('aidova_locked','true');localStorage.setItem('aidova_pin',p);btn.classList.add('on');[0,1,2,3].forEach(renderRec);};
   } else {
-    requirePin(()=>{ locked=false; localStorage.setItem('aac_locked','false'); btn.classList.remove('on'); [0,1,2,3].forEach(renderRec); });
+    requirePin(()=>{locked=false;localStorage.setItem('aidova_locked','false');btn.classList.remove('on');[0,1,2,3].forEach(renderRec);});
   }
 }
-function requirePin(cb) {
-  pinMode='verify'; pinBuf='';
-  document.getElementById('pin-title').textContent='🔒 Enter Carer PIN';
-  document.getElementById('pin-sub').textContent='Enter your 4-digit PIN';
-  document.getElementById('pin-err').textContent='';
-  updDots(); document.getElementById('pin-ov').classList.add('open');
+function requirePin(cb){
+  pinMode='verify';pinBuf='';
+  document.getElementById('pintitle').textContent='🔒 Carer PIN';
+  document.getElementById('pinsub').textContent='Enter your 4-digit PIN';
+  document.getElementById('perr').textContent='';
+  updDots();document.getElementById('pinov').classList.add('open');
   pinCb=cb;
 }
-function pk(k) {
-  if(pinBuf.length>=4) return;
-  pinBuf+=k; updDots();
-  if(pinBuf.length===4) {
+function pk(k){
+  if(pinBuf.length>=4)return;
+  pinBuf+=k;updDots();
+  if(pinBuf.length===4){
     setTimeout(()=>{
-      if(pinMode==='set') { document.getElementById('pin-ov').classList.remove('open'); if(pinCb) pinCb(pinBuf); }
-      else if(pinBuf===pin) { document.getElementById('pin-ov').classList.remove('open'); if(pinCb) pinCb(); }
-      else { document.getElementById('pin-err').textContent='Incorrect PIN. Try again.'; pinBuf=''; updDots(); }
+      if(pinMode==='set'){document.getElementById('pinov').classList.remove('open');if(pinCb)pinCb(pinBuf);}
+      else if(pinBuf===pin){document.getElementById('pinov').classList.remove('open');if(pinCb)pinCb();}
+      else{document.getElementById('perr').textContent='Incorrect PIN. Try again.';pinBuf='';updDots();}
     },300);
   }
 }
-function pdel()   { pinBuf=pinBuf.slice(0,-1); updDots(); }
-function pcancel(){ document.getElementById('pin-ov').classList.remove('open'); pinBuf=''; }
-function updDots(){ for(let i=0;i<4;i++) document.getElementById(`pd${i}`).classList.toggle('filled',i<pinBuf.length); }
+function pdel(){pinBuf=pinBuf.slice(0,-1);updDots();}
+function pcancel(){document.getElementById('pinov').classList.remove('open');pinBuf='';}
+function updDots(){for(let i=0;i<4;i++)document.getElementById('d'+i).classList.toggle('f',i<pinBuf.length);}
 
-// ═══════════════════════════════════
-// KIOSK MODE
-// ═══════════════════════════════════
-function toggleKiosk(btn) {
-  if (!kioskMode) {
-    kioskMode=true; localStorage.setItem('aac_kiosk','true'); btn.classList.add('on'); enableKiosk();
+// ═══════════════════════════
+// KIOSK
+// ═══════════════════════════
+function toggleKiosk(btn){
+  if(!kiosk){
+    kiosk=true;localStorage.setItem('aidova_kiosk','true');btn.classList.add('on');enableKiosk();
   } else {
-    requirePin(()=>{ kioskMode=false; localStorage.setItem('aac_kiosk','false'); btn.classList.remove('on'); disableKiosk(); });
+    requirePin(()=>{kiosk=false;localStorage.setItem('aidova_kiosk','false');btn.classList.remove('on');disableKiosk();});
   }
 }
-function enableKiosk() {
-  document.body.classList.add('kiosk-mode');
+function enableKiosk(){
+  document.body.classList.add('kiosk');
   const el=document.documentElement;
-  if(el.requestFullscreen) el.requestFullscreen().catch(()=>{});
-  else if(el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+  try{el.requestFullscreen?el.requestFullscreen():el.webkitRequestFullscreen&&el.webkitRequestFullscreen();}catch(e){}
   history.pushState(null,'',location.href);
-  window.onpopstate=()=>{ if(kioskMode) history.pushState(null,'',location.href); };
+  window.onpopstate=()=>{if(kiosk)history.pushState(null,'',location.href);};
   closePanel();
 }
-function disableKiosk() {
-  document.body.classList.remove('kiosk-mode');
-  if(document.exitFullscreen) document.exitFullscreen().catch(()=>{});
+function disableKiosk(){
+  document.body.classList.remove('kiosk');
+  try{document.exitFullscreen?document.exitFullscreen():document.webkitExitFullscreen&&document.webkitExitFullscreen();}catch(e){}
   window.onpopstate=null;
 }
 
-// ═══════════════════════════════════
-// PREMIUM / FREEMIUM
-// ═══════════════════════════════════
-function enterPremiumCode() {
-  const code=prompt('🌟 Enter your Aidova Premium code:\n\nPurchase at aidovaapp@gmail.com');
-  if(!code) return;
-  if(code.trim().toUpperCase()==='AIDOVA2025'||code.trim().toUpperCase()==='CHEWAID') {
-    isPremium=true; localStorage.setItem('aac_premium','true');
-    document.getElementById('premium-status').textContent='✅ Premium unlocked!';
-    renderAll(); alert('🎉 Premium unlocked! Custom buttons are now active.');
-  } else { alert('Invalid code. Purchase at aidovaapp@gmail.com'); }
+// ═══════════════════════════
+// PREMIUM
+// ═══════════════════════════
+function showPlans(){
+  const msg=`⭐ AIDOVA PLANS\n\n🆓 FREE — Always free\n• All 36 built-in buttons\n• Male/Female voice\n• 2 profiles\n\n⭐ PREMIUM — £3.99/month or £29.99/year\n• 3 custom buttons per category\n• Photo upload\n• Unlimited profiles\n• Carer lock & Kiosk mode\n\n🌟 PREMIUM PLUS — £7.99/month or £59.99/year\n• 10 custom buttons per category\n• Everything in Premium\n\nBuy at: aidovaapp@gmail.com\n\nHave a code? Tap OK.`;
+  if(confirm(msg))enterCode();
 }
-
-// ═══════════════════════════════════
-// ANIMATIONS
-// ═══════════════════════════════════
-function animCirc(el,e) {
-  const r=el.getBoundingClientRect();
-  const rip=document.createElement('div'); rip.className='ripple';
-  const sz=Math.max(r.width,r.height);
-  rip.style.cssText=`width:${sz}px;height:${sz}px;left:${(e.clientX||r.left+sz/2)-r.left-sz/2}px;top:${(e.clientY||r.top+sz/2)-r.top-sz/2}px`;
-  el.appendChild(rip); setTimeout(()=>rip.remove(),500);
-  el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop');
-  setTimeout(()=>el.classList.remove('pop'),380);
-}
-function confetti() {
-  const cols=['#FF6B6B','#4CAF50','#FF9800','#2196F3','#9C27B0','#FFD700'];
-  for(let i=0;i<18;i++){
-    const c=document.createElement('div'); c.className='conf';
-    c.style.cssText=`left:${15+Math.random()*70}vw;top:35%;background:${cols[i%cols.length]};animation-delay:${Math.random()*.2}s;`;
-    document.body.appendChild(c); setTimeout(()=>c.remove(),1400);
+function enterCode(){
+  const c=(prompt('Enter your code:')||'').trim().toUpperCase();
+  if(!c)return;
+  if(c==='AIDOVAPLUS2025'||c==='CHEWAIDPLUS'){
+    premplus=premium=true;
+    localStorage.setItem('aidova_premplus','true');localStorage.setItem('aidova_premium','true');
+    document.getElementById('pstat').textContent='🌟 Premium Plus';
+    renderAll();alert('🎉 Premium Plus unlocked! 10 custom slots per category.');
+  } else if(c==='AIDOVA2025'||c==='CHEWAID'){
+    premium=true;localStorage.setItem('aidova_premium','true');
+    document.getElementById('pstat').textContent='⭐ Premium';
+    renderAll();alert('🎉 Premium unlocked! 3 custom slots per category.');
+  } else {
+    alert('Invalid code.\n\nBuy at: aidovaapp@gmail.com');
   }
 }
 
-// ═══════════════════════════════════
-// EMOJI LOOKUP
-// ═══════════════════════════════════
-const EM={mom:'👩',mother:'👩',mum:'👩',dad:'👨',father:'👨',baby:'👶',brother:'👦',sister:'👧',grandma:'👵',grandpa:'👴',friend:'🧑',teacher:'👩‍🏫',doctor:'👨‍⚕️',nurse:'👩‍⚕️',drink:'🥤',water:'💧',juice:'🧃',milk:'🥛',tea:'☕',coffee:'☕',food:'🍽️',snack:'🍪',cookie:'🍪',bread:'🍞',apple:'🍎',banana:'🍌',pizza:'🍕',cake:'🎂',chocolate:'🍫',sweets:'🍬',happy:'😊',sad:'😢',angry:'😡',scared:'😨',tired:'😩',sleepy:'😴',hurt:'🤕',sick:'🤒',calm:'😌',excited:'🤩',loved:'🥰',cat:'🐱',dog:'🐶',rabbit:'🐰',fish:'🐟',bird:'🐦',home:'🏠',school:'🏫',park:'🌳',hospital:'🏥',play:'🎮',tv:'📺',music:'🎵',book:'📚',draw:'🖍️',run:'🏃',swim:'🏊',dance:'💃',sleep:'😴',bath:'🛁',shower:'🚿',phone:'📱',car:'🚗',ball:'⚽',toy:'🧸',sun:'☀️',rain:'🌧️',snow:'❄️',moon:'🌙',star:'⭐',flower:'🌸',medicine:'💊',help:'🙏',wait:'✋',hello:'👋',sorry:'😞',thankyou:'🫶',hot:'🔥',cold:'🥶',loud:'🔊',quiet:'🔇',toilet:'🚽',done:'✅'};
-function findEmoji(raw){
-  const w=raw.toLowerCase().trim().replace(/[^a-z]/g,'');
-  if(EM[w]) return EM[w];
-  for(const[k,e]of Object.entries(EM)) if(w.includes(k)||k.includes(w)) return e;
-  return '🎤';
+// ═══════════════════════════
+// ANIMATIONS
+// ═══════════════════════════
+function anim(el,e){
+  const r=el.getBoundingClientRect();
+  const rp=document.createElement('div');rp.className='ripple';
+  const sz=Math.max(r.width,r.height);
+  rp.style.cssText=`width:${sz}px;height:${sz}px;left:${(e.clientX||r.left+sz/2)-r.left-sz/2}px;top:${(e.clientY||r.top+sz/2)-r.top-sz/2}px`;
+  el.appendChild(rp);setTimeout(()=>rp.remove(),500);
+  el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop');setTimeout(()=>el.classList.remove('pop'),380);
+}
+function confetti(){
+  const cols=['#FF6B6B','#4CAF50','#FF9800','#2196F3','#9C27B0','#FFD700'];
+  for(let i=0;i<16;i++){
+    const c=document.createElement('div');c.className='conf';
+    c.style.cssText=`left:${15+Math.random()*70}vw;top:35%;background:${cols[i%cols.length]};animation-delay:${Math.random()*.2}s`;
+    document.body.appendChild(c);setTimeout(()=>c.remove(),1400);
+  }
 }
 
-// ═══════════════════════════════════
+// ═══════════════════════════
 // REC MODAL
-// ═══════════════════════════════════
-function switchRecTab(tab) {
-  recTab=tab;
-  document.getElementById('rec-tab-emoji').style.display=tab==='emoji'?'block':'none';
-  document.getElementById('rec-tab-photo').style.display=tab==='photo'?'block':'none';
-  document.getElementById('tab-emoji-btn').classList.toggle('active',tab==='emoji');
-  document.getElementById('tab-photo-btn').classList.toggle('active',tab==='photo');
+// ═══════════════════════════
+function setTab(t){
+  recTab=t;
+  document.getElementById('etab').style.display=t==='e'?'block':'none';
+  document.getElementById('ptab').style.display=t==='p'?'block':'none';
+  document.getElementById('teb').classList.toggle('on',t==='e');
+  document.getElementById('tpb').classList.toggle('on',t==='p');
 }
-function handlePhoto(input) {
-  const file=input.files[0]; if(!file) return;
-  const reader=new FileReader();
-  reader.onload=e=>{ photoDataUrl=e.target.result; const prev=document.getElementById('photo-preview'); prev.src=photoDataUrl; prev.classList.add('show'); document.querySelector('.upload-hint').textContent='✅ Photo selected!'; };
-  reader.readAsDataURL(file);
+function onPhoto(inp){
+  const f=inp.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=e=>{photoUrl=e.target.result;const pv=document.getElementById('pprev');pv.src=photoUrl;pv.classList.add('show');document.querySelector('.ph2').textContent='✅ Photo ready';};
+  r.readAsDataURL(f);
 }
-function openRecModal(pi,s) {
-  recPage=pi; recSlot=s; photoDataUrl=null; recTab='emoji';
-  document.getElementById('m-label').value='';
-  document.getElementById('emoji-preview').textContent='🎤';
-  document.getElementById('emoji-status').textContent='Type a label above';
-  document.getElementById('photo-preview').classList.remove('show');
-  document.getElementById('photo-preview').src='';
-  document.getElementById('photo-input').value='';
-  const hint=document.querySelector('.upload-hint');
-  if(hint){hint.innerHTML='<span>📷</span>Tap to choose a photo';}
-  switchRecTab('emoji');
-  document.getElementById('rec-modal').classList.add('open');
-  setTimeout(()=>document.getElementById('m-label').focus(),300);
+function openRec(pi,s){
+  recPg=pi;recSl=s;photoUrl=null;recTab='e';
+  document.getElementById('mlabel').value='';
+  document.getElementById('eprev').textContent='🎤';
+  document.getElementById('estat').textContent='Type a label to get an emoji';
+  document.getElementById('pprev').classList.remove('show');
+  document.getElementById('pprev').src='';
+  document.getElementById('pfile').value='';
+  document.querySelector('.ph2').innerHTML='📷 Tap to choose a photo';
+  setTab('e');
+  document.getElementById('recmod').classList.add('open');
+  setTimeout(()=>document.getElementById('mlabel').focus(),300);
 }
-function closeRecModal(){ document.getElementById('rec-modal').classList.remove('open'); }
-document.getElementById('rec-modal').addEventListener('click',e=>{if(e.target.id==='rec-modal')closeRecModal();});
-document.getElementById('m-label').addEventListener('input',function(){
+function closeRec(){ document.getElementById('recmod').classList.remove('open'); }
+document.getElementById('recmod').addEventListener('click',e=>{if(e.target.id==='recmod')closeRec();});
+document.getElementById('mlabel').addEventListener('input',function(){
   const v=this.value.trim();
-  if(!v){document.getElementById('emoji-preview').textContent='🎤';document.getElementById('emoji-status').textContent='';return;}
-  const em=findEmoji(v);
-  document.getElementById('emoji-preview').textContent=em;
-  document.getElementById('emoji-status').textContent=`Suggested: ${em}`;
+  if(!v){document.getElementById('eprev').textContent='🎤';document.getElementById('estat').textContent='';return;}
+  const em=emoji(v);
+  document.getElementById('eprev').textContent=em;
+  document.getElementById('estat').textContent=`Suggested: ${em}`;
 });
 function saveRec(){
-  const label=document.getElementById('m-label').value.trim(); if(!label) return;
-  let icon, isPhoto=false;
-  if(recTab==='photo'&&photoDataUrl){icon=photoDataUrl;isPhoto=true;}
-  else{icon=document.getElementById('emoji-preview').textContent||'🎤';}
-  const k=`${activeP}-${recPage}-${recSlot}`;
+  const label=document.getElementById('mlabel').value.trim();if(!label)return;
+  let icon,isPhoto=false;
+  if(recTab==='p'&&photoUrl){icon=photoUrl;isPhoto=true;}
+  else{icon=document.getElementById('eprev').textContent||'🎤';}
+  const k=`${activeP}-${recPg}-${recSl}`;
   recData[k]={icon,label:label.toUpperCase(),word:label.toLowerCase(),isPhoto};
-  localStorage.setItem('aac_rec7',JSON.stringify(recData));
-  document.getElementById('m-label').value=''; photoDataUrl=null;
-  closeRecModal(); renderRec(recPage); sizeAll();
+  localStorage.setItem('aidova_rec',JSON.stringify(recData));
+  document.getElementById('mlabel').value='';photoUrl=null;
+  closeRec();renderRec(recPg);resize();
 }
 
-// ═══════════════════════════════════
+// ═══════════════════════════
 // INIT
-// ═══════════════════════════════════
-window.speechSynthesis.onvoiceschanged = loadVoicePicker; loadVoicePicker();
-if(locked) document.getElementById('lock-toggle').classList.add('on');
-if(kioskMode) { document.getElementById('kiosk-toggle').classList.add('on'); window.addEventListener('load',()=>document.addEventListener('click',function f(){enableKiosk();document.removeEventListener('click',f);},{once:true})); }
-if(isPremium) document.getElementById('premium-status').textContent='✅ Premium active';
+// ═══════════════════════════
+window.speechSynthesis.onvoiceschanged=()=>{};
+if(locked) document.getElementById('ltog').classList.add('on');
+if(kiosk)  { document.getElementById('ktog').classList.add('on'); window.addEventListener('load',()=>document.addEventListener('click',function f(){enableKiosk();document.removeEventListener('click',f);},{once:true})); }
+if(premplus){ document.getElementById('pstat').textContent='🌟 Premium Plus'; }
+else if(premium){ document.getElementById('pstat').textContent='⭐ Premium'; }
 
-// Splash → app
 setTimeout(()=>{
   document.getElementById('splash').classList.add('hide');
-  setTimeout(()=>{ document.getElementById('splash').style.display='none'; document.getElementById('app').style.opacity='1'; renderAll(); },600);
+  setTimeout(()=>{
+    document.getElementById('splash').style.display='none';
+    document.getElementById('app').classList.add('ready');
+    renderAll();
+  },600);
 },2000);
-document.getElementById('app').style.opacity='0';
-document.getElementById('app').style.transition='opacity .4s';
-</script>
-
-<script>
-if('serviceWorker' in navigator){
-  window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('./sw.js',{scope:'./'})
-      .then(r=>console.log('SW registered'))
-      .catch(e=>console.log('SW error',e));
-  });
-}
 </script>
 </body>
 </html>
