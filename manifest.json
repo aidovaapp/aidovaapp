@@ -1,0 +1,61 @@
+{
+  "id": "/aidovaapp/",
+  "name": "Aidova — Say It Your Way",
+  "short_name": "Aidova",
+  "description": "Free AAC communication app for non-verbal children and adults by CHEWAID®",
+  "start_url": "/aidovaapp/index.html",
+  "scope": "/aidovaapp/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F8FAF8",
+  "theme_color": "#2D6A4F",
+  "lang": "en-GB",
+  "dir": "ltr",
+  "categories": ["medical", "education", "accessibility"],
+  "icons": [
+    {
+      "src": "/aidovaapp/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/aidovaapp/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/aidovaapp/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/aidovaapp/screenshot1.png",
+      "sizes": "540x960",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Aidova Feelings category"
+    },
+    {
+      "src": "/aidovaapp/screenshot2.png",
+      "sizes": "540x960",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Aidova Needs category"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Emergency",
+      "short_name": "Help",
+      "description": "Open emergency screen",
+      "url": "/aidovaapp/index.html",
+      "icons": [{ "src": "/aidovaapp/icon-192.png", "sizes": "192x192" }]
+    }
+  ],
+  "prefer_related_applications": false
+}
