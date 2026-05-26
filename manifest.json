@@ -1,0 +1,89 @@
+{
+  "id": "/aidovaapp/",
+  "name": "Aidova \u2014 Say It Your Way",
+  "short_name": "Aidova",
+  "description": "Free AAC communication app for non-verbal children and adults by CHEWAID\u00ae",
+  "start_url": "/aidovaapp/index.html",
+  "scope": "/aidovaapp/",
+  "display": "standalone",
+  "display_override": [
+    "standalone",
+    "fullscreen",
+    "minimal-ui"
+  ],
+  "orientation": "any",
+  "background_color": "#F8FAF8",
+  "theme_color": "#2D6A4F",
+  "lang": "en-GB",
+  "dir": "ltr",
+  "categories": [
+    "medical",
+    "education",
+    "accessibility"
+  ],
+  "iarc_rating_id": "e84b072d-71b3-4d3e-86ae-31a8ce4e53b7",
+  "icons": [
+    {
+      "src": "/aidovaapp/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/aidovaapp/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/aidovaapp/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/aidovaapp/screenshot1.png",
+      "sizes": "540x960",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Aidova on mobile \u2014 tap buttons to speak"
+    },
+    {
+      "src": "/aidovaapp/screenshot2.png",
+      "sizes": "540x960",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Aidova Needs category"
+    },
+    {
+      "src": "/aidovaapp/screenshot-wide.png",
+      "sizes": "1280x800",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Aidova on desktop \u2014 full AAC communication app"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Emergency",
+      "short_name": "Help",
+      "description": "Open emergency screen",
+      "url": "/aidovaapp/index.html",
+      "icons": [
+        {
+          "src": "/aidovaapp/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "webapp",
+      "url": "https://aidovaapp.github.io/aidovaapp/manifest.json"
+    }
+  ],
+  "prefer_related_applications": false
+}
