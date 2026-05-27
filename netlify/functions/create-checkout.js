@@ -1,10 +1,10 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const PRICES = {
-  premium_monthly:  'price_1TbjZSI4ZXfX5JkkurrbZC24',
-  premium_yearly:   'price_1TbjaII4ZXfX5JkkcNyusCNq',
-  premplus_monthly: 'price_1TbjbgI4ZXfX5JkkfSEsYpPb',
-  premplus_yearly:  'price_1TbjcHI4ZXfX5Jkk1RyuHOy8'
+  premium_monthly:  'price_1TbpNRI7FTUsbtqREBfAwCZd',
+  premium_yearly:   'price_1TbpNRI7FTUsbtqRqFY53VLG',
+  premplus_monthly: 'price_1TbpNRI7FTUsbtqR6QU14TSq',
+  premplus_yearly:  'price_1TbpNRI7FTUsbtqRqmzoNP8D'
 };
 
 exports.handler = async (event) => {
