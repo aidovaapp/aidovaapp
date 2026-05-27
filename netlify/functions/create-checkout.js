@@ -34,8 +34,8 @@ exports.handler = async (event) => {
       mode: 'subscription',
       payment_method_types: ['card'],
       line_items: [{ price: priceId, quantity: 1 }],
-      success_url: 'https://aidovaapp.github.io/aidovaapp/?session_id={CHECKOUT_SESSION_ID}&status=success',
-      cancel_url: 'https://aidovaapp.github.io/aidovaapp/?status=cancelled',
+      success_url: 'https://aidova.app/?session_id={CHECKOUT_SESSION_ID}&status=success',
+      cancel_url: 'https://aidova.app/?status=cancelled',
       metadata: { plan }
     });
 
