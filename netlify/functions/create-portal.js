@@ -16,7 +16,7 @@ exports.handler = async (event) => {
 
     const session = await stripe.billingPortal.sessions.create({
       customer: customerId,
-      return_url: 'https://aidovaapp.github.io/aidovaapp/'
+      return_url: 'https://aidova.app/'
     });
 
     return {
