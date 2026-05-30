@@ -1,17 +1,13 @@
-var CACHE='aidova-v3';
-
-// Pages that should NEVER be served from cache — always fetch fresh from network
-var BYPASS_URLS=['/home','/privacy','/landing.html','/privacy.html'];
+var CACHE='aidova-v4';
 
 self.addEventListener('install',function(e){
   self.skipWaiting();
   e.waitUntil(
     caches.open(CACHE).then(function(c){
       return c.addAll([
-        '/',
+        '/app',
         '/index.html',
         '/manifest.json',
-        '/sw.js',
         '/icon-192.png',
         '/icon-512.png'
       ]).catch(function(){});
@@ -34,21 +30,16 @@ self.addEventListener('activate',function(e){
 
 self.addEventListener('fetch',function(e){
   var url=new URL(e.request.url);
-
-  // Always bypass cache for landing page, privacy, and API calls
-  if(BYPASS_URLS.indexOf(url.pathname)>-1 ||
-     url.pathname.startsWith('/api/') ||
-     url.pathname.startsWith('/screenshots/') ||
+  if(url.pathname.startsWith('/api/')||
+     url.pathname.startsWith('/screenshots/')||
      url.pathname.startsWith('/.well-known/')){
     e.respondWith(fetch(e.request));
     return;
   }
-
-  // For everything else: cache first, then network
   e.respondWith(
     caches.match(e.request).then(function(cached){
-      return cached || fetch(e.request).then(function(response){
-        if(response && response.status===200 && response.type==='basic'){
+      return cached||fetch(e.request).then(function(response){
+        if(response&&response.status===200&&response.type==='basic'){
           var clone=response.clone();
           caches.open(CACHE).then(function(c){c.put(e.request,clone);});
         }
