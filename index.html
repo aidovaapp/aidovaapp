@@ -561,6 +561,120 @@ footer {
   transform: translateY(0);
 }
 
+/* ── MAKE IT YOURS ── */
+.customise-section {
+  padding: 80px 24px;
+  background: white;
+  overflow: hidden;
+}
+.customise-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.customise-feature {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+  margin-bottom: 72px;
+}
+.customise-feature.reverse {
+  direction: rtl;
+}
+.customise-feature.reverse > * {
+  direction: ltr;
+}
+.customise-text {}
+.customise-label {
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--green-light);
+  margin-bottom: 10px;
+}
+.customise-heading {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-weight: 900;
+  color: var(--dark);
+  line-height: 1.15;
+  margin-bottom: 14px;
+}
+.customise-body {
+  font-size: .95rem;
+  color: var(--grey);
+  line-height: 1.75;
+  margin-bottom: 20px;
+}
+.customise-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.customise-pill {
+  background: var(--green-pale);
+  color: var(--green);
+  font-size: .75rem;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 50px;
+}
+.customise-phones {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  align-items: flex-end;
+}
+.customise-phones img {
+  border-radius: 20px;
+  box-shadow: 0 16px 48px rgba(0,0,0,.16);
+  border: 1px solid rgba(0,0,0,.06);
+  flex: 1;
+  max-width: 200px;
+  width: 100%;
+}
+.customise-phones img.tall {
+  max-width: 185px;
+}
+.customise-phones img.offset {
+  margin-bottom: 24px;
+}
+.customise-story {
+  background: var(--green-pale);
+  border-radius: 28px;
+  padding: 40px 36px;
+  margin: 16px 0 60px;
+  position: relative;
+  overflow: hidden;
+}
+.customise-story::before {
+  content: '💬';
+  font-size: 4rem;
+  position: absolute;
+  top: -10px;
+  left: 24px;
+  opacity: .15;
+  line-height: 1;
+}
+.customise-story p {
+  font-size: 1rem;
+  color: var(--dark);
+  line-height: 1.8;
+  margin-bottom: 14px;
+  position: relative;
+}
+.customise-story p:last-child { margin-bottom: 0; }
+
+@media (max-width: 768px) {
+  .customise-feature {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    margin-bottom: 56px;
+  }
+  .customise-feature.reverse { direction: ltr; }
+}
+
 /* ── MOBILE ── */
 @media (max-width: 600px) {
   .demo-grid { grid-template-columns: repeat(4, 1fr); gap: 8px; }
@@ -631,24 +745,24 @@ footer {
   <div class="hero-blob hero-blob-1"></div>
   <div class="hero-blob hero-blob-2"></div>
 
-  <div class="hero-badge">💬 AAC Communication App</div>
+  <div class="hero-badge">💬 AAC Communication App — Free to start</div>
 
   <h1 class="hero-title">
-    Give your child<br>
-    <span>a voice</span>
+    When words are hard,<br>
+    <span>Aidova speaks</span>
   </h1>
 
   <p class="hero-sub">
-    Aidova helps non-verbal and minimally verbal children and adults communicate. Tap a button — the app speaks. Simple, powerful, free to start.
+    A communication app for non-verbal children, teenagers and adults. Tap a button — the app speaks. No barriers, no complexity. Just connection.
   </p>
 
   <div class="hero-btns">
-    <a href="/app" class="btn-primary">💬 Open Aidova Free →</a>
-    <a href="#plans" class="btn-secondary">⭐ See plans</a>
+    <a href="/app" class="btn-primary">💬 Try Aidova Free →</a>
+    <a href="#story" class="btn-secondary">Our story</a>
   </div>
 
   <div class="hero-trust">
-    <div class="trust-item">✓ Free to download</div>
+    <div class="trust-item">✓ Free to start</div>
     <div class="trust-dot"></div>
     <div class="trust-item">✓ No account needed</div>
     <div class="trust-dot"></div>
@@ -734,6 +848,100 @@ footer {
       <img src="/screenshots/IMG_1508.png" alt="Voice recording" loading="lazy">
       <div class="screenshot-caption">🎙️ Voice recording</div>
     </div>
+  </div>
+</section>
+
+<!-- MAKE IT YOURS -->
+<section class="customise-section reveal">
+  <div class="customise-inner">
+
+    <div style="text-align:center;margin-bottom:60px">
+      <div class="section-label">Personalisation</div>
+      <h2 class="section-title">Make it yours</h2>
+      <p class="section-sub">Aidova isn't a one-size-fits-all app. Every button, colour, language, and layout is yours to decide. The app is entirely how <em>you</em> choose to use it.</p>
+    </div>
+
+    <!-- Story block -->
+    <div class="customise-story">
+      <p>Aidova was created after seeing first-hand how a friend struggled with their non-verbal child — watching them frustrated, unable to express the simplest things we take for granted. A hug. Being hungry. Feeling scared.</p>
+      <p>Simple things can make a huge difference. That's why Aidova is built around maximum flexibility and minimum complication — so it works for a child, a teenager, or an adult, exactly the way they need it.</p>
+      <p>Emojis were chosen because they're universal. No language barriers. No sign language to learn. No symbols only specialists understand. And if you'd rather use photos of real people and real places? Add them. The app adapts to the person using it — not the other way around.</p>
+    </div>
+
+    <!-- Feature 1: Any language + hide/reorder -->
+    <div class="customise-feature">
+      <div class="customise-text">
+        <div class="customise-label">Edit mode</div>
+        <h3 class="customise-heading">Hide, reorder, and take full control</h3>
+        <p class="customise-body">Too many buttons on screen? Hide the ones you don't need yet. Put the most important ones first. In edit mode, tap any button to hide it, hold to delete it, or drag to reorder. Your child sees exactly what they need — nothing more.</p>
+        <div class="customise-pills">
+          <span class="customise-pill">👁️ Hide buttons</span>
+          <span class="customise-pill">☰ Drag to reorder</span>
+          <span class="customise-pill">🗑️ Delete buttons</span>
+        </div>
+      </div>
+      <div class="customise-phones">
+        <img src="/screenshots/IMG_1535.PNG" alt="Edit mode with hide and reorder" class="tall">
+        <img src="/screenshots/IMG_1538.PNG" alt="Edit mode full view" class="offset">
+      </div>
+    </div>
+
+    <!-- Feature 2: Add custom buttons -->
+    <div class="customise-feature reverse">
+      <div class="customise-text">
+        <div class="customise-label">Custom buttons</div>
+        <h3 class="customise-heading">Add any button, in any language, with any photo</h3>
+        <p class="customise-body">Choose from hundreds of built-in emojis, or upload a photo straight from your camera roll — a family member, a favourite toy, a real place they know. Set the phrase in any language in the world. Press save. Done.</p>
+        <div class="customise-pills">
+          <span class="customise-pill">🌍 Any language</span>
+          <span class="customise-pill">📷 Add your own photos</span>
+          <span class="customise-pill">🎨 Pick a colour</span>
+          <span class="customise-pill">⭐ Hundreds of emojis</span>
+        </div>
+      </div>
+      <div class="customise-phones">
+        <img src="/screenshots/IMG_1541.PNG" alt="Emoji picker categories" class="offset">
+        <img src="/screenshots/IMG_1539.PNG" alt="Add custom button with colour picker" class="tall">
+      </div>
+    </div>
+
+    <!-- Feature 3: Display modes -->
+    <div class="customise-feature">
+      <div class="customise-text">
+        <div class="customise-label">Display options</div>
+        <h3 class="customise-heading">A look that fits the person using it</h3>
+        <p class="customise-body">Switch on high contrast mode for a bold black background with vivid colours — easier to see and lower on visual noise. Adult mode swaps the child theme for a deep professional teal — designed for teenagers and adults who want something that feels grown-up.</p>
+        <div class="customise-pills">
+          <span class="customise-pill">⚡ High contrast mode</span>
+          <span class="customise-pill">🧑 Adult mode</span>
+          <span class="customise-pill">🌙 Dark mode</span>
+          <span class="customise-pill">🔠 Button size control</span>
+        </div>
+      </div>
+      <div class="customise-phones">
+        <img src="/screenshots/IMG_1543.PNG" alt="High contrast dark mode feelings" class="tall">
+        <img src="/screenshots/IMG_1542.PNG" alt="High contrast dark mode needs" class="offset">
+      </div>
+    </div>
+
+    <!-- Feature 4: Settings overview -->
+    <div class="customise-feature reverse">
+      <div class="customise-text">
+        <div class="customise-label">Settings</div>
+        <h3 class="customise-heading">Everything in one place</h3>
+        <p class="customise-body">The settings panel puts every option at your fingertips — profiles, display, voice, button colours, carer lock, and more. Set it up once, lock it with a PIN, and hand it over with confidence. Each profile keeps its own settings completely separate.</p>
+        <div class="customise-pills">
+          <span class="customise-pill">👤 Multiple profiles</span>
+          <span class="customise-pill">🔒 Carer lock</span>
+          <span class="customise-pill">🎨 Button colours</span>
+          <span class="customise-pill">🔊 Voice & volume</span>
+        </div>
+      </div>
+      <div class="customise-phones">
+        <img src="/screenshots/IMG_1544.PNG" alt="Settings panel" style="max-width:220px">
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -912,38 +1120,101 @@ footer {
   </div>
 </section>
 
+<!-- OUR STORY -->
+<section class="who reveal" id="story" style="background:white;max-width:100%;padding:80px 24px">
+  <div style="max-width:760px;margin:0 auto;text-align:center">
+    <div class="section-label">Why Aidova exists</div>
+    <h2 class="section-title">Born from a real moment</h2>
+    <div style="background:var(--green-pale);border-radius:24px;padding:32px 28px;margin:32px auto;text-align:left;position:relative">
+      <div style="font-size:3rem;position:absolute;top:-20px;left:28px;line-height:1">💬</div>
+      <p style="font-size:1rem;color:var(--dark);line-height:1.8;margin-top:16px">Aidova was created after seeing first-hand how a friend struggled with their non-verbal child — watching them frustrated, unable to express the simplest things. Things we take for granted every day. A hug. Being hungry. Feeling scared.</p>
+      <p style="font-size:1rem;color:var(--dark);line-height:1.8;margin-top:16px">It became clear that something simple, something anyone could pick up without training or technical knowledge, could make a real difference. Not just for children — but for teenagers, adults, anyone who finds spoken communication difficult.</p>
+      <p style="font-size:1rem;color:var(--dark);line-height:1.8;margin-top:16px">That's why Aidova uses emojis. They are universal. No language barriers. No sign language to learn. No symbols that only specialists understand. Just tap, and be heard.</p>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin-top:32px">
+      <div style="background:var(--cream);border-radius:16px;padding:16px 20px;flex:1;min-width:200px;border:1px solid var(--green-pale)">
+        <div style="font-size:1.5rem;margin-bottom:8px">🎯</div>
+        <div style="font-weight:700;font-size:.9rem;color:var(--dark);margin-bottom:4px">Our mission</div>
+        <div style="font-size:.82rem;color:var(--grey);line-height:1.6">Help every person communicate — child, teenager or adult — with as much flexibility and as little complication as possible.</div>
+      </div>
+      <div style="background:var(--cream);border-radius:16px;padding:16px 20px;flex:1;min-width:200px;border:1px solid var(--green-pale)">
+        <div style="font-size:1.5rem;margin-bottom:8px">🌍</div>
+        <div style="font-weight:700;font-size:.9rem;color:var(--dark);margin-bottom:4px">No barriers</div>
+        <div style="font-size:.82rem;color:var(--grey);line-height:1.6">Emojis work across every language and culture. Add your own photos for a truly personal experience.</div>
+      </div>
+      <div style="background:var(--cream);border-radius:16px;padding:16px 20px;flex:1;min-width:200px;border:1px solid var(--green-pale)">
+        <div style="font-size:1.5rem;margin-bottom:8px">🚀</div>
+        <div style="font-weight:700;font-size:.9rem;color:var(--dark);margin-bottom:4px">Always growing</div>
+        <div style="font-size:.82rem;color:var(--grey);line-height:1.6">More categories, more features and more ways to personalise coming soon. Built with the community, for the community.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- WHO -->
 <section class="who reveal">
   <div class="section-label">Who it's for</div>
   <h2 class="section-title">Every voice matters</h2>
-  <p class="section-sub">Aidova is used by children and adults across a wide range of conditions and needs.</p>
+  <p class="section-sub">Whether you're a parent, carer, teacher or therapist — Aidova is built for anyone who needs a simpler way to communicate.</p>
 
   <div class="who-grid">
     <div class="who-card">
       <span class="who-icon">🧩</span>
       <div class="who-title">Autism</div>
-      <div class="who-desc">Non-verbal and minimally verbal autistic children and adults</div>
+      <div class="who-desc">Non-verbal and minimally verbal autistic children and adults who need a reliable, consistent communication tool</div>
     </div>
     <div class="who-card">
       <span class="who-icon">🧠</span>
       <div class="who-title">Cerebral Palsy</div>
-      <div class="who-desc">Those with limited motor control who need simple, large buttons</div>
+      <div class="who-desc">Large, clear buttons designed for those with limited motor control</div>
     </div>
     <div class="who-card">
       <span class="who-icon">💬</span>
       <div class="who-title">Speech Delays</div>
-      <div class="who-desc">Children developing speech who need support communicating now</div>
+      <div class="who-desc">Children still developing speech who need support expressing themselves right now</div>
     </div>
     <div class="who-card">
       <span class="who-icon">🧓</span>
-      <div class="who-title">Dementia</div>
-      <div class="who-desc">Adults who have lost the ability to speak or find words</div>
+      <div class="who-title">Dementia & Stroke</div>
+      <div class="who-desc">Adults who have lost the ability to speak or find words — familiar emojis help bridge the gap</div>
+    </div>
+    <div class="who-card">
+      <span class="who-icon">🏫</span>
+      <div class="who-title">Schools & Therapists</div>
+      <div class="who-desc">Multiple profiles mean one device can support many children — each with their own personalised layout</div>
     </div>
     <div class="who-card">
       <span class="who-icon">🌍</span>
       <div class="who-title">Any Language</div>
-      <div class="who-desc">Customise every phrase — works in any language worldwide</div>
+      <div class="who-desc">Customise every button phrase in any language — Arabic, Hindi, Polish, Urdu — whatever feels like home</div>
     </div>
+  </div>
+</section>
+
+<!-- HOW TO INSTALL -->
+<section class="reveal" style="background:var(--dark);padding:60px 24px;text-align:center" id="install">
+  <div style="max-width:700px;margin:0 auto">
+    <div class="section-label" style="color:var(--green-mid)">No app store needed right now</div>
+    <h2 class="section-title" style="color:white;margin-bottom:12px">Add to your home screen in seconds</h2>
+    <p style="font-size:.9rem;color:rgba(255,255,255,.6);margin-bottom:40px;line-height:1.7">Aidova works right in your browser — no download needed. Add it to your home screen and it works just like a real app, even offline.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:40px">
+      <div style="background:rgba(255,255,255,.08);border-radius:18px;padding:24px 20px;text-align:left">
+        <div style="font-size:1.8rem;margin-bottom:10px">📱</div>
+        <div style="font-weight:700;color:white;font-size:.95rem;margin-bottom:6px">iPhone / iPad</div>
+        <div style="font-size:.8rem;color:rgba(255,255,255,.6);line-height:1.7">Open in <b style="color:white">Safari</b> → tap the Share button ⬆️ → tap <b style="color:white">Add to Home Screen</b> → tap Add</div>
+      </div>
+      <div style="background:rgba(255,255,255,.08);border-radius:18px;padding:24px 20px;text-align:left">
+        <div style="font-size:1.8rem;margin-bottom:10px">🤖</div>
+        <div style="font-weight:700;color:white;font-size:.95rem;margin-bottom:6px">Android</div>
+        <div style="font-size:.8rem;color:rgba(255,255,255,.6);line-height:1.7">Open in <b style="color:white">Chrome</b> → tap the three dots ⋮ → tap <b style="color:white">Add to Home Screen</b> → tap Add</div>
+      </div>
+      <div style="background:rgba(255,255,255,.08);border-radius:18px;padding:24px 20px;text-align:left">
+        <div style="font-size:1.8rem;margin-bottom:10px">🏪</div>
+        <div style="font-weight:700;color:white;font-size:.95rem;margin-bottom:6px">App Stores</div>
+        <div style="font-size:.8rem;color:rgba(255,255,255,.6);line-height:1.7">Coming soon to the <b style="color:white">Apple App Store</b> and <b style="color:white">Google Play Store</b>. Follow @aidovaapp for updates.</div>
+      </div>
+    </div>
+    <a href="/app" style="display:inline-flex;align-items:center;gap:10px;background:var(--green);color:white;padding:16px 36px;border-radius:50px;font-weight:700;font-size:1rem;text-decoration:none;transition:all .2s;box-shadow:0 8px 30px rgba(45,106,79,.4)">💬 Open Aidova Now — It's Free</a>
   </div>
 </section>
 
