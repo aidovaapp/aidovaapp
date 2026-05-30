@@ -3,17 +3,15 @@
     {
       "source": "/sw.js",
       "headers": [
-        { "key": "Service-Worker-Allowed", "value": "/app" }
+        { "key": "Service-Worker-Allowed", "value": "/" }
       ]
     }
   ],
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/privacy", "destination": "/privacy.html" },
-    { "source": "/app", "destination": "/index.html" },
+    { "source": "/app", "destination": "/app.html" },
     { "source": "/.well-known/assetlinks.json", "destination": "/.well-known/assetlinks.json" },
-    { "source": "/screenshots/:file", "destination": "/screenshots/:file" },
-    { "source": "/home", "destination": "/landing.html" },
-    { "source": "/", "destination": "/landing.html" }
+    { "source": "/screenshots/:file", "destination": "/screenshots/:file" }
   ]
 }
