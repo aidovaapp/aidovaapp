@@ -4,7 +4,7 @@
     { "source": "/privacy", "destination": "/privacy.html" },
     { "source": "/app", "destination": "/index.html" },
     { "source": "/.well-known/assetlinks.json", "destination": "/.well-known/assetlinks.json" },
-    { "source": "/screenshots/(.*)", "destination": "/screenshots/$1" },
+    { "source": "/screenshots/:file", "destination": "/screenshots/:file" },
     { "source": "/", "destination": "/landing.html" }
   ]
 }
