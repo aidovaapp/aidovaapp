@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "app.aidova.twa",
+        "sha256_cert_fingerprints": ["55:8A:7B:EE:58:94:EB:20:39:D1:A6:79:4F:45:74:C6:B1:97:F9:27:40:D3:C6:11:B9:32:E6:CB:B5:95:29:60"]
+      }
+    }]
