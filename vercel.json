@@ -2,6 +2,9 @@
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/privacy", "destination": "/privacy.html" },
-    { "source": "/.well-known/assetlinks.json", "destination": "/.well-known/assetlinks.json" }
+    { "source": "/app", "destination": "/index.html" },
+    { "source": "/.well-known/assetlinks.json", "destination": "/.well-known/assetlinks.json" },
+    { "source": "/screenshots/(.*)", "destination": "/screenshots/$1" },
+    { "source": "/", "destination": "/landing.html" }
   ]
 }
