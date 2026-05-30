@@ -275,29 +275,32 @@ nav {
 .demo-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-  max-width: 480px;
+  gap: 16px;
+  max-width: 440px;
   margin: 0 auto 32px;
 }
 .demo-btn {
-  background: #FFF0F5;
-  border-radius: 16px;
-  padding: 16px 8px;
+  background: #FDD5D5;
+  border-radius: 50%;
+  aspect-ratio: 1;
   cursor: pointer;
   transition: all .2s;
   border: none;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+  gap: 5px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.08);
+  padding: 8px;
 }
-.demo-btn:hover { transform: scale(1.06); box-shadow: 0 8px 20px rgba(0,0,0,.1); }
-.demo-btn:active { transform: scale(.97); }
-.demo-btn .emoji { font-size: 2rem; }
-.demo-btn .label { font-size: .7rem; font-weight: 800; color: var(--dark); letter-spacing: .03em; }
-.demo-btn.needs { background: #E8F5E9; }
-.demo-btn.places { background: #E3F2FD; }
-.demo-btn.social { background: #EDE7F6; }
+.demo-btn:hover { transform: scale(1.08); box-shadow: 0 8px 24px rgba(0,0,0,.15); }
+.demo-btn:active { transform: scale(.95); }
+.demo-btn .emoji { font-size: 1.7rem; line-height: 1; }
+.demo-btn .label { font-size: .55rem; font-weight: 800; color: var(--dark); letter-spacing: .04em; text-align: center; line-height: 1.2; }
+.demo-btn.needs { background: #C8E6FA; }
+.demo-btn.places { background: #FFF3C4; }
+.demo-btn.social { background: #DDD0F0; }
 
 .demo-speak {
   background: var(--green);
@@ -808,54 +811,59 @@ footer {
   <p class="section-sub">Real screenshots from the app — exactly what your child will see.</p>
   
   <div class="screenshot-row">
-    <!-- 1. Feelings — the first thing most users see, sets the scene -->
+    <!-- 1. Feelings — the core daily screen, happy/sad/angry/in pain etc. -->
     <div class="screenshot-item">
-      <img src="/screenshots/IMG_1490.png" alt="Feelings buttons — happy, sad, angry, in pain" loading="lazy">
+      <img src="/screenshots/IMG_1491.png" alt="Feelings buttons — happy, sad, angry, in pain, sleepy, tired" loading="lazy">
       <div class="screenshot-caption">😊 Feelings</div>
     </div>
-    <!-- 2. Needs — the other most-used daily category -->
+    <!-- 2. Needs — hungry, thirsty, toilet, shower, bath, medicine etc. -->
     <div class="screenshot-item">
-      <img src="/screenshots/IMG_1492.png" alt="Needs buttons — hungry, thirsty, toilet, shower" loading="lazy">
+      <img src="/screenshots/IMG_1492.png" alt="Needs buttons — hungry, thirsty, toilet, shower, bath, medicine" loading="lazy">
       <div class="screenshot-caption">🍎 Needs</div>
     </div>
-    <!-- 3. Sentence builder — shows how communication actually works, tapping builds a sentence then speaks it -->
+    <!-- 3. Sentence builder — "I AM HUNGRY" shown in bar, demonstrates how tapping builds a spoken sentence -->
     <div class="screenshot-item">
-      <img src="/screenshots/IMG_1493.png" alt="Sentence builder — tap buttons to build a sentence and speak" loading="lazy">
-      <div class="screenshot-caption">🗣️ Sentence builder</div>
+      <img src="/screenshots/IMG_1493.png" alt="Sentence builder — I AM + HUNGRY shown in the speak bar at top" loading="lazy">
+      <div class="screenshot-caption">🗣️ I AM HUNGRY → Speak</div>
     </div>
-    <!-- 4. Emergency screen — hugely reassuring for parents, one tap calls a carer -->
+    <!-- 4. Emergency screen — full red screen, I Need Help / I Am Hurt / Call Carer -->
     <div class="screenshot-item">
-      <img src="/screenshots/IMG_1494.png" alt="Emergency screen — one tap to call a carer" loading="lazy">
+      <img src="/screenshots/IMG_1494.png" alt="Emergency screen — I need help, I am hurt, call carer" loading="lazy">
       <div class="screenshot-caption">🆘 Emergency screen</div>
     </div>
-    <!-- 5. Voice recording — personalisation, record your own voice for any button -->
+    <!-- 5. Visual schedule with items ticked — School ✓ Party ✓ shows the tick-off routine feature -->
     <div class="screenshot-item">
-      <img src="/screenshots/IMG_1508.png" alt="Voice recording — record your own voice for any button" loading="lazy">
-      <div class="screenshot-caption">🎙️ Record your voice</div>
+      <img src="/screenshots/IMG_1500.png" alt="Visual daily schedule — School and Party both ticked off" loading="lazy">
+      <div class="screenshot-caption">📅 Daily schedule — ticked</div>
     </div>
-    <!-- 6. Button colours — visual personalisation, change colours per category -->
+    <!-- 6. Button colours — full colour picker per category (Feelings/Needs/Places/Social) -->
     <div class="screenshot-item">
-      <img src="/screenshots/IMG_1510.png" alt="Button colour themes — customise colours per category" loading="lazy">
+      <img src="/screenshots/IMG_1510.png" alt="Button colour themes — choose a different colour per category" loading="lazy">
       <div class="screenshot-caption">🎨 Button colours</div>
     </div>
-    <!-- 7. Visual schedule — daily routine cards, child ticks off each activity -->
+    <!-- 7. Customise phrases — settings showing "Edit top buttons / Change labels & phrases — any language" -->
     <div class="screenshot-item">
-      <img src="/screenshots/IMG_1499.png" alt="Visual daily schedule — tick off activities as you go" loading="lazy">
-      <div class="screenshot-caption">📅 Visual schedule</div>
+      <img src="/screenshots/IMG_1503.png" alt="Customise phrases — change button labels and spoken phrases to any language" loading="lazy">
+      <div class="screenshot-caption">🌍 Any language</div>
     </div>
-    <!-- 8. Calm breathing — wellbeing tool, guided breathing exercise -->
+    <!-- 8. Record your voice — the actual voice recording screen, microphone, Preview + Save -->
     <div class="screenshot-item">
-      <img src="/screenshots/IMG_1511.png" alt="Calm breathing tool — guided breathing exercise" loading="lazy">
+      <img src="/screenshots/IMG_1508.png" alt="Record your voice — record a voice clip for any button in any language" loading="lazy">
+      <div class="screenshot-caption">🎙️ Record your voice</div>
+    </div>
+    <!-- 9. Calm breathing — "Breathe in... 3", expanding circle animation -->
+    <div class="screenshot-item">
+      <img src="/screenshots/IMG_1511.png" alt="Calm breathing tool — follow the circle, breathe with it" loading="lazy">
       <div class="screenshot-caption">🧘 Calm breathing</div>
     </div>
-    <!-- 9. Visual timer — helps with transitions, shows time passing visually -->
+    <!-- 10. Visual timer — 5:00 ready, set countdown great for transitions -->
     <div class="screenshot-item">
-      <img src="/screenshots/IMG_1512.png" alt="Visual timer — shows time passing in a clear visual format" loading="lazy">
+      <img src="/screenshots/IMG_1512.png" alt="Visual timer — set a countdown, great for transitions" loading="lazy">
       <div class="screenshot-caption">⏱️ Visual timer</div>
     </div>
-    <!-- 10. Plans — upgrade prompt, shown last after visitor is already sold on the app -->
+    <!-- 11. Plans screen — Free / Premium / Premium Plus with prices, monthly view -->
     <div class="screenshot-item">
-      <img src="/screenshots/IMG_1501.png" alt="Plans and pricing — free, Premium and Premium Plus" loading="lazy">
+      <img src="/screenshots/IMG_1501.png" alt="Aidova Plans — Free, Premium £3.99/month, Premium Plus £7.99/month" loading="lazy">
       <div class="screenshot-caption">⭐ Plans & pricing</div>
     </div>
   </div>
@@ -926,16 +934,39 @@ footer {
       </div>
     </div>
 
-    <!-- FEATURE 3: ADD CUSTOM BUTTONS — EMOJI PICKER + COLOUR PICKER -->
-    <!-- IMG_1538: Emoji picker categories dropdown open — shows Communication header with Please, Phone, Video call, Love, Don't know, then Routine & Daily Life header with Morning, Night, Wake up -->
-    <!-- IMG_1540: Add custom button form — "Don't know" emoji selected, phrase typed, "OR add your own photo" camera option, full colour palette with cream/yellow selected (ring around it) -->
+    <!-- FEATURE 3: ANY LANGUAGE + VOICE RECORDING -->
+    <!-- IMG_1503: Settings — Customise Phrases expanded, "Edit top buttons / Change labels & phrases — any language" -->
+    <!-- IMG_1508: Record your voice screen — microphone, waveform, Preview + Save buttons -->
     <div class="customise-feature">
       <div class="customise-text">
-        <div class="customise-label">Custom buttons</div>
-        <h3 class="customise-heading">Add any button, in any language, with any photo</h3>
-        <p class="customise-body">Tap an ADD slot to create a new button. Browse hundreds of built-in emojis organised by category — Communication, Routine & Daily Life, and more. Or skip the emoji entirely and upload a photo from your camera roll — a picture of grandma, a favourite snack, a real place they recognise. Type the phrase in any language in the world. Choose a button colour from the full palette. Press Save. It appears instantly.</p>
+        <div class="customise-label">Any language</div>
+        <h3 class="customise-heading">Change every phrase to any language — and record your own voice</h3>
+        <p class="customise-body">Go to Settings → Customise Phrases and change the label and spoken phrase of any button to any language in the world — Arabic, Hindi, Polish, Urdu, anything. Better still, record your own voice for any button in any language. A parent's voice in the child's home language is far more meaningful and comforting than a computer voice. Reset to English any time with one tap.</p>
         <div class="customise-pills">
           <span class="customise-pill">🌍 Any language</span>
+          <span class="customise-pill">🎙️ Record your voice</span>
+          <span class="customise-pill">✏️ Change any label</span>
+          <span class="customise-pill">🔊 Change spoken phrase</span>
+          <span class="customise-pill">↩️ Reset to English anytime</span>
+        </div>
+      </div>
+      <div class="customise-phones">
+        <!-- Customise Phrases settings — any language -->
+        <img src="/screenshots/IMG_1503.png" alt="Settings — Customise Phrases, change labels to any language" class="offset">
+        <!-- Record your voice screen -->
+        <img src="/screenshots/IMG_1508.png" alt="Record your voice — for any button in any language" class="tall">
+      </div>
+    </div>
+
+    <!-- FEATURE 3b: ADD CUSTOM BUTTONS -->
+    <!-- IMG_1538: Emoji picker categories dropdown open — Communication, Routine & Daily Life etc. -->
+    <!-- IMG_1539: Add custom button form — full colour palette shown -->
+    <div class="customise-feature reverse">
+      <div class="customise-text">
+        <div class="customise-label">Custom buttons</div>
+        <h3 class="customise-heading">Add any button, with any emoji or your own photo</h3>
+        <p class="customise-body">Tap an ADD slot to create a new button. Browse hundreds of built-in emojis organised by category — Communication, Routine & Daily Life, and more. Or upload a photo from your camera roll — a picture of grandma, a favourite snack, a real place they recognise. Choose a button colour from the full palette. Press Save. It appears instantly.</p>
+        <div class="customise-pills">
           <span class="customise-pill">📷 Upload a photo</span>
           <span class="customise-pill">🎨 Choose a colour</span>
           <span class="customise-pill">⭐ Hundreds of emojis</span>
@@ -943,10 +974,8 @@ footer {
         </div>
       </div>
       <div class="customise-phones">
-        <!-- Emoji picker with categories dropdown open -->
         <img src="/screenshots/IMG_1538.png" alt="Emoji picker — browse by category" class="offset">
-        <!-- Add custom button with colour palette, cream selected -->
-        <img src="/screenshots/IMG_1540.png" alt="Add custom button — colour picker" class="tall">
+        <img src="/screenshots/IMG_1539.png" alt="Add custom button — full colour picker" class="tall">
       </div>
     </div>
 
@@ -975,25 +1004,25 @@ footer {
     </div>
 
     <!-- FEATURE 5: ADULT MODE -->
-    <!-- IMG_1528: Settings panel — Adult mode toggle ON (green), description "Deep teal theme — for teens & adults", Dark mode OFF, High contrast OFF -->
-    <!-- IMG_1529: Adult mode active — deep teal header and category bar, rounded square buttons with teal borders, Feelings tab, KIOSK MODE banner at top (showing carer lock also active) -->
+    <!-- IMG_1491: Normal mode — round pink circles, Feelings tab, child theme (for comparison) -->
+    <!-- IMG_1529: Adult mode active — deep teal, square buttons, Feelings tab -->
     <div class="customise-feature">
       <div class="customise-text">
         <div class="customise-label">Adult mode</div>
         <h3 class="customise-heading">A grown-up look for teens and adults</h3>
-        <p class="customise-body">The default orange theme is designed for children — but Aidova is for everyone. Switch on Adult mode in settings and the whole app transforms: the header, category bar and buttons all switch to a deep professional teal. The rounded square button style replaces the child-friendly circles. Same powerful communication tools, completely different feel — appropriate for a teenager at school, an adult at work, or anyone who deserves an app that doesn't look like a toy.</p>
+        <p class="customise-body">The default theme uses round circles and warm colours designed for children. Switch on Adult mode and the whole app transforms — deep professional teal, square buttons, clean typography. Same communication tools, completely different feel. Appropriate for a teenager at school, an adult at work, or anyone who deserves an app that doesn't look like a toy. One toggle in settings.</p>
         <div class="customise-pills">
           <span class="customise-pill">🧑 Deep teal theme</span>
           <span class="customise-pill">🟦 Square button style</span>
           <span class="customise-pill">👔 Professional look</span>
-          <span class="customise-pill">🔀 One tap to switch</span>
+          <span class="customise-pill">🔀 One toggle to switch</span>
         </div>
       </div>
       <div class="customise-phones">
-        <!-- Settings — Adult mode toggle ON -->
-        <img src="/screenshots/IMG_1528.png" alt="Settings — Adult mode toggle switched on" class="offset">
-        <!-- Adult mode active — teal theme, square buttons -->
-        <img src="/screenshots/IMG_1529.png" alt="Adult mode — deep teal theme, square buttons" class="tall">
+        <!-- Normal mode — round pink circles (child theme) -->
+        <img src="/screenshots/IMG_1491.png" alt="Default child theme — round circles, warm colours" class="offset">
+        <!-- Adult mode — teal squares -->
+        <img src="/screenshots/IMG_1529.png" alt="Adult mode — deep teal, square buttons" class="tall">
       </div>
     </div>
 
