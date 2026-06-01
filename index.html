@@ -59,8 +59,7 @@
 }
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
   --green: #2D6A4F;
@@ -665,7 +664,7 @@ footer { background: var(--dark); padding: 48px 24px; text-align: center; }
   <div class="hero-blob hero-blob-2"></div>
 
   <div class="hero-badge">💬 AAC Communication App — Free to start</div>
-  <p style="font-size:.8rem;color:var(--grey);margin-bottom:8px;animation:fadeUp .6s ease .05s both">Inspired by real families. Shaped by everyday use.</p>
+  <p style="font-size:.8rem;color:var(--grey);margin-bottom:8px;animation:fadeUp .6s ease .05s both">Inspired by real families. Shaped by everyday use. Built for every age.</p>
 
   <h1 class="hero-title">
     When words are hard,<br>
@@ -721,12 +720,46 @@ footer { background: var(--dark); padding: 48px 24px; text-align: center; }
   </div>
 </section>
 
+<!-- WHO IS IT FOR STRIP -->
+<section style="padding:32px 24px;background:var(--cream);text-align:center;border-bottom:1px solid var(--green-pale)">
+  <p style="font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green-light);margin-bottom:20px">Who is Aidova for?</p>
+  <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;max-width:780px;margin:0 auto">
+    <div style="display:flex;align-items:center;gap:8px;background:white;border:1px solid var(--green-pale);border-radius:50px;padding:8px 18px">
+      <span style="font-size:1.1rem">🧩</span>
+      <span style="font-size:.82rem;font-weight:600;color:var(--dark)">Autism</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;background:white;border:1px solid var(--green-pale);border-radius:50px;padding:8px 18px">
+      <span style="font-size:1.1rem">💬</span>
+      <span style="font-size:.82rem;font-weight:600;color:var(--dark)">Speech delays</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;background:white;border:1px solid var(--green-pale);border-radius:50px;padding:8px 18px">
+      <span style="font-size:1.1rem">🧠</span>
+      <span style="font-size:.82rem;font-weight:600;color:var(--dark)">Stroke & aphasia</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;background:white;border:1px solid var(--green-pale);border-radius:50px;padding:8px 18px">
+      <span style="font-size:1.1rem">🦽</span>
+      <span style="font-size:.82rem;font-weight:600;color:var(--dark)">Cerebral palsy</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;background:white;border:1px solid var(--green-pale);border-radius:50px;padding:8px 18px">
+      <span style="font-size:1.1rem">🧓</span>
+      <span style="font-size:.82rem;font-weight:600;color:var(--dark)">Dementia</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;background:white;border:1px solid var(--green-pale);border-radius:50px;padding:8px 18px">
+      <span style="font-size:1.1rem">🏫</span>
+      <span style="font-size:.82rem;font-weight:600;color:var(--dark)">Schools & therapists</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;background:white;border:1px solid var(--green-pale);border-radius:50px;padding:8px 18px">
+      <span style="font-size:1.1rem">👨‍👩‍👧</span>
+      <span style="font-size:.82rem;font-weight:600;color:var(--dark)">Families & carers</span>
+    </div>
+  </div>
+</section>
 
 <!-- DEMO -->
 <section class="demo-section">
   <div class="section-label">Try it now</div>
   <h2 class="section-title">Tap a button. It speaks.</h2>
-  <p class="section-sub">This is exactly how it works in the app. Tap any button below.</p>
+  <p class="section-sub">Tap any button → it speaks aloud. Tap multiple buttons to build a sentence, then press Speak.</p>
 
   <div class="demo-grid" id="demoGrid">
     <button class="demo-btn" onclick="speak('happy')"><span class="emoji">😊</span><span class="label">HAPPY</span></button>
@@ -765,7 +798,7 @@ footer { background: var(--dark); padding: 48px 24px; text-align: center; }
         <div class="testimonial-avatar">👩</div>
         <div>
           <div class="testimonial-name">Sarah M.</div>
-          <div class="testimonial-role">Parent of a 7-year-old with complex communication needs</div>
+          <div class="testimonial-role">Parent</div>
         </div>
       </div>
     </div>
@@ -773,20 +806,7 @@ footer { background: var(--dark); padding: 48px 24px; text-align: center; }
     <div class="testimonial-card">
       <div class="testimonial-stars">★★★★★</div>
       <div class="testimonial-quote">"</div>
-      <p class="testimonial-text">We've tried expensive AAC tools before. Aidova is the first one he actually wants to use. The emojis click for him in a way symbols never did.</p>
-      <div class="testimonial-author">
-        <div class="testimonial-avatar">👨</div>
-        <div>
-          <div class="testimonial-name">James T.</div>
-          <div class="testimonial-role">Dad, South London</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="testimonial-card">
-      <div class="testimonial-stars">★★★★★</div>
-      <div class="testimonial-quote">"</div>
-      <p class="testimonial-text">I recommend Aidova to families I work with. It's simple enough to set up in a session, and flexible enough to grow with the child. The multilingual support is a real differentiator.</p>
+      <p class="testimonial-text">Simple enough to set up in a session, flexible enough to grow with the person. The multilingual support makes it genuinely useful for the families I work with.</p>
       <div class="testimonial-author">
         <div class="testimonial-avatar">👩‍⚕️</div>
         <div>
@@ -795,8 +815,24 @@ footer { background: var(--dark); padding: 48px 24px; text-align: center; }
         </div>
       </div>
     </div>
+
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <div class="testimonial-quote">"</div>
+      <p class="testimonial-text">After my stroke I struggled to communicate simple things. Aidova helped me express myself when speech was difficult. The adult mode means it doesn't feel like a children's app.</p>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">🧑</div>
+        <div>
+          <div class="testimonial-name">Michael R.</div>
+          <div class="testimonial-role">Stroke survivor, age 52</div>
+        </div>
+      </div>
+    </div>
   </div>
 
+  <div style="margin-top:36px">
+    <a href="/app" class="btn-primary" style="display:inline-flex;margin:0 auto">💬 Try Aidova Free — no credit card needed →</a>
+  </div>
 
 </section>
 
@@ -825,17 +861,17 @@ footer { background: var(--dark); padding: 48px 24px; text-align: center; }
       <p style="font-size:1.05rem;color:var(--dark);line-height:1.85;margin-bottom:6px">Aidova started with a simple question:</p>
       <p style="font-size:1.1rem;font-family:'Fraunces',serif;font-weight:700;color:var(--green);line-height:1.5;margin-bottom:18px;padding-left:20px;border-left:3px solid var(--green-light)">What if communication could be easier?<br><span style="font-size:.95rem;font-weight:400;color:var(--grey)">Not easier for therapists. Not easier for technology.<br>Easier for the person trying to be understood.</span></p>
 
+      <p style="font-size:1.05rem;color:var(--dark);line-height:1.85;margin-bottom:18px">While the journey started with a child, the more people I spoke to, the more I realised the challenge was much bigger. Adults recovering from strokes. People living with cerebral palsy. Older adults affected by dementia. Different situations, but often the same need: a simple way to express themselves and be understood.</p>
+
       <p style="font-size:1.05rem;color:var(--dark);line-height:1.85;margin-bottom:18px">So I built Aidova around familiar emojis, clear language, and the ability to make it your own. No complicated setup. No training manuals. Just open it, tap a button, and be heard. Whether that's a child, teenager or adult.</p>
 
-      <p style="font-size:1.05rem;color:var(--dark);line-height:1.85;margin-bottom:18px">Today Aidova is shaped by the people who use it — families, carers, teachers and therapists who share their experiences, ideas and feedback. Every conversation helps make it a little better.</p>
-
-      <p style="font-size:1.05rem;color:var(--dark);line-height:1.85;margin-bottom:28px">While the journey started with a child, the more people I spoke to, the more I realised the challenge was much bigger. Adults recovering from strokes. People living with cerebral palsy. Older adults affected by dementia. Different situations, but often the same need: a simple way to express themselves and be understood.</p>
+      <p style="font-size:1.05rem;color:var(--dark);line-height:1.85;margin-bottom:28px">Today Aidova is shaped by the people who use it — families, carers, teachers and therapists who share their experiences, ideas and feedback. Every conversation helps make it a little better.</p>
 
       <div style="display:flex;align-items:center;gap:14px;padding-top:20px;border-top:1px solid var(--green-pale)">
         <div style="width:48px;height:48px;border-radius:50%;background:var(--green-pale);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0">😊</div>
         <div>
           <div style="font-family:'Fraunces',serif;font-weight:700;font-size:1rem;color:var(--dark)">Charmy</div>
-          <div style="font-size:.8rem;color:var(--grey)">Founder, Aidova</div>
+          <div style="font-size:.8rem;color:var(--grey)">Founder of Aidova &amp; CHEWAID®</div>
         </div>
       </div>
     </div>
@@ -853,14 +889,18 @@ footer { background: var(--dark); padding: 48px 24px; text-align: center; }
       </div>
       <div style="background:var(--green-pale);border-radius:18px;padding:20px 18px">
         <div style="font-size:1.3rem;margin-bottom:8px">🏫</div>
-        <div style="font-weight:700;font-size:.88rem;color:var(--dark);margin-bottom:4px">One tablet, a whole classroom</div>
-        <div style="font-size:.8rem;color:var(--grey);line-height:1.6">Unlimited profiles means every child gets their own personalised layout on a single shared device.</div>
+        <div style="font-weight:700;font-size:.88rem;color:var(--dark);margin-bottom:4px">One device, many people</div>
+        <div style="font-size:.8rem;color:var(--grey);line-height:1.6">One tablet, a whole classroom. One device, multiple therapy clients. One phone, multiple residents in a care setting.</div>
       </div>
       <div style="background:var(--green-pale);border-radius:18px;padding:20px 18px">
         <div style="font-size:1.3rem;margin-bottom:8px">🛡️</div>
         <div style="font-weight:700;font-size:.88rem;color:var(--dark);margin-bottom:4px">Private by design</div>
         <div style="font-size:.8rem;color:var(--grey);line-height:1.6">No data ever leaves the device. No account. No tracking. Everything stays where it belongs.</div>
       </div>
+    </div>
+
+    <div style="text-align:center;margin-top:32px">
+      <a href="/app" style="display:inline-flex;align-items:center;gap:8px;background:var(--green);color:white;padding:14px 32px;border-radius:50px;font-weight:700;font-size:.95rem;text-decoration:none;box-shadow:0 8px 24px rgba(45,106,79,.25)">💬 Try Aidova Free →</a>
     </div>
   </div>
 </section>
@@ -904,7 +944,7 @@ footer { background: var(--dark); padding: 48px 24px; text-align: center; }
 <section style="padding:60px 24px;background:var(--cream);text-align:center" class="reveal">
   <div class="section-label">See it in action</div>
   <h2 class="section-title">Every screen, built for real life</h2>
-  <p class="section-sub">Real screenshots from the app — exactly what your child will see.</p>
+  <p class="section-sub">Real screenshots from the app — for children, teenagers and adults.</p>
 
   <!-- VIDEO SLOT — replace this div with a <video> or YouTube embed when ready -->
   <div id="video-slot" style="max-width:620px;margin:0 auto 48px;display:none">
@@ -973,8 +1013,8 @@ footer { background: var(--dark); padding: 48px 24px; text-align: center; }
     <div class="customise-feature">
       <div class="customise-text">
         <div class="customise-label">Layout · Language · Voice</div>
-        <h3 class="customise-heading">Personalised to your child, in your language</h3>
-        <p class="customise-body">Hide buttons your child doesn't need yet. Drag the most-used ones to the top. Change any phrase to any language in the world — and record your own voice saying it. A parent's voice is far more meaningful than a computer's. Add photos of real people, real places, real things they know.</p>
+        <h3 class="customise-heading">Personalised to the person using it</h3>
+        <p class="customise-body">Hide buttons that aren't needed yet. Drag the most-used ones to the top. Change any phrase to any language in the world — and record a familiar voice saying it. A parent's voice, a carer's voice, a partner's voice — far more meaningful than a computer's. Add photos of real people, real places, real things they know.</p>
         <div class="customise-pills">
           <span class="customise-pill">👁️ Hide buttons</span>
           <span class="customise-pill">☰ Reorder by drag</span>
@@ -1077,7 +1117,7 @@ footer { background: var(--dark); padding: 48px 24px; text-align: center; }
   <div style="text-align:center">
     <div class="section-label">⭐ Premium — £3.99/month or £29.99/year</div>
     <h2 class="section-title">Take full control</h2>
-    <p class="section-sub">Everything in Free, plus powerful tools for carers to personalise Aidova for their child.</p>
+    <p class="section-sub">Everything in Free, plus powerful tools to personalise Aidova for the person using it.</p>
   </div>
   <div class="features-grid" style="margin-top:48px">
     <div class="feature-card" style="border-color:#FFE082">
@@ -1107,7 +1147,7 @@ footer { background: var(--dark); padding: 48px 24px; text-align: center; }
     <div class="feature-card" style="border-color:#FFE082">
       <span class="feature-icon">📅</span>
       <div class="feature-title">Visual Daily Schedule</div>
-      <div class="feature-desc">Create a daily routine with activity cards — emoji or photo, name, time. Child taps each to tick it off. Reduces anxiety enormously around daily transitions.</div>
+      <div class="feature-desc">Create a daily routine with activity cards — emoji or photo, name, time. Tick off activities throughout the day and make routines easier to follow. Helpful for school days, care routines and everyday transitions.</div>
       <span class="feature-badge badge-prem">PREMIUM</span>
     </div>
     <div class="feature-card" style="border-color:#FFE082">
@@ -1279,54 +1319,122 @@ footer { background: var(--dark); padding: 48px 24px; text-align: center; }
 <section class="plans reveal" id="plans">
   <div class="section-label">Pricing</div>
   <h2 class="section-title">Start free. Upgrade when ready.</h2>
-  <p class="section-sub">No credit card required to start. Cancel Premium anytime.</p>
-  <p style="font-size:.85rem;color:rgba(255,255,255,.5);margin-bottom:8px;margin-top:-32px">Used by children, adults, families, therapists, schools and care providers.</p>
+  <p class="section-sub">No credit card required to start. Cancel anytime.</p>
+  <p style="font-size:.85rem;color:rgba(255,255,255,.5);margin-bottom:40px;margin-top:-32px">Used by children, adults, families, therapists, schools and care providers.</p>
 
-  <div class="plans-grid">
-    <div class="plan-card">
-      <div class="plan-name">🆓 Free</div>
-      <div class="plan-price">£0</div>
-      <div class="plan-period">Always free — no card needed</div>
-      <ul class="plan-features-list">
-        <li>Hundreds of built-in communication buttons</li>
-        <li>Sentence builder & speak</li>
-        <li>Emergency screen & carer call</li>
-        <li>Search across all buttons</li>
-        <li>Breathing tool & visual timer</li>
-        <li>Dark mode, adult mode & high contrast</li>
-        <li>Works offline — no Wi-Fi needed</li>
-        <li>1 profile</li>
-      </ul>
-      <a href="/app" class="plan-cta plan-cta-free">Try free now →</a>
+  <!-- Price headers -->
+  <div style="max-width:860px;margin:0 auto">
+    <div style="display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;gap:0;margin-bottom:0">
+      <div></div>
+      <div style="text-align:center;padding:20px 12px 16px;background:rgba(255,255,255,.06);border-radius:16px 0 0 0;border:1px solid rgba(255,255,255,.1);border-right:none">
+        <div style="font-family:'Fraunces',serif;font-weight:700;color:white;font-size:1rem;margin-bottom:4px">🆓 Free</div>
+        <div style="font-size:1.5rem;font-weight:700;color:white">£0</div>
+        <div style="font-size:.7rem;color:rgba(255,255,255,.5);margin-bottom:12px">always free</div>
+        <a href="/app" style="display:block;background:rgba(255,255,255,.12);color:white;padding:8px;border-radius:50px;font-weight:600;font-size:.75rem;text-decoration:none">Try free →</a>
+      </div>
+      <div style="text-align:center;padding:20px 12px 16px;background:var(--green);border-radius:0;border:1px solid var(--green);border-right:none;position:relative">
+        <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--dark);font-size:.65rem;font-weight:700;padding:3px 10px;border-radius:20px;white-space:nowrap">MOST POPULAR</div>
+        <div style="font-family:'Fraunces',serif;font-weight:700;color:white;font-size:1rem;margin-bottom:4px">⭐ Premium</div>
+        <div style="font-size:1.5rem;font-weight:700;color:white">£3.99</div>
+        <div style="font-size:.7rem;color:rgba(255,255,255,.7);margin-bottom:12px">/month · or £29.99/year</div>
+        <a href="/app" style="display:block;background:white;color:var(--green);padding:8px;border-radius:50px;font-weight:700;font-size:.75rem;text-decoration:none">Get Premium →</a>
+      </div>
+      <div style="text-align:center;padding:20px 12px 16px;background:rgba(255,255,255,.06);border-radius:0 16px 0 0;border:1px solid rgba(255,255,255,.1)">
+        <div style="font-family:'Fraunces',serif;font-weight:700;color:white;font-size:1rem;margin-bottom:4px">🌟 Plus</div>
+        <div style="font-size:1.5rem;font-weight:700;color:white">£7.99</div>
+        <div style="font-size:.7rem;color:rgba(255,255,255,.5);margin-bottom:12px">/month · or £59.99/year</div>
+        <a href="/app" style="display:block;background:rgba(255,255,255,.12);color:white;padding:8px;border-radius:50px;font-weight:600;font-size:.75rem;text-decoration:none">Get Plus →</a>
+      </div>
     </div>
 
-    <div class="plan-card featured">
-      <div class="plan-name">⭐ Premium</div>
-      <div class="plan-price">£3.99<span>/month</span></div>
-      <div class="plan-period">or £29.99/year — save 37%</div>
-      <ul class="plan-features-list">
-        <li>Custom buttons — photos, emojis, any language</li>
-        <li>Hide buttons to simplify the screen</li>
-        <li>Record your own voice for any button</li>
-        <li>Visual daily schedule</li>
-        <li>Carer lock & Kiosk mode</li>
-        <li>Button colour themes</li>
-        <li>2 profiles</li>
-      </ul>
-      <a href="/app" class="plan-cta plan-cta-prem">Get Premium →</a>
-    </div>
-
-    <div class="plan-card">
-      <div class="plan-name">🌟 Premium Plus</div>
-      <div class="plan-price">£7.99<span>/month</span></div>
-      <div class="plan-period">or £59.99/year — save 37%</div>
-      <ul class="plan-features-list">
-        <li>Double custom button slots</li>
-        <li>Reorder buttons your way</li>
-        <li>Unlimited profiles</li>
-        <li>Everything in Premium</li>
-      </ul>
-      <a href="/app" class="plan-cta plan-cta-plus">Get Premium Plus →</a>
+    <!-- Comparison rows -->
+    <div style="border:1px solid rgba(255,255,255,.1);border-top:none;border-radius:0 0 16px 16px;overflow:hidden">
+      {% for row in rows %}
+      {% endfor %}
+      <div style="display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;background:rgba(255,255,255,.03);border-bottom:1px solid rgba(255,255,255,.06)">
+        <div style="padding:12px 16px;font-size:.82rem;color:rgba(255,255,255,.8);font-weight:500">Communication buttons</div>
+        <div style="padding:12px;text-align:center;font-size:.82rem;color:rgba(255,255,255,.7)">Hundreds</div>
+        <div style="padding:12px;text-align:center;font-size:.82rem;color:white;background:rgba(255,255,255,.04)">Hundreds</div>
+        <div style="padding:12px;text-align:center;font-size:.82rem;color:rgba(255,255,255,.7)">Hundreds</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;border-bottom:1px solid rgba(255,255,255,.06)">
+        <div style="padding:12px 16px;font-size:.82rem;color:rgba(255,255,255,.8);font-weight:500">Sentence builder & speak</div>
+        <div style="padding:12px;text-align:center;color:var(--green-mid)">✓</div>
+        <div style="padding:12px;text-align:center;color:var(--green-mid);background:rgba(255,255,255,.04)">✓</div>
+        <div style="padding:12px;text-align:center;color:var(--green-mid)">✓</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;background:rgba(255,255,255,.03);border-bottom:1px solid rgba(255,255,255,.06)">
+        <div style="padding:12px 16px;font-size:.82rem;color:rgba(255,255,255,.8);font-weight:500">Emergency button & carer call</div>
+        <div style="padding:12px;text-align:center;color:var(--green-mid)">✓</div>
+        <div style="padding:12px;text-align:center;color:var(--green-mid);background:rgba(255,255,255,.04)">✓</div>
+        <div style="padding:12px;text-align:center;color:var(--green-mid)">✓</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;border-bottom:1px solid rgba(255,255,255,.06)">
+        <div style="padding:12px 16px;font-size:.82rem;color:rgba(255,255,255,.8);font-weight:500">Works offline — no Wi-Fi needed</div>
+        <div style="padding:12px;text-align:center;color:var(--green-mid)">✓</div>
+        <div style="padding:12px;text-align:center;color:var(--green-mid);background:rgba(255,255,255,.04)">✓</div>
+        <div style="padding:12px;text-align:center;color:var(--green-mid)">✓</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;background:rgba(255,255,255,.03);border-bottom:1px solid rgba(255,255,255,.06)">
+        <div style="padding:12px 16px;font-size:.82rem;color:rgba(255,255,255,.8);font-weight:500">Dark, adult & high contrast modes</div>
+        <div style="padding:12px;text-align:center;color:var(--green-mid)">✓</div>
+        <div style="padding:12px;text-align:center;color:var(--green-mid);background:rgba(255,255,255,.04)">✓</div>
+        <div style="padding:12px;text-align:center;color:var(--green-mid)">✓</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;border-bottom:1px solid rgba(255,255,255,.06)">
+        <div style="padding:12px 16px;font-size:.82rem;color:rgba(255,255,255,.8);font-weight:500">Profiles</div>
+        <div style="padding:12px;text-align:center;font-size:.8rem;color:rgba(255,255,255,.6)">1</div>
+        <div style="padding:12px;text-align:center;font-size:.8rem;color:white;background:rgba(255,255,255,.04)">2</div>
+        <div style="padding:12px;text-align:center;font-size:.8rem;color:rgba(255,255,255,.6)">Unlimited</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;background:rgba(255,255,255,.03);border-bottom:1px solid rgba(255,255,255,.06)">
+        <div style="padding:12px 16px;font-size:.82rem;color:rgba(255,255,255,.8);font-weight:500">Custom buttons (photos, emojis)</div>
+        <div style="padding:12px;text-align:center;color:rgba(255,255,255,.25)">—</div>
+        <div style="padding:12px;text-align:center;color:var(--green-mid);background:rgba(255,255,255,.04)">✓</div>
+        <div style="padding:12px;text-align:center;color:var(--green-mid)">✓ more</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;border-bottom:1px solid rgba(255,255,255,.06)">
+        <div style="padding:12px 16px;font-size:.82rem;color:rgba(255,255,255,.8);font-weight:500">Record your own voice</div>
+        <div style="padding:12px;text-align:center;color:rgba(255,255,255,.25)">—</div>
+        <div style="padding:12px;text-align:center;color:var(--green-mid);background:rgba(255,255,255,.04)">✓</div>
+        <div style="padding:12px;text-align:center;color:var(--green-mid)">✓</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;background:rgba(255,255,255,.03);border-bottom:1px solid rgba(255,255,255,.06)">
+        <div style="padding:12px 16px;font-size:.82rem;color:rgba(255,255,255,.8);font-weight:500">Any language support</div>
+        <div style="padding:12px;text-align:center;color:rgba(255,255,255,.25)">—</div>
+        <div style="padding:12px;text-align:center;color:var(--green-mid);background:rgba(255,255,255,.04)">✓</div>
+        <div style="padding:12px;text-align:center;color:var(--green-mid)">✓</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;border-bottom:1px solid rgba(255,255,255,.06)">
+        <div style="padding:12px 16px;font-size:.82rem;color:rgba(255,255,255,.8);font-weight:500">Visual daily schedule</div>
+        <div style="padding:12px;text-align:center;color:rgba(255,255,255,.25)">—</div>
+        <div style="padding:12px;text-align:center;color:var(--green-mid);background:rgba(255,255,255,.04)">✓</div>
+        <div style="padding:12px;text-align:center;color:var(--green-mid)">✓</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;background:rgba(255,255,255,.03);border-bottom:1px solid rgba(255,255,255,.06)">
+        <div style="padding:12px 16px;font-size:.82rem;color:rgba(255,255,255,.8);font-weight:500">Carer lock & Kiosk mode</div>
+        <div style="padding:12px;text-align:center;color:rgba(255,255,255,.25)">—</div>
+        <div style="padding:12px;text-align:center;color:var(--green-mid);background:rgba(255,255,255,.04)">✓</div>
+        <div style="padding:12px;text-align:center;color:var(--green-mid)">✓</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;border-bottom:1px solid rgba(255,255,255,.06)">
+        <div style="padding:12px 16px;font-size:.82rem;color:rgba(255,255,255,.8);font-weight:500">Reorder buttons</div>
+        <div style="padding:12px;text-align:center;color:rgba(255,255,255,.25)">—</div>
+        <div style="padding:12px;text-align:center;color:rgba(255,255,255,.25);background:rgba(255,255,255,.04)">—</div>
+        <div style="padding:12px;text-align:center;color:var(--green-mid)">✓</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr">
+        <div style="padding:16px 16px;font-size:.82rem;color:rgba(255,255,255,.5)">No credit card required · Cancel anytime</div>
+        <div style="padding:12px;text-align:center">
+          <a href="/app" style="display:inline-block;background:rgba(255,255,255,.1);color:white;padding:10px 16px;border-radius:50px;font-weight:600;font-size:.78rem;text-decoration:none">Try free →</a>
+        </div>
+        <div style="padding:12px;text-align:center;background:rgba(255,255,255,.04)">
+          <a href="/app" style="display:inline-block;background:white;color:var(--green);padding:10px 16px;border-radius:50px;font-weight:700;font-size:.78rem;text-decoration:none">Get Premium →</a>
+        </div>
+        <div style="padding:12px;text-align:center">
+          <a href="/app" style="display:inline-block;background:rgba(255,255,255,.1);color:white;padding:10px 16px;border-radius:50px;font-weight:600;font-size:.78rem;text-decoration:none">Get Plus →</a>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1409,7 +1517,7 @@ footer { background: var(--dark); padding: 48px 24px; text-align: center; }
 <!-- FOOTER -->
 <footer>
   <div class="footer-logo">💬 Aidova</div>
-  <div class="footer-tagline">by CHEWAID®</div>
+  <div class="footer-tagline">by CHEWAID® — a registered trademark</div>
   <div class="footer-links">
     <a href="/app">Open App</a>
     <a href="/privacy">Privacy Policy</a>
