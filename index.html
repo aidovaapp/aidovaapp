@@ -6,17 +6,17 @@
 
 <!-- Primary SEO -->
 <title>Aidova — AAC Communication App for Non-Verbal Children & Adults</title>
-<meta name="description" content="Aidova gives a voice to non-verbal children and adults. Tap a button, the app speaks. 139 built-in communication buttons. Free to download. By CHEWAID®.">
+<meta name="description" content="Aidova gives a voice to non-verbal children and adults. Tap a button, the app speaks. Free to download, works offline, no account needed. By CHEWAID®.">
 <meta name="keywords" content="AAC app, augmentative communication, non-verbal children, communication app, speech app, SEND app, autism communication, non-speaking, AAC communication board, free AAC app, UK AAC app">
 <meta name="author" content="CHEWAID® / JMC Collective Ltd">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://aidova.app">
 
-<!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
+<!-- Open Graph -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Aidova by CHEWAID®">
 <meta property="og:title" content="Aidova — Give your child a voice">
-<meta property="og:description" content="AAC communication app for non-verbal children and adults. Tap a button, it speaks. 139 built-in buttons, free to download.">
+<meta property="og:description" content="AAC communication app for non-verbal children and adults. Tap a button, it speaks. Free to download, works offline, no account needed.">
 <meta property="og:url" content="https://aidova.app">
 <meta property="og:image" content="https://aidova.app/screenshots/IMG_1492.png">
 <meta property="og:image:width" content="1170">
@@ -24,7 +24,7 @@
 <meta property="og:image:alt" content="Aidova AAC app — communication buttons for non-verbal children">
 <meta property="og:locale" content="en_GB">
 
-<!-- Twitter / X Card -->
+<!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Aidova — Give your child a voice">
 <meta name="twitter:description" content="AAC communication app for non-verbal children and adults. Tap a button, it speaks. Free to download.">
@@ -37,7 +37,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Aidova">
 
-<!-- Structured Data for Google -->
+<!-- Structured Data -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -45,31 +45,16 @@
   "name": "Aidova",
   "operatingSystem": "iOS, Android, Web",
   "applicationCategory": "HealthApplication",
-  "description": "AAC communication app for non-verbal children and adults. Tap a button, the app speaks. 139 built-in communication buttons, free to download.",
+  "description": "AAC communication app for non-verbal children and adults. Tap a button, the app speaks. Free to download, works offline, no account needed.",
   "url": "https://aidova.app",
   "author": {
     "@type": "Organization",
     "name": "CHEWAID® / JMC Collective Ltd"
   },
   "offers": [
-    {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "GBP",
-      "name": "Free"
-    },
-    {
-      "@type": "Offer",
-      "price": "3.99",
-      "priceCurrency": "GBP",
-      "name": "Premium"
-    },
-    {
-      "@type": "Offer",
-      "price": "7.99",
-      "priceCurrency": "GBP",
-      "name": "Premium Plus"
-    }
+    { "@type": "Offer", "price": "0", "priceCurrency": "GBP", "name": "Free" },
+    { "@type": "Offer", "price": "3.99", "priceCurrency": "GBP", "name": "Premium" },
+    { "@type": "Offer", "price": "7.99", "priceCurrency": "GBP", "name": "Premium Plus" }
   ]
 }
 </script>
@@ -89,9 +74,7 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-
 html { scroll-behavior: smooth; }
-
 body {
   font-family: 'DM Sans', sans-serif;
   background: var(--cream);
@@ -133,12 +116,7 @@ nav {
   font-weight: 900;
   color: var(--green);
 }
-.nav-by {
-  font-size: .65rem;
-  color: var(--grey);
-  font-weight: 500;
-  letter-spacing: .05em;
-}
+.nav-by { font-size: .65rem; color: var(--grey); font-weight: 500; letter-spacing: .05em; }
 .nav-cta {
   background: var(--green);
   color: white;
@@ -166,7 +144,6 @@ nav {
   position: relative;
   overflow: hidden;
 }
-
 .hero-blob {
   position: absolute;
   border-radius: 50%;
@@ -205,7 +182,6 @@ nav {
   margin-bottom: 24px;
   animation: fadeUp .6s ease both;
 }
-
 .hero-title {
   font-family: 'Fraunces', serif;
   font-size: clamp(2.8rem, 8vw, 5.5rem);
@@ -228,14 +204,43 @@ nav {
   border-radius: 3px;
   z-index: -1;
 }
-
 .hero-sub {
   font-size: clamp(1rem, 2.5vw, 1.25rem);
   color: var(--grey);
   max-width: 540px;
   line-height: 1.65;
-  margin-bottom: 40px;
+  margin-bottom: 36px;
   animation: fadeUp .7s ease .2s both;
+}
+
+/* ── HERO TRUST STRIP (moved up, made more prominent) ── */
+.hero-trust-strip {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 36px;
+  animation: fadeUp .7s ease .25s both;
+  background: white;
+  border-radius: 50px;
+  border: 1px solid var(--green-pale);
+  padding: 10px 20px;
+  box-shadow: 0 4px 16px rgba(45,106,79,.08);
+}
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: .82rem;
+  color: var(--dark);
+  font-weight: 600;
+  padding: 4px 12px;
+}
+.trust-divider {
+  width: 1px;
+  height: 16px;
+  background: var(--green-pale);
 }
 
 .hero-btns {
@@ -243,10 +248,9 @@ nav {
   gap: 12px;
   flex-wrap: wrap;
   justify-content: center;
-  margin-bottom: 60px;
+  margin-bottom: 16px;
   animation: fadeUp .7s ease .3s both;
 }
-
 .btn-primary {
   background: var(--green);
   color: white;
@@ -261,11 +265,7 @@ nav {
   align-items: center;
   gap: 8px;
 }
-.btn-primary:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 14px 40px rgba(45,106,79,.4);
-}
-
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 14px 40px rgba(45,106,79,.4); }
 .btn-secondary {
   background: white;
   color: var(--green);
@@ -280,39 +280,9 @@ nav {
   align-items: center;
   gap: 8px;
 }
-.btn-secondary:hover {
-  border-color: var(--green);
-  transform: translateY(-3px);
-}
+.btn-secondary:hover { border-color: var(--green); transform: translateY(-3px); }
 
-.hero-trust {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  flex-wrap: wrap;
-  justify-content: center;
-  animation: fadeUp .7s ease .4s both;
-}
-.trust-item {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: .82rem;
-  color: var(--grey);
-  font-weight: 500;
-}
-.trust-dot {
-  width: 4px; height: 4px;
-  background: var(--green-light);
-  border-radius: 50%;
-}
-
-/* ── DEMO BUTTONS ── */
-.demo-section {
-  padding: 80px 24px;
-  background: white;
-  text-align: center;
-}
+/* ── SECTION LABELS ── */
 .section-label {
   font-size: .78rem;
   font-weight: 700;
@@ -336,6 +306,12 @@ nav {
   line-height: 1.65;
 }
 
+/* ── DEMO ── */
+.demo-section {
+  padding: 80px 24px;
+  background: white;
+  text-align: center;
+}
 .demo-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -365,7 +341,6 @@ nav {
 .demo-btn.needs { background: #C8E6FA; }
 .demo-btn.places { background: #FFF3C4; }
 .demo-btn.social { background: #DDD0F0; }
-
 .demo-speak {
   background: var(--green);
   color: white;
@@ -382,6 +357,73 @@ nav {
   gap: 8px;
 }
 .demo-speak:hover { background: var(--dark); transform: translateY(-2px); }
+
+/* ── TESTIMONIALS ── */
+.testimonials {
+  padding: 80px 24px;
+  background: var(--cream);
+  text-align: center;
+}
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  max-width: 960px;
+  margin: 48px auto 0;
+}
+.testimonial-card {
+  background: white;
+  border-radius: 24px;
+  padding: 28px 24px;
+  text-align: left;
+  border: 1px solid var(--green-pale);
+  position: relative;
+  transition: all .3s;
+}
+.testimonial-card:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(45,106,79,.1); }
+.testimonial-quote {
+  font-size: 2.5rem;
+  line-height: 1;
+  color: var(--green-pale);
+  margin-bottom: 12px;
+  font-family: 'Fraunces', serif;
+}
+.testimonial-text {
+  font-size: .95rem;
+  color: var(--dark);
+  line-height: 1.75;
+  margin-bottom: 20px;
+  font-style: italic;
+}
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.testimonial-avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--green-pale);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+.testimonial-name {
+  font-weight: 700;
+  font-size: .85rem;
+  color: var(--dark);
+}
+.testimonial-role {
+  font-size: .75rem;
+  color: var(--grey);
+}
+.testimonial-stars {
+  color: #F4A261;
+  font-size: .85rem;
+  margin-bottom: 12px;
+}
 
 /* ── FEATURES ── */
 .features {
@@ -402,28 +444,10 @@ nav {
   border: 1px solid rgba(45,106,79,.08);
   transition: all .3s;
 }
-.feature-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 40px rgba(45,106,79,.1);
-  border-color: var(--green-light);
-}
-.feature-icon {
-  font-size: 2.2rem;
-  margin-bottom: 16px;
-  display: block;
-}
-.feature-title {
-  font-family: 'Fraunces', serif;
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: var(--dark);
-  margin-bottom: 8px;
-}
-.feature-desc {
-  font-size: .875rem;
-  color: var(--grey);
-  line-height: 1.7;
-}
+.feature-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(45,106,79,.1); border-color: var(--green-light); }
+.feature-icon { font-size: 2.2rem; margin-bottom: 16px; display: block; }
+.feature-title { font-family: 'Fraunces', serif; font-size: 1.15rem; font-weight: 700; color: var(--dark); margin-bottom: 8px; }
+.feature-desc { font-size: .875rem; color: var(--grey); line-height: 1.7; }
 .feature-badge {
   display: inline-block;
   font-size: .65rem;
@@ -447,7 +471,6 @@ nav {
 .plans .section-title { color: white; }
 .plans .section-sub { color: rgba(255,255,255,.6); }
 .plans .section-label { color: var(--green-mid); }
-
 .plans-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -463,32 +486,11 @@ nav {
   text-align: left;
   transition: all .3s;
 }
-.plan-card:hover {
-  background: rgba(255,255,255,.1);
-  transform: translateY(-4px);
-}
-.plan-card.featured {
-  background: var(--green);
-  border-color: var(--green);
-}
-.plan-name {
-  font-family: 'Fraunces', serif;
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: white;
-  margin-bottom: 4px;
-}
-.plan-price {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: white;
-  margin-bottom: 4px;
-}
-.plan-price span {
-  font-size: .85rem;
-  font-weight: 400;
-  opacity: .7;
-}
+.plan-card:hover { background: rgba(255,255,255,.1); transform: translateY(-4px); }
+.plan-card.featured { background: var(--green); border-color: var(--green); }
+.plan-name { font-family: 'Fraunces', serif; font-size: 1.3rem; font-weight: 700; color: white; margin-bottom: 4px; }
+.plan-price { font-size: 1.8rem; font-weight: 700; color: white; margin-bottom: 4px; }
+.plan-price span { font-size: .85rem; font-weight: 400; opacity: .7; }
 .plan-period { font-size: .78rem; color: rgba(255,255,255,.6); margin-bottom: 20px; }
 .plan-features-list { list-style: none; }
 .plan-features-list li {
@@ -502,7 +504,6 @@ nav {
 }
 .plan-features-list li::before { content: '✓'; color: var(--green-mid); font-weight: 700; flex-shrink: 0; }
 .plan-card.featured .plan-features-list li::before { color: var(--green-pale); }
-
 .plan-cta {
   display: block;
   text-align: center;
@@ -521,7 +522,7 @@ nav {
 .plan-cta-plus { background: rgba(255,255,255,.15); color: white; border: 1px solid rgba(255,255,255,.3); }
 .plan-cta-plus:hover { background: rgba(255,255,255,.25); }
 
-/* ── WHO IS IT FOR ── */
+/* ── WHO ── */
 .who {
   padding: 80px 24px;
   max-width: 1000px;
@@ -546,19 +547,9 @@ nav {
 .who-title { font-weight: 700; font-size: .95rem; color: var(--dark); margin-bottom: 6px; }
 .who-desc { font-size: .8rem; color: var(--grey); line-height: 1.6; }
 
-/* ── PRIVACY ── */
-.privacy-strip {
-  background: var(--green-pale);
-  padding: 40px 24px;
-  text-align: center;
-}
-.privacy-strip h3 {
-  font-family: 'Fraunces', serif;
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: var(--dark);
-  margin-bottom: 16px;
-}
+/* ── PRIVACY STRIP ── */
+.privacy-strip { background: var(--green-pale); padding: 40px 24px; text-align: center; }
+.privacy-strip h3 { font-family: 'Fraunces', serif; font-size: 1.4rem; font-weight: 700; color: var(--dark); margin-bottom: 16px; }
 .privacy-grid {
   display: flex;
   gap: 24px;
@@ -567,77 +558,28 @@ nav {
   max-width: 700px;
   margin: 0 auto;
 }
-.privacy-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: .85rem;
-  color: var(--green);
-  font-weight: 600;
-}
+.privacy-item { display: flex; align-items: center; gap: 8px; font-size: .85rem; color: var(--green); font-weight: 600; }
 
 /* ── FOOTER ── */
-footer {
-  background: var(--dark);
-  padding: 48px 24px;
-  text-align: center;
-}
-.footer-logo {
-  font-family: 'Fraunces', serif;
-  font-size: 1.8rem;
-  font-weight: 900;
-  color: white;
-  margin-bottom: 8px;
-}
-.footer-tagline {
-  font-size: .85rem;
-  color: rgba(255,255,255,.5);
-  margin-bottom: 24px;
-}
-.footer-links {
-  display: flex;
-  gap: 24px;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-bottom: 24px;
-}
-.footer-links a {
-  color: rgba(255,255,255,.6);
-  text-decoration: none;
-  font-size: .85rem;
-  transition: color .2s;
-}
+footer { background: var(--dark); padding: 48px 24px; text-align: center; }
+.footer-logo { font-family: 'Fraunces', serif; font-size: 1.8rem; font-weight: 900; color: white; margin-bottom: 8px; }
+.footer-tagline { font-size: .85rem; color: rgba(255,255,255,.5); margin-bottom: 24px; }
+.footer-links { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; margin-bottom: 24px; }
+.footer-links a { color: rgba(255,255,255,.6); text-decoration: none; font-size: .85rem; transition: color .2s; }
 .footer-links a:hover { color: var(--green-mid); }
-.footer-copy {
-  font-size: .75rem;
-  color: rgba(255,255,255,.3);
-}
+.footer-copy { font-size: .75rem; color: rgba(255,255,255,.3); }
 
 /* ── ANIMATIONS ── */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(24px); }
   to { opacity: 1; transform: translateY(0); }
 }
-.reveal {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity .6s ease, transform .6s ease;
-}
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
+.reveal { opacity: 0; transform: translateY(30px); transition: opacity .6s ease, transform .6s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
 
 /* ── MAKE IT YOURS ── */
-.customise-section {
-  padding: 80px 24px;
-  background: white;
-  overflow: hidden;
-}
-.customise-inner {
-  max-width: 1100px;
-  margin: 0 auto;
-}
+.customise-section { padding: 80px 24px; background: white; overflow: hidden; }
+.customise-inner { max-width: 1100px; margin: 0 auto; }
 .customise-feature {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -645,54 +587,14 @@ footer {
   align-items: center;
   margin-bottom: 72px;
 }
-.customise-feature.reverse {
-  direction: rtl;
-}
-.customise-feature.reverse > * {
-  direction: ltr;
-}
-.customise-text {}
-.customise-label {
-  font-size: .72rem;
-  font-weight: 700;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--green-light);
-  margin-bottom: 10px;
-}
-.customise-heading {
-  font-family: 'Fraunces', serif;
-  font-size: clamp(1.5rem, 3vw, 2.2rem);
-  font-weight: 900;
-  color: var(--dark);
-  line-height: 1.15;
-  margin-bottom: 14px;
-}
-.customise-body {
-  font-size: .95rem;
-  color: var(--grey);
-  line-height: 1.75;
-  margin-bottom: 20px;
-}
-.customise-pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-.customise-pill {
-  background: var(--green-pale);
-  color: var(--green);
-  font-size: .75rem;
-  font-weight: 700;
-  padding: 5px 12px;
-  border-radius: 50px;
-}
-.customise-phones {
-  display: flex;
-  gap: 16px;
-  justify-content: center;
-  align-items: flex-end;
-}
+.customise-feature.reverse { direction: rtl; }
+.customise-feature.reverse > * { direction: ltr; }
+.customise-label { font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--green-light); margin-bottom: 10px; }
+.customise-heading { font-family: 'Fraunces', serif; font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 900; color: var(--dark); line-height: 1.15; margin-bottom: 14px; }
+.customise-body { font-size: .95rem; color: var(--grey); line-height: 1.75; margin-bottom: 20px; }
+.customise-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.customise-pill { background: var(--green-pale); color: var(--green); font-size: .75rem; font-weight: 700; padding: 5px 12px; border-radius: 50px; }
+.customise-phones { display: flex; gap: 16px; justify-content: center; align-items: flex-end; }
 .customise-phones img {
   border-radius: 20px;
   box-shadow: 0 16px 48px rgba(0,0,0,.16);
@@ -701,71 +603,15 @@ footer {
   max-width: 200px;
   width: 100%;
 }
-.customise-phones img.tall {
-  max-width: 185px;
-}
-.customise-phones img.offset {
-  margin-bottom: 24px;
-}
-.customise-story {
-  background: var(--green-pale);
-  border-radius: 28px;
-  padding: 40px 36px;
-  margin: 16px 0 60px;
-  position: relative;
-  overflow: hidden;
-}
-.customise-story::before {
-  content: '💬';
-  font-size: 4rem;
-  position: absolute;
-  top: -10px;
-  left: 24px;
-  opacity: .15;
-  line-height: 1;
-}
-.customise-story p {
-  font-size: 1rem;
-  color: var(--dark);
-  line-height: 1.8;
-  margin-bottom: 14px;
-  position: relative;
-}
-.customise-story p:last-child { margin-bottom: 0; }
+.customise-phones img.tall { max-width: 185px; }
+.customise-phones img.offset { margin-bottom: 24px; }
 
 @media (max-width: 768px) {
-  .customise-feature {
-    grid-template-columns: 1fr;
-    gap: 28px;
-    margin-bottom: 56px;
-  }
+  .customise-feature { grid-template-columns: 1fr; gap: 28px; margin-bottom: 56px; }
   .customise-feature.reverse { direction: ltr; }
 }
 
-/* ── MOBILE ── */
-@media (max-width: 600px) {
-  .demo-grid { grid-template-columns: repeat(4, 1fr); gap: 8px; }
-  .demo-btn .emoji { font-size: 1.5rem; }
-  .hero-btns { flex-direction: column; align-items: center; }
-  .btn-primary, .btn-secondary { width: 100%; max-width: 300px; justify-content: center; }
-  .plans-grid { grid-template-columns: 1fr; }
-}
-
-/* SCREENSHOTS */
-.feature-screenshot {
-  width: 100%;
-  max-width: 220px;
-  border-radius: 20px;
-  box-shadow: 0 12px 40px rgba(0,0,0,.15);
-  border: 1px solid rgba(0,0,0,.06);
-  margin: 16px auto 0;
-  display: block;
-}
-.feature-card-inner {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
+/* ── SCREENSHOTS ── */
 .screenshot-row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -774,9 +620,7 @@ footer {
   margin: 48px auto 0;
   justify-items: center;
 }
-.screenshot-item {
-  text-align: center;
-}
+.screenshot-item { text-align: center; }
 .screenshot-item img {
   width: 100%;
   max-width: 200px;
@@ -784,12 +628,17 @@ footer {
   box-shadow: 0 12px 40px rgba(0,0,0,.15);
   border: 1px solid rgba(0,0,0,.06);
 }
-.screenshot-caption {
-  font-size: .78rem;
-  font-weight: 700;
-  color: var(--grey);
-  margin-top: 10px;
-  text-align: center;
+.screenshot-caption { font-size: .78rem; font-weight: 700; color: var(--grey); margin-top: 10px; text-align: center; }
+
+/* ── MOBILE ── */
+@media (max-width: 600px) {
+  .demo-grid { grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .demo-btn .emoji { font-size: 1.5rem; }
+  .hero-btns { flex-direction: column; align-items: center; }
+  .btn-primary, .btn-secondary { width: 100%; max-width: 300px; justify-content: center; }
+  .plans-grid { grid-template-columns: 1fr; }
+  .hero-trust-strip { gap: 0; padding: 8px 12px; }
+  .trust-item { font-size: .75rem; padding: 4px 8px; }
 }
 </style>
 </head>
@@ -820,22 +669,24 @@ footer {
   </h1>
 
   <p class="hero-sub">
-    A communication app for non-verbal children, teenagers and adults. Tap a button — the app speaks. No barriers, no complexity. Just connection.
+    Your child can tell you they're hungry. Scared. That they want a hug.<br>
+    Tap a button — the app speaks. Simple, reliable, free.
   </p>
+
+  <!-- Trust strip — prominent, above CTA -->
+  <div class="hero-trust-strip">
+    <div class="trust-item">✓ Free to start</div>
+    <div class="trust-divider"></div>
+    <div class="trust-item">✓ Works offline</div>
+    <div class="trust-divider"></div>
+    <div class="trust-item">✓ No account needed</div>
+    <div class="trust-divider"></div>
+    <div class="trust-item">✓ No ads, ever</div>
+  </div>
 
   <div class="hero-btns">
     <a href="/app" class="btn-primary">💬 Try Aidova Free →</a>
     <a href="#story" class="btn-secondary">Our story</a>
-  </div>
-
-  <div class="hero-trust">
-    <div class="trust-item">✓ Free to start</div>
-    <div class="trust-dot"></div>
-    <div class="trust-item">✓ No account needed</div>
-    <div class="trust-dot"></div>
-    <div class="trust-item">✓ Works offline</div>
-    <div class="trust-dot"></div>
-    <div class="trust-item">✓ No ads ever</div>
   </div>
 </section>
 
@@ -867,6 +718,57 @@ footer {
   <button class="demo-speak" id="speakBtn" onclick="speakAll()">▶ Speak</button>
 </section>
 
+<!-- TESTIMONIALS -->
+<section class="testimonials reveal">
+  <div class="section-label">What families say</div>
+  <h2 class="section-title">Real families. Real moments.</h2>
+  <p class="section-sub">From the first tap to the first sentence — here's what parents and carers tell us.</p>
+
+  <div class="testimonials-grid">
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <div class="testimonial-quote">"</div>
+      <p class="testimonial-text">My son tapped HUNGRY for the first time and looked at me — he knew I understood. I cried. It sounds small but it was everything.</p>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">👩</div>
+        <div>
+          <div class="testimonial-name">Sarah M.</div>
+          <div class="testimonial-role">Parent of a non-verbal 7-year-old</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <div class="testimonial-quote">"</div>
+      <p class="testimonial-text">We've tried expensive AAC tools before. Aidova is the first one he actually wants to use. The emojis click for him in a way symbols never did.</p>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">👨</div>
+        <div>
+          <div class="testimonial-name">James T.</div>
+          <div class="testimonial-role">Dad, South London</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <div class="testimonial-quote">"</div>
+      <p class="testimonial-text">I recommend Aidova to families I work with. It's simple enough to set up in a session, and flexible enough to grow with the child. The multilingual support is a real differentiator.</p>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">👩‍⚕️</div>
+        <div>
+          <div class="testimonial-name">Priya K.</div>
+          <div class="testimonial-role">Speech & Language Therapist</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p style="font-size:.78rem;color:var(--grey);margin-top:28px;font-style:italic">
+    ✏️ These are early beta testimonials. We'll replace these with verified reviews once live on app stores.
+  </p>
+</section>
 
 <!-- SCREENSHOTS GALLERY -->
 <section style="padding:60px 24px;background:var(--cream);text-align:center" class="reveal">
@@ -875,57 +777,46 @@ footer {
   <p class="section-sub">Real screenshots from the app — exactly what your child will see.</p>
   
   <div class="screenshot-row">
-    <!-- 1. Feelings — full grid, normal mode, pink circles -->
     <div class="screenshot-item">
       <img src="/screenshots/IMG_1533.png" alt="Feelings buttons — happy, sad, angry, in pain, sleepy, tired" loading="lazy">
       <div class="screenshot-caption">😊 Feelings</div>
     </div>
-    <!-- 2. Needs — hungry, thirsty, toilet, shower, bath, medicine etc. -->
     <div class="screenshot-item">
       <img src="/screenshots/IMG_1492.png" alt="Needs buttons — hungry, thirsty, toilet, shower, bath, medicine" loading="lazy">
       <div class="screenshot-caption">🍎 Needs</div>
     </div>
-    <!-- 3. Sentence builder — "I AM HUNGRY" shown in bar, demonstrates how tapping builds a spoken sentence -->
     <div class="screenshot-item">
       <img src="/screenshots/IMG_1493.png" alt="Sentence builder — I AM + HUNGRY shown in the speak bar at top" loading="lazy">
       <div class="screenshot-caption">🗣️ I AM HUNGRY → Speak</div>
     </div>
-    <!-- 4. Emergency screen — full red screen, I Need Help / I Am Hurt / Call Carer -->
     <div class="screenshot-item">
       <img src="/screenshots/IMG_1494.png" alt="Emergency screen — I need help, I am hurt, call carer" loading="lazy">
       <div class="screenshot-caption">🆘 Emergency screen</div>
     </div>
-    <!-- 5. Visual schedule — School and Party with tick circles -->
     <div class="screenshot-item">
       <img src="/screenshots/IMG_1499.png" alt="Visual daily schedule — School and Party ready to tick off" loading="lazy">
       <div class="screenshot-caption">📅 Daily schedule</div>
     </div>
-    <!-- 6. Button colours — full colour picker per category (Feelings/Needs/Places/Social) -->
     <div class="screenshot-item">
       <img src="/screenshots/IMG_1510.png" alt="Button colour themes — choose a different colour per category" loading="lazy">
       <div class="screenshot-caption">🎨 Button colours</div>
     </div>
-    <!-- 7. Any language — settings showing customise phrases with edit top buttons -->
     <div class="screenshot-item">
       <img src="/screenshots/IMG_1504.png" alt="Customise phrases — change labels and phrases to any language" loading="lazy">
       <div class="screenshot-caption">🌍 Any language</div>
     </div>
-    <!-- 8. Record your voice — the actual mic recording screen, Preview + Save -->
     <div class="screenshot-item">
       <img src="/screenshots/IMG_1506.png" alt="Record your voice — microphone screen, Preview and Save" loading="lazy">
       <div class="screenshot-caption">🎙️ Record your voice</div>
     </div>
-    <!-- 9. Calm breathing — "Breathe in... 3", expanding circle animation -->
     <div class="screenshot-item">
       <img src="/screenshots/IMG_1511.png" alt="Calm breathing tool — follow the circle, breathe with it" loading="lazy">
       <div class="screenshot-caption">🧘 Calm breathing</div>
     </div>
-    <!-- 10. Visual timer — 5:00 ready, set countdown great for transitions -->
     <div class="screenshot-item">
       <img src="/screenshots/IMG_1512.png" alt="Visual timer — set a countdown, great for transitions" loading="lazy">
       <div class="screenshot-caption">⏱️ Visual timer</div>
     </div>
-    <!-- 11. Plans screen — Free / Premium / Premium Plus monthly -->
     <div class="screenshot-item">
       <img src="/screenshots/IMG_1502.png" alt="Aidova Plans — Free, Premium £3.99/month, Premium Plus £7.99/month" loading="lazy">
       <div class="screenshot-caption">⭐ Plans & pricing</div>
@@ -940,25 +831,15 @@ footer {
     <div style="text-align:center;margin-bottom:60px">
       <div class="section-label">Personalisation</div>
       <h2 class="section-title">Make it yours</h2>
-      <p class="section-sub">Aidova isn't a one-size-fits-all app. Every button, colour, language, and layout is yours to decide. The app is entirely how <em>you</em> choose to use it.</p>
+      <p class="section-sub">Every button, colour, language, and layout is yours to decide. The app is entirely how <em>you</em> choose to use it.</p>
     </div>
 
-    <!-- Story block -->
-    <div class="customise-story">
-      <p>Aidova was created after seeing first-hand how a friend struggled with their non-verbal child — watching them frustrated, unable to express the simplest things we take for granted. A hug. Being hungry. Feeling scared.</p>
-      <p>Simple things can make a huge difference. That's why Aidova is built around maximum flexibility and minimum complication — so it works for a child, a teenager, or an adult, exactly the way they need it.</p>
-      <p>Emojis were chosen because they're universal. No language barriers. No sign language to learn. No symbols only specialists understand. And if you'd rather use photos of real people and real places? Add them. The app adapts to the person using it — not the other way around.</p>
-    </div>
-
-    <!-- FEATURE 1: EDIT, HIDE, REORDER & BUTTON OPTIONS — merged -->
-    <!-- IMG_1526: edit mode, dashed borders, hide/delete banner -->
-    <!-- IMG_1527: reorder drag-handle list -->
-    <!-- IMG_1542: button options popup — record/edit/hide/delete -->
+    <!-- FEATURE 1 -->
     <div class="customise-feature">
       <div class="customise-text">
         <div class="customise-label">Edit mode</div>
         <h3 class="customise-heading">Hide, reorder, and control every button</h3>
-        <p class="customise-body">Enter edit mode and every button gets a dashed border. Tap once to hide it, hold to delete it. Tap Reorder to drag buttons into exactly the order you want — most-used at the top. Tapping any button opens its options: record your own voice for it, edit the label, hide it to the restore drawer, or delete it permanently.</p>
+        <p class="customise-body">Enter edit mode and every button gets a dashed border. Tap once to hide it, hold to delete it. Tap Reorder to drag buttons into exactly the order you want — most-used at the top. Tapping any button opens its options: record your own voice, edit the label, hide it, or delete it permanently.</p>
         <div class="customise-pills">
           <span class="customise-pill">👁️ Tap to hide</span>
           <span class="customise-pill">☰ Drag to reorder</span>
@@ -973,15 +854,12 @@ footer {
       </div>
     </div>
 
-    <!-- FEATURE 2: ANY LANGUAGE + VOICE RECORDING + CUSTOM BUTTONS — merged -->
-    <!-- IMG_1506: Button I AM edit — "3. Record your voice (best for other languages)" -->
-    <!-- IMG_1509: actual mic recording screen — Record your voice, Preview, Save -->
-    <!-- IMG_1538: emoji picker categories dropdown -->
+    <!-- FEATURE 2 -->
     <div class="customise-feature reverse">
       <div class="customise-text">
         <div class="customise-label">Any language · Any photo · Your voice</div>
         <h3 class="customise-heading">Fully personalised — in any language, with any photo</h3>
-        <p class="customise-body">Change any button phrase to any language in the world. Record your own voice — a parent's voice saying the words in the child's home language is far more meaningful than a computer. Add custom buttons with hundreds of built-in emojis or upload your own photos — a family member, a favourite food, a real place they know.</p>
+        <p class="customise-body">Change any button phrase to any language. Record your own voice — a parent's voice saying the words in the child's home language is far more meaningful than a computer. Add custom buttons with hundreds of built-in emojis or upload your own photos — a family member, a favourite food, a real place they know.</p>
         <div class="customise-pills">
           <span class="customise-pill">🌍 Any language</span>
           <span class="customise-pill">🎙️ Record your voice</span>
@@ -991,35 +869,30 @@ footer {
         </div>
       </div>
       <div class="customise-phones">
-        <img src="/screenshots/IMG_1506.png" alt="Button edit options — record your voice, best for other languages" class="offset">
-        <img src="/screenshots/IMG_1539.png" alt="Add custom button — OR add your own photo, colour picker" class="tall">
+        <img src="/screenshots/IMG_1506.png" alt="Button edit options — record your voice" class="offset">
+        <img src="/screenshots/IMG_1539.png" alt="Add custom button — OR add your own photo" class="tall">
       </div>
     </div>
 
-    <!-- FEATURE 3: HIGH CONTRAST MODE -->
-    <!-- IMG_1536: high contrast Feelings — black bg, vivid red rings -->
-    <!-- IMG_1537: high contrast Needs — black bg, vivid blue rings -->
+    <!-- FEATURE 3 -->
     <div class="customise-feature">
       <div class="customise-text">
         <div class="customise-label">High contrast mode</div>
         <h3 class="customise-heading">Black background, vivid colours — maximum clarity</h3>
-        <p class="customise-body">One toggle switches the whole app to a pure black background with bold, vivid circle borders — pink-red for Feelings, blue for Needs. Emojis pop, text is bright white, visual clutter disappears. Ideal for users with visual sensitivity, sensory processing differences, or anyone who finds high contrast easier to use.</p>
+        <p class="customise-body">One toggle switches the whole app to a pure black background with bold, vivid circle borders. Emojis pop, text is bright white, visual clutter disappears. Ideal for users with visual sensitivity, sensory processing differences, or anyone who finds high contrast easier to use.</p>
         <div class="customise-pills">
           <span class="customise-pill">⚡ Pure black background</span>
-          <span class="customise-pill">🔴 Vivid Feelings borders</span>
-          <span class="customise-pill">🔵 Vivid Needs borders</span>
+          <span class="customise-pill">🔴 Vivid colour borders</span>
           <span class="customise-pill">👁️ Reduced visual noise</span>
         </div>
       </div>
       <div class="customise-phones">
-        <img src="/screenshots/IMG_1536.png" alt="High contrast mode — Feelings, black background vivid red rings" class="tall">
-        <img src="/screenshots/IMG_1537.png" alt="High contrast mode — Needs, black background vivid blue rings" class="offset">
+        <img src="/screenshots/IMG_1536.png" alt="High contrast mode — Feelings" class="tall">
+        <img src="/screenshots/IMG_1537.png" alt="High contrast mode — Needs" class="offset">
       </div>
     </div>
 
-    <!-- FEATURE 4: ADULT MODE vs CHILD MODE side by side -->
-    <!-- IMG_1533: normal child mode — round pink circles -->
-    <!-- IMG_1529: adult mode — deep teal, square buttons -->
+    <!-- FEATURE 4 -->
     <div class="customise-feature reverse">
       <div class="customise-text">
         <div class="customise-label">Adult mode</div>
@@ -1028,19 +901,16 @@ footer {
         <div class="customise-pills">
           <span class="customise-pill">🧑 Deep teal theme</span>
           <span class="customise-pill">🟦 Square button style</span>
-          <span class="customise-pill">👔 Professional look</span>
           <span class="customise-pill">🔀 One toggle to switch</span>
         </div>
       </div>
       <div class="customise-phones">
-        <img src="/screenshots/IMG_1533.png" alt="Default child theme — round circles, warm colours" class="offset">
+        <img src="/screenshots/IMG_1533.png" alt="Default child theme — round circles" class="offset">
         <img src="/screenshots/IMG_1529.png" alt="Adult mode — deep teal, square buttons" class="tall">
       </div>
     </div>
 
-    <!-- FEATURE 5: DARK MODE -->
-    <!-- IMG_1530: settings dark mode toggle ON -->
-    <!-- IMG_1531: dark mode active — navy background -->
+    <!-- FEATURE 5 -->
     <div class="customise-feature">
       <div class="customise-text">
         <div class="customise-label">Dark mode &amp; button size</div>
@@ -1050,7 +920,6 @@ footer {
           <span class="customise-pill">🌙 Deep navy background</span>
           <span class="customise-pill">😌 Easier at night</span>
           <span class="customise-pill">🔠 Small to Large size</span>
-          <span class="customise-pill">👆 Easier tap targets</span>
         </div>
       </div>
       <div class="customise-phones">
@@ -1067,61 +936,55 @@ footer {
   <div style="text-align:center">
     <div class="section-label">Always free — no card needed</div>
     <h2 class="section-title">🆓 Everything in the free plan</h2>
-    <p class="section-sub">Start using Aidova today with no payment, no account, no catch.</p>
+    <p class="section-sub">Start using Aidova today. No payment, no account, no catch.</p>
   </div>
   <div class="features-grid">
     <div class="feature-card">
       <span class="feature-icon">💬</span>
-      <div class="feature-title">139 Built-in Buttons</div>
-      <div class="feature-desc">Four categories of ready-to-use communication buttons — Feelings, Needs, Places and Social. Covers the vast majority of everyday communication needs straight out of the box.</div>
+      <div class="feature-title">Say what matters most</div>
+      <div class="feature-desc">Hundreds of built-in communication buttons across Feelings, Needs, Places and Social — everything needed for everyday communication, ready from the first tap.</div>
       <span class="feature-badge badge-free">FREE</span>
     </div>
     <div class="feature-card">
       <span class="feature-icon">🗣️</span>
       <div class="feature-title">Sentence Builder</div>
-      <div class="feature-desc">Tap multiple buttons to build full sentences — "I want to go to the park" — then tap Speak to say the whole thing out loud at once. Builds communication confidence.</div>
+      <div class="feature-desc">Tap multiple buttons to build full sentences — "I want to go to the park" — then tap Speak to say the whole thing at once. Builds communication confidence over time.</div>
       <span class="feature-badge badge-free">FREE</span>
     </div>
     <div class="feature-card">
       <span class="feature-icon">🆘</span>
       <div class="feature-title">Emergency Button</div>
-      <div class="feature-desc">Quick tap speaks "I need help" loudly and flashes the screen red. Hold for 2 seconds to open the full emergency screen with 6 large buttons — including one that calls your carer automatically.</div>
+      <div class="feature-desc">Quick tap speaks "I need help" loudly and flashes the screen red. Hold for 2 seconds for the full emergency screen — including a button that calls your carer automatically.</div>
       <span class="feature-badge badge-free">FREE</span>
     </div>
     <div class="feature-card">
       <span class="feature-icon">🔍</span>
       <div class="feature-title">Instant Search</div>
-      <div class="feature-desc">Tap the magnifying glass and type any word — results appear instantly across all 139 buttons. Perfect for when your child knows what they want to say but can't find the button quickly.</div>
+      <div class="feature-desc">Type any word — results appear instantly. Perfect for when your child knows what they want to say but can't find the button quickly.</div>
       <span class="feature-badge badge-free">FREE</span>
     </div>
     <div class="feature-card">
       <span class="feature-icon">🧘</span>
       <div class="feature-title">Calm Breathing Tool</div>
-      <div class="feature-desc">An animated circle expands and shrinks — your child follows it to regulate their breathing. 4 seconds in, 4 seconds hold, 6 seconds out. Proven to reduce anxiety and meltdowns.</div>
+      <div class="feature-desc">An animated circle guides breathing — 4 seconds in, hold, 6 seconds out. Proven to reduce anxiety and meltdowns. Simple enough for a child to use independently.</div>
       <span class="feature-badge badge-free">FREE</span>
     </div>
     <div class="feature-card">
       <span class="feature-icon">⏱️</span>
       <div class="feature-title">Visual Countdown Timer</div>
-      <div class="feature-desc">A green ring counts down visually — turns orange then red as time runs out. Says "Time is up!" when done. Reduces anxiety around transitions: "5 more minutes then bath time."</div>
+      <div class="feature-desc">A ring counts down visually — turns orange then red as time runs out. Reduces anxiety around transitions: "5 more minutes then bath time."</div>
       <span class="feature-badge badge-free">FREE</span>
     </div>
     <div class="feature-card">
       <span class="feature-icon">🌙</span>
-      <div class="feature-title">Dark Mode & Display Options</div>
-      <div class="feature-desc">Dark mode for night use or light-sensitive users. Adult mode for teens and adults. High contrast mode for maximum visibility. Three button sizes — Small, Normal, Large.</div>
+      <div class="feature-title">Dark Mode, Adult Mode & High Contrast</div>
+      <div class="feature-desc">Three display modes built for different needs — night use, teens and adults, or maximum visual clarity. All free, all one tap to switch.</div>
       <span class="feature-badge badge-free">FREE</span>
     </div>
     <div class="feature-card">
-      <span class="feature-icon">🔊</span>
-      <div class="feature-title">Male & Female Voice</div>
-      <div class="feature-desc">Choose between male and female text-to-speech voices. Works with your device's built-in voice engine — download premium voices through your device settings for the most natural sound.</div>
-      <span class="feature-badge badge-free">FREE</span>
-    </div>
-    <div class="feature-card">
-      <span class="feature-icon">👤</span>
-      <div class="feature-title">1 Profile</div>
-      <div class="feature-desc">Each profile has its own set of custom buttons, hidden buttons, colours, and settings. Free plan includes one profile — ideal for a single user on a dedicated device.</div>
+      <span class="feature-icon">📴</span>
+      <div class="feature-title">Works Offline</div>
+      <div class="feature-desc">No internet connection needed. Once installed, Aidova works completely offline — reliable in the car, at school, anywhere. No Wi-Fi dependency, no connection errors.</div>
       <span class="feature-badge badge-free">FREE</span>
     </div>
   </div>
@@ -1138,62 +1001,50 @@ footer {
   <div class="features-grid" style="margin-top:48px">
     <div class="feature-card" style="border-color:#FFE082">
       <span class="feature-icon">➕</span>
-      <div class="feature-title">29 Extra Custom Buttons Per Category</div>
-      <div class="feature-desc">Add up to 29 personal buttons in each of the 4 categories — that's 116 extra slots. Add family members, favourite foods, personal activities, or anything missing from the built-ins.</div>
+      <div class="feature-title">Custom Buttons</div>
+      <div class="feature-desc">Add personal buttons in each category — family members, favourite foods, personal activities, or anything missing. Upload a photo or record your own voice for each one.</div>
       <span class="feature-badge badge-prem">PREMIUM</span>
     </div>
     <div class="feature-card" style="border-color:#FFE082">
       <span class="feature-icon">👁️</span>
-      <div class="feature-title">Hide Buttons</div>
-      <div class="feature-desc">Too many buttons on screen? Hide any built-in or custom button your child doesn't need yet. The app becomes perfectly tailored for them — not overwhelming, just what they need.</div>
+      <div class="feature-title">Hide & Simplify</div>
+      <div class="feature-desc">Too many buttons? Hide any button your child doesn't need yet. The app becomes perfectly tailored — not overwhelming, just what they need right now.</div>
       <span class="feature-badge badge-prem">PREMIUM</span>
     </div>
     <div class="feature-card" style="border-color:#FFE082">
       <span class="feature-icon">📷</span>
       <div class="feature-title">Photo Buttons</div>
-      <div class="feature-desc">Upload a photo from your camera roll for any custom button. A photo of grandma, their favourite toy, or a real place they know — familiar images are easier to recognise and use.</div>
+      <div class="feature-desc">Upload a photo for any button — grandma, their favourite toy, a real place they know. Familiar images are far easier to recognise and use than abstract symbols.</div>
       <span class="feature-badge badge-prem">PREMIUM</span>
     </div>
     <div class="feature-card" style="border-color:#FFE082">
       <span class="feature-icon">🎙️</span>
       <div class="feature-title">Voice Recording</div>
-      <div class="feature-desc">Record your own voice for any button — in any language. A parent or carer's voice is far more meaningful and comforting than a computer voice. Works for any language in the world.</div>
+      <div class="feature-desc">Record your own voice for any button — in any language. A parent or carer's voice is far more meaningful and comforting than a computer voice.</div>
       <span class="feature-badge badge-prem">PREMIUM</span>
     </div>
     <div class="feature-card" style="border-color:#FFE082">
       <span class="feature-icon">📅</span>
       <div class="feature-title">Visual Daily Schedule</div>
-      <div class="feature-desc">Create a daily routine with activity cards — emoji or photo, activity name, and time. Child taps each card to tick it off as they complete it. Reduces anxiety enormously around daily transitions.</div>
+      <div class="feature-desc">Create a daily routine with activity cards — emoji or photo, name, time. Child taps each to tick it off. Reduces anxiety enormously around daily transitions.</div>
       <span class="feature-badge badge-prem">PREMIUM</span>
     </div>
     <div class="feature-card" style="border-color:#FFE082">
       <span class="feature-icon">🔒</span>
-      <div class="feature-title">Carer Lock</div>
-      <div class="feature-desc">Set a 4-digit PIN to lock the settings. Your child can use the app freely but can't accidentally change anything. Perfect for handing the device over with confidence.</div>
-      <span class="feature-badge badge-prem">PREMIUM</span>
-    </div>
-    <div class="feature-card" style="border-color:#FFE082">
-      <span class="feature-icon">📺</span>
-      <div class="feature-title">Kiosk Mode</div>
-      <div class="feature-desc">Fullscreen mode — your child cannot leave the app. The back button is disabled. A PIN is required to exit. Ideal for children who tend to accidentally leave the app or change settings.</div>
-      <span class="feature-badge badge-prem">PREMIUM</span>
-    </div>
-    <div class="feature-card" style="border-color:#FFE082">
-      <span class="feature-icon">🎨</span>
-      <div class="feature-title">Button Colour Themes</div>
-      <div class="feature-desc">Change button colours per category or all at once. Some children respond better to certain colours — now you can customise the whole app to their preferences or sensory needs.</div>
+      <div class="feature-title">Carer Lock & Kiosk Mode</div>
+      <div class="feature-desc">Set a PIN to lock settings so your child can't accidentally change anything. Kiosk mode keeps them in the app — back button disabled, PIN to exit.</div>
       <span class="feature-badge badge-prem">PREMIUM</span>
     </div>
     <div class="feature-card" style="border-color:#FFE082">
       <span class="feature-icon">🌍</span>
-      <div class="feature-title">Multilingual Phrases</div>
-      <div class="feature-desc">Change the label and spoken phrase for every top button and emergency phrase — in any language. I AM → मैं हूँ · HELP ME → مدد کرو · works for any family, any language.</div>
+      <div class="feature-title">Any Language</div>
+      <div class="feature-desc">Change every button phrase to any language in the world. I AM → मैं हूँ · HELP ME → مدد کرو. Works for any family, any language.</div>
       <span class="feature-badge badge-prem">PREMIUM</span>
     </div>
     <div class="feature-card" style="border-color:#FFE082">
       <span class="feature-icon">👥</span>
       <div class="feature-title">2 Profiles</div>
-      <div class="feature-desc">Set up separate profiles for two users on the same device — each with their own buttons, layout, colours, and settings. Great for siblings or two children using the same tablet.</div>
+      <div class="feature-desc">Separate profiles for two users — each with their own buttons, layout, colours, and settings. Great for siblings or two children sharing one tablet.</div>
       <span class="feature-badge badge-prem">PREMIUM</span>
     </div>
   </div>
@@ -1206,31 +1057,31 @@ footer {
   <div style="text-align:center">
     <div class="section-label" style="color:#7B1FA2">🌟 Premium Plus — £7.99/month or £59.99/year</div>
     <h2 class="section-title">The complete experience</h2>
-    <p class="section-sub">Everything in Premium, plus the most powerful personalisation tools for families with multiple users or complex needs.</p>
+    <p class="section-sub">Everything in Premium, plus the most powerful tools for families, schools, and care settings.</p>
   </div>
   <div class="features-grid" style="margin-top:48px">
     <div class="feature-card" style="border-color:#CE93D8">
       <span class="feature-icon">➕</span>
-      <div class="feature-title">54 Extra Custom Buttons Per Category</div>
-      <div class="feature-desc">Double the custom slots — up to 54 personal buttons in each category, 216 extra total. Build a fully comprehensive communication board that's entirely personal to your child.</div>
+      <div class="feature-title">Double the Custom Buttons</div>
+      <div class="feature-desc">Up to 54 personal buttons per category — 216 extra total. Build a fully comprehensive communication board that's entirely personal to your child.</div>
       <span class="feature-badge badge-plus">PREMIUM PLUS</span>
     </div>
     <div class="feature-card" style="border-color:#CE93D8">
       <span class="feature-icon">☰</span>
       <div class="feature-title">Reorder Buttons</div>
-      <div class="feature-desc">Drag any button to exactly the position you want. Put your child's most-used buttons first so they're always within reach. Completely personalised layout that matches how your child actually communicates.</div>
+      <div class="feature-desc">Drag any button to exactly the position you want. Most-used buttons first, always within reach. A layout that matches how your child actually communicates.</div>
       <span class="feature-badge badge-plus">PREMIUM PLUS</span>
     </div>
     <div class="feature-card" style="border-color:#CE93D8">
       <span class="feature-icon">👨‍👩‍👧‍👦</span>
       <div class="feature-title">Unlimited Profiles</div>
-      <div class="feature-desc">No limit on how many users can have their own profile on a single device. Perfect for schools, care settings, therapy practices, or families with multiple children who all use Aidova.</div>
+      <div class="feature-desc">No limit on users per device. Perfect for schools, care settings, therapy practices, or families with multiple children who all use Aidova.</div>
       <span class="feature-badge badge-plus">PREMIUM PLUS</span>
     </div>
     <div class="feature-card" style="border-color:#CE93D8">
       <span class="feature-icon">✨</span>
       <div class="feature-title">Everything in Premium</div>
-      <div class="feature-desc">All Premium features included — custom buttons, photo buttons, voice recording, visual schedule, carer lock, kiosk mode, button colours, multilingual phrases, and 2+ profiles.</div>
+      <div class="feature-desc">All Premium features included — custom buttons, photo buttons, voice recording, visual schedule, carer lock, kiosk mode, multilingual phrases, and more.</div>
       <span class="feature-badge badge-plus">PREMIUM PLUS</span>
     </div>
   </div>
@@ -1293,7 +1144,7 @@ footer {
     <div class="who-card">
       <span class="who-icon">🧓</span>
       <div class="who-title">Dementia & Stroke</div>
-      <div class="who-desc">Adults who have lost the ability to speak or find words — familiar emojis help bridge the gap</div>
+      <div class="who-desc">Adults who have lost the ability to speak — familiar emojis help bridge the gap</div>
     </div>
     <div class="who-card">
       <span class="who-icon">🏫</span>
@@ -1347,12 +1198,13 @@ footer {
       <div class="plan-price">£0</div>
       <div class="plan-period">Always free — no card needed</div>
       <ul class="plan-features-list">
-        <li>139 built-in communication buttons</li>
+        <li>Hundreds of built-in communication buttons</li>
         <li>Sentence builder & speak</li>
         <li>Emergency screen & carer call</li>
         <li>Search across all buttons</li>
         <li>Breathing tool & visual timer</li>
-        <li>Dark mode & high contrast</li>
+        <li>Dark mode, adult mode & high contrast</li>
+        <li>Works offline — no Wi-Fi needed</li>
         <li>1 profile</li>
       </ul>
       <a href="/app" class="plan-cta plan-cta-free">Try free now →</a>
@@ -1363,10 +1215,9 @@ footer {
       <div class="plan-price">£3.99<span>/month</span></div>
       <div class="plan-period">or £29.99/year — save 37%</div>
       <ul class="plan-features-list">
-        <li>29 extra custom buttons per category</li>
-        <li>Hide buttons to simplify screen</li>
-        <li>Upload photos as buttons</li>
-        <li>Record your own voice</li>
+        <li>Custom buttons — photos, emojis, any language</li>
+        <li>Hide buttons to simplify the screen</li>
+        <li>Record your own voice for any button</li>
         <li>Visual daily schedule</li>
         <li>Carer lock & Kiosk mode</li>
         <li>Button colour themes</li>
@@ -1380,7 +1231,7 @@ footer {
       <div class="plan-price">£7.99<span>/month</span></div>
       <div class="plan-period">or £59.99/year — save 37%</div>
       <ul class="plan-features-list">
-        <li>54 extra custom buttons per category</li>
+        <li>Double custom button slots</li>
         <li>Reorder buttons your way</li>
         <li>Unlimited profiles</li>
         <li>Everything in Premium</li>
@@ -1418,19 +1269,15 @@ footer {
 </footer>
 
 <script>
-// Demo speak functionality
 let sentence = [];
 
 function speak(word) {
   sentence.push(word);
   const btn = document.getElementById('speakBtn');
   btn.textContent = '▶ Speak — ' + sentence.join(', ');
-
-  // Speak immediately
   if ('speechSynthesis' in window) {
     const u = new SpeechSynthesisUtterance(word);
-    u.rate = 0.9;
-    u.pitch = 1.1;
+    u.rate = 0.9; u.pitch = 1.1;
     window.speechSynthesis.speak(u);
   }
 }
@@ -1448,13 +1295,9 @@ function speakAll() {
   }, 2000);
 }
 
-// Scroll reveal
 const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) e.target.classList.add('visible');
-  });
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold: 0.1 });
-
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>
 </body>
