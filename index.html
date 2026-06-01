@@ -59,7 +59,8 @@
 }
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
   --green: #2D6A4F;
@@ -118,6 +119,23 @@ nav {
   font-weight: 900;
   color: var(--green);
 }
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.nav-link {
+  font-size: .82rem;
+  font-weight: 500;
+  color: var(--grey);
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: color .2s, background .2s;
+  white-space: nowrap;
+}
+.nav-link:hover { color: var(--green); background: var(--green-pale); }
+@media (max-width: 680px) { .nav-links { display: none; } }
 .nav-by { font-size: .65rem; color: var(--grey); font-weight: 500; letter-spacing: .05em; }
 .nav-cta {
   background: var(--green);
@@ -186,9 +204,9 @@ nav {
 }
 .hero-title {
   font-family: 'Fraunces', serif;
-  font-size: clamp(2.8rem, 8vw, 5.5rem);
+  font-size: clamp(2rem, 5vw, 3.4rem);
   font-weight: 900;
-  line-height: 1.05;
+  line-height: 1.1;
   color: var(--dark);
   margin-bottom: 20px;
   animation: fadeUp .7s ease .1s both;
@@ -655,6 +673,12 @@ footer { background: var(--dark); padding: 48px 24px; text-align: center; }
       <div class="nav-by">by CHEWAID®</div>
     </div>
   </a>
+  <div class="nav-links">
+    <a href="#how-it-works" class="nav-link">How it works</a>
+    <a href="#founder" class="nav-link">Our story</a>
+    <a href="#plans" class="nav-link">Pricing</a>
+    <a href="#reviews" class="nav-link">Reviews</a>
+  </div>
   <a href="/app" class="nav-cta">Try the app →</a>
 </nav>
 
@@ -668,7 +692,7 @@ footer { background: var(--dark); padding: 48px 24px; text-align: center; }
 
   <h1 class="hero-title">
     When speaking is hard,<br>
-    <span>Aidova helps you be understood</span>
+    <span>being understood should be easy</span>
   </h1>
 
   <p class="hero-sub">
@@ -676,6 +700,8 @@ footer { background: var(--dark); padding: 48px 24px; text-align: center; }
     <span style="font-size:.9em;color:var(--grey)">For children, teenagers and adults — from autism and speech delays to stroke recovery and beyond.</span>
   </p>
   <p style="font-size:.85rem;color:var(--grey);margin-bottom:0;animation:fadeUp .7s ease .25s both;font-style:italic">Built for real life. Used in homes, schools, therapy sessions and care settings.</p>
+
+  <p style="font-size:.8rem;color:var(--grey);margin-top:12px;margin-bottom:0;animation:fadeUp .7s ease .35s both">Already used by families, schools and therapists across the UK.</p>
 
   <div class="hero-btns">
     <a href="/app" class="btn-primary">💬 Try Aidova Free →</a>
@@ -747,10 +773,18 @@ footer { background: var(--dark); padding: 48px 24px; text-align: center; }
   </div>
 </section>
 
+<!-- CARER ANGLE -->
+<section style="padding:40px 24px;background:white;text-align:center;border-bottom:1px solid var(--green-pale)">
+  <div style="max-width:680px;margin:0 auto">
+    <h2 style="font-family:'Fraunces',serif;font-size:clamp(1.5rem,3vw,2rem);font-weight:900;color:var(--dark);margin-bottom:12px">Simple for the person using it.<br>Simple for the person supporting them.</h2>
+    <p style="font-size:.95rem;color:var(--grey);line-height:1.75;margin-bottom:0">Aidova was designed so that a parent, carer, teacher or therapist can set it up in minutes — without any training or technical knowledge. And once it's set up, the person using it can communicate independently. No one needs to be there to operate it for them.</p>
+  </div>
+</section>
+
 <!-- DEMO -->
-<section class="demo-section">
+<section class="demo-section" id="how-it-works">
   <div class="section-label">Try it now</div>
-  <h2 class="section-title">Tap a button. It speaks.</h2>
+  <h2 class="section-title">Say something instantly.<br>No typing. No setup.</h2>
   <p class="section-sub">Tap any button → it speaks aloud. Tap multiple buttons to build a sentence, then press Speak.</p>
   <p style="font-size:.78rem;color:var(--grey);margin-bottom:24px;font-style:italic">Example layout — children, adults and care settings all use different setups in the real app.</p>
 
@@ -1347,7 +1381,7 @@ footer { background: var(--dark); padding: 48px 24px; text-align: center; }
         <a href="/app" style="display:block;background:rgba(255,255,255,.12);color:white;padding:8px;border-radius:50px;font-weight:600;font-size:.75rem;text-decoration:none">Try free →</a>
       </div>
       <div style="text-align:center;padding:20px 12px 16px;background:var(--green);border-radius:0;border:1px solid var(--green);border-right:none;position:relative">
-        <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--dark);font-size:.65rem;font-weight:700;padding:3px 10px;border-radius:20px;white-space:nowrap">MOST POPULAR</div>
+        <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--dark);font-size:.65rem;font-weight:700;padding:3px 10px;border-radius:20px;white-space:nowrap">MOST POPULAR FOR FAMILIES</div>
         <div style="font-family:'Fraunces',serif;font-weight:700;color:white;font-size:1rem;margin-bottom:4px">⭐ Premium</div>
         <div style="font-size:1.5rem;font-weight:700;color:white">£3.99</div>
         <div style="font-size:.7rem;color:rgba(255,255,255,.7);margin-bottom:12px">/month · or £29.99/year</div>
