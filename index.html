@@ -662,6 +662,7 @@ footer { background: var(--dark); padding: 48px 24px; text-align: center; }
   <div class="hero-blob hero-blob-2"></div>
 
   <div class="hero-badge">💬 AAC Communication App — Free to start</div>
+  <p style="font-size:.8rem;color:var(--grey);margin-bottom:8px;animation:fadeUp .6s ease .05s both">Created with families, carers, and speech therapists</p>
 
   <h1 class="hero-title">
     When words are hard,<br>
@@ -878,7 +879,12 @@ footer { background: var(--dark); padding: 48px 24px; text-align: center; }
   <div class="section-label">See it in action</div>
   <h2 class="section-title">Every screen, built for real life</h2>
   <p class="section-sub">Real screenshots from the app — exactly what your child will see.</p>
-  
+
+  <!-- VIDEO SLOT — replace this div with a <video> or YouTube embed when ready -->
+  <div id="video-slot" style="max-width:620px;margin:0 auto 48px;display:none">
+    <!-- <video src="/video/demo.mp4" autoplay muted loop playsinline style="width:100%;border-radius:20px;box-shadow:0 24px 60px rgba(0,0,0,.2)"></video> -->
+  </div>
+
   <div class="screenshot-row">
     <div class="screenshot-item">
       <img src="/screenshots/IMG_1533.png" alt="Feelings buttons — happy, sad, angry, in pain, sleepy, tired" loading="lazy">
@@ -932,102 +938,48 @@ footer { background: var(--dark); padding: 48px 24px; text-align: center; }
   <div class="customise-inner">
 
     <div style="text-align:center;margin-bottom:60px">
-      <div class="section-label">Personalisation</div>
+      <div class="section-label">Personalisation &amp; Accessibility</div>
       <h2 class="section-title">Make it yours</h2>
-      <p class="section-sub">Every button, colour, language, and layout is yours to decide. The app is entirely how <em>you</em> choose to use it.</p>
+      <p class="section-sub">Every button, colour, language, and layout is yours to decide. The app adapts to the person using it — not the other way around.</p>
     </div>
 
-    <!-- FEATURE 1 -->
+    <!-- LAYOUT & LANGUAGE — two features merged -->
     <div class="customise-feature">
       <div class="customise-text">
-        <div class="customise-label">Edit mode</div>
-        <h3 class="customise-heading">Hide, reorder, and control every button</h3>
-        <p class="customise-body">Enter edit mode and every button gets a dashed border. Tap once to hide it, hold to delete it. Tap Reorder to drag buttons into exactly the order you want — most-used at the top. Tapping any button opens its options: record your own voice, edit the label, hide it, or delete it permanently.</p>
+        <div class="customise-label">Layout · Language · Voice</div>
+        <h3 class="customise-heading">Personalised to your child, in your language</h3>
+        <p class="customise-body">Hide buttons your child doesn't need yet. Drag the most-used ones to the top. Change any phrase to any language in the world — and record your own voice saying it. A parent's voice is far more meaningful than a computer's. Add photos of real people, real places, real things they know.</p>
         <div class="customise-pills">
-          <span class="customise-pill">👁️ Tap to hide</span>
-          <span class="customise-pill">☰ Drag to reorder</span>
-          <span class="customise-pill">🗑️ Hold to delete</span>
+          <span class="customise-pill">👁️ Hide buttons</span>
+          <span class="customise-pill">☰ Reorder by drag</span>
+          <span class="customise-pill">🌍 Any language</span>
           <span class="customise-pill">🎙️ Record your voice</span>
-          <span class="customise-pill">✏️ Edit any label</span>
+          <span class="customise-pill">📷 Upload photos</span>
         </div>
       </div>
       <div class="customise-phones">
         <img src="/screenshots/IMG_1526.png" alt="Edit mode — tap to hide, hold to delete" class="tall">
-        <img src="/screenshots/IMG_1527.png" alt="Reorder buttons by dragging" class="offset">
+        <img src="/screenshots/IMG_1539.png" alt="Add custom button — upload your own photo" class="offset">
       </div>
     </div>
 
-    <!-- FEATURE 2 -->
+    <!-- ACCESSIBILITY — high contrast, adult mode, dark mode merged -->
     <div class="customise-feature reverse">
       <div class="customise-text">
-        <div class="customise-label">Any language · Any photo · Your voice</div>
-        <h3 class="customise-heading">Fully personalised — in any language, with any photo</h3>
-        <p class="customise-body">Change any button phrase to any language. Record your own voice — a parent's voice saying the words in the child's home language is far more meaningful than a computer. Add custom buttons with hundreds of built-in emojis or upload your own photos — a family member, a favourite food, a real place they know.</p>
+        <div class="customise-label">Accessibility</div>
+        <h3 class="customise-heading">Built for every visual need and every age</h3>
+        <p class="customise-body">High contrast mode: pure black background, vivid borders — maximum clarity for visual sensitivity. Adult mode: deep professional teal with square buttons, for teens and adults who don't want a child-themed app. Dark mode: easier at night and gentler for light-sensitive users. Button size goes from Small to Large for easier tapping.</p>
         <div class="customise-pills">
-          <span class="customise-pill">🌍 Any language</span>
-          <span class="customise-pill">🎙️ Record your voice</span>
-          <span class="customise-pill">📷 Upload photos</span>
-          <span class="customise-pill">⭐ Hundreds of emojis</span>
-          <span class="customise-pill">🎨 Pick a colour</span>
-        </div>
-      </div>
-      <div class="customise-phones">
-        <img src="/screenshots/IMG_1506.png" alt="Button edit options — record your voice" class="offset">
-        <img src="/screenshots/IMG_1539.png" alt="Add custom button — OR add your own photo" class="tall">
-      </div>
-    </div>
-
-    <!-- FEATURE 3 -->
-    <div class="customise-feature">
-      <div class="customise-text">
-        <div class="customise-label">High contrast mode</div>
-        <h3 class="customise-heading">Black background, vivid colours — maximum clarity</h3>
-        <p class="customise-body">One toggle switches the whole app to a pure black background with bold, vivid circle borders. Emojis pop, text is bright white, visual clutter disappears. Ideal for users with visual sensitivity, sensory processing differences, or anyone who finds high contrast easier to use.</p>
-        <div class="customise-pills">
-          <span class="customise-pill">⚡ Pure black background</span>
-          <span class="customise-pill">🔴 Vivid colour borders</span>
-          <span class="customise-pill">👁️ Reduced visual noise</span>
+          <span class="customise-pill">⚡ High contrast</span>
+          <span class="customise-pill">🧑 Adult mode</span>
+          <span class="customise-pill">🌙 Dark mode</span>
+          <span class="customise-pill">🔠 Small to Large buttons</span>
+          <span class="customise-pill">🎨 Colour themes</span>
         </div>
       </div>
       <div class="customise-phones">
         <img src="/screenshots/IMG_1536.png" alt="High contrast mode — Feelings" class="tall">
-        <img src="/screenshots/IMG_1537.png" alt="High contrast mode — Needs" class="offset">
-      </div>
-    </div>
-
-    <!-- FEATURE 4 -->
-    <div class="customise-feature reverse">
-      <div class="customise-text">
-        <div class="customise-label">Adult mode</div>
-        <h3 class="customise-heading">A grown-up look for teens and adults</h3>
-        <p class="customise-body">The default theme uses round circles and warm colours designed for children. Switch on Adult mode and the whole app transforms — deep professional teal, square buttons, clean typography. Same communication tools, completely different feel. One toggle in settings.</p>
-        <div class="customise-pills">
-          <span class="customise-pill">🧑 Deep teal theme</span>
-          <span class="customise-pill">🟦 Square button style</span>
-          <span class="customise-pill">🔀 One toggle to switch</span>
-        </div>
-      </div>
-      <div class="customise-phones">
-        <img src="/screenshots/IMG_1533.png" alt="Default child theme — round circles" class="offset">
-        <img src="/screenshots/IMG_1529.png" alt="Adult mode — deep teal, square buttons" class="tall">
-      </div>
-    </div>
-
-    <!-- FEATURE 5 -->
-    <div class="customise-feature">
-      <div class="customise-text">
-        <div class="customise-label">Dark mode &amp; button size</div>
-        <h3 class="customise-heading">Easier on the eyes, sized just right</h3>
-        <p class="customise-body">Dark mode switches to a deep navy background with warm-toned buttons — easier at night and less intense for light-sensitive users. The button size slider goes from Small to Large, useful for younger children or those with motor difficulties.</p>
-        <div class="customise-pills">
-          <span class="customise-pill">🌙 Deep navy background</span>
-          <span class="customise-pill">😌 Easier at night</span>
-          <span class="customise-pill">🔠 Small to Large size</span>
-        </div>
-      </div>
-      <div class="customise-phones">
-        <img src="/screenshots/IMG_1530.png" alt="Settings — Dark mode toggle on" class="offset">
-        <img src="/screenshots/IMG_1531.png" alt="Dark mode — deep navy background" class="tall">
+        <img src="/screenshots/IMG_1529.png" alt="Adult mode — deep teal, square buttons" class="offset">
       </div>
     </div>
 
