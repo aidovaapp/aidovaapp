@@ -409,7 +409,7 @@ body.editing .ce{border:2px dashed #E0E0E0}
   <div class="sp-bar"></div>
 </div>
 <div id="app">
-  <div id="kbar">🔒 KIOSK MODE — Carer PIN required to exit</div>
+  <div id="kbar" style="display:none">🔒 KIOSK MODE — Carer PIN required to exit</div>
   <div id="editbar"><span>✏️ Tap button to hide · Hold to delete</span><div style="display:flex;gap:0"><button onclick="openReorder()">☰ Reorder</button><button onclick="exitEdit()">Done ✓</button></div></div>
   <div id="sentbar">
     <div id="sentwords"><span class="ph">Tap buttons to build a sentence...</span></div>
@@ -3057,7 +3057,7 @@ function maybeShowSetup(){
 // INIT
 window.speechSynthesis.onvoiceschanged=function(){};
 if(locked)document.getElementById('ltog').classList.add('on');
-if(kiosk){document.getElementById('ktog').classList.add('on');window.addEventListener('load',function(){document.addEventListener('click',function f(){enableKiosk();document.removeEventListener('click',f);},{once:true});});}
+if(kiosk){document.getElementById('ktog').classList.add('on');enableKiosk();}
 if(premplus)document.getElementById('pstat').textContent='🌟 Premium Plus';
 else if(premium)document.getElementById('pstat').textContent='⭐ Premium';
 setVoiceGender(voiceGender);
