@@ -409,7 +409,7 @@ body.editing .ce{border:2px dashed #E0E0E0}
   <div class="sp-bar"></div>
 </div>
 <div id="app">
-  <div id="kbar" style="display:none">🔒 KIOSK MODE — Carer PIN required to exit</div>
+  <div id="kbar" style="display:none;background:#B71C1C;color:white;font-size:.75rem;font-weight:700;padding:8px 12px;text-align:center;cursor:pointer;position:relative;z-index:200" onclick="exitKioskPrompt()">🔒 KIOSK MODE — Tap here to exit (PIN required)</div>
   <div id="editbar"><span>✏️ Tap button to hide · Hold to delete</span><div style="display:flex;gap:0"><button onclick="openReorder()">☰ Reorder</button><button onclick="exitEdit()">Done ✓</button></div></div>
   <div id="sentbar">
     <div id="sentwords"><span class="ph">Tap buttons to build a sentence...</span></div>
@@ -2310,7 +2310,7 @@ function closeHelp(){document.getElementById('helpmod').classList.remove('open')
 
 // SECRET TAPS
 var tapN=0,tapT=null;
-document.getElementById('logotap').addEventListener('click',function(){tapN++;clearTimeout(tapT);if(tapN>=7){tapN=0;showForgot();}tapT=setTimeout(function(){tapN=0;},1500);});
+document.getElementById('logotap').addEventListener('click',function(){tapN++;clearTimeout(tapT);if(tapN>=7){tapN=0;if(kiosk){exitKioskPrompt();}else{showForgot();}}tapT=setTimeout(function(){tapN=0;},1500);});
 var holdT=null;
 document.getElementById('bcred').addEventListener('touchstart',function(){holdT=setTimeout(openPanel,1500);},{passive:true});
 document.getElementById('bcred').addEventListener('touchend',function(){clearTimeout(holdT);},{passive:true});
@@ -2346,11 +2346,41 @@ function updDots(){for(var i=0;i<4;i++)document.getElementById('d'+i).classList.
 function doForgotPin(){
   var code=(prompt('🔐 Forgot your PIN?\n\nEnter this reset code:\n\n👉  CHEWAIDRESET  👈\n\nType it exactly as shown')||'').trim().toUpperCase();
   if(!code)return;
-  if(code==='CHEWAIDRESET'||code==='AIDOVARESET2025'){savedPin='';locked=false;localStorage.removeItem('aidova_pin');localStorage.removeItem('aidova_locked');document.getElementById('pinov').classList.remove('open');document.getElementById('forgotbtn').style.display='none';var lt=document.getElementById('ltog');if(lt)lt.classList.remove('on');[0,1,2,3].forEach(renderRec);alert('✅ PIN cleared!\n\nAll buttons safe.\nOpen Settings to set a new PIN.');openPanel();}
+  if(code==='CHEWAIDRESET'||code==='AIDOVARESET2025'){
+    savedPin='';locked=false;kiosk=false;
+    localStorage.removeItem('aidova_pin');
+    localStorage.removeItem('aidova_locked');
+    localStorage.setItem('aidova_kiosk','false');
+    document.getElementById('pinov').classList.remove('open');
+    document.getElementById('forgotbtn').style.display='none';
+    disableKiosk();
+    var lt=document.getElementById('ltog');if(lt)lt.classList.remove('on');
+    var kt=document.getElementById('ktog');if(kt)kt.classList.remove('on');
+    [0,1,2,3].forEach(renderRec);
+    alert('✅ PIN and Kiosk mode cleared!\n\nAll buttons safe.\nOpen Settings to set a new PIN.');
+    openPanel();
+  }
   else{alert('Incorrect code.\n\nPlease type exactly:\nCHEWAIDRESET');}
 }
 
 // KIOSK
+function exitKioskPrompt(){
+  // Always available — lets carer exit kiosk via PIN or reset code
+  if(!savedPin){
+    // No PIN set — just exit
+    kiosk=false;
+    localStorage.setItem('aidova_kiosk','false');
+    disableKiosk();
+    var kt=document.getElementById('ktog');if(kt)kt.classList.remove('on');
+    return;
+  }
+  requirePin(function(){
+    kiosk=false;
+    localStorage.setItem('aidova_kiosk','false');
+    disableKiosk();
+    var kt=document.getElementById('ktog');if(kt)kt.classList.remove('on');
+  });
+}
 function toggleKiosk(btn){
   if(!premium&&!premplus){showPlans();return;}
   if(!kiosk){
