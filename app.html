@@ -3073,6 +3073,42 @@ function anim(el,e){var r=el.getBoundingClientRect();var rp=document.createEleme
 function doConfetti(){var cols=['#FF6B6B','#4CAF50','#FF9800','#2196F3','#9C27B0','#FFD700'];for(var i=0;i<16;i++){(function(i){var c=document.createElement('div');c.className='conf';c.style.cssText='left:'+(15+Math.random()*70)+'vw;top:35%;background:'+cols[i%cols.length]+';animation-delay:'+(Math.random()*.2)+'s';document.body.appendChild(c);setTimeout(function(){c.remove();},1400);})(i);}}
 
 
+// REVIEW PROMPT
+function maybeShowReviewPrompt(){
+  if(localStorage.getItem('aidova_review_done'))return;
+  var opens=parseInt(localStorage.getItem('aidova_open_count')||'0')+1;
+  localStorage.setItem('aidova_open_count',opens);
+  if(opens===5){
+    setTimeout(function(){
+      var rp=document.getElementById('reviewprompt');rp.style.display='flex';;
+    },3000);
+  }
+}
+function reviewYes(){
+  document.getElementById('reviewprompt').style.display='none';;
+  localStorage.setItem('aidova_review_done','true');
+  // Detect platform and open correct store
+  var isAndroid=/Android/.test(navigator.userAgent);
+  var isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent);
+  if(isAndroid){
+    window.open('https://play.google.com/store/apps/details?id=app.aidova.twa','_blank');
+  }else if(isIOS){
+    window.open('https://apps.apple.com/gb/app/aidova','_blank');
+  }else{
+    window.open('https://play.google.com/store/apps/details?id=app.aidova.twa','_blank');
+  }
+}
+function reviewNo(){
+  document.getElementById('reviewprompt').style.display='none';;
+  localStorage.setItem('aidova_review_done','true');
+  window.location.href='mailto:hello@aidova.app?subject=Aidova Feedback&body=Hi, I wanted to share some feedback about Aidova...';
+}
+function reviewLater(){
+  document.getElementById('reviewprompt').style.display='none';;
+  // Reset count so it shows again after 5 more opens
+  localStorage.setItem('aidova_open_count','2');
+}
+
 // FIRST-RUN SETUP TIP
 function closeSetup(){
   document.getElementById('setupmod').classList.remove('open');
@@ -3116,6 +3152,7 @@ setTimeout(function(){
     document.getElementById('app').classList.add('ready');
     renderAll();
     maybeShowSetup();
+    maybeShowReviewPrompt();
   },600);
 },2000);
 </script>
@@ -3155,5 +3192,17 @@ setTimeout(function(){
   </div>
 </div>
 
+<!-- REVIEW PROMPT -->
+<div id="reviewprompt" style="display:none;position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.55);align-items:flex-end;justify-content:center;backdrop-filter:blur(4px)">
+  <div style="background:#fff;border-radius:24px 24px 0 0;width:100%;padding:28px 20px 40px;animation:sup .3s cubic-bezier(.34,1.2,.64,1);text-align:center">
+    <div style="font-size:2rem;margin-bottom:12px">💬</div>
+    <div style="font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-size:1.1rem;font-weight:900;color:#1B2A1F;margin-bottom:8px">Is Aidova helping?</div>
+    <div style="font-size:.85rem;color:#888;margin-bottom:24px;line-height:1.6">If Aidova is making communication easier, a quick review helps other families find it.</div>
+    <button onclick="reviewYes()" style="width:100%;padding:14px;border:none;border-radius:14px;background:#2D6A4F;color:#fff;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.95rem;cursor:pointer;margin-bottom:10px">😊 Yes — leave a review</button>
+    <button onclick="reviewNo()" style="width:100%;padding:14px;border:none;border-radius:14px;background:#F5F5F5;color:#333;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.95rem;cursor:pointer;margin-bottom:10px">💬 Not really — share feedback</button>
+    <button onclick="reviewLater()" style="width:100%;padding:10px;border:none;background:transparent;color:#aaa;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-size:.8rem;cursor:pointer">Maybe later</button>
+  </div>
+</div>
+
 </body>
-</html> 
+</html>
