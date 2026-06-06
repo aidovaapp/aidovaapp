@@ -1,5 +1,4 @@
-var CACHE='aidova-v5';
-
+var CACHE='aidova-v6';
 self.addEventListener('install',function(e){
   self.skipWaiting();
   e.waitUntil(
@@ -8,7 +7,6 @@ self.addEventListener('install',function(e){
     })
   );
 });
-
 self.addEventListener('activate',function(e){
   e.waitUntil(
     caches.keys().then(function(keys){
@@ -19,7 +17,6 @@ self.addEventListener('activate',function(e){
     }).then(function(){return self.clients.claim();})
   );
 });
-
 self.addEventListener('fetch',function(e){
   var url=new URL(e.request.url);
   // Never cache landing page, privacy, api, screenshots
