@@ -1,11 +1,13 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const { createClient } = require('@supabase/supabase-js');
-const crypto = require('crypto');
+const sgMail = require('@sendgrid/mail');
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_SECRET_KEY
 );
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 function generateKey() {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -100,8 +102,40 @@ module.exports = async (req, res) => {
         // Using fetch to call our own resend endpoint would create a loop
         // Instead send directly via SendGrid
         console.log(`Licence created: ${licenceKey} for ${email} (${plan})`);
-        // TODO: Send email via SendGrid with licence key
-        // Email template same as resend-licence.js
+
+        // Send licence key email
+        const planName = plan === 'premplus' ? 'Premium Plus' : 'Premium';
+        await sgMail.send({
+          to: email,
+          from: 'hello@aidova.app',
+          subject: 'Your Aidova licence key — save this safely',
+          html: `
+            <div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;padding:24px">
+              <div style="text-align:center;margin-bottom:24px">
+                <div style="font-size:2rem">💬</div>
+                <h1 style="color:#2D6A4F;font-size:1.5rem;margin:8px 0">Welcome to Aidova ${planName}!</h1>
+              </div>
+              <p>Thank you for subscribing. Your 30-day free trial has started.</p>
+              <p>Here is your personal licence key — it activates ${planName} on <strong>any device</strong>:</p>
+              <div style="background:#f0fff4;border:2px solid #2D6A4F;border-radius:12px;padding:24px;text-align:center;margin:24px 0">
+                <div style="font-size:1.6rem;font-weight:bold;letter-spacing:4px;color:#2D6A4F;font-family:monospace">${licenceKey}</div>
+              </div>
+              <p><strong>⚠️ Please save this key safely</strong> — you'll need it to activate ${planName} on any device.</p>
+              <p><strong>To activate on any device:</strong></p>
+              <ol style="line-height:2">
+                <li>Open <a href="https://aidova.app/app" style="color:#2D6A4F">aidova.app/app</a></li>
+                <li>Tap ⚙️ Settings</li>
+                <li>Tap Plans &amp; Upgrade</li>
+                <li>Tap <strong>"Have a code? Enter it here"</strong></li>
+                <li>Enter your licence key above</li>
+              </ol>
+              <p>If you ever lose your key, tap <strong>"Resend my key"</strong> on the Plans screen and enter this email address.</p>
+              <hr style="border:none;border-top:1px solid #eee;margin:24px 0">
+              <p style="color:#888;font-size:0.85rem">Your subscription auto-renews after the 30-day trial. Cancel anytime at <a href="mailto:hello@aidova.app" style="color:#2D6A4F">hello@aidova.app</a></p>
+              <p style="color:#888;font-size:0.85rem">Aidova by CHEWAID® · JMC Collective Ltd · <a href="https://aidova.app/terms" style="color:#2D6A4F">Terms</a> · <a href="https://aidova.app/privacy" style="color:#2D6A4F">Privacy</a></p>
+            </div>
+          `
+        });
 
         break;
       }
