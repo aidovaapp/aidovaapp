@@ -2518,14 +2518,205 @@ function showPlans(){
   detectCurrency();
   checkReturnFromStripe();
 }
+// DEVICE FINGERPRINTING — combines multiple signals for a stable unique ID
+function getDeviceId(){
+  var stored = localStorage.getItem('aidova_device_id');
+  if(stored) return stored;
+  // Generate fingerprint from browser signals
+  var signals = [
+    screen.width, screen.height, screen.colorDepth,
+    Intl.DateTimeFormat().resolvedOptions().timeZone,
+    navigator.language,
+    navigator.platform,
+    new Date().getTimezoneOffset()
+  ].join('|');
+  // Simple hash
+  var hash = 0;
+  for(var i=0; i<signals.length; i++){
+    hash = ((hash<<5)-hash)+signals.charCodeAt(i);
+    hash |= 0;
+  }
+  var deviceId = 'DEV-' + Math.abs(hash).toString(36).toUpperCase() + '-' + Date.now().toString(36).toUpperCase();
+  localStorage.setItem('aidova_device_id', deviceId);
+  return deviceId;
+}
+
+function getDeviceName(){
+  var ua = navigator.userAgent;
+  if(/iPad/.test(ua)) return 'iPad';
+  if(/iPhone/.test(ua)) return 'iPhone';
+  if(/Android/.test(ua) && /Mobile/.test(ua)) return 'Android Phone';
+  if(/Android/.test(ua)) return 'Android Tablet';
+  if(/Mac/.test(ua)) return 'Mac';
+  if(/Windows/.test(ua)) return 'Windows PC';
+  return 'Browser';
+}
+
+// CHECK KEY VALIDITY — runs on every app launch if key is saved
+function checkSavedLicence(){
+  var key = localStorage.getItem('aidova_licence_key');
+  if(!key) return;
+  // Check every 7 days max, not every launch
+  var lastCheck = parseInt(localStorage.getItem('aidova_licence_checked')||'0');
+  var sevenDays = 7*24*60*60*1000;
+  if(Date.now() - lastCheck < sevenDays) return;
+
+  fetch('/api/verify-licence',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      licence_key: key,
+      device_id: getDeviceId(),
+      device_name: getDeviceName()
+    })
+  })
+  .then(function(r){return r.json();})
+  .then(function(data){
+    localStorage.setItem('aidova_licence_checked', Date.now().toString());
+    if(!data.valid){
+      // Subscription ended — remove premium silently
+      localStorage.removeItem('aidova_premium');
+      localStorage.removeItem('aidova_premplus');
+      localStorage.removeItem('aidova_licence_key');
+      premium=false; premplus=false;
+      renderAll(); updatePstat();
+      // Show gentle message
+      setTimeout(function(){
+        alert('Your Aidova Premium subscription is no longer active.\n\nTo continue using Premium features, please renew at:\nSettings → Plans & Upgrade\n\nYour communication buttons and free features still work. 💬');
+      }, 2000);
+    }
+  })
+  .catch(function(){
+    // Network error — don't deactivate, just try again next time
+    console.log('Licence check failed — will retry later');
+  });
+}
+
 function restorePurchases(){
-  // For web/Stripe version — prompt user to re-enter their code or contact support
-  // For iOS version this will be replaced with Apple IAP restore
-  var code = prompt('To restore your subscription, please enter your access code or contact hello@aidova.app for help.');
-  if(code) validateCode(code);
+  var code = prompt('To restore your subscription, please enter your licence key (e.g. AID-XXXX-XXXX-XXXX):');
+  if(code) verifyLicenceKey(code.trim());
+}
+
+function verifyLicenceKey(key){
+  key = key.toUpperCase().trim();
+  var deviceId = getDeviceId();
+  var deviceName = getDeviceName();
+
+  fetch('/api/verify-licence',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({licence_key:key, device_id:deviceId, device_name:deviceName})
+  })
+  .then(function(r){return r.json();})
+  .then(function(data){
+    if(data.valid){
+      var isPremplus = data.plan==='premplus';
+      if(isPremplus){
+        premplus=premium=true;
+        localStorage.setItem('aidova_premplus','true');
+        localStorage.setItem('aidova_premium','true');
+        document.getElementById('pstat').textContent='🌟 Premium Plus';
+      } else {
+        premium=true;
+        localStorage.setItem('aidova_premium','true');
+        document.getElementById('pstat').textContent='⭐ Premium';
+      }
+      localStorage.setItem('aidova_licence_key', key);
+      localStorage.setItem('aidova_licence_checked', Date.now().toString());
+      if(data.email) localStorage.setItem('aidova_licence_email', data.email);
+      renderAll(); updatePstat(); closePlans();
+      alert('✅ '+(isPremplus?'Premium Plus':'Premium')+' activated!\n\nThis device is now registered.\nLinked to: '+(data.email||'your account'));
+    } else if(data.device_limit_reached){
+      // Show device management
+      showDeviceManager(key, data.email);
+    } else {
+      alert('❌ '+(data.error||'Invalid licence key')+'\n\nNeed help? Email hello@aidova.app');
+    }
+  })
+  .catch(function(){
+    alert('Connection error. Please check your internet and try again.');
+  });
+}
+
+function showDeviceManager(licenceKey, email){
+  fetch('/api/manage-devices',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({action:'list', licence_key:licenceKey})
+  })
+  .then(function(r){return r.json();})
+  .then(function(data){
+    if(data.error){alert('❌ '+data.error);return;}
+    
+    var devices = data.devices || [];
+    var limit = data.device_limit || 3;
+    
+    var msg = '📱 Device limit reached ('+limit+' max)\n\n';
+    msg += 'Your key is active on these devices:\n\n';
+    devices.forEach(function(d, i){
+      var date = new Date(d.last_seen).toLocaleDateString('en-GB');
+      msg += (i+1)+'. '+d.device_name+' — last used '+date+'\n';
+    });
+    msg += '\nEnter the NUMBER of the device you want to remove:';
+    
+    var choice = prompt(msg);
+    if(!choice) return;
+    var idx = parseInt(choice)-1;
+    if(isNaN(idx)||idx<0||idx>=devices.length){
+      alert('Invalid choice. Please enter a number from 1 to '+devices.length);
+      return;
+    }
+    
+    var deviceToRemove = devices[idx].device_id;
+    removeDevice(licenceKey, deviceToRemove, function(){
+      // After removing, try to activate on this device
+      verifyLicenceKey(licenceKey);
+    });
+  })
+  .catch(function(){
+    alert('Connection error. Please check your internet and try again.');
+  });
+}
+
+function removeDevice(licenceKey, deviceId, callback){
+  fetch('/api/manage-devices',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({action:'remove', licence_key:licenceKey, device_id:deviceId})
+  })
+  .then(function(r){return r.json();})
+  .then(function(data){
+    if(data.success){
+      if(callback) callback();
+    } else {
+      alert('Could not remove device. Please try again or email hello@aidova.app');
+    }
+  })
+  .catch(function(){
+    alert('Connection error. Please try again.');
+  });
+}
+
+function resendLicence(){
+  var email=(prompt('Enter the email address you used when subscribing:')||'').trim().toLowerCase();
+  if(!email)return;
+  if(!email.includes('@')){alert('Please enter a valid email address.');return;}
+  fetch('/api/resend-licence',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({email:email})
+  })
+  .then(function(r){return r.json();})
+  .then(function(){
+    alert('✅ If we have a licence for '+email+', we have sent it.\n\nPlease check your inbox (and spam folder).\n\nStill need help? Email hello@aidova.app');
+  })
+  .catch(function(){
+    alert('Connection error. Please check your internet and try again.');
+  });
 }
 
 function closePlans(){document.getElementById('plansmod').classList.remove('open');}
+function openPlans(){document.getElementById('plansmod').classList.add('open');}
 
 function setPlanToggle(period){
   planBilling=period;
@@ -2747,59 +2938,6 @@ function enterCode(){
   }
 
   alert('Invalid code.\n\nGo to ⚙️ Settings → Plans & Upgrade → Plans to subscribe.\n\nOr email hello@aidova.app for help.');
-}
-
-function verifyLicenceKey(key){
-  fetch('/api/verify-licence',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({licence_key:key})
-  })
-  .then(function(r){return r.json();})
-  .then(function(data){
-    if(data.valid){
-      var isPremplus = data.plan==='premplus';
-      if(isPremplus){
-        premplus=premium=true;
-        localStorage.setItem('aidova_premplus','true');
-        localStorage.setItem('aidova_premium','true');
-        document.getElementById('pstat').textContent='🌟 Premium Plus';
-      } else {
-        premium=true;
-        localStorage.setItem('aidova_premium','true');
-        document.getElementById('pstat').textContent='⭐ Premium';
-      }
-      localStorage.setItem('aidova_licence_key', key);
-      if(data.email) localStorage.setItem('aidova_licence_email', data.email);
-      renderAll();updatePstat();
-      closePlans();
-      alert('✅ '+(isPremplus?'Premium Plus':'Premium')+' activated!\n\nLinked to: '+(data.email||'your account')+'\n\nYour licence key works on any device.');
-    } else {
-      alert('❌ '+(data.error||'Invalid licence key')+'\n\nNeed help? Email hello@aidova.app');
-    }
-  })
-  .catch(function(){
-    alert('Connection error. Please check your internet and try again.');
-  });
-}
-
-function resendLicence(){
-  var email=(prompt('Enter the email address you used when subscribing:')||'').trim().toLowerCase();
-  if(!email)return;
-  if(!email.includes('@')){alert('Please enter a valid email address.');return;}
-
-  fetch('/api/resend-licence',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({email:email})
-  })
-  .then(function(r){return r.json();})
-  .then(function(){
-    alert('✅ If we have a licence for '+email+', we have sent it.\n\nPlease check your inbox (and spam folder).\n\nStill need help? Email hello@aidova.app');
-  })
-  .catch(function(){
-    alert('Connection error. Please check your internet and try again.');
-  });
 }
 
 // EDIT MODE
@@ -3251,6 +3389,7 @@ setTimeout(function(){
     renderAll();
     maybeShowSetup();
     maybeShowReviewPrompt();
+    checkSavedLicence();
   },600);
 },2000);
 </script>
