@@ -663,8 +663,15 @@ body.editing .ce{border:2px dashed #E0E0E0}
     <div style="text-align:center;margin-top:12px">
       <button onclick="closePlans();enterCode();" style="border:none;background:transparent;color:#2D6A4F;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.85rem;cursor:pointer;text-decoration:underline">Have a code? Enter it here</button>
     </div>
-    <div style="text-align:center;font-size:.65rem;color:#aaa;margin-top:8px">Secure payment by Stripe · Cancel anytime · hello@aidova.app</div>
-    <div style="text-align:center;font-size:.65rem;margin-top:6px"><a href="/privacy" target="_blank" style="color:#2D6A4F;text-decoration:underline">Privacy Policy</a></div>
+    <div style="text-align:center;margin-top:8px">
+      <button onclick="restorePurchases();" style="border:none;background:transparent;color:#888;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:600;font-size:.8rem;cursor:pointer;text-decoration:underline">Restore Purchases</button>
+    </div>
+    <div style="text-align:center;font-size:.65rem;color:#aaa;margin-top:8px">Subscriptions auto-renew unless cancelled · Cancel anytime · hello@aidova.app</div>
+    <div style="text-align:center;font-size:.65rem;margin-top:6px">
+      <a href="/privacy" target="_blank" style="color:#2D6A4F;text-decoration:underline">Privacy Policy</a>
+      &nbsp;·&nbsp;
+      <a href="/terms" target="_blank" style="color:#2D6A4F;text-decoration:underline">Terms of Service</a>
+    </div>
     <div id="currency-note" style="display:none;text-align:center;font-size:.62rem;color:#aaa;margin-top:4px"></div>
   </div>
 </div>
@@ -2505,6 +2512,13 @@ function showPlans(){
   detectCurrency();
   checkReturnFromStripe();
 }
+function restorePurchases(){
+  // For web/Stripe version — prompt user to re-enter their code or contact support
+  // For iOS version this will be replaced with Apple IAP restore
+  var code = prompt('To restore your subscription, please enter your access code or contact hello@aidova.app for help.');
+  if(code) validateCode(code);
+}
+
 function closePlans(){document.getElementById('plansmod').classList.remove('open');}
 
 function setPlanToggle(period){
