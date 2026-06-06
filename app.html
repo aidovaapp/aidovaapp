@@ -665,6 +665,8 @@ body.editing .ce{border:2px dashed #E0E0E0}
     </div>
     <div style="text-align:center;margin-top:8px">
       <button onclick="restorePurchases();" style="border:none;background:transparent;color:#888;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:600;font-size:.8rem;cursor:pointer;text-decoration:underline">Restore Purchases</button>
+      &nbsp;·&nbsp;
+      <button onclick="resendLicence();" style="border:none;background:transparent;color:#888;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:600;font-size:.8rem;cursor:pointer;text-decoration:underline">Resend my key</button>
     </div>
     <div style="text-align:center;font-size:.65rem;color:#aaa;margin-top:8px">Subscriptions auto-renew unless cancelled · Cancel anytime · hello@aidova.app</div>
     <div style="text-align:center;font-size:.65rem;margin-top:6px">
@@ -2695,9 +2697,10 @@ var BETA_CODES=[
 ];
 
 function enterCode(){
-  var c=(prompt('Enter your code:')||'').trim().toUpperCase();
+  var c=(prompt('Enter your licence key or access code:')||'').trim().toUpperCase();
   if(!c)return;
-  // Check beta codes
+
+  // Beta codes
   if(BETA_CODES.indexOf(c)>=0){
     var usedCodes=JSON.parse(localStorage.getItem('aidova_used_codes')||'[]');
     if(usedCodes.indexOf(c)>=0){alert('This code has already been used on this device.');return;}
@@ -2706,16 +2709,93 @@ function enterCode(){
     premplus=premium=true;
     localStorage.setItem('aidova_premplus','true');
     localStorage.setItem('aidova_premium','true');
-    localStorage.setItem('aidova_sub_expires', Date.now()+(90*24*60*60*1000)); // 90 days
+    localStorage.setItem('aidova_sub_expires', Date.now()+(90*24*60*60*1000));
     document.getElementById('pstat').textContent='🌟 Premium Plus';
     renderAll();updatePstat();
     alert('🎉 Welcome to Aidova Beta!\n\nPremium Plus is active for 90 days.\n\nPlease share your feedback at:\nhello@aidova.app\n\nThank you for helping us improve! 🙏');
     return;
   }
-  if(c==='AIDOVAPLUS2025'||c==='CHEWAIDPLUS'){premplus=premium=true;localStorage.setItem('aidova_premplus','true');localStorage.setItem('aidova_premium','true');document.getElementById('pstat').textContent='🌟 Premium Plus';renderAll();updatePstat();alert('🎉 Premium Plus unlocked!');}
-  else if(c==='AIDOVA2025'||c==='CHEWAID'){premium=true;localStorage.setItem('aidova_premium','true');document.getElementById('pstat').textContent='⭐ Premium';renderAll();updatePstat();alert('🎉 Premium unlocked!');}
-  else if(c==='CHEWAIDRESET'){factoryReset();}
-  else{alert('Invalid code.\n\nGo to \u2699\ufe0f Settings \u2192 Plans & Upgrade \u2192 Plans to subscribe.\n\nOr DM @aidovaapp on TikTok/Instagram for a beta code!');}
+
+  // Legacy promo codes
+  if(c==='AIDOVAPLUS2025'||c==='CHEWAIDPLUS'){
+    premplus=premium=true;
+    localStorage.setItem('aidova_premplus','true');
+    localStorage.setItem('aidova_premium','true');
+    document.getElementById('pstat').textContent='🌟 Premium Plus';
+    renderAll();updatePstat();
+    alert('🎉 Premium Plus unlocked!');
+    return;
+  }
+  if(c==='AIDOVA2025'||c==='CHEWAID'){
+    premium=true;
+    localStorage.setItem('aidova_premium','true');
+    document.getElementById('pstat').textContent='⭐ Premium';
+    renderAll();updatePstat();
+    alert('🎉 Premium unlocked!');
+    return;
+  }
+  if(c==='CHEWAIDRESET'){factoryReset();return;}
+
+  // Licence key (AID-XXXX-XXXX-XXXX)
+  if(c.startsWith('AID-')){
+    verifyLicenceKey(c);
+    return;
+  }
+
+  alert('Invalid code.\n\nGo to ⚙️ Settings → Plans & Upgrade → Plans to subscribe.\n\nOr email hello@aidova.app for help.');
+}
+
+function verifyLicenceKey(key){
+  fetch('/api/verify-licence',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({licence_key:key})
+  })
+  .then(function(r){return r.json();})
+  .then(function(data){
+    if(data.valid){
+      var isPremplus = data.plan==='premplus';
+      if(isPremplus){
+        premplus=premium=true;
+        localStorage.setItem('aidova_premplus','true');
+        localStorage.setItem('aidova_premium','true');
+        document.getElementById('pstat').textContent='🌟 Premium Plus';
+      } else {
+        premium=true;
+        localStorage.setItem('aidova_premium','true');
+        document.getElementById('pstat').textContent='⭐ Premium';
+      }
+      localStorage.setItem('aidova_licence_key', key);
+      if(data.email) localStorage.setItem('aidova_licence_email', data.email);
+      renderAll();updatePstat();
+      closePlans();
+      alert('✅ '+(isPremplus?'Premium Plus':'Premium')+' activated!\n\nLinked to: '+(data.email||'your account')+'\n\nYour licence key works on any device.');
+    } else {
+      alert('❌ '+(data.error||'Invalid licence key')+'\n\nNeed help? Email hello@aidova.app');
+    }
+  })
+  .catch(function(){
+    alert('Connection error. Please check your internet and try again.');
+  });
+}
+
+function resendLicence(){
+  var email=(prompt('Enter the email address you used when subscribing:')||'').trim().toLowerCase();
+  if(!email)return;
+  if(!email.includes('@')){alert('Please enter a valid email address.');return;}
+
+  fetch('/api/resend-licence',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({email:email})
+  })
+  .then(function(r){return r.json();})
+  .then(function(){
+    alert('✅ If we have a licence for '+email+', we have sent it.\n\nPlease check your inbox (and spam folder).\n\nStill need help? Email hello@aidova.app');
+  })
+  .catch(function(){
+    alert('Connection error. Please check your internet and try again.');
+  });
 }
 
 // EDIT MODE
