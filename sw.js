@@ -1,4 +1,4 @@
-var CACHE='aidova-v10';
+var CACHE='aidova-v11';
 self.addEventListener('install',function(e){
   self.skipWaiting();
   e.waitUntil(
@@ -19,11 +19,17 @@ self.addEventListener('activate',function(e){
 });
 self.addEventListener('fetch',function(e){
   var url=new URL(e.request.url);
-  // Never cache landing page, privacy, api, screenshots
+  // Never cache landing page, privacy, terms, accessibility, schools, api, screenshots
   if(url.pathname==='/'||
      url.pathname==='/index.html'||
      url.pathname==='/privacy'||
      url.pathname==='/privacy.html'||
+     url.pathname==='/terms'||
+     url.pathname==='/terms.html'||
+     url.pathname==='/accessibility'||
+     url.pathname==='/accessibility.html'||
+     url.pathname==='/schools'||
+     url.pathname==='/schools.html'||
      url.pathname.startsWith('/api/')||
      url.pathname.startsWith('/screenshots/')||
      url.pathname.startsWith('/.well-known/')){
