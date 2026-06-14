@@ -10,6 +10,9 @@
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/privacy", "destination": "/privacy.html" },
+    { "source": "/terms", "destination": "/terms.html" },
+    { "source": "/accessibility", "destination": "/accessibility.html" },
+    { "source": "/schools", "destination": "/schools.html" },
     { "source": "/app", "destination": "/app.html" },
     { "source": "/.well-known/assetlinks.json", "destination": "/.well-known/assetlinks.json" },
     { "source": "/screenshots/:file", "destination": "/screenshots/:file" }
