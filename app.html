@@ -655,14 +655,14 @@ body.editing .ce{border:2px dashed #E0E0E0}
       </div>
       <div class="plan-price" id="prem-price">£3.99/month</div>
       <div class="plan-features">29 extra buttons per category · Hide buttons · Photos · Voice recording · Visual schedule · 2 profiles · Carer lock · Kiosk mode · Button colours · Customise phrases</div>
-      <button class="plan-btn prem-btn" id="prem-btn" onclick="startCheckout('premium')">Subscribe to Premium Monthly →</button>
+      <button class="plan-btn prem-btn" id="prem-btn" onclick="startCheckout('premium')">Subscribe to Premium →</button>
     </div>
     <!-- Premium Plus -->
     <div class="plan-card premplus">
       <div class="plan-title">🌟 Premium Plus</div>
       <div class="plan-price" id="premplus-price">£7.99/month</div>
       <div class="plan-features">Ideal for schools, therapists &amp; care settings · Unlimited profiles on one device · Support multiple learners · Everything in Premium</div>
-      <button class="plan-btn plus-btn" id="premplus-btn" onclick="startCheckout('premplus')">Subscribe to Premium Plus Monthly →</button>
+      <button class="plan-btn plus-btn" id="premplus-btn" onclick="startCheckout('premplus')">Subscribe to Premium Plus →</button>
     </div>
     <div style="text-align:center;margin-top:12px">
       <button onclick="closePlans();enterCode();" style="border:none;background:transparent;color:#2D6A4F;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.85rem;cursor:pointer;text-decoration:underline">Have a code? Enter it here</button>
@@ -2738,6 +2738,13 @@ function setPlanToggle(period){
 }
 
 function startCheckout(tier){
+  // iOS App Store rules require no third-party payments — redirect to web
+  var isIOSApp=(/iPad|iPhone|iPod/.test(navigator.userAgent)&&!window.MSStream)&&(navigator.standalone||!!(window.webkit&&window.webkit.messageHandlers));
+  if(isIOSApp){
+    var confirmed=confirm('To subscribe to Aidova Premium, please visit aidova.app in your browser.\n\nGo to aidova.app → Settings → Plans & Upgrade\n\nYour subscription works on all your devices.\n\nOpen aidova.app now?');
+    if(confirmed){window.open('https://aidova.app/app','_blank');}
+    return;
+  }
   var plan=tier+'_'+planBilling;
   var btn=document.querySelector(tier==='premium'?'.prem-btn':'.plus-btn');
   if(btn){btn.textContent='Loading...';btn.disabled=true;}
