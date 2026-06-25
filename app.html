@@ -597,7 +597,7 @@ body.editing .ce{border:2px dashed #E0E0E0}
   <div id="help-body">
     <div style="background:linear-gradient(135deg,#E8F5E9,#F1F8E9);border-radius:14px;padding:14px;margin-bottom:14px;border:2px solid #A5D6A7">
       <div style="font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-size:.95rem;color:#2D6A4F;font-weight:900;margin-bottom:10px">📋 What's included?</div>
-      <div style="font-size:.82rem;color:#333;line-height:1.8"><b>🆓 Free — no time limit</b><br>140 built-in buttons across 4 categories · Sentence builder · 🆘 HELP ME + Emergency screen · Search · Dark mode · Adult mode · High contrast · Button size · Volume · Breathing tool · Visual timer · Male/Female voice · 1 profile</div>
+      <div style="font-size:.82rem;color:#333;line-height:1.8"><b>🆓 Free — no time limit</b><br>140 built-in buttons across 4 categories · Sentence builder · 🆘 HELP ME + Emergency screen · Search · Dark mode · Adult mode · High contrast · Button size · Volume · Breathing tool · Visual timer · Male/Female voice · Language selector · 3 custom buttons · 1 profile</div>
       <div style="height:1px;background:#A5D6A7;margin:10px 0"></div>
       <div style="font-size:.82rem;color:#333;line-height:1.8"><b>⭐ PREMIUM — £3.99/mo or £29.99/yr</b><br>29 extra buttons per category (on top of 140 built-ins) · Hide buttons · Photo upload · Voice recording (any language) · Visual schedule · 2 profiles · Carer lock · Kiosk mode · Customise top buttons · Button colours</div>
       <div style="height:1px;background:#A5D6A7;margin:10px 0"></div>
@@ -785,6 +785,13 @@ body.editing .ce{border:2px dashed #E0E0E0}
     <div class="ps" onclick="toggleSection('sec-voice',this)"><span>🔊 Voice &amp; Volume</span><span class="ps-arrow">▶</span></div>
     <div class="ps-body closed" id="sec-voice">
       <div style="font-size:.63rem;color:#aaa;margin:6px 0 10px">For best quality on iPhone/iPad: Settings → Accessibility → Spoken Content → Voices → English → download Serena or Daniel. On Android: Settings → Accessibility → Text-to-speech → Google TTS.</div>
+      <div style="margin-bottom:10px">
+        <div style="font-size:.75rem;font-weight:700;color:#2D6A4F;margin-bottom:4px">🌍 Language</div>
+        <select id="vlang-sel" onchange="setVoiceLang(this.value)" style="width:100%;padding:8px 10px;border:1.5px solid #C8E6C9;border-radius:10px;font-size:.85rem;color:#1B2A1F;background:#fff;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif">
+          <option value="en">English</option>
+        </select>
+        <div style="font-size:.63rem;color:#aaa;margin-top:3px">Shows languages available on your device</div>
+      </div>
       <div style="display:flex;gap:8px;margin-bottom:8px">
         <button class="vbig" id="vbtn-f" onclick="setVoiceGender('f')" style="background:#2D6A4F;color:#fff;border-color:#2D6A4F">👩 Female</button>
         <button class="vbig" id="vbtn-m" onclick="setVoiceGender('m')" style="background:#eee;color:#555;border-color:#eee">👨 Male</button>
@@ -1145,6 +1152,7 @@ var emergPhrases=JSON.parse(localStorage.getItem('aidova_emergphrases')||'null')
   {label:'CALL CARER',    speak:'Calling my carer now. Please wait.',     emoji:'📞'}
 ]; // 0=small 1=normal 2=large
 var voiceGender=localStorage.getItem('aidova_vgender')||'f';
+var voiceLang=localStorage.getItem('aidova_vlang')||'';
 var darkMode=localStorage.getItem('aidova_dark')==='true';
 var adultMode=localStorage.getItem('aidova_adult')==='true';
 var carerPhone=localStorage.getItem('aidova_carer_phone')||'';
@@ -1172,35 +1180,64 @@ var CIRCUMFERENCE=440;
 var breathPhase=0,breathCount=0,breathCycles=0,breathInterval=null,breathRunning=false;
 var b5holdTimer=null,b5holding=false;
 
-function slots(){return premplus?54:premium?29:0;}
+function slots(){return premplus?54:premium?29:3;}
 
 // VOICE
 function getVoice(){
   var vs=window.speechSynthesis.getVoices();
   if(!vs||!vs.length)return null;
+  var langFilter=voiceLang||'en';
+  // Filter by selected language
+  var langVoices=vs.filter(function(v){return v.lang&&v.lang.toLowerCase().startsWith(langFilter.toLowerCase());});
+  if(!langVoices.length)langVoices=vs; // fallback to all if none match
+  // Try gender preference within language
+  var genderKey=voiceGender==='f'?'female':'male';
+  var byGender=langVoices.find(function(v){return v.name.toLowerCase().indexOf(genderKey)>-1;});
+  if(byGender)return byGender;
   // Female voices: Apple, Google, Samsung
   var femaleNames=voiceGender==='f'
-    ?['Serena','Kate','Martha','Karen','Moira','Tessa','Victoria','Samantha', // Apple
-      'Google UK English Female','Google US English','en-GB-Standard-A', // Google
-      'Microsoft Libby','Microsoft Mia','Microsoft Sonia', // Microsoft/Edge
-      'Samsung','female'] // Samsung/generic
-    :['Daniel','Oliver','Arthur','Alex','Fred','Tom','Bruce', // Apple
-      'Google UK English Male','en-GB-Standard-B', // Google
-      'Microsoft George','Microsoft Ryan', // Microsoft/Edge
-      'Samsung','male']; // Samsung/generic
-  // First try exact name match
+    ?['Serena','Kate','Martha','Karen','Moira','Tessa','Victoria','Samantha',
+      'Google UK English Female','Google US English','en-GB-Standard-A',
+      'Microsoft Libby','Microsoft Mia','Microsoft Sonia',
+      'Samsung','female']
+    :['Daniel','Oliver','Arthur','Alex','Fred','Tom','Bruce',
+      'Google UK English Male','en-GB-Standard-B',
+      'Microsoft George','Microsoft Ryan',
+      'Samsung','male'];
   for(var i=0;i<femaleNames.length;i++){
-    var f=vs.find(function(v){return v.name.indexOf(femaleNames[i])>-1;});
+    var f=langVoices.find(function(v){return v.name.indexOf(femaleNames[i])>-1;});
     if(f)return f;
   }
-  // Then try gender keyword in name
-  var genderKey=voiceGender==='f'?'female':'male';
-  var byGender=vs.find(function(v){return v.name.toLowerCase().indexOf(genderKey)>-1&&v.lang&&v.lang.startsWith('en');});
-  if(byGender)return byGender;
-  // Then en-GB, then any English, then first available
-  return vs.find(function(v){return v.lang==='en-GB';})||
-         vs.find(function(v){return v.lang&&v.lang.startsWith('en');})||
-         vs[0];
+  return langVoices[0]||vs[0];
+}
+function setVoiceLang(lang){
+  voiceLang=lang;
+  localStorage.setItem('aidova_vlang',lang);
+  testVoice();
+}
+function populateLangSelect(){
+  var sel=document.getElementById('vlang-sel');
+  if(!sel)return;
+  var vs=window.speechSynthesis.getVoices();
+  if(!vs||!vs.length)return;
+  // Get unique language codes
+  var langs={};
+  vs.forEach(function(v){
+    if(v.lang){
+      var base=v.lang.split('-')[0].toLowerCase();
+      var label=v.lang;
+      // Try to get a nice name
+      try{var n=new Intl.DisplayNames([navigator.language||'en'],{type:'language'});label=n.of(base)||v.lang;}catch(e){}
+      langs[base]=label;
+    }
+  });
+  sel.innerHTML='';
+  Object.keys(langs).sort().forEach(function(k){
+    var o=document.createElement('option');
+    o.value=k;o.textContent=langs[k];
+    if(k===(voiceLang||'en'))o.selected=true;
+    sel.appendChild(o);
+  });
 }
 function setVoiceGender(g){
   voiceGender=g;localStorage.setItem('aidova_vgender',g);
@@ -3382,12 +3419,13 @@ function maybeShowSetup(){
 }
 
 // INIT
-window.speechSynthesis.onvoiceschanged=function(){};
+window.speechSynthesis.onvoiceschanged=function(){populateLangSelect();};
 if(locked)document.getElementById('ltog').classList.add('on');
 if(kiosk){document.getElementById('ktog').classList.add('on');enableKiosk();}
 if(premplus)document.getElementById('pstat').textContent='🌟 Premium Plus';
 else if(premium)document.getElementById('pstat').textContent='⭐ Premium';
 setVoiceGender(voiceGender);
+populateLangSelect();
 applyBtnSize();
 // Set volume slider to saved value
 (function(){
