@@ -665,12 +665,12 @@ body.editing .ce{border:2px dashed #E0E0E0}
       <button class="plan-btn plus-btn" id="premplus-btn" onclick="startCheckout('premplus')">Subscribe to Premium Plus →</button>
     </div>
     <div style="text-align:center;margin-top:12px">
-      <button onclick="closePlans();enterCode();" style="border:none;background:transparent;color:#2D6A4F;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.85rem;cursor:pointer;text-decoration:underline">Have a code? Enter it here</button>
+      <button id="ios-hide-1" onclick="closePlans();enterCode();" style="border:none;background:transparent;color:#2D6A4F;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.85rem;cursor:pointer;text-decoration:underline">Have a code? Enter it here</button>
     </div>
     <div style="text-align:center;margin-top:8px">
-      <button onclick="restorePurchases();" style="border:none;background:transparent;color:#888;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:600;font-size:.8rem;cursor:pointer;text-decoration:underline">Restore Purchases</button>
+      <button id="ios-hide-2" onclick="restorePurchases();" style="border:none;background:transparent;color:#888;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:600;font-size:.8rem;cursor:pointer;text-decoration:underline">Restore Purchases</button>
       &nbsp;·&nbsp;
-      <button onclick="resendLicence();" style="border:none;background:transparent;color:#888;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:600;font-size:.8rem;cursor:pointer;text-decoration:underline">Resend my key</button>
+      <button id="ios-hide-3" onclick="resendLicence();" style="border:none;background:transparent;color:#888;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:600;font-size:.8rem;cursor:pointer;text-decoration:underline">Resend my key</button>
     </div>
     <div style="text-align:center;font-size:.65rem;color:#aaa;margin-top:8px">Subscriptions auto-renew unless cancelled · Cancel anytime · hello@aidova.app</div>
     <div style="text-align:center;font-size:.65rem;margin-top:6px">
@@ -2737,9 +2737,19 @@ function setPlanToggle(period){
   if(ppb)ppb.textContent='Subscribe to Premium Plus '+label+' →';
 }
 
+var isIOSApp=(/iPad|iPhone|iPod/.test(navigator.userAgent)&&!window.MSStream)&&(navigator.standalone||!!(window.webkit&&window.webkit.messageHandlers));
+// Hide licence key elements on iOS (Apple guidelines require no third-party payment mechanisms)
+if(isIOSApp){
+  document.addEventListener('DOMContentLoaded',function(){
+    ['ios-hide-1','ios-hide-2','ios-hide-3'].forEach(function(id){
+      var el=document.getElementById(id);
+      if(el){el.style.display='none';}
+    });
+  });
+}
+
 function startCheckout(tier){
   // iOS App Store rules require no third-party payments — redirect to web
-  var isIOSApp=(/iPad|iPhone|iPod/.test(navigator.userAgent)&&!window.MSStream)&&(navigator.standalone||!!(window.webkit&&window.webkit.messageHandlers));
   if(isIOSApp){
     var confirmed=confirm('To subscribe to Aidova Premium, please visit aidova.app in your browser.\n\nGo to aidova.app → Settings → Plans & Upgrade\n\nYour subscription works on all your devices.\n\nOpen aidova.app now?');
     if(confirmed){window.open('https://aidova.app/app','_blank');}
