@@ -668,7 +668,7 @@ body.editing .ce{border:2px dashed #E0E0E0}
       <button id="ios-hide-1" onclick="closePlans();enterCode();" style="border:none;background:transparent;color:#2D6A4F;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.85rem;cursor:pointer;text-decoration:underline">Have a code? Enter it here</button>
     </div>
     <div style="text-align:center;margin-top:8px">
-      <button id="ios-hide-2" onclick="restorePurchases();" style="border:none;background:transparent;color:#888;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:600;font-size:.8rem;cursor:pointer;text-decoration:underline">Restore Purchases</button>
+      <button onclick="restorePurchases();" style="border:none;background:transparent;color:#888;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:600;font-size:.8rem;cursor:pointer;text-decoration:underline">Restore Purchases</button>
       &nbsp;·&nbsp;
       <button id="ios-hide-3" onclick="resendLicence();" style="border:none;background:transparent;color:#888;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:600;font-size:.8rem;cursor:pointer;text-decoration:underline">Resend my key</button>
     </div>
@@ -2637,6 +2637,16 @@ function checkSavedLicence(){
 }
 
 function restorePurchases(){
+  // iOS — use Apple StoreKit restore
+  if(isIOSApp){
+    try{
+      window.webkit.messageHandlers['iap-restore'].postMessage('');
+    }catch(e){
+      alert('Restore unavailable. Please try again.');
+    }
+    return;
+  }
+  // Web/Android — use licence key
   var code = prompt('To restore your subscription, please enter your licence key (e.g. AID-XXXX-XXXX-XXXX):');
   if(code) verifyLicenceKey(code.trim());
 }
@@ -2760,7 +2770,11 @@ function resendLicence(){
 }
 
 function closePlans(){document.getElementById('plansmod').classList.remove('open');}
-function openPlans(){document.getElementById('plansmod').classList.add('open');}
+function openPlans(){
+  // Load real App Store prices on iOS
+  if(isIOSApp){
+    try{window.webkit.messageHandlers['iap-get-products'].postMessage('');}catch(e){}
+  }document.getElementById('plansmod').classList.add('open');}
 
 function setPlanToggle(period){
   planBilling=period;
@@ -2785,11 +2799,89 @@ if(isIOSApp){
   });
 }
 
+// Map tier+billing to Apple product ID
+var IOS_PRODUCT_IDS={
+  'premium_monthly':'app.aidova.aac.premium.monthly',
+  'premium_yearly':'app.aidova.aac.premium.yearly',
+  'premplus_monthly':'app.aidova.aac.premplus.monthly',
+  'premplus_yearly':'app.aidova.aac.premplus.yearly'
+};
+
+// Called by Swift after purchase/restore events
+function handleStoreKitEvent(action, data){
+  var btn=document.querySelector('.prem-btn, .plus-btn');
+  if(action==='purchase-success'){
+    // data = 'premium' or 'premplus'
+    if(data==='premplus'){
+      localStorage.setItem('aidova_premplus','true');
+      localStorage.setItem('aidova_premium','true');
+      premium=true; premplus=true;
+    } else {
+      localStorage.setItem('aidova_premium','true');
+      premium=true;
+    }
+    [0,1,2,3].forEach(renderRec);
+    closePlans();
+    alert('🎉 Welcome to Aidova Premium! Your subscription is now active.');
+  } else if(action==='purchase-cancelled'){
+    if(btn){btn.textContent=btn.classList.contains('prem-btn')?'Subscribe to Premium →':'Subscribe to Premium Plus →';btn.disabled=false;}
+  } else if(action==='purchase-pending'){
+    if(btn){btn.textContent=btn.classList.contains('prem-btn')?'Subscribe to Premium →':'Subscribe to Premium Plus →';btn.disabled=false;}
+    alert('Your purchase is pending approval. It will activate automatically once approved.');
+  } else if(action==='purchase-failed'){
+    if(btn){btn.textContent=btn.classList.contains('prem-btn')?'Subscribe to Premium →':'Subscribe to Premium Plus →';btn.disabled=false;}
+    if(data) alert('Purchase failed: '+data);
+  } else if(action==='restore-success'){
+    [0,1,2,3].forEach(renderRec);
+    closePlans();
+    alert('✅ '+data);
+  } else if(action==='restore-none'){
+    alert(data);
+  } else if(action==='restore-failed'){
+    alert(data);
+  }
+}
+
+// Called by Swift with product list (real App Store prices)
+function handleStoreKitProducts(jsonStr){
+  try{
+    var products=JSON.parse(jsonStr);
+    products.forEach(function(p){
+      // Update price display based on product ID
+      if(p.id==='app.aidova.aac.premium.monthly'){
+        var el=document.querySelector('.prem-price-monthly');
+        if(el) el.textContent=p.displayPrice+'/month';
+      }
+      if(p.id==='app.aidova.aac.premium.yearly'){
+        var el=document.querySelector('.prem-price-yearly');
+        if(el) el.textContent=p.displayPrice+'/year';
+      }
+      if(p.id==='app.aidova.aac.premplus.monthly'){
+        var el=document.querySelector('.plus-price-monthly');
+        if(el) el.textContent=p.displayPrice+'/month';
+      }
+      if(p.id==='app.aidova.aac.premplus.yearly'){
+        var el=document.querySelector('.plus-price-yearly');
+        if(el) el.textContent=p.displayPrice+'/year';
+      }
+    });
+  }catch(e){console.log('StoreKit products parse error',e);}
+}
+
 function startCheckout(tier){
-  // iOS App Store rules require no third-party payments — redirect to web
+  // iOS — use Apple StoreKit IAP
   if(isIOSApp){
-    var confirmed=confirm('To subscribe to Aidova Premium, please visit aidova.app in your browser.\n\nGo to aidova.app → Settings → Plans & Upgrade\n\nYour subscription works on all your devices.\n\nOpen aidova.app now?');
-    if(confirmed){window.open('https://aidova.app/app','_blank');}
+    var productKey=tier+'_'+(planBilling||'monthly');
+    var productId=IOS_PRODUCT_IDS[productKey];
+    if(!productId){alert('Product not found. Please try again.');return;}
+    var btn=document.querySelector(tier==='premium'?'.prem-btn':'.plus-btn');
+    if(btn){btn.textContent='Processing...';btn.disabled=true;}
+    try{
+      window.webkit.messageHandlers['iap-purchase'].postMessage(productId);
+    }catch(e){
+      alert('Purchase unavailable. Please try again.');
+      if(btn){btn.textContent=tier==='premium'?'Subscribe to Premium →':'Subscribe to Premium Plus →';btn.disabled=false;}
+    }
     return;
   }
   var plan=tier+'_'+planBilling;
