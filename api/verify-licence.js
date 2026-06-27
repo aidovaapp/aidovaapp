@@ -7,7 +7,7 @@ const supabase = createClient(
 
 const MAX_ATTEMPTS_PER_HOUR = 5;
 const PREMIUM_DEVICE_LIMIT = 3;
-const PREMPLUS_DEVICE_LIMIT = 10;
+const PREMPLUS_DEVICE_LIMIT = 5;
 
 async function checkRateLimit(ip) {
   const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
@@ -110,7 +110,7 @@ module.exports = async (req, res) => {
       await logAttempt(ip, false);
       return res.status(200).json({ 
         valid: false, 
-        error: `This key is already active on ${deviceLimit} device${deviceLimit > 1 ? 's' : ''} (the maximum). To add this device, please remove one first.`,
+        error: `This key is already active on ${deviceLimit} device${deviceLimit > 1 ? 's' : ''} (the maximum for your plan). To add this device, please remove one first.`,
         device_limit_reached: true,
         licence_key: licence_key.toUpperCase().trim(),
         email: licence.email
