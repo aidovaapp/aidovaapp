@@ -2788,7 +2788,8 @@ function setPlanToggle(period){
   if(ppb)ppb.textContent='Subscribe to Premium Plus '+label+' →';
 }
 
-var isIOSApp=(/iPad|iPhone|iPod/.test(navigator.userAgent)&&!window.MSStream)&&(navigator.standalone||!!(window.webkit&&window.webkit.messageHandlers));
+// Detect iOS native app via PWAShell user agent set in WebView.swift
+var isIOSApp=(/PWAShell/.test(navigator.userAgent))||(/iPad|iPhone|iPod/.test(navigator.userAgent)&&!window.MSStream&&!!(window.webkit&&window.webkit.messageHandlers&&window.webkit.messageHandlers['iap-purchase']));
 // Hide licence key elements on iOS (Apple guidelines require no third-party payment mechanisms)
 if(isIOSApp){
   document.addEventListener('DOMContentLoaded',function(){
