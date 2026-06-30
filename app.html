@@ -1199,6 +1199,13 @@ function trackUsage(word,label){
   usageData[pk][wk].last=Date.now();
   var dayKey=new Date().toISOString().slice(0,10);
   usageData[pk][wk].days[dayKey]=(usageData[pk][wk].days[dayKey]||0)+1;
+  // Cap each word's daily history to the most recent 60 days, independent of overall last-used recency,
+  // so a word in steady long-term use doesn't grow its days{} object forever
+  var dayKeys=Object.keys(usageData[pk][wk].days).sort();
+  if(dayKeys.length>60){
+    dayKeys.slice(0,dayKeys.length-60).forEach(function(dk){delete usageData[pk][wk].days[dk];});
+  }
+  // Drop whole words not used in 90 days to keep storage bounded
   var cutoff=Date.now()-(90*24*60*60*1000);
   Object.keys(usageData[pk]).forEach(function(k){
     if(usageData[pk][k].last<cutoff)delete usageData[pk][k];
@@ -1228,6 +1235,19 @@ function renderInsights(){
   }).join('');
 }
 
+// Counts only recent usage (last 21 days) so a word that was popular months ago
+// but hasn't been used since doesn't keep resurfacing as a "smart" suggestion
+function recentCount(entry){
+  if(!entry||!entry.days)return 0;
+  var cutoff=Date.now()-(21*24*60*60*1000);
+  var c=0;
+  Object.keys(entry.days).forEach(function(dk){
+    if(new Date(dk).getTime()>=cutoff)c+=entry.days[dk];
+  });
+  return c;
+}
+function dismissKey(pi,wk){return activeP+'-'+pi+'-'+wk;} // scoped per profile + category
+
 function getSuggestions(pi){
   if(!premplus)return [];
   var data=usageData[activeP]||{};
@@ -1239,8 +1259,8 @@ function getSuggestions(pi){
   }
   BTNS[pi].forEach(function(d){existing[d.w.toLowerCase()]=true;});
   return Object.keys(data).filter(function(k){
-    return data[k].count>=5 && !existing[k] && !suggestDismissed[k];
-  }).sort(function(a,b){return data[b].count-data[a].count;}).slice(0,1);
+    return recentCount(data[k])>=5 && !existing[k] && !suggestDismissed[dismissKey(pi,k)];
+  }).sort(function(a,b){return recentCount(data[b])-recentCount(data[a]);}).slice(0,1);
 }
 
 function showSuggestionBanner(pi){
@@ -1250,12 +1270,13 @@ function showSuggestionBanner(pi){
   if(!sugg.length)return;
   var wk=sugg[0];
   var entry=usageData[activeP][wk];
+  var recent=recentCount(entry);
   var g=document.getElementById('g'+pi);
   if(!g||!g.parentNode)return;
   var banner=document.createElement('div');
   banner.id='suggest-banner';
   banner.style.cssText='width:100%;background:#F3E5F5;border:1.5px dashed #CE93D8;border-radius:12px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px;font-size:.75rem';
-  banner.innerHTML='<span style="color:#4A148C">💡 You used "'+entry.label+'" '+entry.count+' times — add as a button?</span><div style="display:flex;gap:4px;flex-shrink:0"><button id="sugg-add" style="border:none;background:#8E24AA;color:#fff;border-radius:8px;padding:5px 10px;font-weight:900;cursor:pointer;font-size:.72rem">Add</button><button id="sugg-no" style="border:none;background:#eee;color:#888;border-radius:8px;padding:5px 10px;font-weight:900;cursor:pointer;font-size:.72rem">✕</button></div>';
+  banner.innerHTML='<span style="color:#4A148C">💡 You used "'+entry.label+'" '+recent+' times recently — add as a button?</span><div style="display:flex;gap:4px;flex-shrink:0"><button id="sugg-add" style="border:none;background:#8E24AA;color:#fff;border-radius:8px;padding:5px 10px;font-weight:900;cursor:pointer;font-size:.72rem">Add</button><button id="sugg-no" style="border:none;background:#eee;color:#888;border-radius:8px;padding:5px 10px;font-weight:900;cursor:pointer;font-size:.72rem">✕</button></div>';
   g.parentNode.insertBefore(banner,g);
   document.getElementById('sugg-add').onclick=function(){
     var n=slots();
@@ -1264,48 +1285,103 @@ function showSuggestionBanner(pi){
     if(freeSlot<0){alert('No free custom button slots in this category.');return;}
     recData[activeP+'-'+pi+'-'+freeSlot]={icon:'⭐',label:entry.label.toUpperCase(),word:wk,isPhoto:false,colour:''};
     try{localStorage.setItem('aidova_rec',JSON.stringify(recData));}catch(e){}
-    suggestDismissed[wk]=true;
+    suggestDismissed[dismissKey(pi,wk)]=true;
     try{localStorage.setItem('aidova_suggest_dismissed',JSON.stringify(suggestDismissed));}catch(e){}
     banner.remove();
     var cats=['cf','cn','cp','cs'];renderPage(pi,BTNS[pi],cats[pi]);
   };
   document.getElementById('sugg-no').onclick=function(){
-    suggestDismissed[wk]=true;
+    suggestDismissed[dismissKey(pi,wk)]=true;
     try{localStorage.setItem('aidova_suggest_dismissed',JSON.stringify(suggestDismissed));}catch(e){}
     banner.remove();
   };
 }
 
-function exportBoardPDF(){
+// Renders one emoji/icon to a small canvas using the device's own emoji font,
+// since jsPDF's built-in fonts (Helvetica/Times/Courier) cannot render emoji at all —
+// without this, every icon in the exported PDF would appear as a blank box.
+function emojiToDataURL(emoji,px){
+  px=px||64;
+  var c=document.createElement('canvas');
+  c.width=px;c.height=px;
+  var ctx=c.getContext('2d');
+  ctx.font=(px*0.78)+'px -apple-system, "Segoe UI Emoji", "Noto Color Emoji", sans-serif';
+  ctx.textAlign='center';
+  ctx.textBaseline='middle';
+  ctx.fillText(emoji||'⭐',px/2,px/2+px*0.06);
+  return c.toDataURL('image/png');
+}
+// Downscales a stored photo dataURL to a fixed square for embedding in the PDF
+function photoToDataURL(srcDataUrl,px){
+  return new Promise(function(resolve){
+    px=px||96;
+    var img=new Image();
+    img.onload=function(){
+      var c=document.createElement('canvas');c.width=px;c.height=px;
+      var ctx=c.getContext('2d');
+      var s=Math.min(img.width,img.height);
+      ctx.drawImage(img,(img.width-s)/2,(img.height-s)/2,s,s,0,0,px,px);
+      resolve(c.toDataURL('image/jpeg',0.85));
+    };
+    img.onerror=function(){resolve(null);};
+    img.src=srcDataUrl;
+  });
+}
+
+async function exportBoardPDF(){
   if(!premium&&!premplus){closePanel();showPlans();return;}
   if(typeof window.jspdf==='undefined'){alert('PDF tool still loading — please try again in a moment.');return;}
   var pi=curTab;
   var cats=['Feelings','Needs','Places','Social'];
   var items=[];
-  BTNS[pi].forEach(function(d,i){var key='b'+pi+'_'+i;if(!hiddenB[key])items.push({label:d.l,emoji:d.i.indexOf('TRAMP64:')===0?'🤸':d.i});});
+  BTNS[pi].forEach(function(d,i){
+    var key='b'+pi+'_'+i;
+    if(!hiddenB[key])items.push({label:d.l,img:emojiToDataURL(d.i.indexOf('TRAMP64:')===0?'🤸':d.i)});
+  });
   var n=slots();
   for(var s=0;s<n;s++){
     var sv=recData[activeP+'-'+pi+'-'+s];
-    if(sv&&!hiddenB['rec_'+activeP+'-'+pi+'-'+s])items.push({label:sv.label,emoji:sv.isPhoto?'📷':sv.icon});
+    if(sv&&!hiddenB['rec_'+activeP+'-'+pi+'-'+s]){
+      if(sv.isPhoto&&sv.icon&&sv.icon.indexOf('data:')===0){
+        var photoImg=await photoToDataURL(sv.icon);
+        items.push({label:sv.label,img:photoImg||emojiToDataURL('📷')});
+      }else{
+        items.push({label:sv.label,img:emojiToDataURL(sv.icon)});
+      }
+    }
   }
+  if(!items.length){alert('No buttons to export in this category.');return;}
   var doc=new window.jspdf.jsPDF();
   doc.setFontSize(16);
   doc.text('Aidova — '+cats[pi]+' ('+(profiles[activeP]?profiles[activeP].n:'Profile')+')',14,16);
   doc.setFontSize(9);
   doc.text('Generated '+new Date().toLocaleDateString('en-GB'),14,22);
-  var x=14,y=32,colW=58,rowH=24,col=0;
+  var x=14,y=30,colW=58,rowH=30,col=0,iconPx=16;
   items.forEach(function(it){
     doc.setDrawColor(200);
     doc.roundedRect(x,y,colW-4,rowH-4,2,2);
-    doc.setFontSize(14);
-    doc.text(it.emoji,x+4,y+12);
+    if(it.img)doc.addImage(it.img,'PNG',x+(colW-4)/2-iconPx/2,y+3,iconPx,iconPx);
     doc.setFontSize(8);
-    doc.text(it.label,x+4,y+19,{maxWidth:colW-8});
+    doc.text(it.label,x+(colW-4)/2,y+rowH-9,{maxWidth:colW-8,align:'center'});
     col++;
     if(col>=3){col=0;x=14;y+=rowH;}else{x+=colW;}
-    if(y>270){doc.addPage();y=20;x=14;col=0;}
+    if(y>260){doc.addPage();y=20;x=14;col=0;}
   });
-  doc.save('aidova-'+cats[pi].toLowerCase()+'-board.pdf');
+  var filename='aidova-'+cats[pi].toLowerCase()+'-board.pdf';
+  // doc.save() triggers a browser download, which is unreliable inside the iOS
+  // WKWebView wrapper. Prefer the native share sheet there so the carer can
+  // actually save or send the file; fall back to a normal download elsewhere.
+  if(isIOSApp&&navigator.share&&navigator.canShare){
+    try{
+      var blob=doc.output('blob');
+      var file=new File([blob],filename,{type:'application/pdf'});
+      if(navigator.canShare({files:[file]})){
+        await navigator.share({files:[file],title:filename});
+        return;
+      }
+    }catch(e){/* fall through to normal save */}
+  }
+  doc.save(filename);
 }
 var schedItems=JSON.parse(localStorage.getItem('aidova_sched')||'[]');
 var schedTicks=JSON.parse(localStorage.getItem('aidova_sched_ticks')||'{}');
