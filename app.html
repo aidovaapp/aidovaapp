@@ -519,7 +519,25 @@ body.editing .ce{border:2px dashed #E0E0E0}
 <div id="breathmod" onclick="if(event.target===this)closeBreath()">
   <div class="breathbox">
     <div style="font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-size:1.1rem;color:#00695C;margin-bottom:2px">🧘 Calm Breathing</div>
-    <div style="font-size:.7rem;color:#aaa;margin-bottom:4px">Follow the circle — breathe with it</div>
+    <div style="font-size:.7rem;color:#aaa;margin-bottom:6px">Follow the circle — breathe with it</div>
+    <!-- Premium pattern selector -->
+    <div id="breath-pattern-row" style="display:none;margin-bottom:8px">
+      <div style="font-size:.65rem;font-weight:900;color:#00695C;margin-bottom:4px">Pattern <span style="background:#FFE082;color:#5D4037;border-radius:5px;padding:1px 6px;font-size:.6rem">PREMIUM</span></div>
+      <div style="display:flex;gap:5px">
+        <button id="bp-calm" onclick="setBreathPattern('calm')" style="flex:1;padding:6px 4px;border:2px solid #00695C;border-radius:8px;background:#00695C;color:#fff;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.65rem;cursor:pointer">Calm<br><span style="font-weight:400;font-size:.6rem">4-4-6</span></button>
+        <button id="bp-box" onclick="setBreathPattern('box')" style="flex:1;padding:6px 4px;border:2px solid #ddd;border-radius:8px;background:#fff;color:#555;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.65rem;cursor:pointer">Box<br><span style="font-weight:400;font-size:.6rem">4-4-4-4</span></button>
+        <button id="bp-478" onclick="setBreathPattern('478')" style="flex:1;padding:6px 4px;border:2px solid #ddd;border-radius:8px;background:#fff;color:#555;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.65rem;cursor:pointer">Deep<br><span style="font-weight:400;font-size:.6rem">4-7-8</span></button>
+      </div>
+    </div>
+    <!-- Premium sound selector -->
+    <div id="breath-sound-row" style="display:none;margin-bottom:6px">
+      <div style="font-size:.65rem;font-weight:900;color:#00695C;margin-bottom:4px">Background sound <span style="background:#FFE082;color:#5D4037;border-radius:5px;padding:1px 6px;font-size:.6rem">PREMIUM</span></div>
+      <div style="display:flex;gap:5px">
+        <button id="bs-none" onclick="setBreathSound('none')" style="flex:1;padding:5px 4px;border:2px solid #00695C;border-radius:8px;background:#00695C;color:#fff;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.65rem;cursor:pointer">🔇 None</button>
+        <button id="bs-rain" onclick="setBreathSound('rain')" style="flex:1;padding:5px 4px;border:2px solid #ddd;border-radius:8px;background:#fff;color:#555;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.65rem;cursor:pointer">🌧 Rain</button>
+        <button id="bs-ocean" onclick="setBreathSound('ocean')" style="flex:1;padding:5px 4px;border:2px solid #ddd;border-radius:8px;background:#fff;color:#555;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.65rem;cursor:pointer">🌊 Ocean</button>
+      </div>
+    </div>
     <div class="breath-circle-wrap">
       <div class="breath-outer" id="breath-outer"></div>
       <div class="breath-inner" id="breath-inner">
@@ -550,13 +568,23 @@ body.editing .ce{border:2px dashed #E0E0E0}
   <div class="timerbox">
     <div style="font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-size:1.05rem;color:#222;margin-bottom:4px">⏱️ Visual Timer</div>
     <div style="font-size:.72rem;color:#aaa;margin-bottom:12px">Set a countdown — great for transitions</div>
-    <div style="display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;justify-content:center">
+    <div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap;justify-content:center">
       <button onclick="setTimer(1)" style="border:none;border-radius:10px;background:#E8F5E9;color:#2D6A4F;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.78rem;padding:6px 10px;cursor:pointer">1 min</button>
       <button onclick="setTimer(2)" style="border:none;border-radius:10px;background:#E8F5E9;color:#2D6A4F;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.78rem;padding:6px 10px;cursor:pointer">2 min</button>
       <button onclick="setTimer(5)" style="border:none;border-radius:10px;background:#E8F5E9;color:#2D6A4F;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.78rem;padding:6px 10px;cursor:pointer">5 min</button>
       <button onclick="setTimer(10)" style="border:none;border-radius:10px;background:#E8F5E9;color:#2D6A4F;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.78rem;padding:6px 10px;cursor:pointer">10 min</button>
       <button onclick="setTimer(15)" style="border:none;border-radius:10px;background:#E8F5E9;color:#2D6A4F;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.78rem;padding:6px 10px;cursor:pointer">15 min</button>
       <button onclick="setTimer(30)" style="border:none;border-radius:10px;background:#E8F5E9;color:#2D6A4F;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.78rem;padding:6px 10px;cursor:pointer">30 min</button>
+    </div>
+    <!-- Premium: custom duration + save favourite -->
+    <div id="timer-custom-row" style="display:none;margin-bottom:10px;padding:8px 10px;background:#F1F8E9;border-radius:10px;border:1px solid #C8E6C9">
+      <div style="font-size:.63rem;font-weight:900;color:#2D6A4F;margin-bottom:6px">Custom <span style="background:#FFE082;color:#5D4037;border-radius:5px;padding:1px 5px;font-size:.58rem">PREMIUM</span></div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <input id="timer-custom-input" type="number" min="1" max="180" placeholder="mins" style="width:64px;padding:6px 8px;border:1.5px solid #A5D6A7;border-radius:8px;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-size:.88rem;text-align:center;outline:none">
+        <button onclick="setCustomTimer()" style="border:none;border-radius:8px;background:#2D6A4F;color:#fff;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.75rem;padding:7px 12px;cursor:pointer">Set</button>
+        <button onclick="saveFavTimer()" id="timer-fav-btn" style="border:none;border-radius:8px;background:#FFF9C4;color:#5D4037;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.75rem;padding:7px 10px;cursor:pointer" title="Save as favourite">⭐</button>
+        <span id="timer-fav-label" style="font-size:.65rem;color:#2D6A4F;font-weight:900"></span>
+      </div>
     </div>
     <div class="timer-ring">
       <svg width="160" height="160" viewBox="0 0 160 160">
@@ -610,8 +638,8 @@ body.editing .ce{border:2px dashed #E0E0E0}
     <div class="hbox"><div class="htitle">🆘 HELP ME button <span style="background:#E8F5E9;color:#2D6A4F;border-radius:8px;padding:2px 7px;font-size:.68rem">FREE</span></div><div class="htext"><b>Quick tap</b> → speaks "I need help" loudly + screen flashes red<br><b>Hold 2 seconds</b> → opens the full red Emergency Screen<br><br>Emergency screen has 6 big buttons:<br>🆘 I Need Help · 🤕 I Am Hurt · 🏥 I Need Doctor<br>🚨 I Am Lost · 💧 I Need Water · 📞 Call My Carer<br><br><b>Call My Carer</b> dials automatically on phones (iPhone &amp; Android).<br><b>⚠️ Tablets &amp; iPads:</b> cannot make calls — the number is shown on screen so someone nearby can call.<br><br>Set up: Settings → <b>Emergency Contact</b> → enter carer's number.</div></div>
     <div class="hbox"><div class="htitle">📂 4 categories <span style="background:#E8F5E9;color:#2D6A4F;border-radius:8px;padding:2px 7px;font-size:.68rem">FREE</span></div><div class="htext">Swipe left/right or tap the tabs:<br><b>😊 Feelings · 🍎 Needs · 🏠 Places · 🤝 Social</b><br><br>35 built-in buttons per category (140 total). That's a lot — carers should <b>hide buttons</b> the child doesn't need yet (Settings → Edit layout). The child then only sees what's relevant. Custom buttons appear right after the built-ins — no gap. Use 🔍 Search any time to find a button fast.</div></div>
     <div class="hbox"><div class="htitle">🔍 Search <span style="background:#E8F5E9;color:#2D6A4F;border-radius:8px;padding:2px 7px;font-size:.68rem">FREE</span></div><div class="htext">Tap 🔍 in the top bar. Type any word — results appear instantly from all 140 built-in buttons plus your custom ones. Tap <b>▶ Speak</b> to hear it, or tap the result to jump to that category.</div></div>
-    <div class="hbox"><div class="htitle">🧘 Calm Breathing <span style="background:#E8F5E9;color:#2D6A4F;border-radius:8px;padding:2px 7px;font-size:.68rem">FREE</span></div><div class="htext">Tap 🧘 in the top bar. A circle expands and shrinks — child follows it to calm down.<br><br><b>Breathe in 4s → Hold 4s → Breathe out 6s</b><br><br>Great for anxiety, meltdowns or overwhelm.</div></div>
-    <div class="hbox"><div class="htitle">⏱️ Visual Timer <span style="background:#E8F5E9;color:#2D6A4F;border-radius:8px;padding:2px 7px;font-size:.68rem">FREE</span></div><div class="htext">Tap ⏱️ in the top bar. Choose 1–30 minutes. A green ring counts down — turns orange then red as time runs out. Says "Time is up!" when finished.<br><br>Great for transitions: <i>"5 more minutes then bath time."</i></div></div>
+    <div class="hbox"><div class="htitle">🧘 Calm Breathing <span style="background:#E8F5E9;color:#2D6A4F;border-radius:8px;padding:2px 7px;font-size:.68rem">FREE</span></div><div class="htext">Tap 🧘 in the top bar. A circle expands and shrinks — child follows it to calm down.<br><br><b>Free: Calm pattern</b> — Breathe in 4s → Hold 4s → Breathe out 6s<br><br>Great for anxiety, meltdowns or overwhelm.<br><br><b>⭐ Premium:</b> Unlock 3 breathing patterns — Calm (4-4-6), Box (4-4-4-4), Deep (4-7-8) — plus background sounds (Rain, Ocean) to aid focus and regulation.</div></div>
+    <div class="hbox"><div class="htitle">⏱️ Visual Timer <span style="background:#E8F5E9;color:#2D6A4F;border-radius:8px;padding:2px 7px;font-size:.68rem">FREE</span></div><div class="htext">Tap ⏱️ in the top bar. Choose 1–30 minutes. A green ring counts down — turns orange then red as time runs out. Says "Time is up!" when finished.<br><br>Great for transitions: <i>"5 more minutes then bath time."</i><br><br><b>⭐ Premium:</b> Set any custom duration (up to 180 minutes) and save a favourite timer that loads automatically next time.</div></div>
     <div class="hbox"><div class="htitle">🔊 Voice &amp; Volume <span style="background:#E8F5E9;color:#2D6A4F;border-radius:8px;padding:2px 7px;font-size:.68rem">FREE</span></div><div class="htext">Settings → <b>Voice</b> → tap 👩 Female or 👨 Male → tap ▶ Test.<br><br>For the clearest voice on <b>iPhone/iPad:</b> Settings → Accessibility → Spoken Content → Voices → English → download <b>Serena</b> (female) or <b>Daniel</b> (male).<br>On <b>Android:</b> Settings → Accessibility → Text-to-speech → install Google Text-to-Speech for best quality.<br><br>Also turn up your device volume using the physical buttons on the side of your device.</div></div>
     <div class="hbox"><div class="htitle">🌙 Dark mode &amp; Display <span style="background:#E8F5E9;color:#2D6A4F;border-radius:8px;padding:2px 7px;font-size:.68rem">FREE</span></div><div class="htext"><b>Dark mode</b> — easier on eyes at night or for light-sensitive users.<br><b>Adult mode</b> — deep teal theme for teens and adults.<br><b>High contrast</b> — black background with vivid borders for maximum visibility.<br><b>Button size</b> — Small / Normal / Large. Large mode always shows at least 3 columns — scroll to see all buttons.</div></div>
     <div class="hbox"><div class="htitle">👤 Profiles <span style="background:#E8F5E9;color:#2D6A4F;border-radius:8px;padding:2px 7px;font-size:.68rem">FREE — 1 profile</span></div><div class="htext">Settings → <b>Profiles</b>. Each profile has its own custom buttons and settings.<br><br><b>Free:</b> 1 profile<br><b>Premium:</b> 2 profiles<br><b>Premium Plus:</b> unlimited profiles<br><br>Great for families where more than one child uses the same device.</div></div>
@@ -658,7 +686,7 @@ body.editing .ce{border:2px dashed #E0E0E0}
         <div style="background:#2D6A4F;color:white;font-size:.6rem;font-weight:900;padding:3px 8px;border-radius:20px;letter-spacing:.05em">MOST POPULAR</div>
       </div>
       <div class="plan-price" id="prem-price">£3.99/month</div>
-      <div class="plan-features">29 custom buttons per category (emoji) · Voice recording · Hide buttons · Visual schedule · 2 profiles · Carer lock · Kiosk mode · Button colours · Customise phrases · Export board as PDF</div>
+      <div class="plan-features">29 custom buttons per category (emoji) · Voice recording · Hide buttons · Visual schedule · 2 profiles · Carer lock · Kiosk mode · Button colours · Customise phrases · Export board as PDF · Breathing patterns (Calm, Box, Deep) · Background sounds · Custom timer duration · Save favourite timer</div>
       <button class="plan-btn prem-btn" id="prem-btn" onclick="startCheckout('premium')">Subscribe to Premium →</button>
     </div>
     <!-- Premium Plus -->
@@ -1038,11 +1066,17 @@ body.editing .ce{border:2px dashed #E0E0E0}
       </select>
     </div>
     <input class="minput" type="text" id="mlabel" placeholder="Button label (e.g. MUM, BUBBLES)" autocomplete="off">
-    <div class="por">— OR add your own photo —</div>
-    <div class="pup">
-      <input type="file" id="pfile" accept="image/*" onchange="onPhoto(this)">
-      <div class="ph2" id="phint">📷 Tap to choose a photo</div>
-      <img id="pprev" src="" style="display:none;width:44px;height:44px;border-radius:50%;object-fit:cover;margin:4px auto 0">
+    <div id="photo-section">
+      <div class="por">— OR add your own photo —</div>
+      <div class="pup" id="photo-upload-area">
+        <input type="file" id="pfile" accept="image/*" onchange="onPhoto(this)">
+        <div class="ph2" id="phint">📷 Tap to choose a photo</div>
+        <img id="pprev" src="" style="display:none;width:44px;height:44px;border-radius:50%;object-fit:cover;margin:4px auto 0">
+      </div>
+      <div id="photo-plus-prompt" style="display:none;background:#F3E5F5;border-radius:10px;padding:10px 12px;text-align:center;cursor:pointer" onclick="closeRec();showPlans()">
+        <div style="font-size:.72rem;color:#4A148C;font-weight:900">🌟 Your own photo — Premium Plus</div>
+        <div style="font-size:.65rem;color:#7B1FA2;margin-top:2px">Tap to upgrade and add your own photos</div>
+      </div>
     </div>
     <div id="spkrow" style="display:none;flex-shrink:0">
       <div style="font-size:.72rem;font-weight:900;color:#555;margin-bottom:3px">🔊 What should it say?</div>
@@ -2193,10 +2227,80 @@ function onSchedPhoto(inp){
 function closeSchedEmoji(){document.getElementById('schedEmojiMod').classList.remove('open');}
 
 // BREATHING
-function openBreath(){document.getElementById('breathmod').classList.add('open');resetBreath();}
-function closeBreath(){stopBreath();document.getElementById('breathmod').classList.remove('open');}
+var breathPattern='calm'; // calm | box | 478
+var breathSound='none';  // none | rain | ocean
+var breathAudio=null;
+
+var BREATH_PATTERNS={
+  calm:[{label:'Breathe in...',emoji:'🌬️',duration:4,size:'expand'},{label:'Hold...',emoji:'✨',duration:4,size:'hold'},{label:'Breathe out...',emoji:'😮‍💨',duration:6,size:'shrink'}],
+  box:[{label:'Breathe in...',emoji:'🌬️',duration:4,size:'expand'},{label:'Hold...',emoji:'✨',duration:4,size:'hold'},{label:'Breathe out...',emoji:'😮‍💨',duration:4,size:'shrink'},{label:'Hold...',emoji:'✨',duration:4,size:'hold'}],
+  478:[{label:'Breathe in...',emoji:'🌬️',duration:4,size:'expand'},{label:'Hold...',emoji:'✨',duration:7,size:'hold'},{label:'Breathe out...',emoji:'😮‍💨',duration:8,size:'shrink'}]
+};
+
+function setBreathPattern(p){
+  if(!premium&&!premplus){showPlans();return;}
+  breathPattern=p;
+  ['calm','box','478'].forEach(function(id){
+    var btn=document.getElementById('bp-'+id);
+    if(!btn)return;
+    var on=id===p;
+    btn.style.background=on?'#00695C':'#fff';
+    btn.style.color=on?'#fff':'#555';
+    btn.style.borderColor=on?'#00695C':'#ddd';
+  });
+  resetBreath();
+}
+
+function setBreathSound(s){
+  if(!premium&&!premplus){showPlans();return;}
+  breathSound=s;
+  ['none','rain','ocean'].forEach(function(id){
+    var btn=document.getElementById('bs-'+id);
+    if(!btn)return;
+    var on=id===s;
+    btn.style.background=on?'#00695C':'#fff';
+    btn.style.color=on?'#fff':'#555';
+    btn.style.borderColor=on?'#00695C':'#ddd';
+  });
+  // Stop existing audio
+  if(breathAudio){breathAudio.pause();breathAudio=null;}
+  if(s!=='none'&&breathRunning)startBreathAudio();
+}
+
+function startBreathAudio(){
+  if(breathSound==='none'||breathAudio)return;
+  // Use Web Audio API to generate simple tones as rain/ocean approximation
+  // since we can't load external audio files
+  // For now just play a subtle oscillator — a proper sound would need hosted audio files
+  try{
+    var ctx=new(window.AudioContext||window.webkitAudioContext)();
+    var osc=ctx.createOscillator();
+    var gain=ctx.createGain();
+    osc.connect(gain);gain.connect(ctx.destination);
+    osc.frequency.value=breathSound==='rain'?800:300;
+    osc.type=breathSound==='rain'?'sawtooth':'sine';
+    gain.gain.value=0.02;
+    osc.start();
+    breathAudio={pause:function(){try{osc.stop();ctx.close();}catch(e){}},ctx:ctx};
+  }catch(e){}
+}
+
+function stopBreathAudio(){
+  if(breathAudio){breathAudio.pause();breathAudio=null;}
+}
+
+function openBreath(){
+  document.getElementById('breathmod').classList.add('open');
+  // Show Premium pattern/sound controls
+  var pr=document.getElementById('breath-pattern-row');
+  var sr=document.getElementById('breath-sound-row');
+  if(pr)pr.style.display=(premium||premplus)?'':'none';
+  if(sr)sr.style.display=(premium||premplus)?'':'none';
+  resetBreath();
+}
+function closeBreath(){stopBreath();stopBreathAudio();document.getElementById('breathmod').classList.remove('open');}
 function resetBreath(){
-  stopBreath();breathPhase=0;breathCount=0;breathCycles=0;
+  stopBreath();stopBreathAudio();breathPhase=0;breathCount=0;breathCycles=0;
   document.getElementById('breath-phase').textContent='Tap Start to begin';
   document.getElementById('breath-count').textContent='';
   document.getElementById('breath-cycles').textContent='Cycles: 0';
@@ -2206,13 +2310,13 @@ function resetBreath(){
 }
 function stopBreath(){clearInterval(breathInterval);breathRunning=false;}
 function startStopBreath(){
-  if(breathRunning){stopBreath();document.getElementById('breath-start-btn').textContent='▶ Resume';document.getElementById('breath-phase').textContent='Paused';}
-  else{breathRunning=true;document.getElementById('breath-start-btn').textContent='⏸ Pause';runBreathPhase();}
+  if(breathRunning){stopBreath();stopBreathAudio();document.getElementById('breath-start-btn').textContent='▶ Resume';document.getElementById('breath-phase').textContent='Paused';}
+  else{breathRunning=true;document.getElementById('breath-start-btn').textContent='⏸ Pause';if(breathSound!=='none')startBreathAudio();runBreathPhase();}
 }
 function runBreathPhase(){
   if(!breathRunning)return;
-  var phases=[{label:'Breathe in...',emoji:'🌬️',duration:4,size:'expand'},{label:'Hold...',emoji:'✨',duration:4,size:'hold'},{label:'Breathe out...',emoji:'😮‍💨',duration:6,size:'shrink'}];
-  var p=phases[breathPhase];
+  var phases=BREATH_PATTERNS[breathPattern]||BREATH_PATTERNS.calm;
+  var p=phases[breathPhase%phases.length];
   document.getElementById('breath-phase').textContent=p.label;
   document.getElementById('breath-emoji').textContent=p.emoji;
   setBreathCircle(p.size);
@@ -2221,7 +2325,7 @@ function runBreathPhase(){
   breathInterval=setInterval(function(){
     if(!breathRunning){clearInterval(breathInterval);return;}
     breathCount--;document.getElementById('breath-count').textContent=breathCount>0?breathCount:'';
-    if(breathCount<=0){clearInterval(breathInterval);breathPhase=(breathPhase+1)%3;if(breathPhase===0){breathCycles++;document.getElementById('breath-cycles').textContent='Cycles: '+breathCycles;}runBreathPhase();}
+    if(breathCount<=0){clearInterval(breathInterval);breathPhase=(breathPhase+1)%(phases.length);if(breathPhase===0){breathCycles++;document.getElementById('breath-cycles').textContent='Cycles: '+breathCycles;}runBreathPhase();}
   },1000);
 }
 function setBreathCircle(state){
@@ -2233,9 +2337,43 @@ function setBreathCircle(state){
 }
 
 // TIMER
-function openTimer(){document.getElementById('timermod').classList.add('open');updateTimerDisplay();}
+var favTimerMins=parseInt(localStorage.getItem('aidova_fav_timer')||'0');
+
+function openTimer(){
+  document.getElementById('timermod').classList.add('open');
+  // Show Premium custom duration row
+  var cr=document.getElementById('timer-custom-row');
+  if(cr)cr.style.display=(premium||premplus)?'':'none';
+  // Show saved favourite if exists
+  updateFavTimerLabel();
+  updateTimerDisplay();
+}
 function closeTimer(){document.getElementById('timermod').classList.remove('open');}
 function setTimer(mins){resetTimer();timerTotal=mins*60;timerLeft=mins*60;updateTimerDisplay();}
+function setCustomTimer(){
+  if(!premium&&!premplus){showPlans();return;}
+  var inp=document.getElementById('timer-custom-input');
+  var mins=parseInt(inp?inp.value:0);
+  if(!mins||mins<1||mins>180){alert('Please enter a number between 1 and 180.');return;}
+  setTimer(mins);
+}
+function saveFavTimer(){
+  if(!premium&&!premplus){showPlans();return;}
+  var inp=document.getElementById('timer-custom-input');
+  var mins=parseInt(inp?inp.value:0)||Math.round(timerTotal/60);
+  if(!mins||mins<1){alert('Set a duration first.');return;}
+  favTimerMins=mins;
+  try{localStorage.setItem('aidova_fav_timer',mins);}catch(e){}
+  updateFavTimerLabel();
+  setTimer(mins);
+}
+function updateFavTimerLabel(){
+  var el=document.getElementById('timer-fav-label');
+  if(!el)return;
+  el.textContent=favTimerMins>0?'⭐ '+favTimerMins+'min saved':'';
+  // Auto-load favourite when opening
+  if(favTimerMins>0&&timerTotal===300){setTimer(favTimerMins);}
+}
 function startStopTimer(){
   if(timerRunning){clearInterval(timerInterval);timerRunning=false;document.getElementById('timer-start-btn').textContent='▶ Resume';document.getElementById('timer-label').textContent='Paused';}
   else{if(timerLeft<=0)resetTimer();timerRunning=true;document.getElementById('timer-start-btn').textContent='⏸ Pause';document.getElementById('timer-label').textContent='Counting down...';
@@ -3688,7 +3826,14 @@ function factoryReset(){if(!confirm('Factory reset?\n\nClears everything includi
 // CUSTOM BUTTON
 function onEmojiSel(sel){if(!sel.value)return;var p=sel.value.split('|');selEmoji=p[0];selLabel=p[1]||p[0];document.getElementById('eprev').textContent=selEmoji;if(!document.getElementById('mlabel').value.trim())document.getElementById('mlabel').value=selLabel;}
 function onPhoto(inp){var f=inp.files[0];if(!f)return;var r=new FileReader();r.onload=function(e){var img=new Image();img.onload=function(){var c=document.createElement('canvas'),MAX=200,w=img.width,h=img.height;if(w>h){if(w>MAX){h=h*MAX/w;w=MAX;}}else{if(h>MAX){w=w*MAX/h;h=MAX;}}c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);photoUrl=c.toDataURL('image/jpeg',.7);var pv=document.getElementById('pprev');pv.src=photoUrl;pv.style.display='block';document.getElementById('phint').style.display='none';document.getElementById('spkrow').style.display='block';selEmoji='📷';document.getElementById('eprev').textContent='📷';};img.src=e.target.result;};r.readAsDataURL(f);}
-function openRec(pi,s){recPg=pi;recSl=s;photoUrl=null;selEmoji='🎤';selLabel='';selBtnColour='';document.getElementById('eprev').textContent='🎤';document.getElementById('esel').value='';document.getElementById('mlabel').value='';document.getElementById('mspeak').value='';document.getElementById('pfile').value='';document.getElementById('pprev').style.display='none';document.getElementById('pprev').src='';document.getElementById('phint').style.display='';document.getElementById('spkrow').style.display='none';document.getElementById('recmod').classList.add('open');if(premium||premplus)buildBtnColSwatches();else{var cr=document.getElementById('btn-col-row');if(cr)cr.innerHTML='<span style="font-size:.68rem;color:#aaa">⭐ Premium feature</span>';}}
+function openRec(pi,s){recPg=pi;recSl=s;photoUrl=null;selEmoji='🎤';selLabel='';selBtnColour='';document.getElementById('eprev').textContent='🎤';document.getElementById('esel').value='';document.getElementById('mlabel').value='';document.getElementById('mspeak').value='';document.getElementById('pfile').value='';document.getElementById('pprev').style.display='none';document.getElementById('pprev').src='';document.getElementById('phint').style.display='';document.getElementById('spkrow').style.display='none';document.getElementById('recmod').classList.add('open');
+  // Photo upload gated to Premium Plus
+  var uploadArea=document.getElementById('photo-upload-area');
+  var plusPrompt=document.getElementById('photo-plus-prompt');
+  if(premplus){if(uploadArea)uploadArea.style.display='';if(plusPrompt)plusPrompt.style.display='none';}
+  else{if(uploadArea)uploadArea.style.display='none';if(plusPrompt)plusPrompt.style.display='';}
+  if(premium||premplus)buildBtnColSwatches();else{var cr=document.getElementById('btn-col-row');if(cr)cr.innerHTML='<span style="font-size:.68rem;color:#aaa">⭐ Premium feature</span>';}
+}
 function closeRec(){document.getElementById('recmod').classList.remove('open');}
 document.getElementById('recmod').addEventListener('click',function(e){if(e.target.id==='recmod')closeRec();});
 function saveRec(){
