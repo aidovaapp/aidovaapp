@@ -960,110 +960,11 @@ body.editing .ce{border:2px dashed #E0E0E0}
   <div class="mbox">
     <h2>⭐ Add custom button</h2>
     <div class="mrow">
-      <div id="eprev" style="font-size:2rem;width:46px;height:46px;background:#f5f5f5;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">🎤</div>
-      <select class="msel" id="esel" onchange="onEmojiSel(this)">
-        <option value="">-- Pick an emoji --</option>
-        <optgroup label="🧑 Family &amp; Carers"><option value="👩|mum">👩 Mum</option><option value="👨|dad">👨 Dad</option><option value="👵|grandma">👵 Grandma</option><option value="👴|grandpa">👴 Grandpa</option><option value="👧|sister">👧 Sister</option><option value="👦|brother">👦 Brother</option><option value="👶|baby">👶 Baby</option><option value="🧑|carer">🧑 Carer</option><option value="👩‍⚕️|nurse">👩‍⚕️ Nurse</option><option value="👨‍⚕️|doctor">👨‍⚕️ Doctor</option><option value="👩‍🏫|teacher">👩‍🏫 Teacher</option><option value="👮|helper">👮 Helper</option></optgroup>
-        <optgroup label="🎪 Sensory &amp; Play"><option value="🤸|trampoline">🤸 Trampoline</option><option value="🫧|bubbles">🫧 Bubbles</option><option value="🎨|play dough">🎨 Play dough</option><option value="🦺|pressure vest">🦺 Pressure vest</option><option value="🫂|deep pressure">🫂 Deep pressure</option><option value="🧸|cuddle">🧸 Cuddle</option><option value="🌊|water play">🌊 Water play</option><option value="🪁|fidget">🪁 Fidget toy</option></optgroup>
-        <optgroup label="🍎 Food"><option value="🍎|apple">🍎 Apple</option><option value="🍌|banana">🍌 Banana</option><option value="🍊|orange">🍊 Orange</option><option value="🍇|grapes">🍇 Grapes</option><option value="🍞|bread">🍞 Bread</option><option value="🍗|chicken">🍗 Chicken</option><option value="🍕|pizza">🍕 Pizza</option><option value="🥪|sandwich">🥪 Sandwich</option><option value="🥛|milk">🥛 Milk</option><option value="🧃|juice">🧃 Juice</option><option value="🍪|biscuit">🍪 Biscuit</option><option value="🍫|chocolate">🍫 Chocolate</option><option value="🍬|sweets">🍬 Sweets</option><option value="☕|hot drink">☕ Hot drink</option></optgroup>
-        <optgroup label="🏠 More Places"><option value="🛒|shops">🛒 Shops</option><option value="🏖️|beach">🏖️ Beach</option><option value="🏕️|garden">🏕️ Garden</option><option value="🎡|theme park">🎡 Theme park</option></optgroup>
-        <optgroup label="🎮 Activities"><option value="⚽|football">⚽ Football</option><option value="🧩|puzzle">🧩 Puzzle</option><option value="🏃|walk">🏃 Walk</option><option value="🎤|sing">🎤 Sing</option><option value="🚲|bike">🚲 Bike</option><option value="🌈|outside">🌈 Outside</option></optgroup>
-        <optgroup label="🏥 Body &amp; Health"><option value="🤕|head hurts">🤕 Head hurts</option><option value="🤢|tummy hurts">🤢 Tummy hurts</option><option value="🤒|sick">🤒 Sick</option><option value="💊|medicine">💊 Medicine</option><option value="🩺|doctor">🩺 Doctor</option></optgroup>
-        <optgroup label="📞 Communication"><option value="🙏|please">🙏 Please</option><option value="📞|phone">📞 Phone</option><option value="📱|video call">📱 Video call</option><option value="🤩|love">🤩 Love</option><option value="🤔|don't know">🤔 Don't know</option></optgroup>
-        <optgroup label="⏰ Routine &amp; Daily Life">
-          <option value="☀️|morning">☀️ Morning</option><option value="🌙|night">🌙 Night</option>
-          <option value="🌅|wake up">🌅 Wake up</option><option value="🌆|evening">🌆 Evening</option>
-          <option value="⏰|alarm">⏰ Alarm</option><option value="🍽️|meal time">🍽️ Meal time</option>
-          <option value="🚿|wash">🚿 Wash</option><option value="🎮|play time">🎮 Play time</option>
-          <option value="🛌|bed time">🛌 Bed time</option><option value="💊|medicine time">💊 Medicine time</option>
-          <option value="🪥|brush teeth">🪥 Brush teeth</option><option value="👗|get dressed">👗 Get dressed</option>
-        </optgroup>
-        <optgroup label="🤲 Sensory &amp; Regulation">
-          <option value="🫧|bubbles">🫧 Bubbles</option><option value="🤸|trampoline">🤸 Trampoline</option>
-          <option value="🧸|cuddle">🧸 Cuddle</option><option value="🫂|deep pressure">🫂 Deep pressure</option>
-          <option value="🦺|pressure vest">🦺 Pressure vest</option><option value="🪁|fidget toy">🪁 Fidget toy</option>
-          <option value="🎨|play dough">🎨 Play dough</option><option value="🌊|water play">🌊 Water play</option>
-          <option value="🎧|headphones">🎧 Headphones</option><option value="🌿|nature">🌿 Nature</option>
-          <option value="🛀|bath time">🛀 Bath time</option><option value="🧘|calm down">🧘 Calm down</option>
-          <option value="🌬️|breathing">🌬️ Breathing</option><option value="🎵|music">🎵 Music</option>
-        </optgroup>
-        <optgroup label="🍎 More Food &amp; Drink">
-          <option value="🍎|apple">🍎 Apple</option><option value="🍌|banana">🍌 Banana</option>
-          <option value="🍊|orange">🍊 Orange</option><option value="🍇|grapes">🍇 Grapes</option>
-          <option value="🍓|strawberry">🍓 Strawberry</option><option value="🥕|carrot">🥕 Carrot</option>
-          <option value="🍞|bread">🍞 Bread</option><option value="🧀|cheese">🧀 Cheese</option>
-          <option value="🥚|egg">🥚 Egg</option><option value="🍗|chicken">🍗 Chicken</option>
-          <option value="🍕|pizza">🍕 Pizza</option><option value="🍔|burger">🍔 Burger</option>
-          <option value="🥪|sandwich">🥪 Sandwich</option><option value="🍜|noodles">🍜 Noodles</option>
-          <option value="🍚|rice">🍚 Rice</option><option value="🥛|milk">🥛 Milk</option>
-          <option value="🧃|juice">🧃 Juice</option><option value="🍵|tea">🍵 Tea</option>
-          <option value="☕|coffee">☕ Coffee</option><option value="🍦|ice cream">🍦 Ice cream</option>
-          <option value="🍩|doughnut">🍩 Doughnut</option><option value="🥞|pancakes">🥞 Pancakes</option>
-          <option value="🥗|salad">🥗 Salad</option><option value="🍲|stew">🍲 Stew</option>
-          <option value="🥩|meat">🥩 Meat</option><option value="🐟|fish">🐟 Fish</option>
-          <option value="🥜|nuts">🥜 Nuts</option><option value="🫐|blueberries">🫐 Blueberries</option>
-        </optgroup>
-        <optgroup label="🏠 Home &amp; Places">
-          <option value="🛏️|bedroom">🛏️ Bedroom</option><option value="🛁|bathroom">🛁 Bathroom</option>
-          <option value="🍳|kitchen">🍳 Kitchen</option><option value="🛋️|living room">🛋️ Living room</option>
-          <option value="🌿|garden">🌿 Garden</option><option value="🚪|door">🚪 Door</option>
-          <option value="🪑|chair">🪑 Chair</option><option value="🪟|window">🪟 Window</option>
-          <option value="🏥|hospital">🏥 Hospital</option><option value="🦷|dentist">🦷 Dentist</option>
-          <option value="🛒|supermarket">🛒 Supermarket</option><option value="🏖️|beach">🏖️ Beach</option>
-          <option value="⛪|church">⛪ Church</option><option value="🕌|mosque">🕌 Mosque</option>
-          <option value="🛕|temple">🛕 Temple</option><option value="🎠|fun fair">🎠 Fun fair</option>
-          <option value="🏊|swimming pool">🏊 Swimming pool</option><option value="🎬|cinema">🎬 Cinema</option>
-          <option value="📖|library">📖 Library</option><option value="☕|café">☕ Café</option>
-        </optgroup>
-        <optgroup label="🎮 Activities &amp; Hobbies">
-          <option value="⚽|football">⚽ Football</option><option value="🏀|basketball">🏀 Basketball</option>
-          <option value="🎾|tennis">🎾 Tennis</option><option value="🚲|cycling">🚲 Cycling</option>
-          <option value="🏃|running">🏃 Running</option><option value="🤸|gymnastics">🤸 Gymnastics</option>
-          <option value="🎨|painting">🎨 Painting</option><option value="✂️|crafts">✂️ Crafts</option>
-          <option value="🧩|puzzle">🧩 Puzzle</option><option value="🎲|board game">🎲 Board game</option>
-          <option value="📺|watching tv">📺 Watching TV</option><option value="📱|tablet">📱 Tablet</option>
-          <option value="🎮|video games">🎮 Video games</option><option value="📚|reading">📚 Reading</option>
-          <option value="🎵|singing">🎵 Singing</option><option value="🎹|piano">🎹 Piano</option>
-          <option value="🌱|gardening">🌱 Gardening</option><option value="🐾|pet care">🐾 Pet care</option>
-          <option value="🏄|surfing">🏄 Surfing</option><option value="🧗|climbing">🧗 Climbing</option>
-        </optgroup>
-        <optgroup label="🏥 Health &amp; Body">
-          <option value="🤕|head hurts">🤕 Head hurts</option><option value="🦷|tooth hurts">🦷 Tooth hurts</option>
-          <option value="👁️|eye hurts">👁️ Eye hurts</option><option value="👂|ear hurts">👂 Ear hurts</option>
-          <option value="🤢|tummy hurts">🤢 Tummy hurts</option><option value="🦵|leg hurts">🦵 Leg hurts</option>
-          <option value="💪|arm hurts">💪 Arm hurts</option><option value="🤒|fever">🤒 Fever</option>
-          <option value="🤧|runny nose">🤧 Runny nose</option><option value="💊|medicine">💊 Medicine</option>
-          <option value="🩹|plaster">🩹 Plaster</option><option value="🩺|check up">🩺 Check up</option>
-          <option value="🧴|cream">🧴 Cream</option><option value="🌡️|temperature">🌡️ Temperature</option>
-          <option value="😴|need sleep">😴 Need sleep</option><option value="🥴|dizzy">🥴 Dizzy</option>
-        </optgroup>
-        <optgroup label="👨‍👩‍👧 People &amp; Relationships">
-          <option value="👩|mum">👩 Mum</option><option value="👨|dad">👨 Dad</option>
-          <option value="👵|grandma">👵 Grandma</option><option value="👴|grandpa">👴 Grandpa</option>
-          <option value="👧|sister">👧 Sister</option><option value="👦|brother">👦 Brother</option>
-          <option value="👶|baby">👶 Baby</option><option value="🧑|carer">🧑 Carer</option>
-          <option value="👩‍⚕️|nurse">👩‍⚕️ Nurse</option><option value="👨‍⚕️|doctor">👨‍⚕️ Doctor</option>
-          <option value="👩‍🏫|teacher">👩‍🏫 Teacher</option><option value="👮|police">👮 Police</option>
-          <option value="🧑‍🦽|wheelchair">🧑‍🦽 Wheelchair</option><option value="🤝|friend">🤝 Friend</option>
-          <option value="👫|together">👫 Together</option><option value="🫂|hug">🫂 Hug</option>
-        </optgroup>
-        <optgroup label="😊 Feelings &amp; Emotions">
-          <option value="😊|happy">😊 Happy</option><option value="😢|sad">😢 Sad</option>
-          <option value="😡|angry">😡 Angry</option><option value="😨|scared">😨 Scared</option>
-          <option value="😴|sleepy">😴 Sleepy</option><option value="🤩|excited">🤩 Excited</option>
-          <option value="😌|calm">😌 Calm</option><option value="😟|worried">😟 Worried</option>
-          <option value="🥱|bored">🥱 Bored</option><option value="🥰|loved">🥰 Loved</option>
-          <option value="😤|frustrated">😤 Frustrated</option><option value="🤗|grateful">🤗 Grateful</option>
-        </optgroup>
-        <optgroup label="🌍 Cultural &amp; Religious">
-          <option value="🕌|mosque">🕌 Mosque</option><option value="🛕|mandir">🛕 Mandir</option>
-          <option value="⛪|church">⛪ Church</option><option value="🕍|synagogue">🕍 Synagogue</option>
-          <option value="🙏|prayer">🙏 Prayer</option><option value="📿|mala">📿 Mala</option>
-          <option value="🎊|celebration">🎊 Celebration</option><option value="🎁|gift">🎁 Gift</option>
-          <option value="🍛|curry">🍛 Curry</option><option value="🫓|flatbread">🫓 Flatbread</option>
-          <option value="🥘|rice dish">🥘 Rice dish</option><option value="🧆|falafel">🧆 Falafel</option>
-        </optgroup>
-      </select>
+      <div id="eprev" style="font-size:2rem;width:46px;height:46px;background:#f5f5f5;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer" onclick="openEmojiPicker()">🎤</div>
+      <div style="flex:1;display:flex;flex-direction:column;gap:6px">
+        <button onclick="openEmojiPicker()" style="width:100%;padding:9px 12px;border:2px solid #ddd;border-radius:10px;background:#f9f9f9;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.8rem;cursor:pointer;text-align:left;color:#555">😊 Choose an emoji →</button>
+        <div id="emoji-selected-label" style="font-size:.65rem;color:#2D6A4F;font-weight:700;min-height:14px;padding:0 2px"></div>
+      </div>
     </div>
     <input class="minput" type="text" id="mlabel" placeholder="Button label (e.g. MUM, BUBBLES)" autocomplete="off">
     <div id="photo-section">
@@ -1087,6 +988,21 @@ body.editing .ce{border:2px dashed #E0E0E0}
       <div class="col-row" id="btn-col-row"></div>
     </div>
     <div class="mbtns"><button class="mcanc" onclick="closeRec()">Cancel</button><button class="msave" onclick="saveRec()">Save ✓</button></div>
+  </div>
+</div>
+
+<!-- EMOJI PICKER MODAL -->
+<div id="emojipicker" style="display:none;position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);align-items:flex-end;justify-content:center" onclick="if(event.target===this)closeEmojiPicker()">
+  <div style="background:#fff;border-radius:24px 24px 0 0;width:100%;max-height:82vh;display:flex;flex-direction:column;animation:sup .3s cubic-bezier(.34,1.2,.64,1)">
+    <div style="padding:14px 14px 8px;flex-shrink:0">
+      <div style="width:36px;height:4px;background:#E0E0E0;border-radius:2px;margin:0 auto 12px"></div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <input id="emoji-search" type="text" placeholder="🔍 Search emoji..." oninput="filterEmoji(this.value)" style="flex:1;padding:9px 12px;border:2px solid #ddd;border-radius:10px;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-size:.88rem;outline:none">
+        <button onclick="closeEmojiPicker()" style="border:none;background:#eee;color:#666;border-radius:10px;padding:9px 14px;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.82rem;cursor:pointer">✕</button>
+      </div>
+      <div id="emoji-cat-tabs" style="display:flex;gap:4px;overflow-x:auto;padding:8px 0 4px;-webkit-overflow-scrolling:touch;scrollbar-width:none"></div>
+    </div>
+    <div id="emoji-grid-wrap" style="flex:1;overflow-y:auto;padding:4px 10px 24px;-webkit-overflow-scrolling:touch"></div>
   </div>
 </div>
 
@@ -3824,9 +3740,272 @@ function emergCall(){
 function factoryReset(){if(!confirm('Factory reset?\n\nClears everything including PIN and custom buttons.'))return;Object.keys(localStorage).filter(function(k){return k.startsWith('aidova');}).forEach(function(k){localStorage.removeItem(k);});location.reload();}
 
 // CUSTOM BUTTON
+// EMOJI PICKER DATA — organized by category
+var EMOJI_CATS=[
+  {id:'people',label:'👨‍👩‍👧 People',emojis:[
+    ['👩','mum'],['👨','dad'],['👵','grandma'],['👴','grandpa'],['👧','sister'],['👦','brother'],['👶','baby'],
+    ['🧑','carer'],['👩‍⚕️','nurse'],['👨‍⚕️','doctor'],['👩‍🏫','teacher'],['👮','police'],
+    ['🧑‍🦽','wheelchair'],['🤝','friend'],['👫','couple'],['🫂','hug'],['🧒','child'],['👱','blond person'],
+    ['👷','builder'],['💂','guard'],['🕵️','detective'],['👩‍🍳','chef'],['👩‍🔧','mechanic'],
+    ['👩‍🎤','singer'],['👩‍💻','coder'],['👩‍⚖️','judge'],['🦸','hero'],['🧕','headscarf'],
+    ['🙎','sulking'],['🙍','frowning'],['💁','information'],['🤦','facepalm'],['🤷','shrug'],
+    ['🧑‍🦯','cane person'],['🦼','electric wheelchair'],['🏃','running person'],['🚶','walking person'],
+    ['🧍','standing'],['🧎','kneeling'],['🧑‍🤝‍🧑','holding hands'],['🧓','older person'],
+    ['👼','angel baby'],['🤰','pregnant'],['🧔','bearded person'],['🧏','deaf person']
+  ]},
+  {id:'feelings',label:'😊 Feelings',emojis:[
+    ['😊','happy'],['😢','sad'],['😡','angry'],['😨','scared'],['😴','sleepy'],['🤩','excited'],
+    ['😌','calm'],['😟','worried'],['🥱','bored'],['🥰','loved'],['😤','frustrated'],['🤗','grateful'],
+    ['😭','crying'],['😔','lonely'],['😕','confused'],['😳','embarrassed'],['🥹','proud'],
+    ['😖','uneasy'],['😒','jealous'],['🥴','dizzy'],['🤢','disgusted'],['😬','nervous'],
+    ['😰','anxious'],['😓','disappointed'],['😫','stressed'],['🥺','upset'],['😯','surprised'],
+    ['🤯','shocked'],['😑','expressionless'],['🙂','okay'],['😀','grinning'],['😁','beaming'],
+    ['😅','relieved'],['🤣','laughing'],['😂','tears of joy'],['☺️','smiling'],['😇','angelic'],
+    ['🥳','celebrating'],['😎','cool'],['🤓','nerdy'],['🧐','curious'],['😐','neutral'],
+    ['😶','speechless'],['😏','smirking'],['🤔','thinking'],['🙄','eye roll'],['😪','drowsy'],
+    ['😮','surprised'],['🤐','zipped mouth'],['🤫','shushing'],['🤭','oops'],['😲','astonished'],
+    ['😱','screaming'],['😣','struggling'],['😩','exhausted'],['😔','down'],['🥶','cold feeling'],
+    ['🥵','hot feeling'],['🤒','unwell'],['🤕','hurt'],['🤑','money face'],['😝','silly']
+  ]},
+  {id:'food',label:'🍎 Food',emojis:[
+    ['🍎','apple'],['🍌','banana'],['🍊','orange'],['🍇','grapes'],['🍓','strawberry'],['🍒','cherry'],
+    ['🍑','peach'],['🍋','lemon'],['🍉','watermelon'],['🍈','melon'],['🥭','mango'],['🍍','pineapple'],
+    ['🥥','coconut'],['🥝','kiwi'],['🍅','tomato'],['🥕','carrot'],['🌽','corn'],['🥦','broccoli'],
+    ['🥬','lettuce'],['🥑','avocado'],['🍆','aubergine'],['🫑','pepper'],['🧅','onion'],['🥔','potato'],
+    ['🌶️','chilli'],['🥜','peanuts'],['🍞','bread'],['🥐','croissant'],['🥖','baguette'],['🫓','flatbread'],
+    ['🥨','pretzel'],['🧀','cheese'],['🥚','egg'],['🍳','fried egg'],['🧇','waffle'],['🥞','pancakes'],
+    ['🥙','kebab wrap'],['🍗','chicken'],['🍖','meat on bone'],['🌭','hot dog'],['🍔','burger'],
+    ['🍟','chips'],['🍕','pizza'],['🌮','taco'],['🌯','burrito'],['🥪','sandwich'],
+    ['🥗','salad'],['🍜','noodles'],['🍝','pasta'],['🍛','curry'],['🍚','rice'],['🍣','sushi'],
+    ['🍱','lunchbox'],['🐟','fish'],['🥩','steak'],['🥘','stew pot'],['🍲','casserole'],
+    ['🥣','porridge'],['🍿','popcorn'],['🍦','ice cream'],['🍩','doughnut'],['🍪','biscuit'],
+    ['🎂','birthday cake'],['🍰','cake'],['🧁','cupcake'],['🍫','chocolate'],['🍬','sweets'],
+    ['🍭','lollipop'],['🍯','honey'],['🥛','milk'],['☕','coffee'],['🫖','teapot'],['🍵','tea'],
+    ['🧃','juice box'],['🥤','cold drink'],['🧋','bubble tea'],['🧆','falafel'],['🍠','sweet potato'],
+    ['🫘','beans'],['🧂','salt'],['🥮','mooncake'],['🍡','dango'],['🧁','fairy cake'],
+    ['🥗','green salad'],['🫕','fondue'],['🍤','prawn'],['🦞','lobster'],['🦀','crab'],['🥫','tinned food']
+  ]},
+  {id:'places',label:'🏠 Places',emojis:[
+    ['🏠','home'],['🏫','school'],['🏥','hospital'],['🦷','dentist'],['🏦','bank'],['🛒','supermarket'],
+    ['🏬','shopping centre'],['🏢','office'],['🏛️','museum'],['📖','library'],['🎬','cinema'],
+    ['🎭','theatre'],['🎡','theme park'],['🎢','rollercoaster'],['🏕️','camping'],['🏖️','beach'],
+    ['🏝️','island'],['🌋','volcano'],['🏔️','snowy mountain'],['🌲','forest'],['🌳','park'],
+    ['🌿','garden'],['🌊','sea'],['🏊','swimming pool'],['🏟️','stadium'],['⛪','church'],
+    ['🕌','mosque'],['🛕','temple'],['🕍','synagogue'],['🗼','tower'],['🌃','night city'],
+    ['🌇','sunset city'],['🌆','evening city'],['🌉','bridge'],['🛌','bedroom'],['🛁','bathroom'],
+    ['🍳','kitchen'],['🛋️','living room'],['🚪','door'],['🪟','window'],['🪑','chair'],
+    ['🛏️','bed'],['🚿','shower'],['🚽','toilet'],['🏣','post office'],['🏨','hotel'],
+    ['⛽','petrol station'],['🚉','train station'],['✈️','airport'],['🚢','port'],
+    ['🎠','fairground'],['🌸','garden centre'],['🏪','corner shop'],['🏩','guest house'],
+    ['🏧','cash machine'],['🅿️','car park'],['🗻','mountain'],['⛺','tent'],['🏕️','campsite']
+  ]},
+  {id:'activities',label:'🎮 Activities',emojis:[
+    ['⚽','football'],['🏀','basketball'],['🏈','american football'],['⚾','baseball'],['🎾','tennis'],
+    ['🏐','volleyball'],['🏉','rugby'],['🥏','frisbee'],['🎱','snooker'],['🏓','ping pong'],
+    ['🏸','badminton'],['🥊','boxing'],['🥋','martial arts'],['🛹','skateboard'],['🛼','roller skates'],
+    ['🛷','sledge'],['⛸️','ice skates'],['🏂','snowboard'],['🤿','diving'],['🏋️','weights'],
+    ['🤸','gymnastics'],['🏊','swimming'],['🚵','mountain bike'],['🚴','cycling'],['🏄','surfing'],
+    ['🧗','climbing'],['🏌️','golf'],['🪂','parachute'],['🎿','skiing'],['🛶','kayak'],
+    ['🚣','rowing'],['🎣','fishing'],['🏹','archery'],['🎯','darts'],['🎳','bowling'],
+    ['🎻','violin'],['🎹','piano'],['🥁','drums'],['🎷','saxophone'],['🎺','trumpet'],
+    ['🎸','guitar'],['🪗','accordion'],['🎤','singing'],['🎧','headphones'],['🎨','painting'],
+    ['✏️','drawing'],['✂️','crafts'],['🧵','sewing'],['🧶','knitting'],['📚','reading'],
+    ['🖥️','computer'],['📱','tablet'],['🎮','gaming'],['🕹️','joystick'],['🎲','board game'],
+    ['🧩','puzzle'],['♟️','chess'],['🃏','cards'],['🎪','circus'],['🧸','toys'],
+    ['🪀','yo-yo'],['🪃','boomerang'],['🏇','horse riding'],['⛷️','downhill ski']
+  ]},
+  {id:'transport',label:'🚗 Transport',emojis:[
+    ['🚗','car'],['🚕','taxi'],['🚙','family car'],['🚌','bus'],['🏎️','racing car'],['🚓','police car'],
+    ['🚑','ambulance'],['🚒','fire engine'],['🚐','minibus'],['🛻','pickup truck'],['🚚','lorry'],
+    ['🚛','articulated truck'],['🚜','tractor'],['🏍️','motorbike'],['🛵','moped'],['🚲','bike'],
+    ['🛴','kick scooter'],['🚁','helicopter'],['🛸','ufo'],['⵿','sailboat'],['🚤','speedboat'],
+    ['🚢','cruise ship'],['🚂','steam train'],['🚄','bullet train'],['🚇','tube'],['🚊','tram'],
+    ['🚞','mountain railway'],['🛤️','railway track'],['🛣️','motorway'],['🚦','traffic light'],
+    ['🚥','traffic signals'],['🛑','stop sign'],['⚓','anchor'],['🪝','hook'],['🛺','rickshaw'],
+    ['🚀','rocket'],['✈️','plane'],['⛵','yacht'],['🛥️','motorboat'],['🚋','tram car'],
+    ['🚡','aerial tramway'],['🚠','cable car'],['🚟','monorail'],['🛻','ute'],['🚐','people carrier']
+  ]},
+  {id:'health',label:'🏥 Health',emojis:[
+    ['🤕','head hurts'],['🦷','toothache'],['👁️','eye hurts'],['👂','ear hurts'],['🤢','tummy hurts'],
+    ['🦵','leg hurts'],['💪','arm hurts'],['🤒','fever'],['🤧','runny nose'],['💊','medicine'],
+    ['🩹','plaster'],['🩺','doctor check'],['🧴','cream'],['🌡️','thermometer'],['😴','need sleep'],
+    ['🩻','x-ray'],['💉','injection'],['🩸','blood test'],['🧬','dna'],['😷','face mask'],
+    ['🩼','crutch'],['🦯','walking cane'],['🦽','manual wheelchair'],['👁','eye check'],
+    ['🫀','heart check'],['🫁','lung check'],['🧠','brain'],['🦴','bone'],['🦶','foot'],
+    ['🤲','clean hands'],['🧪','test tube'],['🔬','microscope'],['🏋️','physio'],
+    ['🧘','mindfulness'],['🚶','rehabilitation'],['🛌','bed rest'],['🏊','hydrotherapy'],
+    ['💉','vaccination'],['🧫','culture test'],['🔭','eye test'],['🦻','hearing check'],
+    ['🥴','feeling woozy'],['🤑','nausea'],['🥶','feeling cold'],['🥵','feeling hot'],
+    ['😓','feeling low']
+  ]},
+  {id:'nature',label:'🌿 Nature',emojis:[
+    ['🌸','blossom'],['🌺','hibiscus'],['🌻','sunflower'],['🌹','rose'],['🌷','tulip'],['💐','bouquet'],
+    ['🌱','seedling'],['🌿','herb'],['☘️','shamrock'],['🍀','four leaf clover'],['🍃','leaves'],
+    ['🍂','autumn leaf'],['🍁','maple leaf'],['🌾','wheat'],['🌵','cactus'],['🎄','pine tree'],
+    ['🌲','evergreen tree'],['🌳','oak tree'],['🌴','palm tree'],['🍄','mushroom'],['🐚','shell'],
+    ['🪸','coral'],['🪨','rock'],['💧','water droplet'],['💦','splashing water'],['🌈','rainbow'],
+    ['☀️','sunny'],['🌤️','partly cloudy'],['⛅','cloudy'],['🌧️','rain'],['⛈️','thunder'],
+    ['🌩️','lightning'],['🌨️','snow'],['❄️','snowflake'],['🌬️','windy'],['🌀','cyclone'],
+    ['🌫️','foggy'],['🔥','fire'],['⭐','star'],['🌟','glowing star'],['💫','shooting star'],
+    ['✨','sparkles'],['🌙','moon'],['🌛','crescent moon'],['🌝','full moon'],['🌎','earth'],
+    ['⛰️','mountain'],['🌋','volcano'],['🌊','waves'],['🍋','lemon tree']
+  ]},
+  {id:'animals',label:'🐾 Animals',emojis:[
+    ['🐶','dog'],['🐱','cat'],['🐭','mouse'],['🐹','hamster'],['🐰','rabbit'],['🦊','fox'],
+    ['🐻','bear'],['🐼','panda'],['🐨','koala'],['🐯','tiger'],['🦁','lion'],['🐮','cow'],
+    ['🐷','pig'],['🐸','frog'],['🐵','monkey'],['🐔','hen'],['🐧','penguin'],['🐦','bird'],
+    ['🐤','chick'],['🦆','duck'],['🦅','eagle'],['🦉','owl'],['🦇','bat'],['🐺','wolf'],
+    ['🐗','boar'],['🐴','horse'],['🦄','unicorn'],['🐝','bee'],['🐛','caterpillar'],['🦋','butterfly'],
+    ['🐌','snail'],['🐞','ladybird'],['🐜','ant'],['🦟','mosquito'],['🐢','tortoise'],['🐍','snake'],
+    ['🦎','lizard'],['🦕','dinosaur'],['🐊','crocodile'],['🐳','whale'],['🐬','dolphin'],
+    ['🦭','seal'],['🐠','tropical fish'],['🐡','pufferfish'],['🦈','shark'],['🐙','octopus'],
+    ['🦑','squid'],['🦐','prawn'],['🦞','lobster'],['🦀','crab'],['🐾','paw prints'],
+    ['🦜','parrot'],['🦩','flamingo'],['🦢','swan'],['🕊️','dove'],['🦃','turkey'],
+    ['🦌','deer'],['🐐','goat'],['🐑','sheep'],['🐂','bull'],['🐩','poodle'],
+    ['🦮','guide dog'],['🐕‍🦺','service dog'],['🐈‍⬛','black cat'],['🦔','hedgehog'],
+    ['🐇','bunny'],['🦙','llama'],['🦘','kangaroo'],['🦬','bison'],['🦣','mammoth'],['🦫','beaver']
+  ]},
+  {id:'objects',label:'🎁 Objects',emojis:[
+    ['🎁','gift'],['🎀','ribbon'],['🎊','party popper'],['🎉','celebration'],['🎈','balloon'],
+    ['🎂','birthday cake'],['🪄','magic wand'],['🎩','top hat'],['🪅','pinata'],['🎭','masks'],
+    ['🖼️','picture frame'],['💎','diamond'],['💍','ring'],['👑','crown'],['💄','lipstick'],
+    ['💅','nail polish'],['🎓','graduation cap'],['⛑️','safety helmet'],['👜','handbag'],
+    ['🎒','backpack'],['🧳','suitcase'],['🌂','umbrella'],['📱','smartphone'],['💻','laptop'],
+    ['⌨️','keyboard'],['📷','camera'],['📹','video camera'],['🎥','film camera'],['📺','television'],
+    ['📻','radio'],['🎙️','microphone'],['📞','telephone'],['☎️','old telephone'],['🔋','battery'],
+    ['💡','light bulb'],['🔦','torch'],['🕯️','candle'],['🧲','magnet'],['🔧','spanner'],
+    ['🔨','hammer'],['⚙️','cog'],['🔑','key'],['🗝️','old key'],['🔒','locked'],['🔓','unlocked'],
+    ['🪞','mirror'],['🛁','bathtub'],['🧹','broom'],['🧺','basket'],['🧻','toilet roll'],
+    ['🧼','soap'],['🪥','toothbrush'],['🪒','razor'],['🧴','lotion'],['📚','books'],
+    ['✏️','pencil'],['🖊️','pen'],['📝','notepad'],['📋','clipboard'],['📅','calendar'],
+    ['🗓️','diary'],['📌','pin'],['📎','paperclip'],['✂️','scissors'],['🗑️','bin'],
+    ['🪣','bucket'],['🧰','toolbox'],['🔮','crystal ball'],['🎮','game controller'],['🕹️','joystick'],
+    ['🎲','dice'],['🧩','jigsaw'],['♟️','chess piece'],['🃏','playing card'],['🀄','mahjong']
+  ]},
+  {id:'routine',label:'⏰ Routine',emojis:[
+    ['☀️','morning'],['🌙','night time'],['🌅','sunrise'],['🌆','evening'],['⏰','alarm clock'],
+    ['⏱️','timer'],['⌚','watch'],['🕐','1 oclock'],['🕒','3 oclock'],['🕕','5 oclock'],
+    ['🕗','7 oclock'],['🕙','9 oclock'],['🕛','midday'],['🧸','sleep time'],['🪥','brush teeth'],
+    ['👗','get dressed'],['🚿','shower time'],['🛁','bath time'],['🍽️','meal time'],
+    ['🥣','breakfast'],['🥗','lunch time'],['🍛','dinner time'],['💊','medicine time'],
+    ['🚌','school bus'],['🏫','school time'],['🏠','home time'],['📚','homework time'],
+    ['📺','tv time'],['🎮','game time'],['🧘','calm time'],['💤','sleep'],['📅','today'],
+    ['✅','done'],['❌','not yet'],['⭐','well done'],['🏆','achievement'],['🎯','goal'],
+    ['👍','yes good'],['👎','no'],['💙','feeling blue'],['🟢','green light'],['🔴','red light'],
+    ['🟡','almost'],['🌟','excellent'],['🎊','party time'],['🛝','playground time'],
+    ['🌿','outdoor time'],['🎨','art time'],['🎵','music time'],['🍪','snack time'],['🛌','rest time']
+  ]},
+  {id:'sensory',label:'🤲 Sensory',emojis:[
+    ['🫧','bubbles'],['🌊','water play'],['🧸','cuddle toy'],['🫂','deep pressure hug'],
+    ['🦺','pressure vest'],['🪁','fidget toy'],['🎨','play dough'],['🧘','calm breathing'],
+    ['🌬️','breathe'],['🎵','calming music'],['🎧','ear defenders'],['🌿','nature walk'],
+    ['🛀','bath'],['🤸','trampoline'],['🌈','colourful'],['💦','water'],
+    ['🔵','blue calm'],['🟢','green calm'],['🟣','purple'],['🟠','orange'],['⚫','black'],
+    ['⚪','white'],['🌸','soft smell'],['☁️','soft texture'],['🔥','warm'],['🧊','cold'],
+    ['🎶','music on'],['📢','loud sound'],['🔇','quiet please'],['😌','relaxed'],
+    ['🤗','cozy feeling'],['🧡','comforted'],['💚','nature calm'],['🎯','focus time'],
+    ['🪨','heavy blanket'],['🧴','lotion rub'],['💈','spinning'],['🎠','gentle movement'],
+    ['🌀','spinning toy'],['🕯️','candle watching'],['⭐','star gazing'],['🌙','night light'],
+    ['🐠','fish tank'],['🐢','slow and steady'],['🌱','plant care'],['🎻','string music']
+  ]},
+  {id:'cultural',label:'🌍 Cultural',emojis:[
+    ['🕌','mosque'],['🛕','mandir'],['⛪','church'],['🕍','synagogue'],['☪️','crescent and star'],
+    ['✡️','star of david'],['🕉️','om symbol'],['☮️','peace sign'],['✝️','cross'],['🛐','place of worship'],
+    ['🙏','namaste'],['📿','prayer beads'],['🎊','celebration'],['🎁','gift giving'],
+    ['🍛','curry dish'],['🫓','naan bread'],['🥘','rice dish'],['🧆','falafel balls'],
+    ['🍜','ramen bowl'],['🍱','bento box'],['🥟','dumpling'],['🫔','tamale'],['🌮','taco'],
+    ['🥮','mooncake'],['🍡','dango'],['🍣','sushi roll'],['🥻','saree'],['🧣','scarf'],
+    ['🪔','diya lamp'],['🕯️','prayer candle'],['🏮','red lantern'],['🪷','lotus flower'],
+    ['🌺','tropical flower'],['🌻','sunflower'],['☘️','shamrock'],['🐉','lucky dragon'],
+    ['🦁','lion dance'],['🌙','ramadan moon'],['⭐','eid star'],['🌸','cherry blossom'],
+    ['🎋','bamboo'],['🎍','pine branch'],['🎐','wind chime'],['🪆','nesting doll'],
+    ['🪩','disco celebration'],['🎆','firework display'],['🥁','dhol drum'],['🎺','horn'],
+    ['🪗','squeeze box'],['🎻','string instrument']
+  ]}
+];
+
+// Flatten all emojis for search
+var EMOJI_ALL=[];
+EMOJI_CATS.forEach(function(cat){cat.emojis.forEach(function(e){EMOJI_ALL.push({e:e[0],l:e[1],c:cat.id});});});
+
+var emojiPickerCat='people';
+
+function openEmojiPicker(){
+  document.getElementById('emojipicker').style.display='flex';
+  document.getElementById('emoji-search').value='';
+  buildEmojiCatTabs();
+  renderEmojiGrid(emojiPickerCat,null);
+  setTimeout(function(){document.getElementById('emoji-search').focus();},300);
+}
+function closeEmojiPicker(){document.getElementById('emojipicker').style.display='none';}
+
+function buildEmojiCatTabs(){
+  var el=document.getElementById('emoji-cat-tabs');
+  if(!el)return;
+  el.innerHTML=EMOJI_CATS.map(function(cat){
+    var on=cat.id===emojiPickerCat;
+    return '<button onclick="switchEmojiCat(\''+cat.id+'\')" style="flex-shrink:0;padding:5px 10px;border:none;border-radius:20px;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-size:.68rem;font-weight:900;cursor:pointer;white-space:nowrap;background:'+(on?'#2D6A4F':'#F0F0F0')+';color:'+(on?'#fff':'#666')+'">'+cat.label+'</button>';
+  }).join('');
+}
+
+function switchEmojiCat(catId){
+  emojiPickerCat=catId;
+  document.getElementById('emoji-search').value='';
+  buildEmojiCatTabs();
+  renderEmojiGrid(catId,null);
+}
+
+function filterEmoji(q){
+  if(!q.trim()){renderEmojiGrid(emojiPickerCat,null);return;}
+  var results=EMOJI_ALL.filter(function(e){return e.l.toLowerCase().indexOf(q.toLowerCase())>-1;});
+  renderEmojiGridList(results);
+}
+
+function renderEmojiGrid(catId,filter){
+  var cat=EMOJI_CATS.find(function(c){return c.id===catId;});
+  if(!cat)return;
+  renderEmojiGridList(cat.emojis.map(function(e){return {e:e[0],l:e[1],c:catId};}));
+}
+
+function renderEmojiGridList(list){
+  var wrap=document.getElementById('emoji-grid-wrap');
+  if(!wrap)return;
+  if(!list.length){wrap.innerHTML='<div style="text-align:center;padding:20px;color:#aaa;font-size:.8rem">No emoji found</div>';return;}
+  wrap.innerHTML='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(52px,1fr));gap:4px">'
+    +list.map(function(item){
+      return '<div onclick="pickEmoji(\''+item.e.replace(/'/g,"\\'")+'\',' +
+        '\''+item.l.replace(/'/g,"\\'")+'\')" ' +
+        'title="'+item.l+'" ' +
+        'style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 2px;border-radius:10px;cursor:pointer;gap:2px;transition:background .1s" ' +
+        'onmouseover="this.style.background=\'#F0F0F0\'" onmouseout="this.style.background=\'\'">' +
+        '<span style="font-size:1.6rem;line-height:1">'+item.e+'</span>' +
+        '<span style="font-size:.52rem;color:#888;text-align:center;line-height:1.2;max-width:50px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+item.l+'</span>' +
+        '</div>';
+    }).join('')+'</div>';
+}
+
+function pickEmoji(emoji,label){
+  selEmoji=emoji;
+  selLabel=label;
+  document.getElementById('eprev').textContent=emoji;
+  document.getElementById('emoji-selected-label').textContent=label;
+  var btn=document.querySelector('#recmod button[onclick="openEmojiPicker()"]');
+  if(btn)btn.textContent=emoji+' '+label+' →';
+  if(!document.getElementById('mlabel').value.trim())document.getElementById('mlabel').value=label.toUpperCase();
+  closeEmojiPicker();
+}
+
 function onEmojiSel(sel){if(!sel.value)return;var p=sel.value.split('|');selEmoji=p[0];selLabel=p[1]||p[0];document.getElementById('eprev').textContent=selEmoji;if(!document.getElementById('mlabel').value.trim())document.getElementById('mlabel').value=selLabel;}
 function onPhoto(inp){var f=inp.files[0];if(!f)return;var r=new FileReader();r.onload=function(e){var img=new Image();img.onload=function(){var c=document.createElement('canvas'),MAX=200,w=img.width,h=img.height;if(w>h){if(w>MAX){h=h*MAX/w;w=MAX;}}else{if(h>MAX){w=w*MAX/h;h=MAX;}}c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);photoUrl=c.toDataURL('image/jpeg',.7);var pv=document.getElementById('pprev');pv.src=photoUrl;pv.style.display='block';document.getElementById('phint').style.display='none';document.getElementById('spkrow').style.display='block';selEmoji='📷';document.getElementById('eprev').textContent='📷';};img.src=e.target.result;};r.readAsDataURL(f);}
-function openRec(pi,s){recPg=pi;recSl=s;photoUrl=null;selEmoji='🎤';selLabel='';selBtnColour='';document.getElementById('eprev').textContent='🎤';document.getElementById('esel').value='';document.getElementById('mlabel').value='';document.getElementById('mspeak').value='';document.getElementById('pfile').value='';document.getElementById('pprev').style.display='none';document.getElementById('pprev').src='';document.getElementById('phint').style.display='';document.getElementById('spkrow').style.display='none';document.getElementById('recmod').classList.add('open');
+function openRec(pi,s){recPg=pi;recSl=s;photoUrl=null;selEmoji='🎤';selLabel='';selBtnColour='';
+  document.getElementById('eprev').textContent='🎤';
+  document.getElementById('emoji-selected-label').textContent='';
+  var btn=document.querySelector('#recmod button[onclick="openEmojiPicker()"]');
+  if(btn)btn.textContent='😊 Choose an emoji →';
+  document.getElementById('mlabel').value='';document.getElementById('mspeak').value='';
+  document.getElementById('pfile').value='';document.getElementById('pprev').style.display='none';
+  document.getElementById('pprev').src='';document.getElementById('phint').style.display='';
+  document.getElementById('spkrow').style.display='none';document.getElementById('recmod').classList.add('open');
   // Photo upload gated to Premium Plus
   var uploadArea=document.getElementById('photo-upload-area');
   var plusPrompt=document.getElementById('photo-plus-prompt');
