@@ -445,10 +445,10 @@ body.editing .ce{border:2px dashed #E0E0E0}
   </div>
   <div id="pw">
     <div id="pt">
-      <div class="page"><div class="grid" id="g0"></div><div class="hidden-section" id="hs0"><div class="hidden-section-title" onclick="toggleHiddenSection(0)"><span>👁 Hidden buttons (<span id="hcount0">0</span>)</span><span id="harrow0">▶</span></div><div class="hidden-grid" id="hg0" style="display:none"></div></div></div>
-      <div class="page"><div class="grid" id="g1"></div><div class="hidden-section" id="hs1"><div class="hidden-section-title" onclick="toggleHiddenSection(1)"><span>👁 Hidden buttons (<span id="hcount1">0</span>)</span><span id="harrow1">▶</span></div><div class="hidden-grid" id="hg1" style="display:none"></div></div></div>
-      <div class="page"><div class="grid" id="g2"></div><div class="hidden-section" id="hs2"><div class="hidden-section-title" onclick="toggleHiddenSection(2)"><span>👁 Hidden buttons (<span id="hcount2">0</span>)</span><span id="harrow2">▶</span></div><div class="hidden-grid" id="hg2" style="display:none"></div></div></div>
-      <div class="page"><div class="grid" id="g3"></div><div class="hidden-section" id="hs3"><div class="hidden-section-title" onclick="toggleHiddenSection(3)"><span>👁 Hidden buttons (<span id="hcount3">0</span>)</span><span id="harrow3">▶</span></div><div class="hidden-grid" id="hg3" style="display:none"></div></div></div>
+      <div class="page"><div id="recents-row-0" style="display:none;width:100%;margin-bottom:6px"></div><div class="grid" id="g0"></div><div class="hidden-section" id="hs0"><div class="hidden-section-title" onclick="toggleHiddenSection(0)"><span>👁 Hidden buttons (<span id="hcount0">0</span>)</span><span id="harrow0">▶</span></div><div class="hidden-grid" id="hg0" style="display:none"></div></div></div>
+      <div class="page"><div id="recents-row-1" style="display:none;width:100%;margin-bottom:6px"></div><div class="grid" id="g1"></div><div class="hidden-section" id="hs1"><div class="hidden-section-title" onclick="toggleHiddenSection(1)"><span>👁 Hidden buttons (<span id="hcount1">0</span>)</span><span id="harrow1">▶</span></div><div class="hidden-grid" id="hg1" style="display:none"></div></div></div>
+      <div class="page"><div id="recents-row-2" style="display:none;width:100%;margin-bottom:6px"></div><div class="grid" id="g2"></div><div class="hidden-section" id="hs2"><div class="hidden-section-title" onclick="toggleHiddenSection(2)"><span>👁 Hidden buttons (<span id="hcount2">0</span>)</span><span id="harrow2">▶</span></div><div class="hidden-grid" id="hg2" style="display:none"></div></div></div>
+      <div class="page"><div id="recents-row-3" style="display:none;width:100%;margin-bottom:6px"></div><div class="grid" id="g3"></div><div class="hidden-section" id="hs3"><div class="hidden-section-title" onclick="toggleHiddenSection(3)"><span>👁 Hidden buttons (<span id="hcount3">0</span>)</span><span id="harrow3">▶</span></div><div class="hidden-grid" id="hg3" style="display:none"></div></div></div>
     </div>
   </div>
 </div>
@@ -1186,6 +1186,8 @@ var hiddenB=JSON.parse(localStorage.getItem('aidova_hidden')||'{}');
 var voiceData=JSON.parse(localStorage.getItem('aidova_voices')||'{}');
 var usageData=JSON.parse(localStorage.getItem('aidova_usage')||'{}');
 var suggestDismissed=JSON.parse(localStorage.getItem('aidova_suggest_dismissed')||'{}');
+var recentsData=JSON.parse(localStorage.getItem('aidova_recents')||'[]'); // [{icon,label,word,vkey,cat}]
+var RECENTS_MAX=8;
 
 function trackUsage(word,label){
   if(!premium&&!premplus)return; // Plus/Premium feature only — no tracking for free users
@@ -1525,7 +1527,7 @@ function say(w,vkey,label){
 function tapTopBtn(i){
   var btn=topBtns[i];if(!btn)return;
   var vkey='topbtn_'+i;
-  say(btn.speak||btn.label, voiceData[vkey]?vkey:null, btn.label);
+  say(btn.speak||btn.label, voiceData[vkey]?vkey:null, btn.label);addToRecents(btn.icon||'🔝',btn.label,btn.speak||btn.label,voiceData[vkey]?vkey:null,'cf');
   addToSent(btn.speak||btn.label, btn.label);
   if(i===2)doConfetti();
   anim(document.getElementById('b'+(i+1)),null);
@@ -1737,6 +1739,59 @@ function toggleHico(){
 function addToSent(speak,display){
   sentWords.push({speak:speak,display:display||speak});
   updateSentBar();
+}
+
+function addToRecents(icon,label,word,vkey,cat){
+  // Remove duplicate if already in recents
+  recentsData=recentsData.filter(function(r){return r.word!==word;});
+  // Add to front
+  recentsData.unshift({icon:icon,label:label,word:word,vkey:vkey||'',cat:cat||''});
+  // Cap to max
+  if(recentsData.length>RECENTS_MAX)recentsData=recentsData.slice(0,RECENTS_MAX);
+  try{localStorage.setItem('aidova_recents',JSON.stringify(recentsData));}catch(e){}
+  // Re-render recents row on all pages
+  renderAllRecents();
+}
+
+function renderAllRecents(){
+  for(var pi=0;pi<4;pi++)renderRecentsRow(pi);
+}
+
+function renderRecentsRow(pi){
+  var el=document.getElementById('recents-row-'+pi);
+  if(!el)return;
+  // Hide in edit mode
+  if(editMode){el.style.display='none';return;}
+  if(!recentsData.length){el.style.display='none';return;}
+  el.style.display='';
+  var cats=['cf','cn','cp','cs'];
+  var catColors={'cf':'#FFCCBC','cn':'#B3E5FC','cp':'#FFF9C4','cs':'#E1BEE7'};
+  el.innerHTML='<div style="font-size:.58rem;font-weight:900;color:#bbb;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">⏱ Recent</div><div style="display:flex;gap:6px;flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch">'
+    +recentsData.map(function(r){
+      var bg=catColors[r.cat]||'#E8F5E9';
+      var iconHtml=r.icon&&r.icon.indexOf('data:')===0
+        ?'<img src="'+r.icon+'" style="width:60%;height:60%;object-fit:cover;border-radius:50%">'
+        :'<span style="font-size:clamp(.9rem,2.8vw,1.3rem);line-height:1">'+r.icon+'</span>';
+      return '<div onclick="tapRecent(\''+r.word.replace(/'/g,"\\'")+'\')'
+        +'" style="flex-shrink:0;width:clamp(56px,16vw,72px);height:clamp(56px,16vw,72px);border-radius:50%;background:'+bg
+        +';border:2px solid rgba(0,0,0,.07);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.08);padding:3px;position:relative" data-rword="'+r.word.replace(/"/g,'&quot;')+'">'
+        +iconHtml
+        +'<span style="font-size:clamp(.42rem,1.2vw,.58rem);font-weight:900;text-align:center;line-height:1.1;color:#333;margin-top:2px;text-transform:uppercase;max-width:90%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+r.label+'</span>'
+        +'</div>';
+    }).join('')
+    +'</div>';
+}
+
+function tapRecent(word){
+  var r=recentsData.find(function(x){return x.word===word;});
+  if(!r)return;
+  // Animate
+  var els=document.querySelectorAll('[data-rword="'+word+'"]');
+  els.forEach(function(el){el.style.transform='scale(.87)';setTimeout(function(){el.style.transform='';},120);});
+  say(r.word,r.vkey||null,r.label);
+  addToSent(r.word,r.label);
+  // Move to front of recents
+  addToRecents(r.icon,r.label,r.word,r.vkey,r.cat);
 }
 function updateSentBar(){
   var el=document.getElementById('sentwords');if(!el)return;
@@ -2248,7 +2303,7 @@ function renderPage(pi,data,cat){
         var key='b'+pi+'_'+item.i;
         if(hiddenB[key])return;
         (function(d,key){
-          g.appendChild(mkCirc(d.i,d.l,d.w,cat,function(){say(d.w,key,d.l);addToSent(d.w,d.l);},key));
+          g.appendChild(mkCirc(d.i,d.l,d.w,cat,function(){say(d.w,key,d.l);addToSent(d.w,d.l);addToRecents(d.i,d.l,d.w,key,''+cat);},key));
         })(d,key);
       }else if(item.t==='c'&&n>0){
         var s=item.s;
@@ -2266,7 +2321,7 @@ function renderPage(pi,data,cat){
           }else{
             el.innerHTML='<span class="ci">'+sv.icon+'</span><span class="cl">'+sv.label+'</span>';
           }
-          el.addEventListener('click',function(e){if(editMode){showRecMenu(pi,s,ckey);return;}anim(el,e);say(sv.word,rkey,sv.label);addToSent(sv.word,sv.label);});
+          el.addEventListener('click',function(e){if(editMode){showRecMenu(pi,s,ckey);return;}anim(el,e);say(sv.word,rkey,sv.label);addToSent(sv.word,sv.label);addToRecents(sv.isPhoto&&sv.icon?sv.icon:sv.icon,sv.label,sv.word,rkey,''+cat);});
           var pt=null,held=false;
           el.addEventListener('touchstart',function(){held=false;pt=setTimeout(function(){held=true;if(editMode)showRecMenu(pi,s,ckey);},600);},{passive:true});
           el.addEventListener('touchend',function(){clearTimeout(pt);setTimeout(function(){held=false;},100);},{passive:true});
@@ -2280,7 +2335,7 @@ function renderPage(pi,data,cat){
     data.forEach(function(d,i){
       if(usedBuiltin.indexOf(i)>=0)return;
       var key='b'+pi+'_'+i;if(hiddenB[key])return;
-      (function(d,key){g.appendChild(mkCirc(d.i,d.l,d.w,cat,function(){say(d.w,key,d.l);addToSent(d.w,d.l);},key));})(d,key);
+      (function(d,key){g.appendChild(mkCirc(d.i,d.l,d.w,cat,function(){say(d.w,key,d.l);addToSent(d.w,d.l);addToRecents(d.i,d.l,d.w,key,''+cat);},key));})(d,key);
     });
     // Any custom buttons not in unified order
     if(n>0){
@@ -2295,7 +2350,7 @@ function renderPage(pi,data,cat){
           if(sv.colour){el.style.background=sv.colour;}else{el.style.background=catCols[pi]||DEFAULT_CAT_COLS[pi];}
           if(sv.isPhoto&&sv.icon&&sv.icon.indexOf('data:')===0){el.innerHTML='<img src="'+sv.icon+'" style="width:58%;height:58%;object-fit:cover;border-radius:50%;margin-bottom:3px"><span class="cl">'+sv.label+'</span>';}
           else{el.innerHTML='<span class="ci">'+sv.icon+'</span><span class="cl">'+sv.label+'</span>';}
-          el.addEventListener('click',function(e){if(editMode){showRecMenu(pi,s,activeP+'-'+pi+'-'+s);return;}anim(el,e);say(sv.word,rkey,sv.label);addToSent(sv.word,sv.label);});
+          el.addEventListener('click',function(e){if(editMode){showRecMenu(pi,s,activeP+'-'+pi+'-'+s);return;}anim(el,e);say(sv.word,rkey,sv.label);addToSent(sv.word,sv.label);addToRecents(sv.isPhoto&&sv.icon?sv.icon:sv.icon,sv.label,sv.word,rkey,''+cat);});
           var pt=null,held=false;
           el.addEventListener('touchstart',function(){held=false;pt=setTimeout(function(){held=true;if(editMode)showRecMenu(pi,s,activeP+'-'+pi+'-'+s);},600);},{passive:true});
           el.addEventListener('touchend',function(){clearTimeout(pt);setTimeout(function(){held=false;},100);},{passive:true});
@@ -2321,7 +2376,7 @@ function renderPage(pi,data,cat){
       if(origIdx<0){for(var xi=0;xi<BTNS[pi].length;xi++){if(BTNS[pi][xi].l===d.l&&BTNS[pi][xi].i===d.i){origIdx=xi;break;}}}
       var key='b'+pi+'_'+origIdx;
       if(hiddenB[key])return;
-      (function(d,key){g.appendChild(mkCirc(d.i,d.l,d.w,cat,function(){say(d.w,key,d.l);addToSent(d.w,d.l);},key));})(d,key);
+      (function(d,key){g.appendChild(mkCirc(d.i,d.l,d.w,cat,function(){say(d.w,key,d.l);addToSent(d.w,d.l);addToRecents(d.i,d.l,d.w,key,''+cat);},key));})(d,key);
     });
 
     // --- CUSTOM BUTTONS ---
@@ -2346,7 +2401,7 @@ function renderPage(pi,data,cat){
           if(sv.colour){el.style.background=sv.colour;}else{el.style.background=catCols[pi]||DEFAULT_CAT_COLS[pi];}
           if(sv.isPhoto&&sv.icon&&sv.icon.indexOf('data:')===0){el.innerHTML='<img src="'+sv.icon+'" style="width:58%;height:58%;object-fit:cover;border-radius:50%;margin-bottom:3px"><span class="cl">'+sv.label+'</span>';}
           else{el.innerHTML='<span class="ci">'+sv.icon+'</span><span class="cl">'+sv.label+'</span>';}
-          el.addEventListener('click',function(e){if(editMode){showRecMenu(pi,s,key);return;}anim(el,e);say(sv.word,rkey,sv.label);addToSent(sv.word,sv.label);});
+          el.addEventListener('click',function(e){if(editMode){showRecMenu(pi,s,key);return;}anim(el,e);say(sv.word,rkey,sv.label);addToSent(sv.word,sv.label);addToRecents(sv.isPhoto&&sv.icon?sv.icon:sv.icon,sv.label,sv.word,rkey,''+cat);});
           var pt=null,held=false;
           el.addEventListener('touchstart',function(){held=false;pt=setTimeout(function(){held=true;if(editMode)showRecMenu(pi,s,key);},600);},{passive:true});
           el.addEventListener('touchend',function(){clearTimeout(pt);setTimeout(function(){held=false;},100);},{passive:true});
@@ -2481,7 +2536,7 @@ function renderTopBtns(){
     if(bl)bl.textContent=topBtns[i].label;
   });
 }
-function renderAll(){renderPage(0,BTNS[0],'cf');renderPage(1,BTNS[1],'cn');renderPage(2,BTNS[2],'cp');renderPage(3,BTNS[3],'cs');renderTopBtns();resize();}
+function renderAll(){renderPage(0,BTNS[0],'cf');renderPage(1,BTNS[1],'cn');renderPage(2,BTNS[2],'cp');renderPage(3,BTNS[3],'cs');renderTopBtns();renderAllRecents();resize();}
 function renderProfiles(){
   var row=document.getElementById('profrow');row.innerHTML='';
   profiles.forEach(function(p,i){
@@ -3337,7 +3392,7 @@ function exitEdit(){
     var hg=document.getElementById('hg'+pi);if(hg)hg.style.display='none';
     var harrow=document.getElementById('harrow'+pi);if(harrow)harrow.textContent='▶';
   });
-  renderAll();resize();
+  renderAll();renderAllRecents();resize();
 }
 var reorderPi=-1;
 var reorderItems=[];
