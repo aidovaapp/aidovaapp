@@ -1771,8 +1771,7 @@ function updateSentBar(){
 function speakSentence(){
   if(!sentWords.length)return;
   say(sentWords.map(function(w){return w.speak;}).join(' '));
-  var bar=document.getElementById('sentbar');if(bar)bar.style.background='#E8F5E9';
-  setTimeout(function(){if(bar)bar.style.background='';clearSentence();},1800);
+  setTimeout(function(){sentWords=[];updateSentBar();},800);
 }
 function clearSentence(){sentWords=[];updateSentBar();}
 
