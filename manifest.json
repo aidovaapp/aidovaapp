@@ -1,9 +1,9 @@
 {
-  "id": "/",
+  "id": "/app",
   "name": "Aidova \u2014 AAC Communication App",
   "short_name": "Aidova",
   "description": "Free AAC communication app for non-verbal children and adults. Tap buttons to speak. By CHEWAID\u00ae",
-  "start_url": "/",
+  "start_url": "/app",
   "scope": "/",
   "display": "standalone",
   "display_override": ["standalone", "fullscreen", "minimal-ui"],
@@ -104,7 +104,7 @@
       "name": "Emergency Help",
       "short_name": "Help",
       "description": "Open emergency screen",
-      "url": "/",
+      "url": "/app",
       "icons": [
         {
           "src": "/icon-192.png",
