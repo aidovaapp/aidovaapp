@@ -1004,7 +1004,7 @@ body.editing .ce{border:2px dashed #E0E0E0}
       </div>
       <button onclick="closeFolder()" style="border:none;background:#eee;color:#666;border-radius:20px;padding:8px 16px;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.82rem;cursor:pointer">✕ Close</button>
     </div>
-    <div id="folder-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;overflow-y:auto;flex:1;padding-bottom:8px"></div>
+    <div id="folder-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;overflow-y:auto;flex:1;padding-bottom:8px"></div>
   </div>
 </div>
 
@@ -1509,7 +1509,7 @@ function showCreateFolder(pi,slot){
   var sheet=document.createElement('div');
   sheet.id='create-folder-sheet';
   sheet.style.cssText='position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);display:flex;align-items:flex-end';
-  sheet.onclick=function(e){if(e.target===sheet)sheet.remove();};
+  sheet.onclick=function(e){if(e.target===sheet&&!window._emojiPickerTarget)sheet.remove();};
   window._createFolderIcon='📁';
   sheet.innerHTML='<div style="background:#fff;border-radius:24px 24px 0 0;width:100%;padding:18px 16px 40px;animation:sup .3s cubic-bezier(.34,1.2,.64,1)">'
     +'<div style="font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-size:.95rem;font-weight:900;color:#333;margin-bottom:12px">📁 Create a folder</div>'
@@ -2701,7 +2701,7 @@ function renderPage(pi,data,cat){
           if(sv.colour){el.style.background=sv.colour;}
           else{el.style.background=catCols[pi]||DEFAULT_CAT_COLS[pi];}
           if(sv.isFolder){
-            el.style.border='3px solid #2D6A4F';
+            el.style.boxShadow='0 0 0 3px #2D6A4F, 0 3px 10px rgba(0,0,0,.09)';el.style.border='2px solid rgba(0,0,0,.07)';
             el.innerHTML='<span style="font-size:clamp(1rem,2.8vw,1.3rem);line-height:1">'+sv.icon+'</span><span class="cl">'+sv.label+'</span>';
           }else if(sv.isPhoto&&sv.icon&&sv.icon.indexOf('data:')===0){
             el.innerHTML='<img src="'+sv.icon+'" style="width:58%;height:58%;object-fit:cover;border-radius:50%;margin-bottom:3px"><span class="cl">'+sv.label+'</span>';
@@ -2735,7 +2735,7 @@ function renderPage(pi,data,cat){
           var el=document.createElement('div');
           el.className='circ cr';el.dataset.key=rkey;el.dataset.slot=s;el.dataset.pi=pi;
           if(sv.colour){el.style.background=sv.colour;}else{el.style.background=catCols[pi]||DEFAULT_CAT_COLS[pi];}
-          if(sv.isFolder){el.style.border='3px solid #2D6A4F';el.innerHTML='<span style="font-size:clamp(1rem,2.8vw,1.3rem);line-height:1">'+sv.icon+'</span><span class="cl">'+sv.label+'</span>';}else if(sv.isPhoto&&sv.icon&&sv.icon.indexOf('data:')===0){el.innerHTML='<img src="'+sv.icon+'" style="width:58%;height:58%;object-fit:cover;border-radius:50%;margin-bottom:3px"><span class="cl">'+sv.label+'</span>';}
+          if(sv.isFolder){el.style.boxShadow='0 0 0 3px #2D6A4F, 0 3px 10px rgba(0,0,0,.09)';el.style.border='2px solid rgba(0,0,0,.07)';el.innerHTML='<span style="font-size:clamp(1rem,2.8vw,1.3rem);line-height:1">'+sv.icon+'</span><span class="cl">'+sv.label+'</span>';}else if(sv.isPhoto&&sv.icon&&sv.icon.indexOf('data:')===0){el.innerHTML='<img src="'+sv.icon+'" style="width:58%;height:58%;object-fit:cover;border-radius:50%;margin-bottom:3px"><span class="cl">'+sv.label+'</span>';}
           else{el.innerHTML='<span class="ci">'+sv.icon+'</span><span class="cl">'+sv.label+'</span>';}
           el.addEventListener('click',function(e){if(editMode){if(sv.isFolder)showFolderEditMenu(pi,s);else showRecMenu(pi,s,activeP+'-'+pi+'-'+s);return;}anim(el,e);if(sv.isFolder){openFolder(pi,s,sv.icon,sv.label);return;}say(sv.word,rkey,sv.label);addToSent(sv.word,sv.label);addToRecents(sv.isPhoto&&sv.icon?sv.icon:sv.icon,sv.label,sv.word,rkey,''+cat);});
           var pt=null,held=false;
@@ -2786,7 +2786,7 @@ function renderPage(pi,data,cat){
           var el=document.createElement('div');
           el.className='circ cr';el.dataset.key=rkey;el.dataset.slot=s;el.dataset.pi=pi;
           if(sv.colour){el.style.background=sv.colour;}else{el.style.background=catCols[pi]||DEFAULT_CAT_COLS[pi];}
-          if(sv.isFolder){el.style.border='3px solid #2D6A4F';el.innerHTML='<span style="font-size:clamp(1rem,2.8vw,1.3rem);line-height:1">'+sv.icon+'</span><span class="cl">'+sv.label+'</span>';}else if(sv.isPhoto&&sv.icon&&sv.icon.indexOf('data:')===0){el.innerHTML='<img src="'+sv.icon+'" style="width:58%;height:58%;object-fit:cover;border-radius:50%;margin-bottom:3px"><span class="cl">'+sv.label+'</span>';}
+          if(sv.isFolder){el.style.boxShadow='0 0 0 3px #2D6A4F, 0 3px 10px rgba(0,0,0,.09)';el.style.border='2px solid rgba(0,0,0,.07)';el.innerHTML='<span style="font-size:clamp(1rem,2.8vw,1.3rem);line-height:1">'+sv.icon+'</span><span class="cl">'+sv.label+'</span>';}else if(sv.isPhoto&&sv.icon&&sv.icon.indexOf('data:')===0){el.innerHTML='<img src="'+sv.icon+'" style="width:58%;height:58%;object-fit:cover;border-radius:50%;margin-bottom:3px"><span class="cl">'+sv.label+'</span>';}
           else{el.innerHTML='<span class="ci">'+sv.icon+'</span><span class="cl">'+sv.label+'</span>';}
           el.addEventListener('click',function(e){if(editMode){if(sv.isFolder)showFolderEditMenu(pi,s);else showRecMenu(pi,s,key);return;}anim(el,e);if(sv.isFolder){openFolder(pi,s,sv.icon,sv.label);return;}say(sv.word,rkey,sv.label);addToSent(sv.word,sv.label);addToRecents(sv.isPhoto&&sv.icon?sv.icon:sv.icon,sv.label,sv.word,rkey,''+cat);});
           var pt=null,held=false;
@@ -2885,7 +2885,7 @@ function renderHiddenSection(pi){
       var sv=item.sv;
       if(sv.colour){el.style.background=sv.colour;}
       else{el.style.background=catCols[pi]||DEFAULT_CAT_COLS[pi];}
-      if(sv.isFolder){el.style.border='3px solid #2D6A4F';el.innerHTML='<span style="font-size:clamp(1rem,2.8vw,1.3rem);line-height:1">'+sv.icon+'</span><span class="cl">'+sv.label+'</span>';}else if(sv.isPhoto&&sv.icon&&sv.icon.indexOf('data:')===0){el.innerHTML='<img src="'+sv.icon+'" style="width:58%;height:58%;object-fit:cover;border-radius:50%;margin-bottom:3px"><span class="cl">'+sv.label+'</span>';}
+      if(sv.isFolder){el.style.boxShadow='0 0 0 3px #2D6A4F, 0 3px 10px rgba(0,0,0,.09)';el.style.border='2px solid rgba(0,0,0,.07)';el.innerHTML='<span style="font-size:clamp(1rem,2.8vw,1.3rem);line-height:1">'+sv.icon+'</span><span class="cl">'+sv.label+'</span>';}else if(sv.isPhoto&&sv.icon&&sv.icon.indexOf('data:')===0){el.innerHTML='<img src="'+sv.icon+'" style="width:58%;height:58%;object-fit:cover;border-radius:50%;margin-bottom:3px"><span class="cl">'+sv.label+'</span>';}
       else{el.innerHTML='<span class="ci">'+sv.icon+'</span><span class="cl">'+sv.label+'</span>';}
     }
     var rb=document.createElement('button');rb.className='restore-badge';rb.textContent='↩';rb.title='Restore';
@@ -4311,10 +4311,18 @@ function pickEmoji(emoji,label){
   }
   if(window._emojiPickerTarget==='createfolder'){
     window._createFolderIcon=emoji;
+    // Update the emoji preview in the create folder sheet
     var cfPrev=document.getElementById('cf-prev');
-    if(cfPrev){cfPrev.textContent=emoji;}
-    // Update the button text too
-    var cfBtn=document.querySelector('#create-folder-sheet button span#cf-prev');
+    if(cfPrev){
+      cfPrev.textContent=emoji;
+      cfPrev.style.fontSize='1.8rem';
+    }
+    // Also update the button label text
+    var cfSheet=document.getElementById('create-folder-sheet');
+    if(cfSheet){
+      var spans=cfSheet.querySelectorAll('button span');
+      if(spans[1])spans[1].textContent=emoji+' chosen — tap to change';
+    }
     window._emojiPickerTarget=null;
     closeEmojiPicker();
     return;
