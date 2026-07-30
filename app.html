@@ -1468,24 +1468,78 @@ var STARTER_FOLDERS=[
 
 function showStarterFolders(pi){
   if(!premium&&!premplus)return;
-  // Check if any slots are free
   var n=slots();var freeSlots=0;
   for(var s=0;s<n;s++){if(!recData[activeP+'-'+pi+'-'+s])freeSlots++;}
-  if(freeSlots<1)return;
+  if(freeSlots<1){openRec(pi,getFreeSlot(pi));return;}
   var sheet=document.createElement('div');
   sheet.id='starter-folder-sheet';
   sheet.style.cssText='position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);display:flex;align-items:flex-end';
   sheet.onclick=function(e){if(e.target===sheet)sheet.remove();};
   sheet.innerHTML='<div style="background:#fff;border-radius:24px 24px 0 0;width:100%;padding:18px 16px 40px;animation:sup .3s cubic-bezier(.34,1.2,.64,1)">'
-    +'<div style="font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-size:.95rem;font-weight:900;color:#333;margin-bottom:4px">📁 Add a starter folder</div>'
-    +'<div style="font-size:.72rem;color:#888;margin-bottom:12px">Pre-built folders to get you started — or create your own below</div>'
-    +STARTER_FOLDERS.map(function(sf){
-      return '<button onclick="addStarterFolder(\''+sf.icon+'\',\''+sf.label+'\','+JSON.stringify(sf.items).replace(/'/g,"&#39;")+','+pi+');document.getElementById(\'starter-folder-sheet\').remove()" style="width:100%;padding:11px 14px;border:none;border-radius:12px;background:#F8FAF8;color:#333;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.85rem;cursor:pointer;margin-bottom:6px;text-align:left;border:1px solid #E0E0E0">'+sf.icon+' '+sf.label+' <span style="font-weight:400;font-size:.72rem;color:#aaa">('+sf.items.length+' buttons)</span></button>';
+    +'<div style="font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-size:.95rem;font-weight:900;color:#333;margin-bottom:4px">What would you like to add?</div>'
+    +'<div style="font-size:.72rem;color:#888;margin-bottom:12px">Choose a ready-made folder, create your own folder, or add a single button</div>'
+    +'<div style="font-size:.72rem;font-weight:900;color:#555;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">📁 Ready-made folders</div>'
+    +STARTER_FOLDERS.map(function(sf,idx){
+      return '<button onclick="addStarterFolder('+idx+','+pi+');document.getElementById(\'starter-folder-sheet\').remove()" style="width:100%;padding:11px 14px;border:1px solid #E0E0E0;border-radius:12px;background:#F8FAF8;color:#333;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.85rem;cursor:pointer;margin-bottom:6px;text-align:left">'+sf.icon+' '+sf.label+' <span style="font-weight:400;font-size:.72rem;color:#aaa">('+sf.items.length+' buttons pre-loaded)</span></button>';
     }).join('')
-    +'<button onclick="document.getElementById(\'starter-folder-sheet\').remove();openRec('+pi+',getFreeSlot('+pi+'))" style="width:100%;padding:11px;border:none;border-radius:12px;background:#2D6A4F;color:#fff;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.85rem;cursor:pointer;margin-bottom:6px">➕ Create my own button or folder</button>'
+    +'<div style="height:1px;background:#F0F0F0;margin:8px 0"></div>'
+    +'<button onclick="document.getElementById(\'starter-folder-sheet\').remove();showCreateChoice('+pi+')" style="width:100%;padding:11px;border:none;border-radius:12px;background:#2D6A4F;color:#fff;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.85rem;cursor:pointer;margin-bottom:6px">✏️ Create my own</button>'
     +'<button onclick="document.getElementById(\'starter-folder-sheet\').remove()" style="width:100%;padding:10px;border:none;border-radius:12px;background:#eee;color:#666;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.82rem;cursor:pointer">Cancel</button>'
     +'</div>';
   document.body.appendChild(sheet);
+}
+
+function showCreateChoice(pi){
+  var slot=getFreeSlot(pi);
+  var sheet=document.createElement('div');
+  sheet.id='create-choice-sheet';
+  sheet.style.cssText='position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);display:flex;align-items:flex-end';
+  sheet.onclick=function(e){if(e.target===sheet)sheet.remove();};
+  sheet.innerHTML='<div style="background:#fff;border-radius:24px 24px 0 0;width:100%;padding:18px 16px 40px;animation:sup .3s cubic-bezier(.34,1.2,.64,1)">'
+    +'<div style="font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-size:.95rem;font-weight:900;color:#333;margin-bottom:4px">What would you like to create?</div>'
+    +'<div style="font-size:.72rem;color:#888;margin-bottom:16px">A folder groups related buttons together. A button speaks a single word.</div>'
+    +'<button onclick="document.getElementById(\'create-choice-sheet\').remove();showCreateFolder('+pi+','+slot+')" style="width:100%;padding:14px;border:none;border-radius:12px;background:#E8F5E9;color:#1B5E20;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.88rem;cursor:pointer;margin-bottom:8px;text-align:left">📁 Create a folder<br><span style="font-weight:400;font-size:.72rem;color:#555">Groups buttons — e.g. Drinks → Water, Milk, Juice</span></button>'
+    +'<button onclick="document.getElementById(\'create-choice-sheet\').remove();openRec('+pi+','+slot+')" style="width:100%;padding:14px;border:none;border-radius:12px;background:#E3F2FD;color:#0D47A1;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.88rem;cursor:pointer;margin-bottom:8px;text-align:left">⭐ Add a single button<br><span style="font-weight:400;font-size:.72rem;color:#555">Speaks one word or phrase when tapped</span></button>'
+    +'<button onclick="document.getElementById(\'create-choice-sheet\').remove()" style="width:100%;padding:10px;border:none;border-radius:12px;background:#eee;color:#666;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.82rem;cursor:pointer">Cancel</button>'
+    +'</div>';
+  document.body.appendChild(sheet);
+}
+
+function showCreateFolder(pi,slot){
+  var sheet=document.createElement('div');
+  sheet.id='create-folder-sheet';
+  sheet.style.cssText='position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);display:flex;align-items:flex-end';
+  sheet.onclick=function(e){if(e.target===sheet)sheet.remove();};
+  sheet.innerHTML='<div style="background:#fff;border-radius:24px 24px 0 0;width:100%;padding:18px 16px 40px;animation:sup .3s cubic-bezier(.34,1.2,.64,1)">'
+    +'<div style="font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-size:.95rem;font-weight:900;color:#333;margin-bottom:12px">📁 Create a folder</div>'
+    +'<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">'
+    +'<div id="cf-prev" style="font-size:1.8rem;width:48px;height:48px;background:#f5f5f5;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer" onclick="window._emojiPickerTarget=\'createfolder\';openEmojiPicker()">📁</div>'
+    +'<input id="cf-label" class="minput" placeholder="Folder name (e.g. DRINKS, FOOD)" style="margin-bottom:0;flex:1">'
+    +'</div>'
+    +'<div style="font-size:.68rem;color:#aaa;margin-bottom:12px">You can add buttons inside the folder after creating it</div>'
+    +'<div style="display:flex;gap:8px">'
+    +'<button onclick="document.getElementById(\'create-folder-sheet\').remove()" style="flex:1;padding:11px;border:none;border-radius:10px;background:#eee;color:#666;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.85rem;cursor:pointer">Cancel</button>'
+    +'<button onclick="saveNewFolder('+pi+','+slot+')" style="flex:1;padding:11px;border:none;border-radius:10px;background:#2D6A4F;color:#fff;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.85rem;cursor:pointer">Create ✓</button>'
+    +'</div>'
+    +'</div>';
+  document.body.appendChild(sheet);
+  // Handle emoji picker for folder creation
+  window._createFolderIcon='📁';
+  window._emojiPickerForCreateFolder=true;
+}
+
+function saveNewFolder(pi,slot){
+  var label=document.getElementById('cf-label').value.trim().toUpperCase();
+  if(!label){alert('Please enter a folder name.');return;}
+  var icon=window._createFolderIcon||'📁';
+  var key=activeP+'-'+pi+'-'+slot;
+  recData[key]={icon:icon,label:label,word:'__folder__',isPhoto:false,colour:'',isFolder:true};
+  try{localStorage.setItem('aidova_rec',JSON.stringify(recData));}catch(e){}
+  saveFolder(key,[]);
+  var s=document.getElementById('create-folder-sheet');if(s)s.remove();
+  var cats=['cf','cn','cp','cs'];renderPage(pi,BTNS[pi],cats[pi]);
+  // Prompt to add buttons immediately
+  setTimeout(function(){openFolderAdd(key);},300);
 }
 
 function getFreeSlot(pi){
@@ -1494,15 +1548,23 @@ function getFreeSlot(pi){
   return 0;
 }
 
-function addStarterFolder(icon,label,items,pi){
+function addStarterFolder(idx,pi){
+  var sf=STARTER_FOLDERS[idx];
+  if(!sf)return;
   var n=slots();var freeSlot=-1;
   for(var s=0;s<n;s++){if(!recData[activeP+'-'+pi+'-'+s]){freeSlot=s;break;}}
-  if(freeSlot<0){alert('No free slots in this category.');return;}
+  if(freeSlot<0){alert('No free slots in this category. Hide some buttons first.');return;}
   var key=activeP+'-'+pi+'-'+freeSlot;
-  recData[key]={icon:icon,label:label,word:'__folder__',isPhoto:false,colour:'',isFolder:true};
+  recData[key]={icon:sf.icon,label:sf.label,word:'__folder__',isPhoto:false,colour:'',isFolder:true};
   try{localStorage.setItem('aidova_rec',JSON.stringify(recData));}catch(e){}
-  saveFolder(key,items);
+  saveFolder(key,sf.items.map(function(it){return {icon:it.icon,label:it.label,speak:it.speak};}));
   var cats=['cf','cn','cp','cs'];renderPage(pi,BTNS[pi],cats[pi]);
+  // Show confirmation
+  var toast=document.createElement('div');
+  toast.style.cssText='position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#2D6A4F;color:#fff;padding:10px 18px;border-radius:20px;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.82rem;z-index:999;box-shadow:0 4px 12px rgba(0,0,0,.2)';
+  toast.textContent='✓ '+sf.label+' folder added!';
+  document.body.appendChild(toast);
+  setTimeout(function(){toast.remove();},2000);
 }
 // Counts only recent usage (last 21 days) so a word that was popular months ago
 // but hasn't been used since doesn't keep resurfacing as a "smart" suggestion
@@ -4246,6 +4308,13 @@ function pickEmoji(emoji,label){
     document.getElementById('folderaddmod').style.display='flex';
     return;
   }
+  if(window._emojiPickerTarget==='createfolder'){
+    window._createFolderIcon=emoji;
+    var cfPrev=document.getElementById('cf-prev');if(cfPrev)cfPrev.textContent=emoji;
+    window._emojiPickerTarget=null;
+    closeEmojiPicker();
+    return;
+  }
   window._emojiPickerTarget=null;
   selEmoji=emoji;
   selLabel=label;
@@ -4296,16 +4365,45 @@ function showRecMenu(pi,s,key){
   var sv=recData[key];if(!sv)return;
   var rkey='rec_'+key;
   var isHid=!!hiddenB[rkey];
-  var choice=(prompt('Button: '+sv.label+'\n\nType a number:\n1 = Record my voice\n2 = Edit button\n3 = '+(isHid?'Restore (unhide)':'Hide button')+'\n4 = Delete button')||'').trim();
-  if(choice==='1'){openVrec(sv.label,sv.word,'rec_'+key);}
-  else if(choice==='2'){openRec(pi,s);setTimeout(function(){var sv2=recData[key];if(!sv2)return;document.getElementById('mlabel').value=sv2.label;if(sv2.isPhoto){photoUrl=sv2.icon;document.getElementById('pprev').src=sv2.icon;document.getElementById('pprev').style.display='block';document.getElementById('phint').style.display='none';document.getElementById('spkrow').style.display='block';document.getElementById('mspeak').value=sv2.word;document.getElementById('eprev').textContent='📷';}else{selEmoji=sv2.icon;selLabel=sv2.word;document.getElementById('eprev').textContent=sv2.icon;}selBtnColour=sv2.colour||'';if(premium||premplus)buildBtnColSwatches();},150);}
-  else if(choice==='3'){
-    if(isHid){delete hiddenB[rkey];}else{hiddenB[rkey]=true;}
-    try{localStorage.setItem('aidova_hidden',JSON.stringify(hiddenB));}catch(e){}
-    renderRec(pi);
-    if(editMode){document.querySelectorAll('.circ').forEach(function(c){c.classList.add('edit-on');});showArrows();}
-  }
-  else if(choice==='4'){if(confirm('Delete "'+sv.label+'"?')){delete recData[key];localStorage.setItem('aidova_rec',JSON.stringify(recData));renderRec(pi);resize();}}
+  var sheet=document.createElement('div');
+  sheet.id='rec-menu-sheet';
+  sheet.style.cssText='position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);display:flex;align-items:flex-end';
+  sheet.onclick=function(e){if(e.target===sheet)sheet.remove();};
+  sheet.innerHTML='<div style="background:#fff;border-radius:24px 24px 0 0;width:100%;padding:18px 16px 40px;animation:sup .3s cubic-bezier(.34,1.2,.64,1)">'
+    +'<div style="font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-size:.88rem;font-weight:900;color:#333;margin-bottom:14px">'+sv.icon+' '+sv.label+'</div>'
+    +'<button onclick="document.getElementById(\'rec-menu-sheet\').remove();openVrec(\''+sv.label+'\',\''+sv.word+'\',\'rec_'+key+'\')" style="width:100%;padding:12px;border:none;border-radius:12px;background:#E8F5E9;color:#1B5E20;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.85rem;cursor:pointer;margin-bottom:8px;text-align:left">🎙️ Record my voice</button>'
+    +'<button onclick="document.getElementById(\'rec-menu-sheet\').remove();editRecBtn('+pi+','+s+',\''+key+'\')" style="width:100%;padding:12px;border:none;border-radius:12px;background:#E3F2FD;color:#0D47A1;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.85rem;cursor:pointer;margin-bottom:8px;text-align:left">✏️ Edit button</button>'
+    +'<button onclick="document.getElementById(\'rec-menu-sheet\').remove();toggleHideRec(\''+rkey+'\','+pi+')" style="width:100%;padding:12px;border:none;border-radius:12px;background:#FFF8E1;color:#5D4037;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.85rem;cursor:pointer;margin-bottom:8px;text-align:left">'+(isHid?'👁 Restore button':'🙈 Hide button')+'</button>'
+    +'<button onclick="document.getElementById(\'rec-menu-sheet\').remove();deleteRecBtn(\''+key+'\',\''+sv.label+'\','+pi+')" style="width:100%;padding:12px;border:none;border-radius:12px;background:#FFEBEE;color:#B71C1C;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.85rem;cursor:pointer;margin-bottom:8px;text-align:left">🗑 Delete button</button>'
+    +'<button onclick="document.getElementById(\'rec-menu-sheet\').remove()" style="width:100%;padding:10px;border:none;border-radius:12px;background:#eee;color:#666;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.82rem;cursor:pointer">Cancel</button>'
+    +'</div>';
+  document.body.appendChild(sheet);
+}
+
+function editRecBtn(pi,s,key){
+  openRec(pi,s);
+  setTimeout(function(){
+    var sv2=recData[key];if(!sv2)return;
+    document.getElementById('mlabel').value=sv2.label;
+    if(sv2.isPhoto){photoUrl=sv2.icon;document.getElementById('pprev').src=sv2.icon;document.getElementById('pprev').style.display='block';document.getElementById('phint').style.display='none';document.getElementById('spkrow').style.display='block';document.getElementById('mspeak').value=sv2.word;document.getElementById('eprev').textContent='📷';}
+    else{selEmoji=sv2.icon;selLabel=sv2.word;document.getElementById('eprev').textContent=sv2.icon;var b=document.querySelector('#recmod button[onclick="openEmojiPicker()"]');if(b)b.textContent=sv2.icon+' '+sv2.label+' →';}
+    selBtnColour=sv2.colour||'';
+    if(premium||premplus)buildBtnColSwatches();
+  },150);
+}
+
+function toggleHideRec(rkey,pi){
+  if(hiddenB[rkey]){delete hiddenB[rkey];}else{hiddenB[rkey]=true;}
+  try{localStorage.setItem('aidova_hidden',JSON.stringify(hiddenB));}catch(e){}
+  renderRec(pi);
+  if(editMode){document.querySelectorAll('.circ').forEach(function(c){c.classList.add('edit-on');});}
+}
+
+function deleteRecBtn(key,label,pi){
+  if(!confirm('Delete "'+label+'"?'))return;
+  delete recData[key];
+  try{localStorage.setItem('aidova_rec',JSON.stringify(recData));}catch(e){}
+  renderRec(pi);resize();
 }
 
 // VOICE RECORDING
