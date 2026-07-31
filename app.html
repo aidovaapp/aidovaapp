@@ -363,7 +363,8 @@ body.editing .ce{border:2px dashed #E0E0E0}
 /* BREATHING */
 #breathmod{display:none;position:fixed;inset:0;z-index:360;align-items:center;justify-content:center;backdrop-filter:blur(6px);background:rgba(0,105,92,.5)}
 #breathmod.open{display:flex}
-.breathbox{background:#fff;border-radius:28px;padding:28px 20px;width:min(92vw,340px);text-align:center;animation:mz .3s}
+#breath-canvas{position:fixed;inset:0;pointer-events:none;z-index:359;display:none}
+.breathbox{background:#fff;border-radius:28px;padding:28px 20px;width:min(92vw,340px);text-align:center;animation:mz .3s;position:relative;z-index:361}
 .breath-circle-wrap{width:200px;height:200px;margin:16px auto;position:relative;display:flex;align-items:center;justify-content:center}
 .breath-outer{width:200px;height:200px;border-radius:50%;background:rgba(0,150,136,.1);position:absolute;transition:transform 4s ease-in-out}
 .breath-inner{width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,#80CBC4,#00897B);position:relative;z-index:2;display:flex;align-items:center;justify-content:center;transition:transform 4s ease-in-out,background 1s;box-shadow:0 8px 32px rgba(0,150,136,.3)}
@@ -516,6 +517,7 @@ body.editing .ce{border:2px dashed #E0E0E0}
 </div>
 
 <!-- BREATHING -->
+<canvas id="breath-canvas"></canvas>
 <div id="breathmod" onclick="if(event.target===this)closeBreath()">
   <div class="breathbox">
     <div style="font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-size:1.1rem;color:#00695C;margin-bottom:2px">🧘 Calm Breathing</div>
@@ -2456,6 +2458,65 @@ function closeSchedEmoji(){document.getElementById('schedEmojiMod').classList.re
 var breathPattern='calm'; // calm | box | 478
 var breathSound='none';  // none | rain | ocean
 var breathAudio=null;
+var breathCanvasAnim=null;
+
+function startBreathCanvas(){
+  var canvas=document.getElementById('breath-canvas');
+  if(!canvas||breathSound==='none')return;
+  canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+  canvas.style.display='block';
+  var ctx2=canvas.getContext('2d');
+
+  if(breathSound==='rain'){
+    // Rain drops falling
+    var drops=[];
+    for(var i=0;i<120;i++){
+      drops.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,len:Math.random()*15+8,speed:Math.random()*4+6,opacity:Math.random()*.4+.1});
+    }
+    breathCanvasAnim=setInterval(function(){
+      ctx2.clearRect(0,0,canvas.width,canvas.height);
+      ctx2.strokeStyle='rgba(150,210,255,';
+      drops.forEach(function(d){
+        ctx2.beginPath();
+        ctx2.moveTo(d.x,d.y);
+        ctx2.lineTo(d.x-1,d.y+d.len);
+        ctx2.strokeStyle='rgba(150,210,255,'+d.opacity+')';
+        ctx2.lineWidth=1.2;
+        ctx2.stroke();
+        d.y+=d.speed;
+        if(d.y>canvas.height){d.y=-20;d.x=Math.random()*canvas.width;}
+      });
+    },30);
+
+  }else if(breathSound==='ocean'){
+    // Ocean waves
+    var waveOffset=0;
+    breathCanvasAnim=setInterval(function(){
+      ctx2.clearRect(0,0,canvas.width,canvas.height);
+      var y=canvas.height*0.75;
+      // Draw 3 wave layers
+      [[.08,'rgba(100,180,255,.18)'],[.05,'rgba(80,160,240,.12)'],[.03,'rgba(60,140,220,.08)']].forEach(function(layer,li){
+        ctx2.beginPath();
+        ctx2.moveTo(0,canvas.height);
+        for(var x=0;x<=canvas.width;x+=4){
+          var yy=y+Math.sin((x*layer[0])+(waveOffset*(li+1)*0.4))*22*(1-li*0.25);
+          ctx2.lineTo(x,yy);
+        }
+        ctx2.lineTo(canvas.width,canvas.height);
+        ctx2.closePath();
+        ctx2.fillStyle=layer[1];
+        ctx2.fill();
+      });
+      waveOffset+=0.06;
+    },30);
+  }
+}
+
+function stopBreathCanvas(){
+  if(breathCanvasAnim){clearInterval(breathCanvasAnim);breathCanvasAnim=null;}
+  var canvas=document.getElementById('breath-canvas');
+  if(canvas){canvas.style.display='none';var ctx2=canvas.getContext('2d');ctx2.clearRect(0,0,canvas.width,canvas.height);}
+}
 
 var BREATH_PATTERNS={
   calm:[{label:'Breathe in...',emoji:'🌬️',duration:4,size:'expand'},{label:'Hold...',emoji:'✨',duration:4,size:'hold'},{label:'Breathe out...',emoji:'😮‍💨',duration:6,size:'shrink'}],
@@ -2488,27 +2549,67 @@ function setBreathSound(s){
     btn.style.color=on?'#fff':'#555';
     btn.style.borderColor=on?'#00695C':'#ddd';
   });
-  // Stop existing audio
+  // Stop existing audio and canvas
   if(breathAudio){breathAudio.pause();breathAudio=null;}
-  if(s!=='none'&&breathRunning)startBreathAudio();
+  stopBreathCanvas();
+  if(s!=='none'&&breathRunning){startBreathAudio();startBreathCanvas();}
 }
 
 function startBreathAudio(){
   if(breathSound==='none'||breathAudio)return;
-  // Use Web Audio API to generate simple tones as rain/ocean approximation
-  // since we can't load external audio files
-  // For now just play a subtle oscillator — a proper sound would need hosted audio files
   try{
     var ctx=new(window.AudioContext||window.webkitAudioContext)();
-    var osc=ctx.createOscillator();
-    var gain=ctx.createGain();
-    osc.connect(gain);gain.connect(ctx.destination);
-    osc.frequency.value=breathSound==='rain'?800:300;
-    osc.type=breathSound==='rain'?'sawtooth':'sine';
-    gain.gain.value=0.02;
-    osc.start();
-    breathAudio={pause:function(){try{osc.stop();ctx.close();}catch(e){}},ctx:ctx};
-  }catch(e){}
+    var masterGain=ctx.createGain();
+    masterGain.gain.value=0.35;
+    masterGain.connect(ctx.destination);
+
+    if(breathSound==='rain'){
+      // White noise through bandpass filter — sounds like rain
+      var bufferSize=ctx.sampleRate*2;
+      var buffer=ctx.createBuffer(1,bufferSize,ctx.sampleRate);
+      var data=buffer.getChannelData(0);
+      for(var i=0;i<bufferSize;i++)data[i]=Math.random()*2-1;
+      var source=ctx.createBufferSource();
+      source.buffer=buffer;source.loop=true;
+      // Bandpass filter centres the noise in the rain frequency range
+      var filter=ctx.createBiquadFilter();
+      filter.type='bandpass';filter.frequency.value=1200;filter.Q.value=0.8;
+      // Second filter for texture
+      var filter2=ctx.createBiquadFilter();
+      filter2.type='highshelf';filter2.frequency.value=4000;filter2.gain.value=-8;
+      source.connect(filter);filter.connect(filter2);filter2.connect(masterGain);
+      source.start();
+      breathAudio={pause:function(){try{source.stop();ctx.close();}catch(e){}},ctx:ctx};
+
+    }else if(breathSound==='ocean'){
+      // Two low-frequency noise layers with slow modulation = waves
+      var bufSize=ctx.sampleRate*4;
+      var buf=ctx.createBuffer(1,bufSize,ctx.sampleRate);
+      var d=buf.getChannelData(0);
+      for(var j=0;j<bufSize;j++)d[j]=Math.random()*2-1;
+
+      // Layer 1 — main wave noise
+      var src1=ctx.createBufferSource();
+      src1.buffer=buf;src1.loop=true;
+      var lp1=ctx.createBiquadFilter();lp1.type='lowpass';lp1.frequency.value=400;
+      var g1=ctx.createGain();g1.gain.value=0.6;
+      src1.connect(lp1);lp1.connect(g1);g1.connect(masterGain);
+
+      // Layer 2 — foam/surface noise
+      var src2=ctx.createBufferSource();
+      src2.buffer=buf;src2.loop=true;src2.loopStart=1;
+      var bp2=ctx.createBiquadFilter();bp2.type='bandpass';bp2.frequency.value=800;bp2.Q.value=0.5;
+      var g2=ctx.createGain();g2.gain.value=0.25;
+      src2.connect(bp2);bp2.connect(g2);g2.connect(masterGain);
+
+      // Slow LFO to modulate wave rhythm (~0.12Hz = one wave every ~8 seconds)
+      var lfo=ctx.createOscillator();lfo.type='sine';lfo.frequency.value=0.12;
+      var lfoGain=ctx.createGain();lfoGain.gain.value=0.4;
+      lfo.connect(lfoGain);lfoGain.connect(g1.gain);lfo.start();
+      src1.start();src2.start();
+      breathAudio={pause:function(){try{src1.stop();src2.stop();lfo.stop();ctx.close();}catch(e){}},ctx:ctx};
+    }
+  }catch(e){console.log('Audio error:',e);}
 }
 
 function stopBreathAudio(){
@@ -2517,16 +2618,15 @@ function stopBreathAudio(){
 
 function openBreath(){
   document.getElementById('breathmod').classList.add('open');
-  // Show Premium pattern/sound controls
   var pr=document.getElementById('breath-pattern-row');
   var sr=document.getElementById('breath-sound-row');
   if(pr)pr.style.display=(premium||premplus)?'':'none';
   if(sr)sr.style.display=(premium||premplus)?'':'none';
   resetBreath();
 }
-function closeBreath(){stopBreath();stopBreathAudio();document.getElementById('breathmod').classList.remove('open');}
+function closeBreath(){stopBreath();stopBreathAudio();stopBreathCanvas();document.getElementById('breathmod').classList.remove('open');}
 function resetBreath(){
-  stopBreath();stopBreathAudio();breathPhase=0;breathCount=0;breathCycles=0;
+  stopBreath();stopBreathAudio();stopBreathCanvas();breathPhase=0;breathCount=0;breathCycles=0;
   document.getElementById('breath-phase').textContent='Tap Start to begin';
   document.getElementById('breath-count').textContent='';
   document.getElementById('breath-cycles').textContent='Cycles: 0';
@@ -2536,8 +2636,8 @@ function resetBreath(){
 }
 function stopBreath(){clearInterval(breathInterval);breathRunning=false;}
 function startStopBreath(){
-  if(breathRunning){stopBreath();stopBreathAudio();document.getElementById('breath-start-btn').textContent='▶ Resume';document.getElementById('breath-phase').textContent='Paused';}
-  else{breathRunning=true;document.getElementById('breath-start-btn').textContent='⏸ Pause';if(breathSound!=='none')startBreathAudio();runBreathPhase();}
+  if(breathRunning){stopBreath();stopBreathAudio();stopBreathCanvas();document.getElementById('breath-start-btn').textContent='▶ Resume';document.getElementById('breath-phase').textContent='Paused';}
+  else{breathRunning=true;document.getElementById('breath-start-btn').textContent='⏸ Pause';if(breathSound!=='none'){startBreathAudio();startBreathCanvas();}runBreathPhase();}
 }
 function runBreathPhase(){
   if(!breathRunning)return;
@@ -4056,67 +4156,75 @@ function factoryReset(){if(!confirm('Factory reset?\n\nClears everything includi
 // EMOJI PICKER DATA — organized by category
 var EMOJI_CATS=[
   {id:'people',label:'👨‍👩‍👧 People',emojis:[
-    ['👩','mum'],['👨','dad'],['👵','grandma'],['👴','grandpa'],['👧','sister'],['👦','brother'],['👶','baby'],
-    ['🧑','carer'],['👩‍⚕️','nurse'],['👨‍⚕️','doctor'],['👩‍🏫','teacher'],['👮','police'],
-    ['🧑‍🦽','wheelchair'],['🤝','friend'],['👫','couple'],['🫂','hug'],['🧒','child'],['👱','blond person'],
-    ['👷','builder'],['💂','guard'],['🕵️','detective'],['👩‍🍳','chef'],['👩‍🔧','mechanic'],
-    ['👩‍🎤','singer'],['👩‍💻','coder'],['👩‍⚖️','judge'],['🦸','hero'],['🧕','headscarf'],
-    ['🙎','sulking'],['🙍','frowning'],['💁','information'],['🤦','facepalm'],['🤷','shrug'],
-    ['🧑‍🦯','cane person'],['🦼','electric wheelchair'],['🏃','running person'],['🚶','walking person'],
-    ['🧍','standing'],['🧎','kneeling'],['🧑‍🤝‍🧑','holding hands'],['🧓','older person'],
-    ['👼','angel baby'],['🤰','pregnant'],['🧔','bearded person'],['🧏','deaf person']
+    ['👩','mum'],['👨','dad'],['👵','grandma'],['👴','grandpa'],['👧','sister'],['👦','brother'],
+    ['👶','baby'],['🧑','carer'],['👩‍⚕️','nurse'],['👨‍⚕️','doctor'],['👩‍🏫','teacher'],['👮','police'],
+    ['🧑‍🦽','wheelchair user'],['🤝','friend'],['👫','couple'],['🫂','hug'],['🧒','child'],
+    ['👱','blond person'],['👷','builder'],['💂','guard'],['🕵️','detective'],['👩‍🍳','chef'],
+    ['👩‍🔧','mechanic'],['👩‍🎤','singer'],['👩‍💻','coder'],['👩‍⚖️','judge'],['🦸','hero'],
+    ['🧕','headscarf'],['🤦','facepalm'],['🤷','shrug'],['🧑‍🦯','cane person'],['🦼','electric wheelchair'],
+    ['🏃','running'],['🚶','walking'],['🧍','standing'],['🧎','kneeling'],['🧑‍🤝‍🧑','holding hands'],
+    ['🧓','older person'],['👼','angel baby'],['🤰','pregnant'],['🧔','bearded person'],['🧏','deaf person'],
+    ['👩‍👦','mother son'],['👨‍👧','father daughter'],['👪','family'],['🧑‍🎓','student'],['🧑‍🏫','educator'],
+    ['🧑‍⚕️','health worker'],['🧑‍🍳','cook'],['🧑‍🔬','scientist'],['🧑‍🎨','artist'],['🧑‍🚒','firefighter'],
+    ['🧑‍✈️','pilot'],['🧑‍🌾','farmer'],['🧑‍🔧','technician'],['🥷','ninja'],['🤵','suit person']
   ]},
   {id:'feelings',label:'😊 Feelings',emojis:[
     ['😊','happy'],['😢','sad'],['😡','angry'],['😨','scared'],['😴','sleepy'],['🤩','excited'],
     ['😌','calm'],['😟','worried'],['🥱','bored'],['🥰','loved'],['😤','frustrated'],['🤗','grateful'],
     ['😭','crying'],['😔','lonely'],['😕','confused'],['😳','embarrassed'],['🥹','proud'],
-    ['😖','uneasy'],['😒','jealous'],['🥴','dizzy'],['🤢','disgusted'],['😬','nervous'],
-    ['😰','anxious'],['😓','disappointed'],['😫','stressed'],['🥺','upset'],['😯','surprised'],
-    ['🤯','shocked'],['😑','expressionless'],['🙂','okay'],['😀','grinning'],['😁','beaming'],
-    ['😅','relieved'],['🤣','laughing'],['😂','tears of joy'],['☺️','smiling'],['😇','angelic'],
-    ['🥳','celebrating'],['😎','cool'],['🤓','nerdy'],['🧐','curious'],['😐','neutral'],
-    ['😶','speechless'],['😏','smirking'],['🤔','thinking'],['🙄','eye roll'],['😪','drowsy'],
-    ['😮','surprised'],['🤐','zipped mouth'],['🤫','shushing'],['🤭','oops'],['😲','astonished'],
-    ['😱','screaming'],['😣','struggling'],['😩','exhausted'],['😔','down'],['🥶','cold feeling'],
-    ['🥵','hot feeling'],['🤒','unwell'],['🤕','hurt'],['🤑','money face'],['😝','silly']
+    ['😖','uneasy'],['🥴','dizzy feel'],['🤢','sick feel'],['😬','nervous'],['😰','anxious'],
+    ['😓','disappointed'],['😫','stressed'],['🥺','upset'],['😯','surprised'],['🤯','shocked'],
+    ['😑','expressionless'],['🙂','okay'],['😀','grinning'],['😁','beaming'],['😅','relieved'],
+    ['🤣','laughing lots'],['😂','tears of joy'],['☺️','smiling'],['😇','angelic'],['🥳','celebrating'],
+    ['😎','cool'],['🤓','nerdy'],['🧐','curious'],['😐','neutral'],['😶','speechless'],['😏','smirking'],
+    ['🤔','thinking'],['🙄','eye roll'],['😪','drowsy'],['😮','surprised'],['🤐','zipped mouth'],
+    ['🤫','shushing'],['🤭','oops'],['😲','astonished'],['😱','screaming'],['😣','struggling'],
+    ['😩','exhausted'],['🥶','feeling cold'],['🥵','feeling hot'],['🤒','unwell'],['💔','heartbroken'],
+    ['😒','jealous'],['🙃','silly'],['😆','laughing'],['😋','yummy face'],['😍','heart eyes'],
+    ['🤑','money face'],['😝','silly tongue'],['🤪','zany'],['🥸','disguised'],['🤠','cowboy']
   ]},
-  {id:'food',label:'🍎 Food',emojis:[
+  {id:'food',label:'🍎 Food & Drink',emojis:[
     ['🍎','apple'],['🍌','banana'],['🍊','orange'],['🍇','grapes'],['🍓','strawberry'],['🍒','cherry'],
     ['🍑','peach'],['🍋','lemon'],['🍉','watermelon'],['🍈','melon'],['🥭','mango'],['🍍','pineapple'],
-    ['🥥','coconut'],['🥝','kiwi'],['🍅','tomato'],['🥕','carrot'],['🌽','corn'],['🥦','broccoli'],
-    ['🥬','lettuce'],['🥑','avocado'],['🍆','aubergine'],['🫑','pepper'],['🧅','onion'],['🥔','potato'],
-    ['🌶️','chilli'],['🥜','peanuts'],['🍞','bread'],['🥐','croissant'],['🥖','baguette'],['🫓','flatbread'],
-    ['🥨','pretzel'],['🧀','cheese'],['🥚','egg'],['🍳','fried egg'],['🧇','waffle'],['🥞','pancakes'],
-    ['🥙','kebab wrap'],['🍗','chicken'],['🍖','meat on bone'],['🌭','hot dog'],['🍔','burger'],
-    ['🍟','chips'],['🍕','pizza'],['🌮','taco'],['🌯','burrito'],['🥪','sandwich'],
-    ['🥗','salad'],['🍜','noodles'],['🍝','pasta'],['🍛','curry'],['🍚','rice'],['🍣','sushi'],
-    ['🍱','lunchbox'],['🐟','fish'],['🥩','steak'],['🥘','stew pot'],['🍲','casserole'],
-    ['🥣','porridge'],['🍿','popcorn'],['🍦','ice cream'],['🍩','doughnut'],['🍪','biscuit'],
-    ['🎂','birthday cake'],['🍰','cake'],['🧁','cupcake'],['🍫','chocolate'],['🍬','sweets'],
-    ['🍭','lollipop'],['🍯','honey'],['🥛','milk'],['☕','coffee'],['🫖','teapot'],['🍵','tea'],
-    ['🧃','juice box'],['🥤','cold drink'],['🧋','bubble tea'],['🧆','falafel'],['🍠','sweet potato'],
-    ['🫘','beans'],['🧂','salt'],['🥮','mooncake'],['🍡','dango'],['🧁','fairy cake'],
-    ['🥗','green salad'],['🫕','fondue'],['🍤','prawn'],['🦞','lobster'],['🦀','crab'],['🥫','tinned food']
+    ['🥥','coconut'],['🥝','kiwi'],['🍅','tomato'],['🫐','blueberry'],['🍐','pear'],['🍏','green apple'],
+    ['🫒','olive'],['🥑','avocado'],['🥦','broccoli'],['🥕','carrot'],['🌽','corn'],['🥬','lettuce'],
+    ['🫑','pepper'],['🧅','onion'],['🥔','potato'],['🌶️','chilli'],['🥜','peanuts'],['🫘','beans'],
+    ['🍆','aubergine'],['🧄','garlic'],['🥒','cucumber'],['🥗','salad'],['🥙','kebab wrap'],
+    ['🥪','sandwich'],['🧀','cheese'],['🥚','egg'],['🍳','fried egg'],['🧇','waffle'],['🥞','pancakes'],
+    ['🍞','bread'],['🥐','croissant'],['🥖','baguette'],['🫓','flatbread'],['🥨','pretzel'],
+    ['🍗','chicken'],['🍖','meat on bone'],['🥩','steak'],['🌭','hot dog'],['🍔','burger'],
+    ['🍟','chips'],['🍕','pizza'],['🌮','taco'],['🌯','burrito'],['🫔','tamale'],['🧆','falafel'],
+    ['🍜','noodles'],['🍝','pasta'],['🍛','curry'],['🍚','rice'],['🍣','sushi'],['🍱','lunchbox'],
+    ['🐟','fish'],['🥘','stew pot'],['🍲','casserole'],['🫕','fondue'],['🥣','porridge'],['🍿','popcorn'],
+    ['🥫','tinned food'],['🧂','salt'],['🫙','jar'],['🍦','ice cream'],['🍧','sorbet'],['🍨','gelato'],
+    ['🍩','doughnut'],['🍪','biscuit'],['🎂','birthday cake'],['🍰','cake'],['🧁','cupcake'],
+    ['🍫','chocolate'],['🍬','sweets'],['🍭','lollipop'],['🍯','honey'],['🍮','custard'],
+    ['🥧','pie'],['🧋','bubble tea'],['🥤','cold drink'],['🧃','juice box'],['🥛','milk'],
+    ['☕','coffee'],['🫖','teapot'],['🍵','tea'],['🧉','mate'],['🍺','beer'],['🥂','champagne'],
+    ['🍾','bottle'],['🫗','pour drink'],['🍶','sake'],['🥃','whisky glass'],['🍷','wine'],
+    ['🥐','croissant'],['🫔','wrap'],['🍤','prawn'],['🦞','lobster'],['🦀','crab'],['🦑','squid'],
+    ['🐙','octopus'],['🥮','mooncake'],['🍡','dango'],['🍢','oden'],['🍙','rice ball'],['🍘','rice cracker']
   ]},
   {id:'places',label:'🏠 Places',emojis:[
     ['🏠','home'],['🏫','school'],['🏥','hospital'],['🦷','dentist'],['🏦','bank'],['🛒','supermarket'],
     ['🏬','shopping centre'],['🏢','office'],['🏛️','museum'],['📖','library'],['🎬','cinema'],
     ['🎭','theatre'],['🎡','theme park'],['🎢','rollercoaster'],['🏕️','camping'],['🏖️','beach'],
-    ['🏝️','island'],['🌋','volcano'],['🏔️','snowy mountain'],['🌲','forest'],['🌳','park'],
-    ['🌿','garden'],['🌊','sea'],['🏊','swimming pool'],['🏟️','stadium'],['⛪','church'],
-    ['🕌','mosque'],['🛕','temple'],['🕍','synagogue'],['🗼','tower'],['🌃','night city'],
-    ['🌇','sunset city'],['🌆','evening city'],['🌉','bridge'],['🛌','bedroom'],['🛁','bathroom'],
-    ['🍳','kitchen'],['🛋️','living room'],['🚪','door'],['🪟','window'],['🪑','chair'],
-    ['🛏️','bed'],['🚿','shower'],['🚽','toilet'],['🏣','post office'],['🏨','hotel'],
-    ['⛽','petrol station'],['🚉','train station'],['✈️','airport'],['🚢','port'],
-    ['🎠','fairground'],['🌸','garden centre'],['🏪','corner shop'],['🏩','guest house'],
-    ['🏧','cash machine'],['🅿️','car park'],['🗻','mountain'],['⛺','tent'],['🏕️','campsite']
+    ['🏝️','island'],['🏔️','mountain'],['🌲','forest'],['🌳','park'],['🌿','garden'],['🌊','sea'],
+    ['🏊','swimming pool'],['🏟️','stadium'],['⛪','church'],['🕌','mosque'],['🛕','temple'],
+    ['🕍','synagogue'],['🗼','tower'],['🌃','night city'],['🌇','sunset city'],['🌆','evening city'],
+    ['🌉','bridge'],['🛌','bedroom'],['🛁','bathroom'],['🍳','kitchen'],['🛋️','living room'],
+    ['🚪','door'],['🪟','window'],['🪑','chair'],['🛏️','bed'],['🚿','shower'],['🚽','toilet'],
+    ['🏣','post office'],['🏨','hotel'],['⛽','petrol station'],['🚉','train station'],['✈️','airport'],
+    ['🚢','port'],['🎠','fairground'],['🏪','corner shop'],['🅿️','car park'],['🚦','traffic lights'],
+    ['🏟️','sports ground'],['🎳','bowling alley'],['🎰','casino'],['⛳','golf course'],['🎯','activity centre'],
+    ['🏋️','gym'],['🧘','yoga studio'],['🛝','playground'],['🌋','volcano'],['⛺','tent'],
+    ['🏩','guesthouse'],['🏧','cash machine'],['🏤','sorting office'],['🚀','space'],['🌍','world']
   ]},
   {id:'activities',label:'🎮 Activities',emojis:[
     ['⚽','football'],['🏀','basketball'],['🏈','american football'],['⚾','baseball'],['🎾','tennis'],
     ['🏐','volleyball'],['🏉','rugby'],['🥏','frisbee'],['🎱','snooker'],['🏓','ping pong'],
     ['🏸','badminton'],['🥊','boxing'],['🥋','martial arts'],['🛹','skateboard'],['🛼','roller skates'],
-    ['🛷','sledge'],['⛸️','ice skates'],['🏂','snowboard'],['🤿','diving'],['🏋️','weights'],
+    ['🛷','sledge'],['⛸️','ice skates'],['🏂','snowboard'],['🤿','diving'],['🏋️','weightlifting'],
     ['🤸','gymnastics'],['🏊','swimming'],['🚵','mountain bike'],['🚴','cycling'],['🏄','surfing'],
     ['🧗','climbing'],['🏌️','golf'],['🪂','parachute'],['🎿','skiing'],['🛶','kayak'],
     ['🚣','rowing'],['🎣','fishing'],['🏹','archery'],['🎯','darts'],['🎳','bowling'],
@@ -4125,43 +4233,173 @@ var EMOJI_CATS=[
     ['✏️','drawing'],['✂️','crafts'],['🧵','sewing'],['🧶','knitting'],['📚','reading'],
     ['🖥️','computer'],['📱','tablet'],['🎮','gaming'],['🕹️','joystick'],['🎲','board game'],
     ['🧩','puzzle'],['♟️','chess'],['🃏','cards'],['🎪','circus'],['🧸','toys'],
-    ['🪀','yo-yo'],['🪃','boomerang'],['🏇','horse riding'],['⛷️','downhill ski']
+    ['🪀','yo-yo'],['🪃','boomerang'],['🏇','horse riding'],['⛷️','downhill ski'],
+    ['🎭','drama'],['🖼️','art gallery'],['🎵','music'],['🎶','songs'],['📸','photography'],
+    ['🌱','gardening'],['🍳','cooking'],['🧁','baking'],['🛁','bath time'],['🚿','shower time'],
+    ['🧹','cleaning'],['🛠️','fixing things'],['🌍','travelling'],['⛺','camping'],['🏕️','outdoors']
   ]},
   {id:'transport',label:'🚗 Transport',emojis:[
     ['🚗','car'],['🚕','taxi'],['🚙','family car'],['🚌','bus'],['🏎️','racing car'],['🚓','police car'],
     ['🚑','ambulance'],['🚒','fire engine'],['🚐','minibus'],['🛻','pickup truck'],['🚚','lorry'],
     ['🚛','articulated truck'],['🚜','tractor'],['🏍️','motorbike'],['🛵','moped'],['🚲','bike'],
-    ['🛴','kick scooter'],['🚁','helicopter'],['🛸','ufo'],['⵿','sailboat'],['🚤','speedboat'],
-    ['🚢','cruise ship'],['🚂','steam train'],['🚄','bullet train'],['🚇','tube'],['🚊','tram'],
-    ['🚞','mountain railway'],['🛤️','railway track'],['🛣️','motorway'],['🚦','traffic light'],
-    ['🚥','traffic signals'],['🛑','stop sign'],['⚓','anchor'],['🪝','hook'],['🛺','rickshaw'],
-    ['🚀','rocket'],['✈️','plane'],['⛵','yacht'],['🛥️','motorboat'],['🚋','tram car'],
-    ['🚡','aerial tramway'],['🚠','cable car'],['🚟','monorail'],['🛻','ute'],['🚐','people carrier']
+    ['🛴','kick scooter'],['🚁','helicopter'],['✈️','plane'],['🚀','rocket'],['🛸','ufo'],
+    ['⵿','sailboat'],['🚤','speedboat'],['🚢','cruise ship'],['🚂','steam train'],['🚄','bullet train'],
+    ['🚇','tube'],['🚊','tram'],['🚞','mountain railway'],['🚋','tram car'],['🛺','rickshaw'],
+    ['🚡','aerial tramway'],['🚠','cable car'],['🛤️','railway track'],['🛣️','motorway'],
+    ['🚦','traffic light'],['🛑','stop sign'],['⚓','anchor'],['🛻','ute'],['🚐','people carrier'],
+    ['🚑','paramedic'],['🛵','delivery bike'],['🚲','push bike'],['🛒','trolley'],['👟','walking shoes'],
+    ['👣','footsteps'],['🚏','bus stop'],['🛬','landing'],['🛫','taking off'],['🚉','station'],
+    ['🅿️','parking'],['⛽','fuel'],['🔑','car key'],['🗺️','map'],['🧭','compass']
   ]},
   {id:'health',label:'🏥 Health',emojis:[
     ['🤕','head hurts'],['🦷','toothache'],['👁️','eye hurts'],['👂','ear hurts'],['🤢','tummy hurts'],
     ['🦵','leg hurts'],['💪','arm hurts'],['🤒','fever'],['🤧','runny nose'],['💊','medicine'],
     ['🩹','plaster'],['🩺','doctor check'],['🧴','cream'],['🌡️','thermometer'],['😴','need sleep'],
-    ['🩻','x-ray'],['💉','injection'],['🩸','blood test'],['🧬','dna'],['😷','face mask'],
-    ['🩼','crutch'],['🦯','walking cane'],['🦽','manual wheelchair'],['👁','eye check'],
+    ['🩻','x-ray'],['💉','injection'],['🩸','blood test'],['😷','face mask'],['🩼','crutch'],
+    ['🦯','walking cane'],['🦽','manual wheelchair'],['🏥','hospital'],['🚑','ambulance'],
+    ['🧪','test tube'],['🔬','microscope'],['🩺','stethoscope'],['🏋️','physio'],
+    ['🧘','mindfulness'],['🛌','bed rest'],['💉','vaccination'],['🧫','culture test'],
+    ['🥴','feeling woozy'],['🥶','feeling cold'],['🥵','feeling hot'],['😓','feeling low'],
     ['🫀','heart check'],['🫁','lung check'],['🧠','brain'],['🦴','bone'],['🦶','foot'],
-    ['🤲','clean hands'],['🧪','test tube'],['🔬','microscope'],['🏋️','physio'],
-    ['🧘','mindfulness'],['🚶','rehabilitation'],['🛌','bed rest'],['🏊','hydrotherapy'],
-    ['💉','vaccination'],['🧫','culture test'],['🔭','eye test'],['🦻','hearing check'],
-    ['🥴','feeling woozy'],['🤑','nausea'],['🥶','feeling cold'],['🥵','feeling hot'],
-    ['😓','feeling low']
+    ['🤲','clean hands'],['🧼','wash hands'],['🪥','brush teeth'],['🩴','slippers'],
+    ['🛁','bath'],['🚿','shower'],['💤','rest'],['🍵','herbal tea'],['🌿','natural remedy'],
+    ['🩲','change clothes'],['🏊','water therapy'],['🧘','relaxation'],['🎵','music therapy'],
+    ['🌞','fresh air'],['🥗','healthy food'],['💧','drink water'],['🧃','fruit juice'],
+    ['😌','feeling better'],['💪','getting stronger'],['🌈','recovery'],['⭐','feeling great']
+  ]},
+  {id:'body',label:'🫁 Body Parts',emojis:[
+    ['🧠','brain'],['👁️','eye'],['👁','eyes'],['👂','ear'],['👃','nose'],['👄','mouth'],['👅','tongue'],
+    ['🦷','teeth'],['💋','lips'],['🫦','lip'],['🫀','heart'],['🫁','lungs'],['🦴','bone'],
+    ['💪','arm'],['🦾','strong arm'],['🖐️','hand'],['🤚','back hand'],['👋','wave hand'],
+    ['🫱','right hand'],['🫲','left hand'],['☝️','finger up'],['👆','point up'],['👇','point down'],
+    ['👈','point left'],['👉','point right'],['🤞','crossed fingers'],['🖖','spock hand'],
+    ['🤙','hang loose'],['✊','fist'],['👊','punch'],['🤛','left fist'],['🤜','right fist'],
+    ['👍','thumbs up'],['👎','thumbs down'],['✌️','peace sign'],['🤟','love hand'],['🤘','rock on'],
+    ['🤙','call me'],['👐','open hands'],['🙌','raise hands'],['👏','clap'],['🤲','cupped hands'],
+    ['🙏','please hands'],['✍️','writing hand'],['💅','nails'],['🦶','foot'],['🦵','leg'],
+    ['🦿','leg prosthetic'],['👣','footprints'],['🧍','body'],['🫂','hug body'],['💆','head massage'],
+    ['💇','haircut'],['🦱','curly hair'],['🦰','red hair'],['🦳','white hair'],['🦲','bald'],
+    ['👃','nose smell'],['👅','taste'],['🫀','heartbeat'],['🩸','blood'],['💉','vein'],
+    ['🦠','germ'],['🧬','dna'],['⚕️','medical symbol']
+  ]},
+  {id:'school',label:'🏫 School',emojis:[
+    ['✏️','pencil'],['🖊️','pen'],['📝','write'],['📚','books'],['📖','read'],['📓','notebook'],
+    ['📔','journal'],['📒','notepad'],['📕','book'],['📗','green book'],['📘','blue book'],
+    ['📙','orange book'],['📐','ruler set'],['📏','ruler'],['✂️','scissors'],['🗂️','folder'],
+    ['📁','file folder'],['📌','pin'],['📎','paperclip'],['🖍️','crayon'],['🎨','paint'],
+    ['🖌️','paintbrush'],['🔭','telescope'],['🔬','microscope'],['🧲','magnet'],['💡','idea'],
+    ['🧪','science'],['🧫','experiment'],['🔢','numbers'],['🔤','letters'],['🔡','lowercase'],
+    ['#️⃣','hashtag'],['*️⃣','star sign'],['🧮','calculator'],['📊','chart'],['📈','graph up'],
+    ['📉','graph down'],['🗓️','planner'],['📅','calendar'],['⏰','alarm'],['🕐','time'],
+    ['🏫','school building'],['🚌','school bus'],['🎒','school bag'],['🍱','lunch box'],
+    ['🥪','packed lunch'],['🧃','drink'],['🎤','speaking'],['🎵','music class'],['🎨','art class'],
+    ['⚽','PE'],['🏃','sports'],['🤸','gym'],['💻','computer class'],['🌍','geography'],
+    ['🧬','biology'],['⚗️','chemistry'],['📐','maths'],['📜','history'],['🎭','drama class'],
+    ['🌐','languages'],['🏆','achievement'],['⭐','star student'],['✅','correct'],['❌','wrong'],
+    ['📢','assembly'],['🛎️','bell'],['🏠','home time'],['😊','happy learning'],['🤝','group work']
+  ]},
+  {id:'clothes',label:'👗 Clothes & Shoes',emojis:[
+    ['👕','t-shirt'],['👔','shirt'],['👗','dress'],['👘','kimono'],['🥻','saree'],['👙','bikini top'],
+    ['🩱','swimsuit'],['🩲','trunks'],['🩳','shorts'],['👖','jeans'],['👚','sweatshirt'],
+    ['🧥','coat'],['🥼','lab coat'],['🦺','vest'],['👒','sun hat'],['🎩','top hat'],['🧢','cap'],
+    ['⛑️','safety helmet'],['👑','crown'],['💍','ring'],['👟','trainers'],['👞','shoes'],
+    ['👠','heels'],['👡','sandals'],['👢','boots'],['🥾','walking boots'],['🩴','flip flops'],
+    ['🧤','gloves'],['🧣','scarf'],['🧦','socks'],['👙','swimwear'],['🩴','sandals'],
+    ['🥿','loafers'],['👜','handbag'],['👝','clutch bag'],['🎒','backpack'],['🧳','suitcase'],
+    ['🌂','umbrella'],['👒','hat'],['🪖','helmet'],['🎓','graduation cap'],['💎','jewellery'],
+    ['📿','necklace'],['💄','lipstick'],['💅','nail polish'],['👓','glasses'],['🕶️','sunglasses'],
+    ['🧣','neck scarf'],['🧤','mittens'],['🩱','one piece'],['🩳','swim shorts'],['🎽','sports top'],
+    ['👔','formal shirt'],['👗','party dress'],['🎀','bow'],['🧢','beanie'],['🛍️','shopping bag'],
+    ['🧥','winter coat'],['☂️','raincoat'],['🥋','gi'],['👘','robe'],['🩴','thongs']
+  ]},
+  {id:'arts',label:'🎨 Arts & Crafts',emojis:[
+    ['🎨','painting'],['🖌️','paintbrush'],['🖍️','crayon'],['✏️','pencil draw'],['🖊️','pen draw'],
+    ['✂️','cut'],['📐','measure'],['📏','straight edge'],['🗂️','organise'],['📌','pin together'],
+    ['🧵','thread'],['🪡','spool'],['🧶','yarn'],['🪢','knot'],['🧷','safety pin'],
+    ['🪡','wind wool'],['🪆','nesting dolls'],['🪅','pinata'],['🎭','theatre mask'],['🎪','perform'],
+    ['🖼️','frame picture'],['🗿','sculpture'],['🧱','build'],['🏺','pottery'],['🔮','glass ball'],
+    ['🪩','disco ball'],['🎆','fireworks'],['🎇','sparkler'],['✨','sparkle'],['⭐','star'],
+    ['🌟','glowing star'],['💫','shooting star'],['🎉','confetti'],['🎊','party popper'],
+    ['🎈','balloon'],['🎀','bow ribbon'],['🎁','wrap present'],['📦','box'],['🗃️','card box'],
+    ['📷','take photo'],['📸','selfie'],['🎥','film'],['📹','record'],['🎬','direct'],
+    ['🎵','music note'],['🎶','notes'],['🎼','sheet music'],['🎹','keyboard'],['🥁','drum'],
+    ['🎸','strum'],['🎺','blow horn'],['🎻','bow strings'],['🪗','squeeze'],['🎤','perform'],
+    ['🌈','colour mix'],['🔴','red paint'],['🔵','blue paint'],['🟢','green paint'],['🟡','yellow paint'],
+    ['🟣','purple paint'],['🟠','orange paint'],['⚫','black paint'],['⚪','white paint'],
+    ['🩶','grey'],['🤍','white'],['🖤','black'],['❤️','red'],['💙','blue'],['💚','green'],
+    ['💛','yellow'],['💜','purple'],['🧡','orange'],['🤎','brown'],['🩷','pink'],['🩵','light blue']
+  ]},
+  {id:'games',label:'🎲 Games & Play',emojis:[
+    ['🎲','dice'],['♟️','chess'],['🃏','cards'],['🀄','mahjong'],['🎮','video game'],['🕹️','joystick'],
+    ['🎯','target game'],['🎳','bowling'],['🎱','billiards'],['🏓','table tennis'],['🏸','badminton'],
+    ['🎾','tennis ball'],['⚽','football'],['🏀','basketball'],['🏈','american ball'],['🎿','ski'],
+    ['🛷','sledge'],['🛹','skate'],['🤸','tumble'],['🧗','climb'],['🤼','wrestle'],
+    ['🪃','boomerang'],['🪁','slingshot'],['🪀','yo-yo'],['🎣','fishing game'],['🏊','swim'],
+    ['🛶','boat'],['🧩','jigsaw'],['🪆','dolls'],['🧸','teddy'],['🪅','pinata'],
+    ['🎪','circus play'],['🎭','roleplay'],['🎨','art play'],['🖍️','colour in'],['🧵','make'],
+    ['📚','story time'],['🌳','outside play'],['🏃','run around'],['🤾','throw catch'],
+    ['🏌️','mini golf'],['🥏','frisbee toss'],['🤿','pretend swim'],['🎡','fairground'],
+    ['🎢','rides'],['🎠','carousel'],['🃏','snap'],['🎴','hanafuda'],['🀄','tile game'],
+    ['🎲','roll dice'],['♠️','spades'],['♥️','hearts'],['♦️','diamonds'],['♣️','clubs'],
+    ['🃏','joker'],['🎰','slot machine'],['🏆','trophy'],['🥇','gold medal'],['🥈','silver'],
+    ['🥉','bronze'],['🎖️','medal'],['🏅','sports medal'],['🎗️','ribbon'],['⭐','star player'],
+    ['👾','space invaders'],['🕹️','classic game'],['📱','phone game'],['💻','computer game']
+  ]},
+  {id:'shopping',label:'🛒 Shopping',emojis:[
+    ['🛒','trolley'],['🛍️','shopping bags'],['💰','money bag'],['💵','cash'],['💳','card'],
+    ['🏧','cash machine'],['💱','exchange'],['🪙','coin'],['💎','jewellery shop'],['👗','clothes shop'],
+    ['👟','shoe shop'],['🍎','food shop'],['💊','chemist'],['🏥','pharmacy'],['🎁','gift shop'],
+    ['📚','bookshop'],['🎮','game shop'],['📱','phone shop'],['💻','tech shop'],['🏠','furniture shop'],
+    ['🌹','flower shop'],['🍞','bakery'],['🥩','butcher'],['🐟','fishmonger'],['🥛','dairy shop'],
+    ['☕','coffee shop'],['🍕','pizza shop'],['🌮','taco shop'],['🍣','sushi shop'],['🍔','burger shop'],
+    ['🧴','toiletries'],['🧼','soap'],['🪥','toothbrush'],['🪒','razor'],['💄','cosmetics'],
+    ['👓','optician'],['🧸','toy shop'],['🎨','art shop'],['🌿','garden centre'],['🐕','pet shop'],
+    ['📦','delivery'],['🚚','delivery van'],['📬','postbox'],['🏪','newsagent'],['⛽','garage'],
+    ['🏬','department store'],['🏦','bank'],['💹','prices'],['🏷️','price tag'],['🎀','gift wrap'],
+    ['🛒','checkout'],['🧾','receipt'],['💲','price'],['🔖','discount'],['🎫','voucher'],
+    ['📊','budget'],['💳','pay by card'],['📱','pay by phone'],['🤝','customer service']
+  ]},
+  {id:'colours',label:'🌈 Colours & Shapes',emojis:[
+    ['❤️','red'],['🧡','orange'],['💛','yellow'],['💚','green'],['💙','blue'],['💜','purple'],
+    ['🖤','black'],['🤍','white'],['🩶','grey'],['🤎','brown'],['🩷','pink'],['🩵','light blue'],
+    ['❤️‍🔥','dark red'],['🟥','red square'],['🟧','orange square'],['🟨','yellow square'],
+    ['🟩','green square'],['🟦','blue square'],['🟪','purple square'],['⬛','black square'],
+    ['⬜','white square'],['🟫','brown square'],['🔴','red circle'],['🟠','orange circle'],
+    ['🟡','yellow circle'],['🟢','green circle'],['🔵','blue circle'],['🟣','purple circle'],
+    ['⚫','black circle'],['⚪','white circle'],['🟤','brown circle'],['🔶','orange diamond'],
+    ['🔷','blue diamond'],['🔸','small orange diamond'],['🔹','small blue diamond'],
+    ['🔺','red triangle up'],['🔻','red triangle down'],['💠','diamond blue'],['🔲','black square btn'],
+    ['🔳','white square btn'],['▪️','small black square'],['▫️','small white square'],
+    ['◾','medium small black'],['◽','medium small white'],['◼️','medium black'],['◻️','medium white'],
+    ['🌈','rainbow colours'],['🎨','mix colours'],['✨','sparkle'],['⭐','star shape'],
+    ['🌟','big star'],['💫','spinning star'],['❄️','snowflake shape'],['🌀','spiral'],
+    ['♾️','infinity'],['☮️','peace symbol'],['❤️','heart shape'],['💔','broken heart'],
+    ['💯','one hundred'],['🔝','top'],['🆕','new'],['🆓','free'],['🆗','ok'],
+    ['🅰️','letter a'],['🅱️','letter b'],['🆎','ab'],['🅾️','letter o'],
+    ['1️⃣','one'],['2️⃣','two'],['3️⃣','three'],['4️⃣','four'],['5️⃣','five'],
+    ['6️⃣','six'],['7️⃣','seven'],['8️⃣','eight'],['9️⃣','nine'],['🔟','ten'],
+    ['0️⃣','zero'],['#️⃣','number'],['↑','up arrow'],['↓','down arrow'],['←','left arrow'],['→','right arrow'],
+    ['⬆️','big up'],['⬇️','big down'],['⬅️','big left'],['➡️','big right'],
+    ['🔼','triangle up'],['🔽','triangle down'],['◀️','back'],['▶️','play'],
+    ['⏩','fast forward'],['⏪','rewind'],['⏫','fast up'],['⏬','fast down']
   ]},
   {id:'nature',label:'🌿 Nature',emojis:[
     ['🌸','blossom'],['🌺','hibiscus'],['🌻','sunflower'],['🌹','rose'],['🌷','tulip'],['💐','bouquet'],
     ['🌱','seedling'],['🌿','herb'],['☘️','shamrock'],['🍀','four leaf clover'],['🍃','leaves'],
-    ['🍂','autumn leaf'],['🍁','maple leaf'],['🌾','wheat'],['🌵','cactus'],['🎄','pine tree'],
+    ['🍂','autumn leaf'],['🍁','maple leaf'],['🌾','wheat'],['🌵','cactus'],['🎄','christmas tree'],
     ['🌲','evergreen tree'],['🌳','oak tree'],['🌴','palm tree'],['🍄','mushroom'],['🐚','shell'],
     ['🪸','coral'],['🪨','rock'],['💧','water droplet'],['💦','splashing water'],['🌈','rainbow'],
     ['☀️','sunny'],['🌤️','partly cloudy'],['⛅','cloudy'],['🌧️','rain'],['⛈️','thunder'],
     ['🌩️','lightning'],['🌨️','snow'],['❄️','snowflake'],['🌬️','windy'],['🌀','cyclone'],
     ['🌫️','foggy'],['🔥','fire'],['⭐','star'],['🌟','glowing star'],['💫','shooting star'],
     ['✨','sparkles'],['🌙','moon'],['🌛','crescent moon'],['🌝','full moon'],['🌎','earth'],
-    ['⛰️','mountain'],['🌋','volcano'],['🌊','waves'],['🍋','lemon tree']
+    ['⛰️','mountain'],['🌋','volcano'],['🌊','waves'],['🌺','flower'],['🏞️','landscape'],
+    ['🌅','sunrise'],['🌄','sunrise over mountain'],['🌠','shooting star sky'],['🌌','milky way'],
+    ['🌑','new moon'],['🌒','waxing crescent'],['🌓','first quarter'],['🌔','waxing gibbous'],
+    ['🌕','full moon bright'],['🌖','waning gibbous'],['🌗','last quarter'],['🌘','waning crescent'],
+    ['☁️','cloud'],['🌥️','partly sunny'],['🌦️','sun and rain'],['🌡️','hot weather'],['🌬️','cold wind'],
+    ['🍃','blowing leaves'],['🪴','potted plant'],['🌻','big flower'],['🌷','pink flower'],
+    ['🌱','new growth'],['🪵','log'],['🍂','fallen leaves'],['🎋','bamboo'],['🌴','tropical']
   ]},
   {id:'animals',label:'🐾 Animals',emojis:[
     ['🐶','dog'],['🐱','cat'],['🐭','mouse'],['🐹','hamster'],['🐰','rabbit'],['🦊','fox'],
@@ -4176,24 +4414,32 @@ var EMOJI_CATS=[
     ['🦜','parrot'],['🦩','flamingo'],['🦢','swan'],['🕊️','dove'],['🦃','turkey'],
     ['🦌','deer'],['🐐','goat'],['🐑','sheep'],['🐂','bull'],['🐩','poodle'],
     ['🦮','guide dog'],['🐕‍🦺','service dog'],['🐈‍⬛','black cat'],['🦔','hedgehog'],
-    ['🐇','bunny'],['🦙','llama'],['🦘','kangaroo'],['🦬','bison'],['🦣','mammoth'],['🦫','beaver']
+    ['🐇','bunny'],['🦙','llama'],['🦘','kangaroo'],['🦬','bison'],['🦫','beaver'],
+    ['🐓','rooster'],['🦚','peacock'],['🦜','macaw'],['🐿️','chipmunk'],['🦔','hedgehog'],
+    ['🪲','beetle'],['🪳','cockroach'],['🪰','fly'],['🪱','worm'],['🦗','cricket'],
+    ['🕷️','spider'],['🦂','scorpion'],['🐠','clown fish'],['🐡','blow fish'],['🦦','otter'],
+    ['🦥','sloth'],['🦨','skunk'],['🦡','badger'],['🐻‍❄️','polar bear'],['🐆','leopard'],['🐅','tiger']
   ]},
   {id:'objects',label:'🎁 Objects',emojis:[
     ['🎁','gift'],['🎀','ribbon'],['🎊','party popper'],['🎉','celebration'],['🎈','balloon'],
-    ['🎂','birthday cake'],['🪄','magic wand'],['🎩','top hat'],['🪅','pinata'],['🎭','masks'],
-    ['🖼️','picture frame'],['💎','diamond'],['💍','ring'],['👑','crown'],['💄','lipstick'],
-    ['💅','nail polish'],['🎓','graduation cap'],['⛑️','safety helmet'],['👜','handbag'],
-    ['🎒','backpack'],['🧳','suitcase'],['🌂','umbrella'],['📱','smartphone'],['💻','laptop'],
-    ['⌨️','keyboard'],['📷','camera'],['📹','video camera'],['🎥','film camera'],['📺','television'],
-    ['📻','radio'],['🎙️','microphone'],['📞','telephone'],['☎️','old telephone'],['🔋','battery'],
-    ['💡','light bulb'],['🔦','torch'],['🕯️','candle'],['🧲','magnet'],['🔧','spanner'],
-    ['🔨','hammer'],['⚙️','cog'],['🔑','key'],['🗝️','old key'],['🔒','locked'],['🔓','unlocked'],
+    ['🎂','birthday cake'],['🪄','magic wand'],['🎩','top hat'],['💎','diamond'],['💍','ring'],
+    ['👑','crown'],['💄','lipstick'],['💅','nail polish'],['🎓','graduation cap'],['⛑️','safety helmet'],
+    ['👜','handbag'],['🎒','backpack'],['🧳','suitcase'],['🌂','umbrella'],['📱','smartphone'],
+    ['💻','laptop'],['⌨️','keyboard'],['📷','camera'],['📹','video camera'],['🎥','film camera'],
+    ['📺','television'],['📻','radio'],['🎙️','microphone'],['📞','telephone'],['☎️','old telephone'],
+    ['🔋','battery'],['💡','light bulb'],['🔦','torch'],['🕯️','candle'],['🧲','magnet'],
+    ['🔧','spanner'],['🔨','hammer'],['⚙️','cog'],['🔑','key'],['🔒','locked'],['🔓','unlocked'],
     ['🪞','mirror'],['🛁','bathtub'],['🧹','broom'],['🧺','basket'],['🧻','toilet roll'],
     ['🧼','soap'],['🪥','toothbrush'],['🪒','razor'],['🧴','lotion'],['📚','books'],
     ['✏️','pencil'],['🖊️','pen'],['📝','notepad'],['📋','clipboard'],['📅','calendar'],
     ['🗓️','diary'],['📌','pin'],['📎','paperclip'],['✂️','scissors'],['🗑️','bin'],
     ['🪣','bucket'],['🧰','toolbox'],['🔮','crystal ball'],['🎮','game controller'],['🕹️','joystick'],
-    ['🎲','dice'],['🧩','jigsaw'],['♟️','chess piece'],['🃏','playing card'],['🀄','mahjong']
+    ['🎲','dice'],['🧩','jigsaw'],['♟️','chess piece'],['🃏','playing card'],
+    ['🛏️','bed'],['🛋️','sofa'],['🚪','door'],['🪟','window'],['🪑','chair'],
+    ['🚽','toilet'],['🚿','shower'],['🛁','bath'],['🧹','broom'],['🪠','plunger'],
+    ['🪴','plant pot'],['🖼️','picture frame'],['🪞','mirror'],['🧸','teddy bear'],
+    ['🪆','matryoshka'],['🎭','masks'],['🧨','firecracker'],['🎆','fireworks'],['🎇','sparkler'],
+    ['🧯','fire extinguisher'],['🪤','mousetrap'],['🪣','pail'],['🗝️','old key'],['🔐','locked key']
   ]},
   {id:'routine',label:'⏰ Routine',emojis:[
     ['☀️','morning'],['🌙','night time'],['🌅','sunrise'],['🌆','evening'],['⏰','alarm clock'],
@@ -4204,9 +4450,12 @@ var EMOJI_CATS=[
     ['🚌','school bus'],['🏫','school time'],['🏠','home time'],['📚','homework time'],
     ['📺','tv time'],['🎮','game time'],['🧘','calm time'],['💤','sleep'],['📅','today'],
     ['✅','done'],['❌','not yet'],['⭐','well done'],['🏆','achievement'],['🎯','goal'],
-    ['👍','yes good'],['👎','no'],['💙','feeling blue'],['🟢','green light'],['🔴','red light'],
-    ['🟡','almost'],['🌟','excellent'],['🎊','party time'],['🛝','playground time'],
-    ['🌿','outdoor time'],['🎨','art time'],['🎵','music time'],['🍪','snack time'],['🛌','rest time']
+    ['👍','yes good'],['👎','no'],['🟢','green light go'],['🔴','red light stop'],['🟡','wait'],
+    ['🛝','playground time'],['🌿','outdoor time'],['🎨','art time'],['🎵','music time'],
+    ['🍪','snack time'],['🛌','rest time'],['🧹','tidy up time'],['🚶','walk time'],
+    ['🏃','run time'],['🏊','swim time'],['🛒','shopping time'],['👩‍⚕️','appointment'],
+    ['📞','phone time'],['🫂','hug time'],['🌙','bedtime story'],['💡','learning time'],
+    ['🎁','special treat'],['🏖️','holiday'],['🎂','birthday'],['🎄','christmas'],['🎃','halloween']
   ]},
   {id:'sensory',label:'🤲 Sensory',emojis:[
     ['🫧','bubbles'],['🌊','water play'],['🧸','cuddle toy'],['🫂','deep pressure hug'],
@@ -4217,9 +4466,14 @@ var EMOJI_CATS=[
     ['⚪','white'],['🌸','soft smell'],['☁️','soft texture'],['🔥','warm'],['🧊','cold'],
     ['🎶','music on'],['📢','loud sound'],['🔇','quiet please'],['😌','relaxed'],
     ['🤗','cozy feeling'],['🧡','comforted'],['💚','nature calm'],['🎯','focus time'],
-    ['🪨','heavy blanket'],['🧴','lotion rub'],['💈','spinning'],['🎠','gentle movement'],
+    ['🪨','heavy blanket'],['🧴','lotion rub'],['🎠','gentle movement'],
     ['🌀','spinning toy'],['🕯️','candle watching'],['⭐','star gazing'],['🌙','night light'],
-    ['🐠','fish tank'],['🐢','slow and steady'],['🌱','plant care'],['🎻','string music']
+    ['🐠','fish tank'],['🐢','slow and steady'],['🌱','plant care'],['🎻','string music'],
+    ['🌺','flower smell'],['🍋','lemon smell'],['🍵','chamomile tea'],['🌸','lavender'],
+    ['🫙','sensory bottle'],['🧶','fidget knit'],['🪆','stacking toy'],['🧩','puzzle calm'],
+    ['📖','story time'],['🌦️','weather watching'],['🐦','bird watching'],['🏞️','landscape view'],
+    ['🌅','sunset watch'],['🌌','stars'],['🌛','moon gaze'],['🌈','rainbow hunt'],
+    ['🦋','butterfly watch'],['🐝','bee watch'],['🌻','sunflower grow'],['🌱','plant water']
   ]},
   {id:'cultural',label:'🌍 Cultural',emojis:[
     ['🕌','mosque'],['🛕','mandir'],['⛪','church'],['🕍','synagogue'],['☪️','crescent and star'],
@@ -4233,7 +4487,9 @@ var EMOJI_CATS=[
     ['🦁','lion dance'],['🌙','ramadan moon'],['⭐','eid star'],['🌸','cherry blossom'],
     ['🎋','bamboo'],['🎍','pine branch'],['🎐','wind chime'],['🪆','nesting doll'],
     ['🪩','disco celebration'],['🎆','firework display'],['🥁','dhol drum'],['🎺','horn'],
-    ['🪗','squeeze box'],['🎻','string instrument']
+    ['🪗','squeeze box'],['🎻','string instrument'],['🧧','red envelope'],['🎑','moon viewing'],
+    ['🎎','traditional dolls'],['🎏','carp streamer'],['🎐','paper chimes'],['🧨','celebration crackers'],
+    ['🎭','masquerade'],['🪅','fiesta'],['🥳','party celebration'],['🎉','big celebration']
   ]}
 ];
 
