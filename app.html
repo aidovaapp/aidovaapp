@@ -88,7 +88,7 @@ body.hico #pw,body.hico .page{background:#000}
 body.hico .cf{background:#000;border:3px solid #FF6B6B}
 body.hico .cn{background:#000;border:3px solid #4FC3F7}
 body.hico .cp{background:#000;border:3px solid #FFD54F}
-body.hico .cs{background:#000;border:3px solid #CE93D8}
+body.hico .cs{background:#000;border:3px solid #1B5E20}
 body.hico .cr{background:#000;border:3px solid #69F0AE}
 body.hico .ce{background:#111;border:2px dashed #555}
 body.hico .cl{color:#fff;font-weight:900}
@@ -150,9 +150,9 @@ body.adult.dark .page,body.adult.dark #pw{background:#0D2020}
 #app{display:flex;flex-direction:column;height:100dvh;height:100vh;overflow:hidden;opacity:0;transition:opacity .4s}
 #app.ready{opacity:1}
 body.editing #app{padding-top:38px}
-#editbar{display:none;position:fixed;top:0;left:0;right:0;z-index:150;background:#00838F;color:#fff;font-size:.75rem;font-weight:900;padding:8px 12px;align-items:center;justify-content:space-between;box-shadow:0 2px 10px rgba(0,0,0,.2)}
+#editbar{display:none;position:fixed;top:0;left:0;right:0;z-index:150;background:#1B5E20;color:#fff;font-size:.75rem;font-weight:900;padding:8px 12px;align-items:center;justify-content:space-between;box-shadow:0 2px 10px rgba(0,0,0,.2)}
 #editbar.open{display:flex}
-#editbar button{border:none;background:#fff;color:#00838F;border-radius:8px;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.78rem;padding:6px 14px;cursor:pointer;margin-left:6px}
+#editbar button{border:none;background:#fff;color:#1B5E20;border-radius:8px;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.78rem;padding:6px 14px;cursor:pointer;margin-left:6px}
 /* Reorder modal */
 #plansmod{display:none;position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.6);align-items:flex-end;justify-content:center}
 #plansmod.open{display:flex}
@@ -161,7 +161,7 @@ body.editing #app{padding-top:38px}
 .plan-card:active{transform:scale(.98)}
 .plan-card.free{background:#F1F8E9;border-color:#A5D6A7}
 .plan-card.prem{background:#FFF8E1;border-color:#FFD54F}
-.plan-card.premplus{background:#F3E5F5;border-color:#CE93D8}
+.plan-card.premplus{background:#E8F5E9;border-color:#A5D6A7}
 .plan-title{font-size:1rem;font-weight:900;color:#222;margin-bottom:4px}
 .plan-price{font-size:.8rem;color:#666;margin-bottom:8px}
 .plan-features{font-size:.75rem;color:#444;line-height:1.7}
@@ -173,13 +173,13 @@ body.editing #app{padding-top:38px}
 .plan-toggle button.active{background:#fff;color:#222;box-shadow:0 2px 6px rgba(0,0,0,.1)}
 #reordermod{display:none;position:fixed;inset:0;z-index:500;background:#F5F5F5;flex-direction:column}
 #reordermod.open{display:flex}
-#reorder-header{background:#00838F;color:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+#reorder-header{background:#1B5E20;color:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
 #reorder-header h2{margin:0;font-size:1rem;font-weight:900}
-#reorder-header button{border:none;background:#fff;color:#00838F;border-radius:8px;font-weight:900;font-size:.85rem;padding:8px 18px;cursor:pointer}
+#reorder-header button{border:none;background:#fff;color:#1B5E20;border-radius:8px;font-weight:900;font-size:.85rem;padding:8px 18px;cursor:pointer}
 #reorder-list{flex:1;overflow-y:auto;padding:10px 10px 120px;display:flex;flex-direction:column;gap:6px}
 .rorder-item{background:#fff;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 4px rgba(0,0,0,.08);cursor:grab;user-select:none;touch-action:none}
 .rorder-item.dragging{opacity:.5;background:#FFF3E0;box-shadow:0 4px 16px rgba(0,0,0,.18)}
-.rorder-item.drag-over{border:2px solid #00838F}
+.rorder-item.drag-over{border:2px solid #1B5E20}
 .rorder-emoji{font-size:1.5rem;width:36px;text-align:center;flex-shrink:0}
 .rorder-label{flex:1;font-weight:900;font-size:.85rem;color:#333;letter-spacing:.3px}
 .rorder-handle{color:#bbb;font-size:1.4rem;padding:8px 6px;cursor:grab;flex-shrink:0;touch-action:none;min-width:44px;text-align:center}
@@ -239,15 +239,15 @@ body.editing .ce{border:2px dashed #E0E0E0}
 .circ.hidden-btn{opacity:.35;filter:grayscale(1)}
 .hidden-section{display:none;margin-top:6px;width:100%}
 .hidden-section.open{display:block}
-.hidden-section-title{font-size:.6rem;font-weight:900;color:#00838F;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;padding:5px 10px;background:#FFF3E0;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;border:1px solid #FFCC80}
+.hidden-section-title{font-size:.6rem;font-weight:900;color:#1B5E20;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;padding:5px 10px;background:#FFF3E0;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;border:1px solid #FFCC80}
 .hidden-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%;margin-top:4px}
 @media(min-width:600px){.hidden-grid{grid-template-columns:repeat(4,1fr)}}
 @media(min-width:900px){.hidden-grid{grid-template-columns:repeat(5,1fr)}}
 .circ.hidden-card{opacity:.5;filter:grayscale(.5);position:relative}
 .restore-badge{position:absolute;top:-6px;right:-6px;background:#2D6A4F;color:#fff;border:none;border-radius:50%;width:22px;height:22px;font-size:.6rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:5;pointer-events:all;box-shadow:0 2px 4px rgba(0,0,0,.3)}
-.circ.edit-on{outline:3px dashed #00838F !important;outline-offset:2px;border:2px solid rgba(0,0,0,.07) !important}
-.circ.cr.edit-on{border:2px dashed #A5D6A7 !important;outline:3px dashed #00838F !important;outline-offset:2px}
-.circ.ce.edit-on{border:2px dashed #E0E0E0 !important;outline:3px dashed #00838F !important;outline-offset:2px}
+.circ.edit-on{outline:3px dashed #1B5E20 !important;outline-offset:2px;border:2px solid rgba(0,0,0,.07) !important}
+.circ.cr.edit-on{border:2px dashed #A5D6A7 !important;outline:3px dashed #1B5E20 !important;outline-offset:2px}
+.circ.ce.edit-on{border:2px dashed #E0E0E0 !important;outline:3px dashed #1B5E20 !important;outline-offset:2px}
 
 .ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.55);transform:scale(0);animation:rip .44s linear;pointer-events:none}
 @keyframes rip{to{transform:scale(4);opacity:0}}
@@ -331,7 +331,7 @@ body.editing .ce{border:2px dashed #E0E0E0}
 #help-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 14px 40px}
 .hbox{background:#F8FAF8;border-radius:14px;padding:14px 16px;margin-bottom:12px;border-left:4px solid #A5D6A7}
 .hbox.hprem{border-left-color:#FFD54F}
-.hbox.hpremplus{border-left-color:#CE93D8}
+.hbox.hpremplus{border-left-color:#1B5E20}
 .htitle{font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-size:.92rem;color:#2D6A4F;font-weight:900;margin-bottom:6px;display:flex;align-items:center;flex-wrap:wrap;gap:6px}
 .htext{font-size:.82rem;color:#444;line-height:1.7}
 .vbig{flex:1;padding:14px 8px;border-radius:14px;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.95rem;cursor:pointer;border:2px solid transparent;transition:all .15s}
@@ -659,9 +659,9 @@ body.editing .ce{border:2px dashed #E0E0E0}
     <div class="hbox hprem"><div class="htitle">🎙️ Voice recording <span style="background:#FFE082;color:#5D4037;border-radius:8px;padding:2px 7px;font-size:.68rem">PREMIUM</span></div><div class="htext">Record your own voice for any button in <b>any language</b>.<br><br><b>Custom buttons:</b> Edit mode → tap the button → select <b>Record voice</b><br><b>Built-in buttons:</b> Edit mode → hold button 1 second → tap Cancel on delete prompt → voice record opens<br><br>Tap 🎙️, speak clearly (max 3 seconds), tap ▶ Preview then Save ✓.</div></div>
     <div class="hbox hprem"><div class="htitle">🔒 Carer lock &amp; Kiosk mode <span style="background:#FFE082;color:#5D4037;border-radius:8px;padding:2px 7px;font-size:.68rem">PREMIUM</span></div><div class="htext"><b>Carer lock:</b> Settings → Lock with PIN → set a 4-digit PIN. Child cannot access settings while locked.<br><br><b>Kiosk mode:</b> Fullscreen — child cannot leave the app. A red bar appears at the top while active.<br><br><b>To exit kiosk mode:</b><br>1. Tap the <b>red bar</b> at the top → enter your PIN<br>2. Or tap the <b>Aidova logo 7 times</b> → enter your PIN<br><br>If you have forgotten your PIN, please contact <b>hello@aidova.app</b> for support.</div></div>
     <div class="hbox hprem"><div class="htitle">📄 Print / Export board as PDF <span style="background:#FFE082;color:#5D4037;border-radius:8px;padding:2px 7px;font-size:.68rem">PREMIUM</span></div><div class="htext">Settings → <b>Print / Export Board</b> → tap <b>Export current category as PDF</b>.<br><br>Generates a printable PDF of your child's current board — handy for school, hospital visits, or as a paper backup when the device isn't available.</div></div>
-    <div class="hbox hpremplus"><div class="htitle">📊 Word Report <span style="background:#CE93D8;color:#4A148C;border-radius:8px;padding:2px 7px;font-size:.68rem">PREMIUM PLUS</span></div><div class="htext">Settings → <b>Word Report</b> shows the last 40 words tapped with weekly counts and a frequency bar.<br><br><b>⏱ Recent tab</b> — words in order tapped, most recent first. See what your child has been communicating today.<br><b>🏆 Top Words tab</b> — words ranked by how often tapped this week. Great for spotting which words to add as permanent buttons or sharing with an SLT.<br><br>All data stays entirely on your device and is never sent anywhere.</div></div>
-    <div class="hbox hpremplus"><div class="htitle">💡 Smart Suggestions <span style="background:#CE93D8;color:#4A148C;border-radius:8px;padding:2px 7px;font-size:.68rem">PREMIUM PLUS</span></div><div class="htext">When in Edit layout mode, Aidova may gently suggest adding a frequently-used word as a permanent button. Always optional — tap Add or dismiss with ✕.</div></div>
-    <div class="hbox hpremplus"><div class="htitle">✏️ Edit layout &amp; Premium Plus <span style="background:#CE93D8;color:#4A148C;border-radius:8px;padding:2px 7px;font-size:.68rem">PREMIUM PLUS</span></div><div class="htext">Everything in Premium, plus:<br><br><b>Unlimited profiles</b> — no limit on how many children can use the app.<br><br><b>Reorder buttons:</b> tap ☰ Reorder → drag the ☰ handle up or down → Save ✓.<br><b>Hide a button:</b> tap it once in edit mode → moves to Hidden section. Tap ↩ to restore. <span style="background:#FFE082;color:#5D4037;border-radius:5px;padding:1px 5px;font-size:.7em">PREMIUM</span><br><b>Delete permanently:</b> hold any button 1 second → confirm.<br><b>Custom buttons:</b> tap in edit mode → choose Record voice · Edit · Hide · Delete.<br><br>Tap <b>Done ✓</b> when finished. All changes saved automatically.</div></div>
+    <div class="hbox hpremplus"><div class="htitle">📊 Word Report <span style="background:#1B5E20;color:#fff;border-radius:8px;padding:2px 7px;font-size:.68rem">PREMIUM PLUS</span></div><div class="htext">Settings → <b>Word Report</b> shows the last 40 words tapped with weekly counts and a frequency bar.<br><br><b>⏱ Recent tab</b> — words in order tapped, most recent first. See what your child has been communicating today.<br><b>🏆 Top Words tab</b> — words ranked by how often tapped this week. Great for spotting which words to add as permanent buttons or sharing with an SLT.<br><br>All data stays entirely on your device and is never sent anywhere.</div></div>
+    <div class="hbox hpremplus"><div class="htitle">💡 Smart Suggestions <span style="background:#1B5E20;color:#fff;border-radius:8px;padding:2px 7px;font-size:.68rem">PREMIUM PLUS</span></div><div class="htext">When in Edit layout mode, Aidova may gently suggest adding a frequently-used word as a permanent button. Always optional — tap Add or dismiss with ✕.</div></div>
+    <div class="hbox hpremplus"><div class="htitle">✏️ Edit layout &amp; Premium Plus <span style="background:#1B5E20;color:#fff;border-radius:8px;padding:2px 7px;font-size:.68rem">PREMIUM PLUS</span></div><div class="htext">Everything in Premium, plus:<br><br><b>Unlimited profiles</b> — no limit on how many children can use the app.<br><br><b>Reorder buttons:</b> tap ☰ Reorder → drag the ☰ handle up or down → Save ✓.<br><b>Hide a button:</b> tap it once in edit mode → moves to Hidden section. Tap ↩ to restore. <span style="background:#FFE082;color:#5D4037;border-radius:5px;padding:1px 5px;font-size:.7em">PREMIUM</span><br><b>Delete permanently:</b> hold any button 1 second → confirm.<br><b>Custom buttons:</b> tap in edit mode → choose Record voice · Edit · Hide · Delete.<br><br>Tap <b>Done ✓</b> when finished. All changes saved automatically.</div></div>
     <div class="hbox" style="background:#E8F5E9;border-left-color:#2D6A4F"><div class="htitle">🔑 Your licence key</div><div class="htext">When you subscribe to Premium or Premium Plus, you'll receive a <b>personal licence key</b> by email (e.g. <b>AID-7X9K-2M4P-8Q3R</b>).<br><br><b>Save it safely</b> — you'll need it to activate Premium on any device.<br><br><b>To activate on a new device:</b><br>Settings → Plans &amp; Upgrade → <b>Have a code?</b> → enter your key<br><br><b>Lost your key?</b><br>Settings → Plans &amp; Upgrade → tap <b>Resend my key</b> → enter your email → key sent instantly.<br><br>Your subscription is tied to your key — as long as you're paying, your key works on any device.</div></div>
     <div class="hbox" style="background:#FFF9C4;border-left-color:#FFD54F"><div class="htitle">📧 Contact &amp; Support</div><div class="htext">Email: <b>hello@aidova.app</b><br>TikTok &amp; Instagram: <b>@aidovaapp</b><br>Website: <b>aidova.app</b><br><br><a href="/privacy" target="_blank" style="color:#2D6A4F;font-weight:700">Privacy Policy</a> &nbsp;·&nbsp; <a href="/terms" target="_blank" style="color:#2D6A4F;font-weight:700">Terms of Service</a></div></div>
     <button onclick="closeHelp()" style="width:100%;padding:14px;border:none;border-radius:12px;background:#2D6A4F;color:#fff;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.95rem;cursor:pointer;margin-top:4px">Close Guide ✕</button>
@@ -706,7 +706,7 @@ body.editing .ce{border:2px dashed #E0E0E0}
     <div class="plan-card premplus" id="plan-card-premplus">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
         <div class="plan-title">🌟 Premium Plus</div>
-        <span id="plan-badge-premplus" style="display:none;background:#4A148C;color:#fff;border-radius:20px;padding:3px 10px;font-size:.68rem;font-weight:900">✓ Current plan</span>
+        <span id="plan-badge-premplus" style="display:none;background:#1B5E20;color:#fff;border-radius:20px;padding:3px 10px;font-size:.68rem;font-weight:900">✓ Current plan</span>
       </div>
       <div class="plan-price" id="premplus-price">£7.99/month</div>
       <div class="plan-features">Everything in Premium, plus: 54 custom buttons per category · Folders (up to 15 buttons each) · Your own photos on buttons &amp; in folders · Word Report (40 words, weekly counts) · Smart button suggestions · Unlimited profiles · Reorder buttons</div>
@@ -849,7 +849,7 @@ body.editing .ce{border:2px dashed #E0E0E0}
       <div class="sr" style="border:none;padding:6px 0">
         <div><div class="sl">🔊 Volume</div><div class="ss" id="vol-label">85%</div></div>
       </div>
-      <div style="font-size:.63rem;color:#00838F;background:#E0F2F1;border-radius:8px;padding:7px 10px;margin-bottom:8px">💡 Use the physical volume buttons on the side of your device for maximum loudness.</div>
+      <div style="font-size:.63rem;color:#1B5E20;background:#E0F2F1;border-radius:8px;padding:7px 10px;margin-bottom:8px">💡 Use the physical volume buttons on the side of your device for maximum loudness.</div>
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
         <span style="font-size:1rem">🔈</span>
         <input type="range" id="vol-slider" min="0" max="100" value="85" oninput="setVol(this.value)" style="flex:1;height:6px;border-radius:3px;accent-color:#2D6A4F;cursor:pointer">
@@ -884,7 +884,7 @@ body.editing .ce{border:2px dashed #E0E0E0}
       <div style="font-size:.7rem;color:#888;margin:6px 0 8px">Tap a category to change its colour. Use 🪣 to apply one colour to all.</div>
       <div id="cat-col-settings"></div>
       <div style="margin-top:6px;padding:10px;background:#FFF3E0;border-radius:10px;border:1px solid #FFCC80">
-        <div style="font-size:.72rem;font-weight:900;color:#00838F;margin-bottom:6px">🪣 Apply one colour to all categories</div>
+        <div style="font-size:.72rem;font-weight:900;color:#1B5E20;margin-bottom:6px">🪣 Apply one colour to all categories</div>
         <div class="col-row" id="all-col-row"></div>
       </div>
       <button onclick="resetCatColours()" style="width:100%;padding:8px;border:none;border-radius:10px;background:#FFCDD2;color:#B71C1C;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.78rem;cursor:pointer;margin-top:8px">↺ Reset all colours to default</button>
@@ -922,7 +922,7 @@ body.editing .ce{border:2px dashed #E0E0E0}
     </div>
 
     <!-- WORD REPORT — PREMIUM PLUS -->
-    <div class="ps" onclick="toggleSection('sec-wordreport',this)"><span>📊 Word Report <span style="background:#CE93D8;color:#4A148C;border-radius:6px;padding:1px 6px;font-size:.65rem;font-weight:900;text-transform:none" data-tier="premplus">PREMIUM PLUS</span></span><span class="ps-arrow">▶</span></div>
+    <div class="ps" onclick="toggleSection('sec-wordreport',this)"><span>📊 Word Report <span style="background:#1B5E20;color:#fff;border-radius:6px;padding:1px 6px;font-size:.65rem;font-weight:900;text-transform:none" data-tier="premplus">PREMIUM PLUS</span></span><span class="ps-arrow">▶</span></div>
     <div class="ps-body closed" id="sec-wordreport">
       <div style="font-size:.68rem;color:#888;margin:6px 0 10px">Last 40 words tapped — with weekly counts. All data stays on your device.</div>
       <div style="display:flex;background:#F5F5F5;border-radius:10px;padding:3px;margin-bottom:10px;gap:3px" id="wordreport-tabs">
@@ -934,11 +934,11 @@ body.editing .ce{border:2px dashed #E0E0E0}
     </div>
 
     <!-- PREMIUM PLUS FEATURES -->
-    <div class="ps" onclick="toggleSection('sec-layout',this)"><span>✏️ Edit Layout <span style="background:#CE93D8;color:#4A148C;border-radius:6px;padding:1px 6px;font-size:.65rem;font-weight:900;text-transform:none" data-tier="premplus">PREMIUM PLUS</span></span><span class="ps-arrow">▶</span></div>
+    <div class="ps" onclick="toggleSection('sec-layout',this)"><span>✏️ Edit Layout <span style="background:#1B5E20;color:#fff;border-radius:6px;padding:1px 6px;font-size:.65rem;font-weight:900;text-transform:none" data-tier="premplus">PREMIUM PLUS</span></span><span class="ps-arrow">▶</span></div>
     <div class="ps-body closed" id="sec-layout">
       <div class="sr">
         <div><div class="sl">Edit layout</div><div class="ss">Hide &amp; reorder buttons</div></div>
-        <button class="pbtn" onclick="startEdit()" style="background:#00838F;color:#fff">Edit</button>
+        <button class="pbtn" onclick="startEdit()" style="background:#1B5E20;color:#fff">Edit</button>
       </div>
       <div class="sr" style="border:none">
         <div><div class="sl">Reset layout</div><div class="ss">Restore all buttons (PIN required)</div></div>
@@ -991,9 +991,9 @@ body.editing .ce{border:2px dashed #E0E0E0}
         <div class="ph2" id="phint">📷 Tap to choose a photo</div>
         <img id="pprev" src="" style="display:none;width:44px;height:44px;border-radius:50%;object-fit:cover;margin:4px auto 0">
       </div>
-      <div id="photo-plus-prompt" style="display:none;background:#F3E5F5;border-radius:10px;padding:10px 12px;text-align:center;cursor:pointer" onclick="closeRec();showPlans()">
-        <div style="font-size:.72rem;color:#4A148C;font-weight:900">🌟 Your own photo — Premium Plus</div>
-        <div style="font-size:.65rem;color:#7B1FA2;margin-top:2px">Tap to upgrade and add your own photos</div>
+      <div id="photo-plus-prompt" style="display:none;background:#E8F5E9;border-radius:10px;padding:10px 12px;text-align:center;cursor:pointer" onclick="closeRec();showPlans()">
+        <div style="font-size:.72rem;color:#1B5E20;font-weight:900">🌟 Your own photo — Premium Plus</div>
+        <div style="font-size:.65rem;color:#2D6A4F;margin-top:2px">Tap to upgrade and add your own photos</div>
       </div>
     </div>
     <div id="spkrow" style="display:none;flex-shrink:0">
@@ -1245,7 +1245,7 @@ function renderWordReport(){
   var el=document.getElementById('wordreport-list');
   if(!el)return;
   if(!premplus){
-    el.innerHTML='<div onclick="closePanel();showPlans();" style="font-size:.72rem;color:#4A148C;background:#F3E5F5;border-radius:8px;padding:10px 12px;cursor:pointer">🌟 Upgrade to Premium Plus to see your Word Report.</div>';
+    el.innerHTML='<div onclick="closePanel();showPlans();" style="font-size:.72rem;color:#1B5E20;background:#E8F5E9;border-radius:8px;padding:10px 12px;cursor:pointer">🌟 Upgrade to Premium Plus to see your Word Report.</div>';
     return;
   }
   if(!recentsData.length){
@@ -1397,7 +1397,7 @@ function showFolderEditMenu(pi,s){
   sheet.innerHTML='<div style="background:#fff;border-radius:24px 24px 0 0;width:100%;padding:18px 16px 40px;animation:sup .3s cubic-bezier(.34,1.2,.64,1)">'
     +'<div style="font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-size:.95rem;font-weight:900;color:#333;margin-bottom:4px">📁 '+sv.label+'</div>'
     +'<div style="font-size:.68rem;color:#aaa;margin-bottom:14px">'+items.length+' / '+max+' buttons</div>'
-    +(canAdd?'<button onclick="openFolderAdd(\''+key+'\');document.getElementById(\'folder-edit-sheet\').remove()" style="width:100%;padding:12px;border:none;border-radius:12px;background:#2D6A4F;color:#fff;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.88rem;cursor:pointer;margin-bottom:8px">➕ Add button inside folder</button>':'<div style="text-align:center;font-size:.72rem;color:#00838F;background:#E0F2F1;border-radius:8px;padding:8px;margin-bottom:8px">Folder is full ('+max+' buttons)'+(!premplus?' — upgrade to Premium Plus for 15':'')+'</div>')
+    +(canAdd?'<button onclick="openFolderAdd(\''+key+'\');document.getElementById(\'folder-edit-sheet\').remove()" style="width:100%;padding:12px;border:none;border-radius:12px;background:#2D6A4F;color:#fff;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.88rem;cursor:pointer;margin-bottom:8px">➕ Add button inside folder</button>':'<div style="text-align:center;font-size:.72rem;color:#1B5E20;background:#E0F2F1;border-radius:8px;padding:8px;margin-bottom:8px">Folder is full ('+max+' buttons)'+(!premplus?' — upgrade to Premium Plus for 15':'')+'</div>')
     +(items.length?'<button onclick="openFolderManage(\''+key+'\');document.getElementById(\'folder-edit-sheet\').remove()" style="width:100%;padding:12px;border:none;border-radius:12px;background:#E3F2FD;color:#1565C0;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.88rem;cursor:pointer;margin-bottom:8px">✏️ Manage buttons inside</button>':'')
     +'<button onclick="showRecMenu('+pi+','+s+',\''+key+'\');document.getElementById(\'folder-edit-sheet\').remove()" style="width:100%;padding:12px;border:none;border-radius:12px;background:#F5F5F5;color:#555;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.88rem;cursor:pointer;margin-bottom:8px">✏️ Edit folder name / icon</button>'
     +'<button onclick="deleteFolder(\''+key+'\','+pi+','+s+');document.getElementById(\'folder-edit-sheet\').remove()" style="width:100%;padding:12px;border:none;border-radius:12px;background:#FFEBEE;color:#B71C1C;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.88rem;cursor:pointer">🗑 Delete folder</button>'
@@ -1624,8 +1624,8 @@ function showSuggestionBanner(pi){
   if(!g||!g.parentNode)return;
   var banner=document.createElement('div');
   banner.id='suggest-banner';
-  banner.style.cssText='width:100%;background:#F3E5F5;border:1.5px dashed #CE93D8;border-radius:12px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px;font-size:.75rem';
-  banner.innerHTML='<span style="color:#4A148C">💡 You used "'+entry.label+'" '+recent+' times recently — add as a button?</span><div style="display:flex;gap:4px;flex-shrink:0"><button id="sugg-add" style="border:none;background:#8E24AA;color:#fff;border-radius:8px;padding:5px 10px;font-weight:900;cursor:pointer;font-size:.72rem">Add</button><button id="sugg-no" style="border:none;background:#eee;color:#888;border-radius:8px;padding:5px 10px;font-weight:900;cursor:pointer;font-size:.72rem">✕</button></div>';
+  banner.style.cssText='width:100%;background:#E8F5E9;border:1.5px dashed #1B5E20;border-radius:12px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px;font-size:.75rem';
+  banner.innerHTML='<span style="color:#1B5E20">💡 You used "'+entry.label+'" '+recent+' times recently — add as a button?</span><div style="display:flex;gap:4px;flex-shrink:0"><button id="sugg-add" style="border:none;background:#8E24AA;color:#fff;border-radius:8px;padding:5px 10px;font-weight:900;cursor:pointer;font-size:.72rem">Add</button><button id="sugg-no" style="border:none;background:#eee;color:#888;border-radius:8px;padding:5px 10px;font-weight:900;cursor:pointer;font-size:.72rem">✕</button></div>';
   g.parentNode.insertBefore(banner,g);
   document.getElementById('sugg-add').onclick=function(){
     var n=slots();
@@ -2006,7 +2006,7 @@ function buildColSwatches(containerId,onPick,selectedCol){
 function buildCatColSettings(){
   if(!premium&&!premplus){
     var el=document.getElementById('cat-col-settings');
-    if(el)el.innerHTML='<div onclick="showPlans()" style="font-size:.72rem;color:#00838F;background:#E0F2F1;border-radius:8px;padding:10px 12px;cursor:pointer;display:flex;align-items:center;justify-content:space-between">⭐ Upgrade to Premium to customise button colours.<span style="font-size:.8rem;font-weight:900;background:#00838F;color:#fff;border-radius:6px;padding:3px 8px;margin-left:8px;flex-shrink:0">Upgrade →</span></div>';
+    if(el)el.innerHTML='<div onclick="showPlans()" style="font-size:.72rem;color:#1B5E20;background:#E0F2F1;border-radius:8px;padding:10px 12px;cursor:pointer;display:flex;align-items:center;justify-content:space-between">⭐ Upgrade to Premium to customise button colours.<span style="font-size:.8rem;font-weight:900;background:#1B5E20;color:#fff;border-radius:6px;padding:3px 8px;margin-left:8px;flex-shrink:0">Upgrade →</span></div>';
     return;
   }
   var catNames=['😊 Feelings','🍎 Needs','🏠 Places','🤝 Social'];
@@ -2018,7 +2018,7 @@ function buildCatColSettings(){
     // Header row with category name and bucket label
     var hdr=document.createElement('div');
     hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:6px';
-    hdr.innerHTML='<span style="font-size:.78rem;font-weight:900;color:#333">'+catNames[i]+'</span><span style="font-size:.68rem;color:#00838F;font-weight:700">🪣 Tap colour to apply to all '+catNames[i].split(' ')[1]+' buttons</span>';
+    hdr.innerHTML='<span style="font-size:.78rem;font-weight:900;color:#333">'+catNames[i]+'</span><span style="font-size:.68rem;color:#1B5E20;font-weight:700">🪣 Tap colour to apply to all '+catNames[i].split(' ')[1]+' buttons</span>';
     wrap.appendChild(hdr);
     var rowId='cat-col-row-'+i;
     var row=document.createElement('div');row.className='col-row';row.id=rowId;
@@ -2485,6 +2485,11 @@ function startBreathCanvas(){
   canvas.style.display='block';
   var ctx2=canvas.getContext('2d');
 
+  // Tint the breathing box based on active sound
+  var tints={rain:'rgba(219,234,254,0.4)',ocean:'rgba(204,251,241,0.35)',forest:'rgba(220,252,231,0.35)',forestmelody:'rgba(220,252,231,0.35)',fire:'rgba(254,243,199,0.4)',piano:'rgba(237,233,254,0.3)',guitar:'rgba(254,249,195,0.3)'};
+  var box=document.querySelector('.breathbox');
+  if(box)box.style.background=tints[breathSound]||'#fff';
+
   if(breathSound==='rain'){
     // Rain drops falling
     var drops=[];
@@ -2570,6 +2575,8 @@ function stopBreathCanvas(){
   if(breathCanvasAnim){clearInterval(breathCanvasAnim);breathCanvasAnim=null;}
   var canvas=document.getElementById('breath-canvas');
   if(canvas){canvas.style.display='none';var ctx2=canvas.getContext('2d');ctx2.clearRect(0,0,canvas.width,canvas.height);}
+  var box=document.querySelector('.breathbox');
+  if(box)box.style.background='#fff';
 }
 
 var BREATH_PATTERNS={
@@ -3174,7 +3181,7 @@ function renderAcctCard(){
   var el=document.getElementById('acct-card');
   if(!el)return;
   if(premplus){
-    el.style.background='linear-gradient(135deg,#4A148C,#7B1FA2)';
+    el.style.background='linear-gradient(135deg,#1B5E20,#2D6A4F)';
     el.innerHTML='<div style="display:flex;align-items:center;gap:10px"><span style="font-size:1.4rem">🌟</span><div><div style="font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-size:.88rem;font-weight:900;color:#fff">Premium Plus — Active</div><div style="font-size:.65rem;color:rgba(255,255,255,.7);margin-top:2px">Folders · Word Report · Photos · Unlimited profiles</div></div></div><button onclick="closePanel();manageSubscription()" style="border:none;background:rgba(255,255,255,.2);color:#fff;border-radius:10px;padding:6px 10px;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.68rem;cursor:pointer;flex-shrink:0;white-space:nowrap">Manage</button>';
   }else if(premium){
     el.style.background='linear-gradient(135deg,#D97706,#F59E0B)';
@@ -3194,7 +3201,7 @@ function updateSettingsBadges(){
   });
   panel.querySelectorAll('[data-tier="premplus"]').forEach(function(el){
     if(premplus){el.style.background='#2D6A4F';el.style.color='#fff';el.textContent='✓ Active';}
-    else{el.style.background='#CE93D8';el.style.color='#4A148C';el.textContent='PREMIUM PLUS';}
+    else{el.style.background='#1B5E20';el.style.color='#fff';el.textContent='PREMIUM PLUS';}
   });
 }
 
