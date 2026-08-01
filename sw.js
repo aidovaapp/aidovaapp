@@ -1,9 +1,14 @@
-var CACHE='aidova-v21';
+var CACHE='aidova-v22';
 self.addEventListener('install',function(e){
   self.skipWaiting();
   e.waitUntil(
     caches.open(CACHE).then(function(c){
-      return c.addAll(['/app','/app.html']).catch(function(){});
+      return c.addAll([
+        '/app','/app.html',
+        '/sounds/rain.mp3','/sounds/ocean.mp3','/sounds/forest.mp3',
+        '/sounds/fire.mp3','/sounds/piano.mp3','/sounds/guitar.mp3',
+        '/sounds/forestmelody.mp3'
+      ]).catch(function(){});
     })
   );
 });

@@ -150,9 +150,9 @@ body.adult.dark .page,body.adult.dark #pw{background:#0D2020}
 #app{display:flex;flex-direction:column;height:100dvh;height:100vh;overflow:hidden;opacity:0;transition:opacity .4s}
 #app.ready{opacity:1}
 body.editing #app{padding-top:38px}
-#editbar{display:none;position:fixed;top:0;left:0;right:0;z-index:150;background:#E65100;color:#fff;font-size:.75rem;font-weight:900;padding:8px 12px;align-items:center;justify-content:space-between;box-shadow:0 2px 10px rgba(0,0,0,.2)}
+#editbar{display:none;position:fixed;top:0;left:0;right:0;z-index:150;background:#00838F;color:#fff;font-size:.75rem;font-weight:900;padding:8px 12px;align-items:center;justify-content:space-between;box-shadow:0 2px 10px rgba(0,0,0,.2)}
 #editbar.open{display:flex}
-#editbar button{border:none;background:#fff;color:#E65100;border-radius:8px;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.78rem;padding:6px 14px;cursor:pointer;margin-left:6px}
+#editbar button{border:none;background:#fff;color:#00838F;border-radius:8px;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.78rem;padding:6px 14px;cursor:pointer;margin-left:6px}
 /* Reorder modal */
 #plansmod{display:none;position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.6);align-items:flex-end;justify-content:center}
 #plansmod.open{display:flex}
@@ -173,13 +173,13 @@ body.editing #app{padding-top:38px}
 .plan-toggle button.active{background:#fff;color:#222;box-shadow:0 2px 6px rgba(0,0,0,.1)}
 #reordermod{display:none;position:fixed;inset:0;z-index:500;background:#F5F5F5;flex-direction:column}
 #reordermod.open{display:flex}
-#reorder-header{background:#E65100;color:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+#reorder-header{background:#00838F;color:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
 #reorder-header h2{margin:0;font-size:1rem;font-weight:900}
-#reorder-header button{border:none;background:#fff;color:#E65100;border-radius:8px;font-weight:900;font-size:.85rem;padding:8px 18px;cursor:pointer}
+#reorder-header button{border:none;background:#fff;color:#00838F;border-radius:8px;font-weight:900;font-size:.85rem;padding:8px 18px;cursor:pointer}
 #reorder-list{flex:1;overflow-y:auto;padding:10px 10px 120px;display:flex;flex-direction:column;gap:6px}
 .rorder-item{background:#fff;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 4px rgba(0,0,0,.08);cursor:grab;user-select:none;touch-action:none}
 .rorder-item.dragging{opacity:.5;background:#FFF3E0;box-shadow:0 4px 16px rgba(0,0,0,.18)}
-.rorder-item.drag-over{border:2px solid #E65100}
+.rorder-item.drag-over{border:2px solid #00838F}
 .rorder-emoji{font-size:1.5rem;width:36px;text-align:center;flex-shrink:0}
 .rorder-label{flex:1;font-weight:900;font-size:.85rem;color:#333;letter-spacing:.3px}
 .rorder-handle{color:#bbb;font-size:1.4rem;padding:8px 6px;cursor:grab;flex-shrink:0;touch-action:none;min-width:44px;text-align:center}
@@ -211,7 +211,7 @@ body.editing #app{padding-top:38px}
 .tab.on{background:#fff;color:#333}
 .tab[data-i="0"].on{color:#C62828;border-bottom-color:#C62828}
 .tab[data-i="1"].on{color:#1565C0;border-bottom-color:#1565C0}
-.tab[data-i="2"].on{color:#E65100;border-bottom-color:#E65100}
+.tab[data-i="2"].on{color:#F59E0B;border-bottom-color:#F59E0B}
 .tab[data-i="3"].on{color:#6A1B9A;border-bottom-color:#6A1B9A}
 .tem{font-size:clamp(.9rem,2.8vw,1.3rem);line-height:1}.tlb{font-size:clamp(.58rem,1.7vw,.78rem);line-height:1}
 #pw{flex:1;overflow:hidden;position:relative;min-height:0}
@@ -239,15 +239,15 @@ body.editing .ce{border:2px dashed #E0E0E0}
 .circ.hidden-btn{opacity:.35;filter:grayscale(1)}
 .hidden-section{display:none;margin-top:6px;width:100%}
 .hidden-section.open{display:block}
-.hidden-section-title{font-size:.6rem;font-weight:900;color:#E65100;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;padding:5px 10px;background:#FFF3E0;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;border:1px solid #FFCC80}
+.hidden-section-title{font-size:.6rem;font-weight:900;color:#00838F;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;padding:5px 10px;background:#FFF3E0;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;border:1px solid #FFCC80}
 .hidden-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%;margin-top:4px}
 @media(min-width:600px){.hidden-grid{grid-template-columns:repeat(4,1fr)}}
 @media(min-width:900px){.hidden-grid{grid-template-columns:repeat(5,1fr)}}
 .circ.hidden-card{opacity:.5;filter:grayscale(.5);position:relative}
 .restore-badge{position:absolute;top:-6px;right:-6px;background:#2D6A4F;color:#fff;border:none;border-radius:50%;width:22px;height:22px;font-size:.6rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:5;pointer-events:all;box-shadow:0 2px 4px rgba(0,0,0,.3)}
-.circ.edit-on{outline:3px dashed #E65100 !important;outline-offset:2px;border:2px solid rgba(0,0,0,.07) !important}
-.circ.cr.edit-on{border:2px dashed #A5D6A7 !important;outline:3px dashed #E65100 !important;outline-offset:2px}
-.circ.ce.edit-on{border:2px dashed #E0E0E0 !important;outline:3px dashed #E65100 !important;outline-offset:2px}
+.circ.edit-on{outline:3px dashed #00838F !important;outline-offset:2px;border:2px solid rgba(0,0,0,.07) !important}
+.circ.cr.edit-on{border:2px dashed #A5D6A7 !important;outline:3px dashed #00838F !important;outline-offset:2px}
+.circ.ce.edit-on{border:2px dashed #E0E0E0 !important;outline:3px dashed #00838F !important;outline-offset:2px}
 
 .ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.55);transform:scale(0);animation:rip .44s linear;pointer-events:none}
 @keyframes rip{to{transform:scale(4);opacity:0}}
@@ -534,10 +534,15 @@ body.editing .ce{border:2px dashed #E0E0E0}
     <!-- Premium sound selector -->
     <div id="breath-sound-row" style="display:none;margin-bottom:6px">
       <div style="font-size:.65rem;font-weight:900;color:#00695C;margin-bottom:4px">Background sound <span style="background:#FFE082;color:#5D4037;border-radius:5px;padding:1px 6px;font-size:.6rem">PREMIUM</span></div>
-      <div style="display:flex;gap:5px">
-        <button id="bs-none" onclick="setBreathSound('none')" style="flex:1;padding:5px 4px;border:2px solid #00695C;border-radius:8px;background:#00695C;color:#fff;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.65rem;cursor:pointer">🔇 None</button>
-        <button id="bs-rain" onclick="setBreathSound('rain')" style="flex:1;padding:5px 4px;border:2px solid #ddd;border-radius:8px;background:#fff;color:#555;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.65rem;cursor:pointer">🌧 Rain</button>
-        <button id="bs-ocean" onclick="setBreathSound('ocean')" style="flex:1;padding:5px 4px;border:2px solid #ddd;border-radius:8px;background:#fff;color:#555;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.65rem;cursor:pointer">🌊 Ocean</button>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px">
+        <button id="bs-none" onclick="setBreathSound('none')" style="padding:5px 2px;border:2px solid #00695C;border-radius:8px;background:#00695C;color:#fff;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.6rem;cursor:pointer">🔇 Off</button>
+        <button id="bs-rain" onclick="setBreathSound('rain')" style="padding:5px 2px;border:2px solid #ddd;border-radius:8px;background:#fff;color:#555;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.6rem;cursor:pointer">🌧 Rain</button>
+        <button id="bs-ocean" onclick="setBreathSound('ocean')" style="padding:5px 2px;border:2px solid #ddd;border-radius:8px;background:#fff;color:#555;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.6rem;cursor:pointer">🌊 Ocean</button>
+        <button id="bs-forest" onclick="setBreathSound('forest')" style="padding:5px 2px;border:2px solid #ddd;border-radius:8px;background:#fff;color:#555;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.6rem;cursor:pointer">🌲 Forest</button>
+        <button id="bs-fire" onclick="setBreathSound('fire')" style="padding:5px 2px;border:2px solid #ddd;border-radius:8px;background:#fff;color:#555;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.6rem;cursor:pointer">🔥 Fire</button>
+        <button id="bs-piano" onclick="setBreathSound('piano')" style="padding:5px 2px;border:2px solid #ddd;border-radius:8px;background:#fff;color:#555;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.6rem;cursor:pointer">🎹 Piano</button>
+        <button id="bs-guitar" onclick="setBreathSound('guitar')" style="padding:5px 2px;border:2px solid #ddd;border-radius:8px;background:#fff;color:#555;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.6rem;cursor:pointer">🎸 Guitar</button>
+        <button id="bs-forestmelody" onclick="setBreathSound('forestmelody')" style="padding:5px 2px;border:2px solid #ddd;border-radius:8px;background:#fff;color:#555;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.6rem;cursor:pointer">🎵 Melody</button>
       </div>
     </div>
     <div class="breath-circle-wrap">
@@ -646,6 +651,7 @@ body.editing .ce{border:2px dashed #E0E0E0}
     <div class="hbox"><div class="htitle">🌙 Dark mode &amp; Display <span style="background:#E8F5E9;color:#2D6A4F;border-radius:8px;padding:2px 7px;font-size:.68rem">FREE</span></div><div class="htext"><b>Dark mode</b> — easier on eyes at night or for light-sensitive users.<br><b>Adult mode</b> — deep teal theme for teens and adults.<br><b>High contrast</b> — black background with vivid borders for maximum visibility.<br><b>Button size</b> — Small / Normal / Large. Large mode always shows at least 3 columns — scroll to see all buttons.</div></div>
     <div class="hbox"><div class="htitle">👤 Profiles <span style="background:#E8F5E9;color:#2D6A4F;border-radius:8px;padding:2px 7px;font-size:.68rem">FREE — 1 profile</span></div><div class="htext">Settings → <b>Profiles</b>. Each profile has its own custom buttons and settings.<br><br><b>Free:</b> 1 profile<br><b>Premium:</b> 2 profiles<br><b>Premium Plus:</b> unlimited profiles<br><br>Great for families where more than one child uses the same device.</div></div>
     <div class="hbox" style="background:#E8F5E9;border-left-color:#2D6A4F"><div class="htitle">🛠️ Setting up for your child <span style="background:#E8F5E9;color:#2D6A4F;border-radius:8px;padding:2px 7px;font-size:.68rem">RECOMMENDED</span></div><div class="htext">Aidova has 140 built-in buttons — more than most children need. The best experience comes from <b>curating the app for your child</b>:<br><br><b>Step 1 — Hide unused buttons:</b> Settings → Edit layout → tap any button to hide it. Start with the buttons most relevant to your child's daily life. You can restore any at any time.<br><br><b>Step 2 — Add personal buttons:</b> Add custom buttons for family members, favourite foods, activities (Premium).<br><br><b>Step 3 — Lock the app:</b> Once set up, enable Carer lock or Kiosk mode so your child can't accidentally change anything (Premium).<br><br><b>Step 4 — Use Search:</b> Teach your child to tap 🔍 when they can't find a button — it searches everything instantly.</div></div>
+    <div class="hbox hprem"><div class="htitle">📁 Folders <span style="background:#FFE082;color:#5D4037;border-radius:8px;padding:2px 7px;font-size:.68rem">PREMIUM</span></div><div class="htext">Folders group related buttons together so the main board stays clean. Example: tap a "Drinks" folder → choose Water, Milk, or Juice. Only the chosen drink speaks — the folder itself never speaks.<br><br><b>To add a folder:</b> Edit mode → tap an ADD slot → choose "📁 Create a folder" → pick an emoji, give it a name → tap Create. Then add buttons inside immediately.<br><br><b>Ready-made starter folders:</b> When you tap ADD in edit mode, Aidova offers 5 pre-built folders (Drinks, Food, Family, Activities, Places) ready to add in one tap.<br><br><b>To open a folder (user):</b> Tap the button with the green ring → sub-buttons appear → tap one to speak → tap ✕ or switch category to close.<br><br><b>Premium:</b> up to 5 buttons per folder · <b>Premium Plus:</b> up to 15 buttons per folder + your own photos on folder buttons</div></div>
     <div class="hbox hprem"><div class="htitle">⭐ Custom buttons <span style="background:#FFE082;color:#5D4037;border-radius:8px;padding:2px 7px;font-size:.68rem">PREMIUM</span></div><div class="htext">In edit mode, tap any <b>+ ADD</b> slot → pick an emoji from the library → type the label in any language → choose a colour → Save ✓.<br><br>Custom buttons appear seamlessly after built-ins — no gap, no new row.<br><br><b>Free:</b> 1 custom slot · emoji only<br><b>Premium:</b> 29 slots per category · emoji + any language label<br><b>Premium Plus:</b> 54 slots per category · emoji or your own photo</div></div>
     <div class="hbox hprem"><div class="htitle">🎨 Button colours <span style="background:#FFE082;color:#5D4037;border-radius:8px;padding:2px 7px;font-size:.68rem">PREMIUM</span></div><div class="htext">Three ways to change colours:<br><br><b>1. Single button</b> — pick a colour swatch when adding or editing a custom button.<br><b>2. Whole category</b> — Settings → Display → Button Colours → pick a colour under any category.<br><b>3. All at once</b> — same section → 🪣 Apply one colour to all → one tap changes everything.<br><br>Tap ↺ Reset to restore the original pastel colours.</div></div>
     <div class="hbox hprem"><div class="htitle">🌍 Customise buttons &amp; phrases <span style="background:#FFE082;color:#5D4037;border-radius:8px;padding:2px 7px;font-size:.68rem">PREMIUM</span></div><div class="htext">Settings → <b>Customise</b> → <b>Edit top buttons</b>.<br><br>Change the label and spoken phrase for the 5 top buttons and all 6 emergency phrases — <b>in any language</b>.<br><br>Example: I AM → मैं हूँ · I WANT → मुझे चाहिए · HELP ME → مدد کرو</div></div>
@@ -676,26 +682,34 @@ body.editing .ce{border:2px dashed #E0E0E0}
       <button id="toggle-yearly" onclick="setPlanToggle('yearly')">Yearly <span style="background:#E8F5E9;color:#2D6A4F;border-radius:6px;padding:1px 5px;font-size:.65rem">Save 37%</span></button>
     </div>
     <!-- Free -->
-    <div class="plan-card free">
-      <div class="plan-title">🆓 Free</div>
+    <!-- Free -->
+    <div class="plan-card free" id="plan-card-free">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+        <div class="plan-title">🆓 Free</div>
+        <span id="plan-badge-free" style="display:none;background:#888;color:#fff;border-radius:20px;padding:3px 10px;font-size:.68rem;font-weight:900">✓ Current plan</span>
+      </div>
       <div class="plan-price">Free — core features, no time limit</div>
       <div class="plan-features">140 built-in buttons · Sentence builder · Emergency screen · Search · Breathing tool · Timer · Dark mode &amp; high contrast · Button size · 1 custom button (taster) · 1 profile</div>
     </div>
     <!-- Premium -->
-    <div class="plan-card prem">
+    <div class="plan-card prem" id="plan-card-prem">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px">
         <div class="plan-title">⭐ Premium</div>
-        <div style="background:#2D6A4F;color:white;font-size:.6rem;font-weight:900;padding:3px 8px;border-radius:20px;letter-spacing:.05em">MOST POPULAR</div>
+        <span id="plan-badge-prem" style="display:none;background:#D97706;color:#fff;border-radius:20px;padding:3px 10px;font-size:.68rem;font-weight:900">✓ Current plan</span>
+        <div id="plan-popular-badge" style="background:#2D6A4F;color:white;font-size:.6rem;font-weight:900;padding:3px 8px;border-radius:20px;letter-spacing:.05em">MOST POPULAR</div>
       </div>
       <div class="plan-price" id="prem-price">£3.99/month</div>
-      <div class="plan-features">29 custom buttons per category (emoji) · Voice recording · Hide buttons · Visual schedule · 2 profiles · Carer lock · Kiosk mode · Button colours · Customise phrases · Export board as PDF · Breathing patterns (Calm, Box, Deep) · Background sounds · Custom timer duration · Save favourite timer</div>
+      <div class="plan-features">29 custom buttons per category (emoji) · Folders (up to 5 buttons each) · Voice recording · Hide buttons · Visual schedule · 2 profiles · Carer lock · Kiosk mode · Button colours · Customise phrases · Export board as PDF · 3 breathing patterns · 7 background sounds · Custom timer &amp; save favourite</div>
       <button class="plan-btn prem-btn" id="prem-btn" onclick="startCheckout('premium')">Subscribe to Premium →</button>
     </div>
     <!-- Premium Plus -->
-    <div class="plan-card premplus">
-      <div class="plan-title">🌟 Premium Plus</div>
+    <div class="plan-card premplus" id="plan-card-premplus">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+        <div class="plan-title">🌟 Premium Plus</div>
+        <span id="plan-badge-premplus" style="display:none;background:#4A148C;color:#fff;border-radius:20px;padding:3px 10px;font-size:.68rem;font-weight:900">✓ Current plan</span>
+      </div>
       <div class="plan-price" id="premplus-price">£7.99/month</div>
-      <div class="plan-features">Everything in Premium, plus: 54 custom buttons per category · Your own photos on buttons · Word Report (40 words, weekly counts, Recent &amp; Top Words tabs) · Smart button suggestions · Unlimited profiles · Reorder &amp; hide buttons</div>
+      <div class="plan-features">Everything in Premium, plus: 54 custom buttons per category · Folders (up to 15 buttons each) · Your own photos on buttons &amp; in folders · Word Report (40 words, weekly counts) · Smart button suggestions · Unlimited profiles · Reorder buttons</div>
       <button class="plan-btn plus-btn" id="premplus-btn" onclick="startCheckout('premplus')">Subscribe to Premium Plus →</button>
     </div>
     <div style="text-align:center;margin-top:12px">
@@ -779,6 +793,7 @@ body.editing .ce{border:2px dashed #E0E0E0}
       <div style="font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-size:1rem;color:#2D6A4F;font-weight:800">⚙ Settings</div>
       <button onclick="closePanel()" style="border:none;background:#eee;color:#666;border-radius:20px;padding:6px 16px;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.85rem;cursor:pointer">✕ Close</button>
     </div>
+    <div id="acct-card" style="border-radius:14px;padding:12px 14px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between"></div>
     <button onclick="openHelp()" style="width:100%;padding:12px;border:none;border-radius:12px;background:#E8F5E9;color:#2D6A4F;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.9rem;cursor:pointer;margin-bottom:10px">❓ Quick Guide</button>
 
     <!-- Profiles — always open -->
@@ -834,7 +849,7 @@ body.editing .ce{border:2px dashed #E0E0E0}
       <div class="sr" style="border:none;padding:6px 0">
         <div><div class="sl">🔊 Volume</div><div class="ss" id="vol-label">85%</div></div>
       </div>
-      <div style="font-size:.63rem;color:#E65100;background:#FFF3E0;border-radius:8px;padding:7px 10px;margin-bottom:8px">💡 Use the physical volume buttons on the side of your device for maximum loudness.</div>
+      <div style="font-size:.63rem;color:#00838F;background:#E0F2F1;border-radius:8px;padding:7px 10px;margin-bottom:8px">💡 Use the physical volume buttons on the side of your device for maximum loudness.</div>
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
         <span style="font-size:1rem">🔈</span>
         <input type="range" id="vol-slider" min="0" max="100" value="85" oninput="setVol(this.value)" style="flex:1;height:6px;border-radius:3px;accent-color:#2D6A4F;cursor:pointer">
@@ -864,18 +879,18 @@ body.editing .ce{border:2px dashed #E0E0E0}
     </div>
 
     <!-- PREMIUM FEATURES -->
-    <div class="ps" onclick="toggleSection('sec-colours',this)"><span>🎨 Button Colours <span style="background:#FFE082;color:#5D4037;border-radius:6px;padding:1px 6px;font-size:.65rem;font-weight:900;text-transform:none">PREMIUM</span></span><span class="ps-arrow">▶</span></div>
+    <div class="ps" onclick="toggleSection('sec-colours',this)"><span>🎨 Button Colours <span style="background:#FFE082;color:#5D4037;border-radius:6px;padding:1px 6px;font-size:.65rem;font-weight:900;text-transform:none" data-tier="premium">PREMIUM</span></span><span class="ps-arrow">▶</span></div>
     <div class="ps-body closed" id="sec-colours">
       <div style="font-size:.7rem;color:#888;margin:6px 0 8px">Tap a category to change its colour. Use 🪣 to apply one colour to all.</div>
       <div id="cat-col-settings"></div>
       <div style="margin-top:6px;padding:10px;background:#FFF3E0;border-radius:10px;border:1px solid #FFCC80">
-        <div style="font-size:.72rem;font-weight:900;color:#E65100;margin-bottom:6px">🪣 Apply one colour to all categories</div>
+        <div style="font-size:.72rem;font-weight:900;color:#00838F;margin-bottom:6px">🪣 Apply one colour to all categories</div>
         <div class="col-row" id="all-col-row"></div>
       </div>
       <button onclick="resetCatColours()" style="width:100%;padding:8px;border:none;border-radius:10px;background:#FFCDD2;color:#B71C1C;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.78rem;cursor:pointer;margin-top:8px">↺ Reset all colours to default</button>
     </div>
 
-    <div class="ps" onclick="toggleSection('sec-lock',this)"><span>🔒 Carer Lock <span style="background:#FFE082;color:#5D4037;border-radius:6px;padding:1px 6px;font-size:.65rem;font-weight:900;text-transform:none">PREMIUM</span></span><span class="ps-arrow">▶</span></div>
+    <div class="ps" onclick="toggleSection('sec-lock',this)"><span>🔒 Carer Lock <span style="background:#FFE082;color:#5D4037;border-radius:6px;padding:1px 6px;font-size:.65rem;font-weight:900;text-transform:none" data-tier="premium">PREMIUM</span></span><span class="ps-arrow">▶</span></div>
     <div class="ps-body closed" id="sec-lock">
       <div class="sr">
         <div><div class="sl">Lock with PIN</div><div class="ss">Prevents child changing settings</div></div>
@@ -887,7 +902,7 @@ body.editing .ce{border:2px dashed #E0E0E0}
       </div>
     </div>
 
-    <div class="ps" onclick="toggleSection('sec-custom',this)"><span>🌍 Customise Phrases <span style="background:#FFE082;color:#5D4037;border-radius:6px;padding:1px 6px;font-size:.65rem;font-weight:900;text-transform:none">PREMIUM</span></span><span class="ps-arrow">▶</span></div>
+    <div class="ps" onclick="toggleSection('sec-custom',this)"><span>🌍 Customise Phrases <span style="background:#FFE082;color:#5D4037;border-radius:6px;padding:1px 6px;font-size:.65rem;font-weight:900;text-transform:none" data-tier="premium">PREMIUM</span></span><span class="ps-arrow">▶</span></div>
     <div class="ps-body closed" id="sec-custom">
       <div class="sr">
         <div><div class="sl">Edit top buttons</div><div class="ss">Change labels &amp; phrases — any language</div></div>
@@ -900,14 +915,14 @@ body.editing .ce{border:2px dashed #E0E0E0}
     </div>
 
     <!-- PDF EXPORT — PREMIUM -->
-    <div class="ps" onclick="toggleSection('sec-export',this)"><span>📄 Print / Export Board <span style="background:#FFE082;color:#5D4037;border-radius:6px;padding:1px 6px;font-size:.65rem;font-weight:900;text-transform:none">PREMIUM</span></span><span class="ps-arrow">▶</span></div>
+    <div class="ps" onclick="toggleSection('sec-export',this)"><span>📄 Print / Export Board <span style="background:#FFE082;color:#5D4037;border-radius:6px;padding:1px 6px;font-size:.65rem;font-weight:900;text-transform:none" data-tier="premium">PREMIUM</span></span><span class="ps-arrow">▶</span></div>
     <div class="ps-body closed" id="sec-export">
       <div style="font-size:.68rem;color:#888;margin:6px 0 8px">Generates a printable PDF of this profile's current category board — useful for school, hospital visits, or as a backup.</div>
       <button class="pbtn" onclick="exportBoardPDF()" style="width:100%;background:#2D6A4F;color:#fff;padding:10px">📄 Export current category as PDF</button>
     </div>
 
     <!-- WORD REPORT — PREMIUM PLUS -->
-    <div class="ps" onclick="toggleSection('sec-wordreport',this)"><span>📊 Word Report <span style="background:#CE93D8;color:#4A148C;border-radius:6px;padding:1px 6px;font-size:.65rem;font-weight:900;text-transform:none">PREMIUM PLUS</span></span><span class="ps-arrow">▶</span></div>
+    <div class="ps" onclick="toggleSection('sec-wordreport',this)"><span>📊 Word Report <span style="background:#CE93D8;color:#4A148C;border-radius:6px;padding:1px 6px;font-size:.65rem;font-weight:900;text-transform:none" data-tier="premplus">PREMIUM PLUS</span></span><span class="ps-arrow">▶</span></div>
     <div class="ps-body closed" id="sec-wordreport">
       <div style="font-size:.68rem;color:#888;margin:6px 0 10px">Last 40 words tapped — with weekly counts. All data stays on your device.</div>
       <div style="display:flex;background:#F5F5F5;border-radius:10px;padding:3px;margin-bottom:10px;gap:3px" id="wordreport-tabs">
@@ -919,11 +934,11 @@ body.editing .ce{border:2px dashed #E0E0E0}
     </div>
 
     <!-- PREMIUM PLUS FEATURES -->
-    <div class="ps" onclick="toggleSection('sec-layout',this)"><span>✏️ Edit Layout <span style="background:#CE93D8;color:#4A148C;border-radius:6px;padding:1px 6px;font-size:.65rem;font-weight:900;text-transform:none">PREMIUM PLUS</span></span><span class="ps-arrow">▶</span></div>
+    <div class="ps" onclick="toggleSection('sec-layout',this)"><span>✏️ Edit Layout <span style="background:#CE93D8;color:#4A148C;border-radius:6px;padding:1px 6px;font-size:.65rem;font-weight:900;text-transform:none" data-tier="premplus">PREMIUM PLUS</span></span><span class="ps-arrow">▶</span></div>
     <div class="ps-body closed" id="sec-layout">
       <div class="sr">
         <div><div class="sl">Edit layout</div><div class="ss">Hide &amp; reorder buttons</div></div>
-        <button class="pbtn" onclick="startEdit()" style="background:#E65100;color:#fff">Edit</button>
+        <button class="pbtn" onclick="startEdit()" style="background:#00838F;color:#fff">Edit</button>
       </div>
       <div class="sr" style="border:none">
         <div><div class="sl">Reset layout</div><div class="ss">Restore all buttons (PIN required)</div></div>
@@ -995,7 +1010,7 @@ body.editing .ce{border:2px dashed #E0E0E0}
 
 <!-- FOLDER PANEL -->
 <div id="foldermod" style="display:none;position:fixed;inset:0;z-index:350;background:rgba(0,0,0,.55);backdrop-filter:blur(4px)" onclick="if(event.target===this)closeFolder()">
-  <div id="folderpanel" style="position:absolute;bottom:0;left:0;right:0;background:#fff;border-radius:24px 24px 0 0;padding:16px 14px 40px;max-height:75vh;display:flex;flex-direction:column;animation:sup .3s cubic-bezier(.34,1.2,.64,1)">
+  <div id="folderpanel" style="position:absolute;bottom:0;left:0;right:0;background:#fff;border-radius:24px 24px 0 0;padding:16px 14px 40px;max-height:80vh;display:flex;flex-direction:column;animation:sup .3s cubic-bezier(.34,1.2,.64,1)">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-shrink:0">
       <div style="display:flex;align-items:center;gap:8px">
         <div id="folder-icon" style="font-size:1.6rem;line-height:1"></div>
@@ -1006,7 +1021,7 @@ body.editing .ce{border:2px dashed #E0E0E0}
       </div>
       <button onclick="closeFolder()" style="border:none;background:#eee;color:#666;border-radius:20px;padding:8px 16px;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.82rem;cursor:pointer">✕ Close</button>
     </div>
-    <div id="folder-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;overflow-y:auto;flex:1;padding-bottom:8px"></div>
+    <div id="folder-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;overflow-y:auto;padding-bottom:8px;max-height:calc(80vh - 100px)"></div>
   </div>
 </div>
 
@@ -1331,9 +1346,12 @@ function renderFolderGrid(items){
     return;
   }
   g.innerHTML=items.map(function(it,i){
-    return '<div onclick="tapFolderBtn('+i+')" style="border-radius:50%;aspect-ratio:1;background:'+bg+';border:2px solid rgba(0,0,0,.07);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,.09);padding:4px;transition:transform .12s" onmousedown="this.style.transform=\'scale(.87)\'" onmouseup="this.style.transform=\'\'" ontouchstart="this.style.transform=\'scale(.87)\'" ontouchend="this.style.transform=\'\'">'
-      +'<span style="font-size:clamp(.9rem,2.8vw,1.3rem);line-height:1">'+it.icon+'</span>'
-      +'<span style="font-size:clamp(.58rem,1.7vw,.78rem);font-weight:900;text-align:center;line-height:1.1;color:#333;margin-top:2px;text-transform:uppercase;max-width:90%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+it.label+'</span>'
+    var iconHtml=it.isPhoto&&it.icon&&it.icon.indexOf('data:')===0
+      ?'<img src="'+it.icon+'" style="width:55%;height:55%;object-fit:cover;border-radius:50%">'
+      :'<span style="font-size:1rem;line-height:1">'+it.icon+'</span>';
+    return '<div onclick="tapFolderBtn('+i+')" style="border-radius:50%;aspect-ratio:1;background:'+bg+';border:2px solid rgba(0,0,0,.07);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.08);transition:transform .12s;overflow:hidden;max-width:72px;margin:0 auto" onmousedown="this.style.transform=\'scale(.87)\'" onmouseup="this.style.transform=\'\'" ontouchstart="this.style.transform=\'scale(.87)\'" ontouchend="this.style.transform=\'\'">'
+      +iconHtml
+      +'<span style="font-size:.48rem;font-weight:900;text-align:center;line-height:1.1;color:#333;margin-top:1px;text-transform:uppercase;padding:0 2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:95%">'+it.label+'</span>'
       +'</div>';
   }).join('');
 }
@@ -1379,7 +1397,7 @@ function showFolderEditMenu(pi,s){
   sheet.innerHTML='<div style="background:#fff;border-radius:24px 24px 0 0;width:100%;padding:18px 16px 40px;animation:sup .3s cubic-bezier(.34,1.2,.64,1)">'
     +'<div style="font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-size:.95rem;font-weight:900;color:#333;margin-bottom:4px">📁 '+sv.label+'</div>'
     +'<div style="font-size:.68rem;color:#aaa;margin-bottom:14px">'+items.length+' / '+max+' buttons</div>'
-    +(canAdd?'<button onclick="openFolderAdd(\''+key+'\');document.getElementById(\'folder-edit-sheet\').remove()" style="width:100%;padding:12px;border:none;border-radius:12px;background:#2D6A4F;color:#fff;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.88rem;cursor:pointer;margin-bottom:8px">➕ Add button inside folder</button>':'<div style="text-align:center;font-size:.72rem;color:#E65100;background:#FFF3E0;border-radius:8px;padding:8px;margin-bottom:8px">Folder is full ('+max+' buttons)'+(!premplus?' — upgrade to Premium Plus for 15':'')+'</div>')
+    +(canAdd?'<button onclick="openFolderAdd(\''+key+'\');document.getElementById(\'folder-edit-sheet\').remove()" style="width:100%;padding:12px;border:none;border-radius:12px;background:#2D6A4F;color:#fff;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.88rem;cursor:pointer;margin-bottom:8px">➕ Add button inside folder</button>':'<div style="text-align:center;font-size:.72rem;color:#00838F;background:#E0F2F1;border-radius:8px;padding:8px;margin-bottom:8px">Folder is full ('+max+' buttons)'+(!premplus?' — upgrade to Premium Plus for 15':'')+'</div>')
     +(items.length?'<button onclick="openFolderManage(\''+key+'\');document.getElementById(\'folder-edit-sheet\').remove()" style="width:100%;padding:12px;border:none;border-radius:12px;background:#E3F2FD;color:#1565C0;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.88rem;cursor:pointer;margin-bottom:8px">✏️ Manage buttons inside</button>':'')
     +'<button onclick="showRecMenu('+pi+','+s+',\''+key+'\');document.getElementById(\'folder-edit-sheet\').remove()" style="width:100%;padding:12px;border:none;border-radius:12px;background:#F5F5F5;color:#555;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.88rem;cursor:pointer;margin-bottom:8px">✏️ Edit folder name / icon</button>'
     +'<button onclick="deleteFolder(\''+key+'\','+pi+','+s+');document.getElementById(\'folder-edit-sheet\').remove()" style="width:100%;padding:12px;border:none;border-radius:12px;background:#FFEBEE;color:#B71C1C;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.88rem;cursor:pointer">🗑 Delete folder</button>'
@@ -1988,7 +2006,7 @@ function buildColSwatches(containerId,onPick,selectedCol){
 function buildCatColSettings(){
   if(!premium&&!premplus){
     var el=document.getElementById('cat-col-settings');
-    if(el)el.innerHTML='<div onclick="showPlans()" style="font-size:.72rem;color:#E65100;background:#FFF3E0;border-radius:8px;padding:10px 12px;cursor:pointer;display:flex;align-items:center;justify-content:space-between">⭐ Upgrade to Premium to customise button colours.<span style="font-size:.8rem;font-weight:900;background:#E65100;color:#fff;border-radius:6px;padding:3px 8px;margin-left:8px;flex-shrink:0">Upgrade →</span></div>';
+    if(el)el.innerHTML='<div onclick="showPlans()" style="font-size:.72rem;color:#00838F;background:#E0F2F1;border-radius:8px;padding:10px 12px;cursor:pointer;display:flex;align-items:center;justify-content:space-between">⭐ Upgrade to Premium to customise button colours.<span style="font-size:.8rem;font-weight:900;background:#00838F;color:#fff;border-radius:6px;padding:3px 8px;margin-left:8px;flex-shrink:0">Upgrade →</span></div>';
     return;
   }
   var catNames=['😊 Feelings','🍎 Needs','🏠 Places','🤝 Social'];
@@ -2000,7 +2018,7 @@ function buildCatColSettings(){
     // Header row with category name and bucket label
     var hdr=document.createElement('div');
     hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:6px';
-    hdr.innerHTML='<span style="font-size:.78rem;font-weight:900;color:#333">'+catNames[i]+'</span><span style="font-size:.68rem;color:#E65100;font-weight:700">🪣 Tap colour to apply to all '+catNames[i].split(' ')[1]+' buttons</span>';
+    hdr.innerHTML='<span style="font-size:.78rem;font-weight:900;color:#333">'+catNames[i]+'</span><span style="font-size:.68rem;color:#00838F;font-weight:700">🪣 Tap colour to apply to all '+catNames[i].split(' ')[1]+' buttons</span>';
     wrap.appendChild(hdr);
     var rowId='cat-col-row-'+i;
     var row=document.createElement('div');row.className='col-row';row.id=rowId;
@@ -2509,6 +2527,42 @@ function startBreathCanvas(){
       });
       waveOffset+=0.06;
     },30);
+
+  }else if(breathSound==='forest'||breathSound==='forestmelody'||breathSound==='guitar'||breathSound==='piano'){
+    // Floating leaves / sparkles
+    var particles=[];
+    for(var k=0;k<40;k++){
+      particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,size:Math.random()*5+2,speed:Math.random()*0.7+0.2,drift:Math.random()*0.5-0.25,opacity:Math.random()*.25+.05,hue:Math.random()>0.5?120:80});
+    }
+    breathCanvasAnim=setInterval(function(){
+      ctx2.clearRect(0,0,canvas.width,canvas.height);
+      particles.forEach(function(p){
+        ctx2.beginPath();ctx2.arc(p.x,p.y,p.size,0,Math.PI*2);
+        ctx2.fillStyle='hsla('+p.hue+',55%,45%,'+p.opacity+')';ctx2.fill();
+        p.y-=p.speed;p.x+=p.drift;
+        if(p.y<-10){p.y=canvas.height+10;p.x=Math.random()*canvas.width;}
+      });
+    },40);
+
+  }else if(breathSound==='fire'){
+    // Gentle warm glow particles rising
+    var flameParts=[];
+    for(var fi=0;fi<50;fi++){
+      flameParts.push({x:Math.random()*canvas.width,y:canvas.height+Math.random()*30,size:Math.random()*7+2,speed:Math.random()*1.5+0.8,opacity:Math.random()*.2+.04});
+    }
+    breathCanvasAnim=setInterval(function(){
+      ctx2.clearRect(0,0,canvas.width,canvas.height);
+      flameParts.forEach(function(p){
+        var hue=Math.random()>0.6?25:15;
+        ctx2.beginPath();ctx2.arc(p.x,p.y,p.size,0,Math.PI*2);
+        ctx2.fillStyle='hsla('+hue+',85%,58%,'+p.opacity+')';ctx2.fill();
+        p.y-=p.speed;p.x+=(Math.random()-0.5)*1.5;p.size*=0.99;
+        if(p.y<canvas.height*0.3||p.size<0.5){
+          p.y=canvas.height+Math.random()*20;p.x=Math.random()*canvas.width;
+          p.size=Math.random()*7+2;p.opacity=Math.random()*.2+.04;
+        }
+      });
+    },40);
   }
 }
 
@@ -2541,7 +2595,7 @@ function setBreathPattern(p){
 function setBreathSound(s){
   if(!premium&&!premplus){showPlans();return;}
   breathSound=s;
-  ['none','rain','ocean'].forEach(function(id){
+  ['none','rain','ocean','forest','fire','piano','guitar','forestmelody'].forEach(function(id){
     var btn=document.getElementById('bs-'+id);
     if(!btn)return;
     var on=id===s;
@@ -2555,60 +2609,32 @@ function setBreathSound(s){
   if(s!=='none'&&breathRunning){startBreathAudio();startBreathCanvas();}
 }
 
+// Sound file mapping
+var BREATH_SOUND_FILES={
+  rain:'/sounds/rain.mp3',
+  ocean:'/sounds/ocean.mp3',
+  forest:'/sounds/forest.mp3',
+  fire:'/sounds/fire.mp3',
+  piano:'/sounds/piano.mp3',
+  guitar:'/sounds/guitar.mp3',
+  forestmelody:'/sounds/forestmelody.mp3'
+};
+
 function startBreathAudio(){
   if(breathSound==='none'||breathAudio)return;
+  var file=BREATH_SOUND_FILES[breathSound];
+  if(!file)return;
   try{
-    var ctx=new(window.AudioContext||window.webkitAudioContext)();
-    var masterGain=ctx.createGain();
-    masterGain.gain.value=0.35;
-    masterGain.connect(ctx.destination);
-
-    if(breathSound==='rain'){
-      // White noise through bandpass filter — sounds like rain
-      var bufferSize=ctx.sampleRate*2;
-      var buffer=ctx.createBuffer(1,bufferSize,ctx.sampleRate);
-      var data=buffer.getChannelData(0);
-      for(var i=0;i<bufferSize;i++)data[i]=Math.random()*2-1;
-      var source=ctx.createBufferSource();
-      source.buffer=buffer;source.loop=true;
-      // Bandpass filter centres the noise in the rain frequency range
-      var filter=ctx.createBiquadFilter();
-      filter.type='bandpass';filter.frequency.value=1200;filter.Q.value=0.8;
-      // Second filter for texture
-      var filter2=ctx.createBiquadFilter();
-      filter2.type='highshelf';filter2.frequency.value=4000;filter2.gain.value=-8;
-      source.connect(filter);filter.connect(filter2);filter2.connect(masterGain);
-      source.start();
-      breathAudio={pause:function(){try{source.stop();ctx.close();}catch(e){}},ctx:ctx};
-
-    }else if(breathSound==='ocean'){
-      // Two low-frequency noise layers with slow modulation = waves
-      var bufSize=ctx.sampleRate*4;
-      var buf=ctx.createBuffer(1,bufSize,ctx.sampleRate);
-      var d=buf.getChannelData(0);
-      for(var j=0;j<bufSize;j++)d[j]=Math.random()*2-1;
-
-      // Layer 1 — main wave noise
-      var src1=ctx.createBufferSource();
-      src1.buffer=buf;src1.loop=true;
-      var lp1=ctx.createBiquadFilter();lp1.type='lowpass';lp1.frequency.value=400;
-      var g1=ctx.createGain();g1.gain.value=0.6;
-      src1.connect(lp1);lp1.connect(g1);g1.connect(masterGain);
-
-      // Layer 2 — foam/surface noise
-      var src2=ctx.createBufferSource();
-      src2.buffer=buf;src2.loop=true;src2.loopStart=1;
-      var bp2=ctx.createBiquadFilter();bp2.type='bandpass';bp2.frequency.value=800;bp2.Q.value=0.5;
-      var g2=ctx.createGain();g2.gain.value=0.25;
-      src2.connect(bp2);bp2.connect(g2);g2.connect(masterGain);
-
-      // Slow LFO to modulate wave rhythm (~0.12Hz = one wave every ~8 seconds)
-      var lfo=ctx.createOscillator();lfo.type='sine';lfo.frequency.value=0.12;
-      var lfoGain=ctx.createGain();lfoGain.gain.value=0.4;
-      lfo.connect(lfoGain);lfoGain.connect(g1.gain);lfo.start();
-      src1.start();src2.start();
-      breathAudio={pause:function(){try{src1.stop();src2.stop();lfo.stop();ctx.close();}catch(e){}},ctx:ctx};
-    }
+    var audio=new Audio(file);
+    audio.loop=true;
+    audio.volume=0.4;
+    audio.addEventListener('error', function(){
+      console.log('Audio file not found:', file);
+      var btn=document.getElementById('bs-'+breathSound);
+      if(btn){btn.style.opacity='.4';btn.title='Sound file not found';}
+    });
+    audio.play().catch(function(e){console.log('Audio play blocked - tap screen first:',e);});
+    breathAudio={pause:function(){try{audio.pause();audio.currentTime=0;}catch(e){}},audio:audio};
   }catch(e){console.log('Audio error:',e);}
 }
 
@@ -3114,13 +3140,67 @@ function updatePstat(){
   if(premplus)el.textContent='🌟 Premium Plus active';
   else if(premium)el.textContent='⭐ Premium active';
   else el.textContent='🆓 Free plan';
-  // Show/hide manage subscription button
   var mgr=document.getElementById('manage-sub-btn');
   if(mgr)mgr.style.display=(premium||premplus)?'block':'none';
+
+  // Show current plan badge and update buttons
+  var tiers=['free','prem','premplus'];
+  tiers.forEach(function(t){
+    var badge=document.getElementById('plan-badge-'+t);
+    if(badge)badge.style.display='none';
+  });
+  // Hide "MOST POPULAR" badge if user is already subscribed
+  var pop=document.getElementById('plan-popular-badge');
+  if(pop)pop.style.display=(premium||premplus)?'none':'';
+
+  var activeTier=premplus?'premplus':premium?'prem':'free';
+  var activeBadge=document.getElementById('plan-badge-'+activeTier);
+  if(activeBadge)activeBadge.style.display='';
+
+  // Update subscribe buttons
+  var premBtn=document.getElementById('prem-btn');
+  var plusBtn=document.getElementById('premplus-btn');
+  if(premBtn){
+    if(premium&&!premplus){premBtn.textContent='✓ Current plan';premBtn.disabled=true;premBtn.style.opacity='.5';premBtn.style.cursor='default';}
+    else if(premplus){premBtn.textContent='Manage subscription';premBtn.onclick=function(){manageSubscription();};premBtn.disabled=false;premBtn.style.opacity='.7';premBtn.style.cursor='pointer';}
+    else{premBtn.textContent='Subscribe to Premium →';premBtn.disabled=false;premBtn.style.opacity='1';premBtn.style.cursor='pointer';}
+  }
+  if(plusBtn){
+    if(premplus){plusBtn.textContent='✓ Current plan';plusBtn.disabled=true;plusBtn.style.opacity='.5';plusBtn.style.cursor='default';}
+    else{plusBtn.textContent='Subscribe to Premium Plus →';plusBtn.disabled=false;plusBtn.style.opacity='1';plusBtn.style.cursor='pointer';}
+  }
 }
+function renderAcctCard(){
+  var el=document.getElementById('acct-card');
+  if(!el)return;
+  if(premplus){
+    el.style.background='linear-gradient(135deg,#4A148C,#7B1FA2)';
+    el.innerHTML='<div style="display:flex;align-items:center;gap:10px"><span style="font-size:1.4rem">🌟</span><div><div style="font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-size:.88rem;font-weight:900;color:#fff">Premium Plus — Active</div><div style="font-size:.65rem;color:rgba(255,255,255,.7);margin-top:2px">Folders · Word Report · Photos · Unlimited profiles</div></div></div><button onclick="closePanel();manageSubscription()" style="border:none;background:rgba(255,255,255,.2);color:#fff;border-radius:10px;padding:6px 10px;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.68rem;cursor:pointer;flex-shrink:0;white-space:nowrap">Manage</button>';
+  }else if(premium){
+    el.style.background='linear-gradient(135deg,#D97706,#F59E0B)';
+    el.innerHTML='<div style="display:flex;align-items:center;gap:10px"><span style="font-size:1.4rem">⭐</span><div><div style="font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-size:.88rem;font-weight:900;color:#fff">Premium — Active</div><div style="font-size:.65rem;color:rgba(255,255,255,.7);margin-top:2px">Custom buttons · Voice · Folders · PDF export</div></div></div><button onclick="closePanel();manageSubscription()" style="border:none;background:rgba(255,255,255,.2);color:#fff;border-radius:10px;padding:6px 10px;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.68rem;cursor:pointer;flex-shrink:0;white-space:nowrap">Manage</button>';
+  }else{
+    el.style.background='#F0F0F0';
+    el.innerHTML='<div style="display:flex;align-items:center;gap:10px;flex:1"><span style="font-size:1.2rem">🆓</span><div><div style="font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-size:.82rem;font-weight:900;color:#555">Free plan</div><div style="font-size:.65rem;color:#aaa;margin-top:2px">Upgrade for folders, custom buttons & more</div></div></div><button onclick="closePanel();showPlans()" style="border:none;background:#2D6A4F;color:#fff;border-radius:10px;padding:7px 12px;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.72rem;cursor:pointer;flex-shrink:0;white-space:nowrap">Upgrade →</button>';
+  }
+}
+
+function updateSettingsBadges(){
+  var panel=document.getElementById('panel');if(!panel)return;
+  // Use data-tier attributes for reliable matching
+  panel.querySelectorAll('[data-tier="premium"]').forEach(function(el){
+    if(premium||premplus){el.style.background='#2D6A4F';el.style.color='#fff';el.textContent='✓ Active';}
+    else{el.style.background='#FFE082';el.style.color='#5D4037';el.textContent='PREMIUM';}
+  });
+  panel.querySelectorAll('[data-tier="premplus"]').forEach(function(el){
+    if(premplus){el.style.background='#2D6A4F';el.style.color='#fff';el.textContent='✓ Active';}
+    else{el.style.background='#CE93D8';el.style.color='#4A148C';el.textContent='PREMIUM PLUS';}
+  });
+}
+
 function openPanel(){
-  if(locked){requirePin(function(){renderProfiles();buildCatColSettings();updatePstat();renderWordReport();document.getElementById('panel').classList.add('open');});return;}
-  renderProfiles();buildCatColSettings();updatePstat();renderWordReport();document.getElementById('panel').classList.add('open');
+  if(locked){requirePin(function(){renderProfiles();buildCatColSettings();updatePstat();renderWordReport();renderAcctCard();updateSettingsBadges();document.getElementById('panel').classList.add('open');});return;}
+  renderProfiles();buildCatColSettings();updatePstat();renderWordReport();renderAcctCard();updateSettingsBadges();document.getElementById('panel').classList.add('open');
 }
 function closePanel(){document.getElementById('panel').classList.remove('open');}
 function openHelp(){closePanel();document.getElementById('helpmod').classList.add('open');}
@@ -3319,6 +3399,7 @@ var NETLIFY_URL='https://aidovaapp.vercel.app';
 
 function showPlans(){
   document.getElementById('plansmod').classList.add('open');
+  updatePstat();
   detectCurrency();
   checkReturnFromStripe();
 }
