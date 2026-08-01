@@ -1,14 +1,20 @@
-var CACHE='aidova-v22';
+var CACHE='aidova-v23';
 self.addEventListener('install',function(e){
   self.skipWaiting();
   e.waitUntil(
     caches.open(CACHE).then(function(c){
-      return c.addAll([
+      // Cache each file independently — with addAll, ONE failed/slow file
+      // (e.g. a larger sound file) silently blocks every other file from
+      // being precached at all, since addAll is all-or-nothing.
+      var files=[
         '/app','/app.html',
         '/sounds/rain.mp3','/sounds/ocean.mp3','/sounds/forest.mp3',
         '/sounds/fire.mp3','/sounds/piano.mp3','/sounds/guitar.mp3',
         '/sounds/forestmelody.mp3'
-      ]).catch(function(){});
+      ];
+      return Promise.all(files.map(function(f){
+        return c.add(f).catch(function(err){console.log('Precache failed for',f,err);});
+      }));
     })
   );
 });
