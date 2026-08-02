@@ -3,6 +3,6 @@
       "target": {
         "namespace": "android_app",
         "package_name": "app.aidova.twa",
-        "sha256_cert_fingerprints": ["55:8A:7B:EE:58:94:EB:20:39:D1:A6:79:4F:45:74:C6:B1:97:F9:27:40:D3:C6:11:B9:32:E6:CB:B5:95:29:60"]
+        "sha256_cert_fingerprints": ["34:39:48:28:76:54:C6:8A:96:95:E2:C2:44:CF:1C:F2:00:F5:DC:D0:7F:FA:2C:85:24:CC:75:45:3A:14:7E:65"]
       }
     }]
