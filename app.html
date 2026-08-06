@@ -1335,7 +1335,12 @@ function openFolder(pi,s,icon,label){
   var key=folderKey(pi,s);
   var items=folderData[key]||[];
   activeFolderKey=key;activeFolderPi=pi;
-  document.getElementById('folder-icon').textContent=icon;
+  if(icon&&icon.indexOf('data:')===0){
+    document.getElementById('folder-icon').innerHTML='<img src="'+icon+'" style="width:28px;height:28px;border-radius:50%;object-fit:cover;display:block">';
+  }else{
+    document.getElementById('folder-icon').innerHTML='';
+    document.getElementById('folder-icon').textContent=icon;
+  }
   document.getElementById('folder-title').textContent=label;
   renderFolderGrid(items);
   document.getElementById('foldermod').style.display='block';
@@ -1574,12 +1579,24 @@ function showCreateFolder(pi,slot){
   sheet.id='create-folder-sheet';
   sheet.style.cssText='position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);display:flex;align-items:flex-end';
   sheet.onclick=function(e){if(e.target===sheet&&!window._emojiPickerTarget)sheet.remove();};
-  window._createFolderIcon='📁';
+  window._createFolderIcon='📁';window._createFolderPhoto=null;
+  var photoBlockHtml=premplus
+    ?('<div style="font-size:.72rem;color:#888;margin:10px 0 6px">— OR add your own photo —</div>'
+      +'<div class="pup" id="cf-photo-upload-area">'
+      +'<input type="file" id="cf-pfile" accept="image/*" onchange="onCreateFolderPhoto(this)">'
+      +'<div class="ph2" id="cf-phint">📷 Tap to choose a photo</div>'
+      +'<img id="cf-pprev" src="" style="display:none;width:44px;height:44px;border-radius:50%;object-fit:cover;margin:4px auto 0">'
+      +'</div>')
+    :('<div style="background:#E8F5E9;border-radius:10px;padding:10px 12px;text-align:center;cursor:pointer;margin:10px 0 6px" onclick="document.getElementById(\'create-folder-sheet\').remove();showPlans()">'
+      +'<div style="font-size:.72rem;color:#1B5E20;font-weight:900">🌟 Your own photo — Premium Plus</div>'
+      +'<div style="font-size:.65rem;color:#2D6A4F;margin-top:2px">Tap to upgrade and add your own photo</div>'
+      +'</div>');
   sheet.innerHTML='<div style="background:#fff;border-radius:24px 24px 0 0;width:100%;padding:18px 16px 40px;animation:sup .3s cubic-bezier(.34,1.2,.64,1)">'
     +'<div style="font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-size:.95rem;font-weight:900;color:#333;margin-bottom:12px">📁 Create a folder</div>'
     +'<div style="font-size:.72rem;color:#888;margin-bottom:10px">1. Choose an emoji for the folder</div>'
     +'<button onclick="window._emojiPickerTarget=\'createfolder\';openEmojiPicker()" style="width:100%;padding:12px 14px;border:2px dashed #ddd;border-radius:12px;background:#F8FAF8;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.88rem;cursor:pointer;text-align:left;margin-bottom:12px;display:flex;align-items:center;gap:10px"><span id="cf-prev" style="font-size:1.8rem">📁</span><span style="color:#555">Tap to choose an emoji →</span></button>'
-    +'<div style="font-size:.72rem;color:#888;margin-bottom:6px">2. Name the folder</div>'
+    +photoBlockHtml
+    +'<div style="font-size:.72rem;color:#888;margin-bottom:6px;margin-top:12px">2. Name the folder</div>'
     +'<input id="cf-label" class="minput" placeholder="Folder name (e.g. DRINKS, FOOD, FAMILY)">'
     +'<div style="font-size:.65rem;color:#aaa;margin-bottom:12px">You can add buttons inside after creating it</div>'
     +'<div style="display:flex;gap:8px">'
@@ -1590,12 +1607,36 @@ function showCreateFolder(pi,slot){
   document.body.appendChild(sheet);
 }
 
+function onCreateFolderPhoto(inp){
+  var f=inp.files[0];if(!f)return;
+  var r=new FileReader();
+  r.onload=function(e){
+    var img=new Image();
+    img.onload=function(){
+      var c=document.createElement('canvas'),MAX=200,w=img.width,h=img.height;
+      if(w>h){if(w>MAX){h=h*MAX/w;w=MAX;}}else{if(h>MAX){w=w*MAX/h;h=MAX;}}
+      c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);
+      window._createFolderPhoto=c.toDataURL('image/jpeg',.7);
+      var pv=document.getElementById('cf-pprev');
+      pv.src=window._createFolderPhoto;pv.style.display='block';
+      document.getElementById('cf-phint').style.display='none';
+      document.getElementById('cf-prev').textContent='📷';
+    };
+    img.src=e.target.result;
+  };
+  r.readAsDataURL(f);
+}
+
 function saveNewFolder(pi,slot){
   var label=document.getElementById('cf-label').value.trim().toUpperCase();
   if(!label){alert('Please enter a folder name.');return;}
-  var icon=window._createFolderIcon||'📁';
   var key=activeP+'-'+pi+'-'+slot;
-  recData[key]={icon:icon,label:label,word:'__folder__',isPhoto:false,colour:'',isFolder:true};
+  if(window._createFolderPhoto&&premplus){
+    recData[key]={icon:window._createFolderPhoto,label:label,word:'__folder__',isPhoto:true,colour:'',isFolder:true};
+  }else{
+    var icon=window._createFolderIcon||'📁';
+    recData[key]={icon:icon,label:label,word:'__folder__',isPhoto:false,colour:'',isFolder:true};
+  }
   try{localStorage.setItem('aidova_rec',JSON.stringify(recData));}catch(e){}
   saveFolder(key,[]);
   var s=document.getElementById('create-folder-sheet');if(s)s.remove();
@@ -1849,12 +1890,12 @@ function populateLangSelect(){
     sel.appendChild(o);
   });
 }
-function setVoiceGender(g){
+function setVoiceGender(g,skipSpeak){
   voiceGender=g;localStorage.setItem('aidova_vgender',g);
   var bf=document.getElementById('vbtn-f'),bm=document.getElementById('vbtn-m');
   if(bf){bf.style.background=g==='f'?'#2D6A4F':'#eee';bf.style.color=g==='f'?'#fff':'#555';bf.style.borderColor=g==='f'?'#2D6A4F':'#eee';}
   if(bm){bm.style.background=g==='m'?'#2D6A4F':'#eee';bm.style.color=g==='m'?'#fff':'#555';bm.style.borderColor=g==='m'?'#2D6A4F':'#eee';}
-  testVoice();
+  if(!skipSpeak)testVoice();
 }
 function testVoice(){
   window.speechSynthesis.cancel();
@@ -2912,7 +2953,7 @@ function renderPage(pi,data,cat){
           var el=document.createElement('div');
           el.className='circ cr';el.dataset.key=rkey;el.dataset.slot=s;el.dataset.pi=pi;
           if(sv.colour){el.style.background=sv.colour;}else{el.style.background=catCols[pi]||DEFAULT_CAT_COLS[pi];}
-          if(sv.isFolder){el.style.boxShadow='0 0 0 3px #2D6A4F, 0 3px 10px rgba(0,0,0,.09)';el.style.border='2px solid rgba(0,0,0,.07)';el.innerHTML='<span style="font-size:clamp(1rem,2.8vw,1.3rem);line-height:1">'+sv.icon+'</span><span class="cl">'+sv.label+'</span>';}else if(sv.isPhoto&&sv.icon&&sv.icon.indexOf('data:')===0){el.innerHTML='<img src="'+sv.icon+'" style="width:58%;height:58%;object-fit:cover;border-radius:50%;margin-bottom:3px"><span class="cl">'+sv.label+'</span>';}
+          if(sv.isFolder){el.style.boxShadow='0 0 0 3px #2D6A4F, 0 3px 10px rgba(0,0,0,.09)';el.style.border='2px solid rgba(0,0,0,.07)';if(sv.isPhoto&&sv.icon&&sv.icon.indexOf('data:')===0){el.innerHTML='<img src="'+sv.icon+'" style="width:58%;height:58%;object-fit:cover;border-radius:50%;margin-bottom:3px"><span class="cl">'+sv.label+'</span>';}else{el.innerHTML='<span style="font-size:clamp(1rem,2.8vw,1.3rem);line-height:1">'+sv.icon+'</span><span class="cl">'+sv.label+'</span>';}}else if(sv.isPhoto&&sv.icon&&sv.icon.indexOf('data:')===0){el.innerHTML='<img src="'+sv.icon+'" style="width:58%;height:58%;object-fit:cover;border-radius:50%;margin-bottom:3px"><span class="cl">'+sv.label+'</span>';}
           else{el.innerHTML='<span class="ci">'+sv.icon+'</span><span class="cl">'+sv.label+'</span>';}
           el.addEventListener('click',function(e){if(editMode){if(sv.isFolder)showFolderEditMenu(pi,s);else showRecMenu(pi,s,activeP+'-'+pi+'-'+s);return;}anim(el,e);if(sv.isFolder){openFolder(pi,s,sv.icon,sv.label);return;}say(sv.word,rkey,sv.label);addToSent(sv.word,sv.label);addToRecents(sv.isPhoto&&sv.icon?sv.icon:sv.icon,sv.label,sv.word,rkey,''+cat);});
           var pt=null,held=false;
@@ -2963,7 +3004,7 @@ function renderPage(pi,data,cat){
           var el=document.createElement('div');
           el.className='circ cr';el.dataset.key=rkey;el.dataset.slot=s;el.dataset.pi=pi;
           if(sv.colour){el.style.background=sv.colour;}else{el.style.background=catCols[pi]||DEFAULT_CAT_COLS[pi];}
-          if(sv.isFolder){el.style.boxShadow='0 0 0 3px #2D6A4F, 0 3px 10px rgba(0,0,0,.09)';el.style.border='2px solid rgba(0,0,0,.07)';el.innerHTML='<span style="font-size:clamp(1rem,2.8vw,1.3rem);line-height:1">'+sv.icon+'</span><span class="cl">'+sv.label+'</span>';}else if(sv.isPhoto&&sv.icon&&sv.icon.indexOf('data:')===0){el.innerHTML='<img src="'+sv.icon+'" style="width:58%;height:58%;object-fit:cover;border-radius:50%;margin-bottom:3px"><span class="cl">'+sv.label+'</span>';}
+          if(sv.isFolder){el.style.boxShadow='0 0 0 3px #2D6A4F, 0 3px 10px rgba(0,0,0,.09)';el.style.border='2px solid rgba(0,0,0,.07)';if(sv.isPhoto&&sv.icon&&sv.icon.indexOf('data:')===0){el.innerHTML='<img src="'+sv.icon+'" style="width:58%;height:58%;object-fit:cover;border-radius:50%;margin-bottom:3px"><span class="cl">'+sv.label+'</span>';}else{el.innerHTML='<span style="font-size:clamp(1rem,2.8vw,1.3rem);line-height:1">'+sv.icon+'</span><span class="cl">'+sv.label+'</span>';}}else if(sv.isPhoto&&sv.icon&&sv.icon.indexOf('data:')===0){el.innerHTML='<img src="'+sv.icon+'" style="width:58%;height:58%;object-fit:cover;border-radius:50%;margin-bottom:3px"><span class="cl">'+sv.label+'</span>';}
           else{el.innerHTML='<span class="ci">'+sv.icon+'</span><span class="cl">'+sv.label+'</span>';}
           el.addEventListener('click',function(e){if(editMode){if(sv.isFolder)showFolderEditMenu(pi,s);else showRecMenu(pi,s,key);return;}anim(el,e);if(sv.isFolder){openFolder(pi,s,sv.icon,sv.label);return;}say(sv.word,rkey,sv.label);addToSent(sv.word,sv.label);addToRecents(sv.isPhoto&&sv.icon?sv.icon:sv.icon,sv.label,sv.word,rkey,''+cat);});
           var pt=null,held=false;
@@ -3062,7 +3103,7 @@ function renderHiddenSection(pi){
       var sv=item.sv;
       if(sv.colour){el.style.background=sv.colour;}
       else{el.style.background=catCols[pi]||DEFAULT_CAT_COLS[pi];}
-      if(sv.isFolder){el.style.boxShadow='0 0 0 3px #2D6A4F, 0 3px 10px rgba(0,0,0,.09)';el.style.border='2px solid rgba(0,0,0,.07)';el.innerHTML='<span style="font-size:clamp(1rem,2.8vw,1.3rem);line-height:1">'+sv.icon+'</span><span class="cl">'+sv.label+'</span>';}else if(sv.isPhoto&&sv.icon&&sv.icon.indexOf('data:')===0){el.innerHTML='<img src="'+sv.icon+'" style="width:58%;height:58%;object-fit:cover;border-radius:50%;margin-bottom:3px"><span class="cl">'+sv.label+'</span>';}
+      if(sv.isFolder){el.style.boxShadow='0 0 0 3px #2D6A4F, 0 3px 10px rgba(0,0,0,.09)';el.style.border='2px solid rgba(0,0,0,.07)';if(sv.isPhoto&&sv.icon&&sv.icon.indexOf('data:')===0){el.innerHTML='<img src="'+sv.icon+'" style="width:58%;height:58%;object-fit:cover;border-radius:50%;margin-bottom:3px"><span class="cl">'+sv.label+'</span>';}else{el.innerHTML='<span style="font-size:clamp(1rem,2.8vw,1.3rem);line-height:1">'+sv.icon+'</span><span class="cl">'+sv.label+'</span>';}}else if(sv.isPhoto&&sv.icon&&sv.icon.indexOf('data:')===0){el.innerHTML='<img src="'+sv.icon+'" style="width:58%;height:58%;object-fit:cover;border-radius:50%;margin-bottom:3px"><span class="cl">'+sv.label+'</span>';}
       else{el.innerHTML='<span class="ci">'+sv.icon+'</span><span class="cl">'+sv.label+'</span>';}
     }
     var rb=document.createElement('button');rb.className='restore-badge';rb.textContent='↩';rb.title='Restore';
@@ -4893,7 +4934,7 @@ if(locked)document.getElementById('ltog').classList.add('on');
 if(kiosk){document.getElementById('ktog').classList.add('on');enableKiosk();}
 if(premplus)document.getElementById('pstat').textContent='🌟 Premium Plus';
 else if(premium)document.getElementById('pstat').textContent='⭐ Premium';
-setVoiceGender(voiceGender);
+setVoiceGender(voiceGender,true);
 populateLangSelect();
 applyBtnSize();
 // Set volume slider to saved value
