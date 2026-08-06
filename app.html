@@ -1034,6 +1034,18 @@ body.editing .ce{border:2px dashed #E0E0E0}
       <button onclick="openFolderEmojiPicker()" style="flex:1;padding:9px 12px;border:2px solid #ddd;border-radius:10px;background:#f9f9f9;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.8rem;cursor:pointer;text-align:left;color:#555">😊 Choose an emoji →</button>
     </div>
     <input class="minput" type="text" id="fadd-label" placeholder="Button label (e.g. WATER, PASTA)">
+    <div id="fadd-photo-section">
+      <div class="por">— OR add your own photo —</div>
+      <div class="pup" id="fadd-photo-upload-area">
+        <input type="file" id="fadd-pfile" accept="image/*" onchange="onFolderPhoto(this)">
+        <div class="ph2" id="fadd-phint">📷 Tap to choose a photo</div>
+        <img id="fadd-pprev" src="" style="display:none;width:44px;height:44px;border-radius:50%;object-fit:cover;margin:4px auto 0">
+      </div>
+      <div id="fadd-photo-plus-prompt" style="display:none;background:#E8F5E9;border-radius:10px;padding:10px 12px;text-align:center;cursor:pointer" onclick="closeFolderAdd();showPlans()">
+        <div style="font-size:.72rem;color:#1B5E20;font-weight:900">🌟 Your own photo — Premium Plus</div>
+        <div style="font-size:.65rem;color:#2D6A4F;margin-top:2px">Tap to upgrade and add your own photos</div>
+      </div>
+    </div>
     <input class="minput" type="text" id="fadd-speak" placeholder="What should it say? (optional)">
     <div style="display:flex;gap:8px;margin-top:8px">
       <button onclick="closeFolderAdd()" style="flex:1;padding:11px;border:none;border-radius:10px;background:#eee;color:#666;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.88rem;cursor:pointer">Cancel</button>
@@ -1408,13 +1420,41 @@ function showFolderEditMenu(pi,s){
 var currentFolderAddKey=null,folderAddEmoji='📌',folderAddLabel='';
 
 function openFolderAdd(key){
-  currentFolderAddKey=key;folderAddEmoji='📌';folderAddLabel='';
+  currentFolderAddKey=key;folderAddEmoji='📌';folderAddLabel='';folderPhotoUrl=null;
   document.getElementById('fadd-prev').textContent='📌';
   document.getElementById('fadd-label').value='';
   document.getElementById('fadd-speak').value='';
+  document.getElementById('fadd-pfile').value='';
+  document.getElementById('fadd-pprev').style.display='none';
+  document.getElementById('fadd-pprev').src='';
+  document.getElementById('fadd-phint').style.display='';
   var btn=document.querySelector('#folderaddmod button[onclick="openFolderEmojiPicker()"]');
   if(btn)btn.textContent='😊 Choose an emoji →';
+  var uploadArea=document.getElementById('fadd-photo-upload-area');
+  var plusPrompt=document.getElementById('fadd-photo-plus-prompt');
+  if(premplus){if(uploadArea)uploadArea.style.display='';if(plusPrompt)plusPrompt.style.display='none';}
+  else{if(uploadArea)uploadArea.style.display='none';if(plusPrompt)plusPrompt.style.display='';}
   document.getElementById('folderaddmod').style.display='flex';
+}
+
+function onFolderPhoto(inp){
+  var f=inp.files[0];if(!f)return;
+  var r=new FileReader();
+  r.onload=function(e){
+    var img=new Image();
+    img.onload=function(){
+      var c=document.createElement('canvas'),MAX=200,w=img.width,h=img.height;
+      if(w>h){if(w>MAX){h=h*MAX/w;w=MAX;}}else{if(h>MAX){w=w*MAX/h;h=MAX;}}
+      c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);
+      folderPhotoUrl=c.toDataURL('image/jpeg',.7);
+      var pv=document.getElementById('fadd-pprev');
+      pv.src=folderPhotoUrl;pv.style.display='block';
+      document.getElementById('fadd-phint').style.display='none';
+      document.getElementById('fadd-prev').textContent='📷';
+    };
+    img.src=e.target.result;
+  };
+  r.readAsDataURL(f);
 }
 
 function closeFolderAdd(){document.getElementById('folderaddmod').style.display='none';}
@@ -1432,7 +1472,11 @@ function saveFolderBtn(){
   var items=folderData[currentFolderAddKey]||[];
   var max=folderMax();
   if(items.length>=max){alert('Folder is full. Upgrade to Premium Plus for more buttons.');return;}
-  items.push({icon:folderAddEmoji,label:label,speak:speak});
+  if(folderPhotoUrl&&premplus){
+    items.push({icon:folderPhotoUrl,label:label,speak:speak,isPhoto:true});
+  }else{
+    items.push({icon:folderAddEmoji,label:label,speak:speak});
+  }
   saveFolder(currentFolderAddKey,items);
   closeFolderAdd();
   var parts=currentFolderAddKey.split('-');
@@ -1738,7 +1782,7 @@ var schedNewEmoji='☀️';
 var schedNewPhoto=null;
 var carerInSchedEdit=false;
 var pinBuf='',pinMode='',pinCb=null;
-var recPg=null,recSl=null,photoUrl=null,selEmoji='🎤',selLabel='';
+var recPg=null,recSl=null,photoUrl=null,folderPhotoUrl=null,selEmoji='🎤',selLabel='';
 var mediaRec=null,audioChunks=[],recBlob=null,vrecKey=null,recCountdown=null;
 var sentWords=[];
 var timerTotal=300,timerLeft=300,timerInterval=null,timerRunning=false;
