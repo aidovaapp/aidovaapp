@@ -51,6 +51,10 @@
     <option value="approved">Approved only</option>
     <option value="rejected">No good match only</option>
   </select>
+  <select id="priorityFilter" onchange="renderRows()">
+    <option value="all">All words</option>
+    <option value="priority">⭐ Priority only (8 flagged)</option>
+  </select>
   <button onclick="fetchVisible()">🔍 Fetch symbols for visible rows</button>
   <button onclick="clearAndRefetch()" style="background:#fff3f3;border-color:#e6b3b3;color:#c66">🗑️ Clear cache &amp; refetch visible</button>
   <button class="primary" onclick="exportResults()">⬇️ Export approved JSON</button>
@@ -79,6 +83,8 @@ function saveProgress(){
   try{localStorage.setItem(STORAGE_KEY, JSON.stringify(reviewData));}catch(e){}
 }
 
+var PRIORITY_WORDS=['rest','cuddle','change','cold','hospital','come here','hungry','thirsty'];
+
 function allWordEntries(){
   var out=[];
   Object.keys(BTNS_WORDS).forEach(function(catId){
@@ -93,8 +99,10 @@ function allWordEntries(){
 function renderRows(){
   var catF = document.getElementById('catFilter').value;
   var statusF = document.getElementById('statusFilter').value;
+  var prioF = document.getElementById('priorityFilter').value;
   var entries = allWordEntries().filter(function(e){
     if(catF!=='all' && e.cat!==catF) return false;
+    if(prioF==='priority' && PRIORITY_WORDS.indexOf(e.word)===-1) return false;
     var st = (reviewData[e.word]&&reviewData[e.word].status)||'unreviewed';
     if(statusF!=='all' && st!==statusF) return false;
     return true;
@@ -124,7 +132,7 @@ function renderRows(){
     var noneSel = rd.status==='rejected' ? 'selected' : '';
     candHtml += '<div class="none-btn '+noneSel+'" onclick="markNoMatch(\''+e.word.replace(/'/g,"\\'")+'\')">No good<br>match —<br>keep emoji</div>';
     return '<div class="row '+rowClass+'" data-word="'+e.word+'">'
-      +'<div class="word-info"><div class="label">'+e.label+'</div><div class="cat">'+catNames[e.cat]+'</div><span class="status">'+statusIcon+'</span></div>'
+      +'<div class="word-info"><div class="label">'+(PRIORITY_WORDS.indexOf(e.word)!==-1?'⭐ ':'')+e.label+'</div><div class="cat">'+catNames[e.cat]+'</div><span class="status">'+statusIcon+'</span></div>'
       +'<div class="candidates">'+candHtml+'</div>'
       +'</div>';
   }).join('');
