@@ -2876,6 +2876,73 @@ function timerFinished(){
 }
 
 // RENDER
+// Manually curated symbol choices, approved by an SLT reviewer via the admin
+// review tool. Only words in this list show a symbol; anything not yet
+// reviewed falls back to emoji (no more auto-picking the first live search
+// result, which produced inconsistent quality).
+var CURATED_SYMBOLS={
+  'thirsty': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/drink , to.svg.varianted-skin.svg',
+  'hungry': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/food.svg',
+  'toilet': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/toilet.svg',
+  'shower': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/shower 1 , to.svg.varianted-skin.svg',
+  'bath': 'https://d18vdu4p71yql0.cloudfront.net/libraries/tawasol/Bathe.png',
+  'medicine': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/medicine.svg',
+  'hug': 'https://d18vdu4p71yql0.cloudfront.net/libraries/tawasol/Hug (F).png',
+  'rest': 'https://d18vdu4p71yql0.cloudfront.net/libraries/tawasol/rest time.jpg',
+  'snack': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/packed lunch.svg',
+  'water': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/water.svg',
+  'phone': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/mobile phone.svg',
+  'headphones': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/headphones.svg',
+  'change': 'https://d18vdu4p71yql0.cloudfront.net/libraries/tawasol/change.jpg',
+  'brush teeth': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/toothpaste.svg',
+  'cuddle': 'https://d18vdu4p71yql0.cloudfront.net/libraries/tawasol/142-to hug.png',
+  'plaster': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/plaster.svg.varianted-skin.svg',
+  'feel sick': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/thermometer 2.svg',
+  'cold': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/warm clothes.svg.varianted-skin.svg',
+  'hot': 'https://d18vdu4p71yql0.cloudfront.net/libraries/tawasol/Hot (M)_1.png',
+  'pain': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/stomach ache.svg.varianted-skin.svg',
+  'wash': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/wash hands , to.svg.varianted-skin.svg',
+  'get dressed': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/clothes male.svg',
+  'ear defenders': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/ear muffs.svg',
+  'school': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/bus.svg',
+  'park': 'https://d18vdu4p71yql0.cloudfront.net/libraries/tawasol/Park.png',
+  'trampoline': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/trampoline.svg',
+  'car': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/car toy.svg',
+  'bus': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/bus double decker.svg',
+  'swim': 'https://d18vdu4p71yql0.cloudfront.net/libraries/tawasol/Swim.png',
+  'doctor': 'https://d18vdu4p71yql0.cloudfront.net/libraries/tawasol/doctor M.jpg',
+  'cinema': 'https://d18vdu4p71yql0.cloudfront.net/libraries/tawasol/Cinema bw.png',
+  'TV': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/flatscreen tv.svg',
+  'play': 'https://d18vdu4p71yql0.cloudfront.net/libraries/tawasol/Play bw.png',
+  'bedroom': 'https://d18vdu4p71yql0.cloudfront.net/libraries/tawasol/sleep M.jpg',
+  'garden': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/back garden.svg',
+  'hospital': 'https://d18vdu4p71yql0.cloudfront.net/libraries/tawasol/hospital.jpg',
+  'library': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/dictionary.svg.varianted-skin.svg',
+  'exercise': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/basketball game.svg.varianted-skin.svg',
+  'art': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/art.svg',
+  'restaurant': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/takeaway burger and chips.svg',
+  'party': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/party celebration.svg',
+  'beach': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/beach.svg',
+  'church': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/church.svg',
+  'camping': 'https://d18vdu4p71yql0.cloudfront.net/libraries/tawasol/fire_2.png',
+  'football': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/football.svg',
+  'train station': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/underground train.svg',
+  'aquarium': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/fish tank.svg',
+  'play centre': 'https://d18vdu4p71yql0.cloudfront.net/libraries/tawasol/65-Play.png',
+  'again': 'https://d18vdu4p71yql0.cloudfront.net/libraries/tawasol/162-repeat.png',
+  'come here': 'https://d18vdu4p71yql0.cloudfront.net/libraries/tawasol/come_1.jpg',
+  'watch me': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/eyes blue.svg.varianted-skin.svg',
+  'more': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/more.svg',
+  'loud': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/loud.svg',
+  'less': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/some.svg',
+  'why': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/why.svg',
+  'who': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/who.svg.varianted-skin.svg',
+  'when': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/when.svg',
+  'how': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/how.svg',
+  'good job': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/good.svg.varianted-skin.svg',
+  'together': 'https://d18vdu4p71yql0.cloudfront.net/libraries/tawasol/Play.png'
+};
+
 var builtinSymbolCache=(function(){try{return JSON.parse(localStorage.getItem('aidova_builtin_symbols')||'{}');}catch(e){return {};}})();
 var symbolFetchQueue=[];
 var symbolFetchQueued={};
@@ -2886,7 +2953,8 @@ function saveBuiltinSymbolCache(){
 }
 
 function fetchBuiltinSymbol(word,key){
-  if(!word||builtinSymbolCache[word]!==undefined)return; // already cached (or already tried and failed — null)
+  if(!word||!CURATED_SYMBOLS[word])return; // only fetch words that have been manually reviewed and approved
+  if(builtinSymbolCache[word]!==undefined)return; // already cached (or already tried and failed — null)
   if(symbolFetchQueued[word])return; // already waiting in the queue
   symbolFetchQueued[word]=true;
   symbolFetchQueue.push({word:word,key:key});
@@ -2897,36 +2965,27 @@ function processSymbolFetchQueue(){
   if(symbolFetchRunning||!symbolFetchQueue.length)return;
   symbolFetchRunning=true;
   var item=symbolFetchQueue.shift();
-  fetch('/api/symbol-search?q='+encodeURIComponent(item.word))
-    .then(function(r){return r.json();})
-    .then(function(results){
-      if(results&&results.length){
-        var img=new Image();
-        img.crossOrigin='anonymous';
-        img.onload=function(){
-          var dataUrl;
-          try{
-            var c=document.createElement('canvas'),MAX=100,w=img.width,h=img.height;
-            if(w>h){if(w>MAX){h=h*MAX/w;w=MAX;}}else{if(h>MAX){w=w*MAX/h;h=MAX;}}
-            c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);
-            dataUrl=c.toDataURL('image/png');
-          }catch(e){dataUrl=results[0].image_url;}
-          builtinSymbolCache[item.word]=dataUrl;
-          saveBuiltinSymbolCache();
-          document.querySelectorAll('.circ[data-key="'+item.key+'"] .ci').forEach(function(span){
-            span.innerHTML='<img src="'+dataUrl+'" >';
-          });
-          nextInQueue();
-        };
-        img.onerror=function(){builtinSymbolCache[item.word]=null;saveBuiltinSymbolCache();nextInQueue();};
-        img.src=results[0].image_url;
-      }else{
-        builtinSymbolCache[item.word]=null; // no match found — keep showing emoji, don't retry every render
-        saveBuiltinSymbolCache();
-        nextInQueue();
-      }
-    })
-    .catch(function(){nextInQueue();/* offline or API hiccup — keep showing emoji, will retry next time cache is empty */});
+  var approvedUrl=CURATED_SYMBOLS[item.word];
+  if(!approvedUrl){nextInQueue();return;}
+  var img=new Image();
+  img.crossOrigin='anonymous';
+  img.onload=function(){
+    var dataUrl;
+    try{
+      var c=document.createElement('canvas'),MAX=100,w=img.width,h=img.height;
+      if(w>h){if(w>MAX){h=h*MAX/w;w=MAX;}}else{if(h>MAX){w=w*MAX/h;h=MAX;}}
+      c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);
+      dataUrl=c.toDataURL('image/png');
+    }catch(e){dataUrl=approvedUrl;}
+    builtinSymbolCache[item.word]=dataUrl;
+    saveBuiltinSymbolCache();
+    document.querySelectorAll('.circ[data-key="'+item.key+'"] .ci').forEach(function(span){
+      span.innerHTML='<img src="'+dataUrl+'" >';
+    });
+    nextInQueue();
+  };
+  img.onerror=function(){builtinSymbolCache[item.word]=null;saveBuiltinSymbolCache();nextInQueue();};
+  img.src=approvedUrl;
 }
 
 function nextInQueue(){
@@ -2942,7 +3001,7 @@ function mkCirc(icon,label,word,cat,clickFn,key){
   // genuinely poor/inappropriate results in testing (e.g. stranger photos for
   // "angry"/"lonely"). Needs manual curation before enabling here — concrete
   // words in other categories aren't affected by this restriction.
-  var symbolEligible=(iconStyleDefault==='symbol'&&word&&cat!=='cf');
+  var symbolEligible=(iconStyleDefault==='symbol'&&word&&cat!=='cf'&&CURATED_SYMBOLS[word]);
   if(icon&&icon.startsWith('TRAMP64:')){
     var b64=icon.substring(8);
     iconHtml='<span class="ci"><img src="data:image/png;base64,'+b64+'" ></span>';
