@@ -878,6 +878,22 @@ body.editing .ce{border:2px dashed #E0E0E0}
       </div>
     </div>
 
+    <!-- Icon Style — default preference for the emoji/symbol picker -->
+    <div class="ps" onclick="toggleSection('sec-iconstyle',this)"><span>🖼️ Icon Style</span><span class="ps-arrow">▶</span></div>
+    <div class="ps-body closed" id="sec-iconstyle">
+      <div style="font-size:.72rem;color:#888;margin-bottom:8px">Which style should new buttons use by default? You can always switch to the other tab when adding a specific button.</div>
+      <div style="display:flex;gap:8px">
+        <button class="vbig" id="istyle-btn-symbol" onclick="setIconStyleDefault('symbol')" style="flex:1;padding:10px;border:2px solid #2D6A4F;border-radius:10px;background:#2D6A4F;color:#fff;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.8rem;cursor:pointer">🖼️ Symbols</button>
+        <button class="vbig" id="istyle-btn-emoji" onclick="setIconStyleDefault('emoji')" style="flex:1;padding:10px;border:2px solid #eee;border-radius:10px;background:#eee;color:#555;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.8rem;cursor:pointer">😊 Emoji</button>
+      </div>
+    </div>
+
+    <!-- Symbol Credits — attribution for CC-licensed AAC symbols in use -->
+    <div class="ps" onclick="toggleSection('sec-symcredits',this)"><span>🖼️ Symbol Credits</span><span class="ps-arrow">▶</span></div>
+    <div class="ps-body closed" id="sec-symcredits">
+      <div id="symcredits-list" style="font-size:.75rem;color:#666;line-height:1.6"></div>
+    </div>
+
     <!-- PREMIUM FEATURES -->
     <div class="ps" onclick="toggleSection('sec-colours',this)"><span>🎨 Button Colours <span style="background:#FFE082;color:#5D4037;border-radius:6px;padding:1px 6px;font-size:.65rem;font-weight:900;text-transform:none" data-tier="premium">PREMIUM</span></span><span class="ps-arrow">▶</span></div>
     <div class="ps-body closed" id="sec-colours">
@@ -1059,13 +1075,18 @@ body.editing .ce{border:2px dashed #E0E0E0}
   <div style="background:#fff;border-radius:24px 24px 0 0;width:100%;max-height:82vh;display:flex;flex-direction:column;animation:sup .3s cubic-bezier(.34,1.2,.64,1)">
     <div style="padding:14px 14px 8px;flex-shrink:0">
       <div style="width:36px;height:4px;background:#E0E0E0;border-radius:2px;margin:0 auto 12px"></div>
+      <div style="display:flex;gap:6px;margin-bottom:8px">
+        <button id="picker-tab-emoji" onclick="setPickerMode('emoji')" style="flex:1;padding:8px;border:none;border-radius:10px;background:#2D6A4F;color:#fff;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.78rem;cursor:pointer">😊 Emoji</button>
+        <button id="picker-tab-symbol" onclick="setPickerMode('symbol')" style="flex:1;padding:8px;border:none;border-radius:10px;background:#eee;color:#666;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.78rem;cursor:pointer">🖼️ Symbols</button>
+      </div>
       <div style="display:flex;gap:8px;align-items:center">
-        <input id="emoji-search" type="text" placeholder="🔍 Search emoji..." oninput="filterEmoji(this.value)" style="flex:1;padding:9px 12px;border:2px solid #ddd;border-radius:10px;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-size:.88rem;outline:none">
+        <input id="emoji-search" type="text" placeholder="🔍 Search emoji..." oninput="if(pickerMode==='emoji')filterEmoji(this.value);else searchSymbols(this.value.trim())" style="flex:1;padding:9px 12px;border:2px solid #ddd;border-radius:10px;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-size:.88rem;outline:none">
         <button onclick="closeEmojiPicker()" style="border:none;background:#eee;color:#666;border-radius:10px;padding:9px 14px;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.82rem;cursor:pointer">✕</button>
       </div>
       <div id="emoji-cat-tabs" style="display:flex;gap:4px;overflow-x:auto;padding:8px 0 4px;-webkit-overflow-scrolling:touch;scrollbar-width:none"></div>
     </div>
     <div id="emoji-grid-wrap" style="flex:1;overflow-y:auto;padding:4px 10px 24px;-webkit-overflow-scrolling:touch"></div>
+    <div id="symbol-grid-wrap" style="display:none;flex:1;overflow-y:auto;padding:4px 10px 24px;-webkit-overflow-scrolling:touch"></div>
   </div>
 </div>
 
@@ -1188,6 +1209,19 @@ var emergPhrases=JSON.parse(localStorage.getItem('aidova_emergphrases')||'null')
   {label:'CALL CARER',    speak:'Calling my carer now. Please wait.',     emoji:'📞'}
 ]; // 0=small 1=normal 2=large
 var voiceGender=localStorage.getItem('aidova_vgender')||'f';
+var iconStyleDefault=localStorage.getItem('aidova_iconstyle')||'symbol';
+function setIconStyleDefault(style){
+  iconStyleDefault=style;
+  localStorage.setItem('aidova_iconstyle',style);
+  var bs=document.getElementById('istyle-btn-symbol'),be=document.getElementById('istyle-btn-emoji');
+  if(bs){bs.style.background=style==='symbol'?'#2D6A4F':'#eee';bs.style.color=style==='symbol'?'#fff':'#555';bs.style.borderColor=style==='symbol'?'#2D6A4F':'#eee';}
+  if(be){be.style.background=style==='emoji'?'#2D6A4F':'#eee';be.style.color=style==='emoji'?'#fff':'#555';be.style.borderColor=style==='emoji'?'#2D6A4F':'#eee';}
+  // Refresh all built-in button pages so the switch is visible immediately
+  var cats=['cf','cn','cp','cs'];
+  for(var pi=0;pi<4;pi++){
+    if(BTNS[pi])renderPage(pi,BTNS[pi],cats[pi]);
+  }
+}
 var voiceLang=localStorage.getItem('aidova_vlang')||'';
 var darkMode=localStorage.getItem('aidova_dark')==='true';
 var adultMode=localStorage.getItem('aidova_adult')==='true';
@@ -2841,6 +2875,64 @@ function timerFinished(){
 }
 
 // RENDER
+var builtinSymbolCache=(function(){try{return JSON.parse(localStorage.getItem('aidova_builtin_symbols')||'{}');}catch(e){return {};}})();
+var symbolFetchQueue=[];
+var symbolFetchQueued={};
+var symbolFetchRunning=false;
+
+function saveBuiltinSymbolCache(){
+  try{localStorage.setItem('aidova_builtin_symbols',JSON.stringify(builtinSymbolCache));}catch(e){}
+}
+
+function fetchBuiltinSymbol(word,key){
+  if(!word||builtinSymbolCache[word]!==undefined)return; // already cached (or already tried and failed — null)
+  if(symbolFetchQueued[word])return; // already waiting in the queue
+  symbolFetchQueued[word]=true;
+  symbolFetchQueue.push({word:word,key:key});
+  processSymbolFetchQueue();
+}
+
+function processSymbolFetchQueue(){
+  if(symbolFetchRunning||!symbolFetchQueue.length)return;
+  symbolFetchRunning=true;
+  var item=symbolFetchQueue.shift();
+  fetch('/api/symbol-search?q='+encodeURIComponent(item.word))
+    .then(function(r){return r.json();})
+    .then(function(results){
+      if(results&&results.length){
+        var img=new Image();
+        img.crossOrigin='anonymous';
+        img.onload=function(){
+          var dataUrl;
+          try{
+            var c=document.createElement('canvas'),MAX=100,w=img.width,h=img.height;
+            if(w>h){if(w>MAX){h=h*MAX/w;w=MAX;}}else{if(h>MAX){w=w*MAX/h;h=MAX;}}
+            c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);
+            dataUrl=c.toDataURL('image/png');
+          }catch(e){dataUrl=results[0].image_url;}
+          builtinSymbolCache[item.word]=dataUrl;
+          saveBuiltinSymbolCache();
+          document.querySelectorAll('.circ[data-key="'+item.key+'"] .ci').forEach(function(span){
+            span.innerHTML='<img src="'+dataUrl+'" style="width:1.8rem;height:1.8rem;object-fit:contain">';
+          });
+          nextInQueue();
+        };
+        img.onerror=function(){builtinSymbolCache[item.word]=null;saveBuiltinSymbolCache();nextInQueue();};
+        img.src=results[0].image_url;
+      }else{
+        builtinSymbolCache[item.word]=null; // no match found — keep showing emoji, don't retry every render
+        saveBuiltinSymbolCache();
+        nextInQueue();
+      }
+    })
+    .catch(function(){nextInQueue();/* offline or API hiccup — keep showing emoji, will retry next time cache is empty */});
+}
+
+function nextInQueue(){
+  symbolFetchRunning=false;
+  setTimeout(processSymbolFetchQueue,150); // small gap between requests to stay well under any rate limit
+}
+
 function mkCirc(icon,label,word,cat,clickFn,key){
   var el=document.createElement('div');el.className='circ '+cat;el.dataset.key=key||'';
   if(hiddenB[key])el.classList.add('hidden-btn');
@@ -2848,8 +2940,13 @@ function mkCirc(icon,label,word,cat,clickFn,key){
   if(icon&&icon.startsWith('TRAMP64:')){
     var b64=icon.substring(8);
     iconHtml='<span class="ci"><img src="data:image/png;base64,'+b64+'" style="width:1.8rem;height:1.8rem;object-fit:contain"></span>';
+  } else if(iconStyleDefault==='symbol'&&word&&builtinSymbolCache[word]){
+    iconHtml='<span class="ci"><img src="'+builtinSymbolCache[word]+'" style="width:1.8rem;height:1.8rem;object-fit:contain"></span>';
   } else {
     iconHtml='<span class="ci">'+icon+'</span>';
+    if(iconStyleDefault==='symbol'&&word&&builtinSymbolCache[word]===undefined){
+      fetchBuiltinSymbol(word,key); // not cached yet — fetch in background, swaps in once ready
+    }
   }
   el.innerHTML=iconHtml+'<span class="cl">'+label+'</span>';
   var pt=null,held=false;
@@ -3291,8 +3388,8 @@ function updateSettingsBadges(){
 }
 
 function openPanel(){
-  if(locked){requirePin(function(){renderProfiles();buildCatColSettings();updatePstat();renderWordReport();renderAcctCard();updateSettingsBadges();document.getElementById('panel').classList.add('open');});return;}
-  renderProfiles();buildCatColSettings();updatePstat();renderWordReport();renderAcctCard();updateSettingsBadges();document.getElementById('panel').classList.add('open');
+  if(locked){requirePin(function(){renderProfiles();buildCatColSettings();updatePstat();renderWordReport();renderAcctCard();updateSettingsBadges();renderSymbolCredits();document.getElementById('panel').classList.add('open');});return;}
+  renderProfiles();buildCatColSettings();updatePstat();renderWordReport();renderAcctCard();updateSettingsBadges();renderSymbolCredits();document.getElementById('panel').classList.add('open');
 }
 function closePanel(){document.getElementById('panel').classList.remove('open');}
 function openHelp(){closePanel();document.getElementById('helpmod').classList.add('open');}
@@ -4673,6 +4770,7 @@ var emojiPickerCat='people';
 function openEmojiPicker(){
   document.getElementById('emojipicker').style.display='flex';
   document.getElementById('emoji-search').value='';
+  setPickerMode(iconStyleDefault);
   buildEmojiCatTabs();
   renderEmojiGrid(emojiPickerCat,null);
   setTimeout(function(){document.getElementById('emoji-search').focus();},300);
@@ -4765,7 +4863,145 @@ function pickEmoji(emoji,label){
   closeEmojiPicker();
 }
 
+function renderSymbolCredits(){
+  var el=document.getElementById('symcredits-list');
+  if(!el)return;
+  var credits=[];
+  try{credits=JSON.parse(localStorage.getItem('aidova_symbol_credits')||'[]');}catch(e){}
+  if(!credits.length){
+    el.innerHTML='<div style="color:#aaa">No AAC symbols in use yet — this fills in automatically as you choose symbols from the Symbols tab when adding buttons.</div>';
+    return;
+  }
+  el.innerHTML=credits.map(function(c){
+    return '<div style="padding:4px 0;border-bottom:1px solid #f0f0f0">"'+(c.name||'')+'" — '+(c.license||'')
+      +(c.author?(' by '+c.author):'')
+      +(c.author_url?(' (<a href="'+c.author_url+'" target="_blank" style="color:#2D6A4F">source</a>)'):'')
+      +'</div>';
+  }).join('');
+}
+
 function onEmojiSel(sel){if(!sel.value)return;var p=sel.value.split('|');selEmoji=p[0];selLabel=p[1]||p[0];document.getElementById('eprev').textContent=selEmoji;if(!document.getElementById('mlabel').value.trim())document.getElementById('mlabel').value=selLabel;}
+
+// ===== SYMBOL PICKER (OpenSymbols) =====
+var pickerMode='emoji';
+var symbolSearchTimer=null;
+function setPickerMode(mode){
+  pickerMode=mode;
+  var tabE=document.getElementById('picker-tab-emoji'),tabS=document.getElementById('picker-tab-symbol');
+  var catTabs=document.getElementById('emoji-cat-tabs');
+  var eGrid=document.getElementById('emoji-grid-wrap'),sGrid=document.getElementById('symbol-grid-wrap');
+  var search=document.getElementById('emoji-search');
+  if(mode==='emoji'){
+    tabE.style.background='#2D6A4F';tabE.style.color='#fff';
+    tabS.style.background='#eee';tabS.style.color='#666';
+    catTabs.style.display='';eGrid.style.display='';sGrid.style.display='none';
+    search.placeholder='🔍 Search emoji...';
+  }else{
+    tabE.style.background='#eee';tabE.style.color='#666';
+    tabS.style.background='#2D6A4F';tabS.style.color='#fff';
+    catTabs.style.display='none';eGrid.style.display='none';sGrid.style.display='';
+    search.placeholder='🔍 Search symbols (e.g. water, happy)...';
+    var q=search.value.trim();
+    if(q)searchSymbols(q);
+    else document.getElementById('symbol-grid-wrap').innerHTML='<div style="text-align:center;padding:30px 20px;color:#aaa;font-size:.8rem">Type a word to search proper AAC symbols</div>';
+  }
+}
+
+function searchSymbols(q){
+  clearTimeout(symbolSearchTimer);
+  symbolSearchTimer=setTimeout(function(){
+    var wrap=document.getElementById('symbol-grid-wrap');
+    wrap.innerHTML='<div style="text-align:center;padding:30px 20px;color:#aaa;font-size:.8rem">Searching...</div>';
+    fetch('/api/symbol-search?q='+encodeURIComponent(q))
+      .then(function(r){return r.json();})
+      .then(function(results){renderSymbolResults(results,q);})
+      .catch(function(){wrap.innerHTML='<div style="text-align:center;padding:30px 20px;color:#c66;font-size:.8rem">Couldn\'t load symbols right now. Try again in a moment.</div>';});
+  },400);
+}
+
+function renderSymbolResults(results,q){
+  var wrap=document.getElementById('symbol-grid-wrap');
+  if(!results||!results.length){
+    wrap.innerHTML='<div style="text-align:center;padding:30px 20px;color:#aaa;font-size:.8rem">No symbols found for "'+q+'" — try a simpler word, or use the Emoji tab instead</div>';
+    return;
+  }
+  wrap.innerHTML='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:8px">'
+    +results.map(function(r,i){
+      return '<div onclick="pickSymbol('+i+')" style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 2px;border-radius:10px;cursor:pointer;gap:2px;border:1.5px solid #eee" '
+        +'title="'+(r.name||'')+' — '+(r.license||'')+'">'
+        +'<img src="'+r.image_url+'" style="width:40px;height:40px;object-fit:contain" loading="lazy">'
+        +'<span style="font-size:.5rem;color:#888;text-align:center;line-height:1.2;max-width:60px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+(r.name||'')+'</span>'
+        +'</div>';
+    }).join('')+'</div>';
+  window._symbolResults=results;
+}
+
+function pickSymbol(idx){
+  var r=window._symbolResults&&window._symbolResults[idx];
+  if(!r)return;
+  var label=(r.name||'symbol').toUpperCase();
+  var img=new Image();
+  img.crossOrigin='anonymous';
+  img.onload=function(){
+    var dataUrl;
+    try{
+      var c=document.createElement('canvas'),MAX=200,w=img.width,h=img.height;
+      if(w>h){if(w>MAX){h=h*MAX/w;w=MAX;}}else{if(h>MAX){w=w*MAX/h;h=MAX;}}
+      c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);
+      dataUrl=c.toDataURL('image/png');
+    }catch(e){
+      // Cross-origin canvas restriction — fall back to using the hosted URL directly
+      dataUrl=r.image_url;
+    }
+    applySymbolSelection(dataUrl,label,r);
+  };
+  img.onerror=function(){applySymbolSelection(r.image_url,label,r);};
+  img.src=r.image_url;
+}
+
+function applySymbolSelection(dataUrl,label,r){
+  // Track attribution for CC-licensed symbols actually in use (shown in Settings → Symbol Credits)
+  try{
+    var credits=JSON.parse(localStorage.getItem('aidova_symbol_credits')||'[]');
+    var already=credits.some(function(c){return c.repo_key===r.repo_key&&c.name===r.name;});
+    if(!already){
+      credits.push({name:r.name,license:r.license,author:r.author,author_url:r.author_url,repo_key:r.repo_key});
+      localStorage.setItem('aidova_symbol_credits',JSON.stringify(credits));
+    }
+  }catch(e){}
+
+  if(window._emojiPickerTarget==='folder'){
+    folderPhotoUrl=dataUrl;
+    var pv=document.getElementById('fadd-pprev');
+    if(pv){pv.src=dataUrl;pv.style.display='block';}
+    var hint=document.getElementById('fadd-phint');if(hint)hint.style.display='none';
+    document.getElementById('fadd-prev').textContent='🖼️';
+    if(!document.getElementById('fadd-label').value.trim())document.getElementById('fadd-label').value=label;
+    window._emojiPickerTarget=null;
+    closeEmojiPicker();
+    document.getElementById('folderaddmod').style.display='flex';
+    return;
+  }
+  if(window._emojiPickerTarget==='createfolder'){
+    window._createFolderPhoto=dataUrl;
+    var cfPrev=document.getElementById('cf-prev');
+    if(cfPrev){cfPrev.innerHTML='';var im=document.createElement('img');im.src=dataUrl;im.style.cssText='width:28px;height:28px;object-fit:contain';cfPrev.appendChild(im);}
+    window._emojiPickerTarget=null;
+    closeEmojiPicker();
+    return;
+  }
+  window._emojiPickerTarget=null;
+  photoUrl=dataUrl;
+  selEmoji='🖼️';selLabel=label;
+  var eprev=document.getElementById('eprev');
+  if(eprev)eprev.textContent='🖼️';
+  var elabel=document.getElementById('emoji-selected-label');if(elabel)elabel.textContent=label;
+  var btn=document.querySelector('#recmod button[onclick="openEmojiPicker()"]');
+  if(btn)btn.textContent='🖼️ '+label+' →';
+  if(!document.getElementById('mlabel').value.trim())document.getElementById('mlabel').value=label;
+  closeEmojiPicker();
+}
+
 function onPhoto(inp){var f=inp.files[0];if(!f)return;var r=new FileReader();r.onload=function(e){var img=new Image();img.onload=function(){var c=document.createElement('canvas'),MAX=200,w=img.width,h=img.height;if(w>h){if(w>MAX){h=h*MAX/w;w=MAX;}}else{if(h>MAX){w=w*MAX/h;h=MAX;}}c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);photoUrl=c.toDataURL('image/jpeg',.7);var pv=document.getElementById('pprev');pv.src=photoUrl;pv.style.display='block';document.getElementById('phint').style.display='none';document.getElementById('spkrow').style.display='block';selEmoji='📷';document.getElementById('eprev').textContent='📷';};img.src=e.target.result;};r.readAsDataURL(f);}
 function openRec(pi,s){recPg=pi;recSl=s;photoUrl=null;selEmoji='🎤';selLabel='';selBtnColour='';
   document.getElementById('eprev').textContent='🎤';
@@ -4935,6 +5171,7 @@ if(kiosk){document.getElementById('ktog').classList.add('on');enableKiosk();}
 if(premplus)document.getElementById('pstat').textContent='🌟 Premium Plus';
 else if(premium)document.getElementById('pstat').textContent='⭐ Premium';
 setVoiceGender(voiceGender,true);
+setIconStyleDefault(iconStyleDefault);
 populateLangSelect();
 applyBtnSize();
 // Set volume slider to saved value
