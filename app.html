@@ -1221,6 +1221,7 @@ function setIconStyleDefault(style){
   for(var pi=0;pi<4;pi++){
     if(BTNS[pi])renderPage(pi,BTNS[pi],cats[pi]);
   }
+  resize(); // re-apply correct button/icon sizing to the freshly rebuilt buttons
 }
 var voiceLang=localStorage.getItem('aidova_vlang')||'';
 var darkMode=localStorage.getItem('aidova_dark')==='true';
