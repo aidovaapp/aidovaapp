@@ -36,7 +36,7 @@
 <body>
 
 <h1>🖼️ Symbol Review</h1>
-<div class="sub">Pick the best symbol for each word, or mark "No good match" to keep emoji. 56 words are approved and live in the app — this list has the 45 never-reviewed words plus 4 (rest, cuddle, change, cold) flagged for a second look since their auto-picked matches were confusing or wrong. If several candidates fit the word, prefer whichever one fills its frame clearly — some symbols have a lot of built-in empty space and end up looking small/faint on the actual buttons even though the meaning is right. This does NOT change the live app — it only builds a review file for Charmy to bake in once approved.</div>
+<div class="sub">Pick the best symbol for each word, or mark "No good match" to keep emoji. 54 words are approved and live in the app — this list has the 45 never-reviewed words plus 6 (rest, cuddle, change, cold, hospital, come here) flagged for a second look, either for a confusing match or a visible background box on the icon. If several candidates fit the word, prefer whichever one fills its frame clearly and has a clean/transparent background — JPG-sourced candidates will always show a solid box behind them, so prefer an SVG or PNG option when one's available. This does NOT change the live app — it only builds a review file for Charmy to bake in once approved.</div>
 
 <div class="toolbar">
   <select id="catFilter" onchange="renderRows()">
@@ -62,8 +62,8 @@
 <script>
 var BTNS_WORDS = {
   "1": [["overwhelmed","OVERWHELMED"],["outside","OUTSIDE"],["clean","CLEAN"],["hurt","HURT"],["tired","TIRED"],["move","MOVE"],["rest","REST"],["cuddle","CUDDLE"],["change","CHANGE"],["cold","COLD"]],
-  "2": [["home","HOME"],["dentist","DENTIST"],["books","BOOKS"],["kitchen","KITCHEN"],["shops","SHOPS"],["cafe","CAFÉ"],["airport","AIRPORT"],["therapy","THERAPY"],["hairdresser","HAIRDRESSER"],["gym","GYM"],["supermarket","SUPERMARKET"],["mosque","MOSQUE"],["temple","TEMPLE"],["funfair","FUNFAIR"],["hotel","HOTEL"]],
-  "3": [["help","HELP"],["wait","WAIT"],["thank you","THANK YOU"],["me time","ME TIME"],["hello","HELLO"],["okay","OKAY"],["sorry","SORRY"],["done","DONE"],["quiet","QUIET"],["stop","STOP"],["goodbye","GOODBYE"],["please","PLEASE"],["no thank you","NO THANKS"],["i dont know","DONT KNOW"],["my turn","MY TURN"],["share","SHARE"],["finished","FINISHED"],["well done","WELL DONE"],["what","WHAT"],["where","WHERE"],["your turn","YOUR TURN"],["try again","TRY AGAIN"],["i need some space","I NEED SPACE"],["i do not want to talk","I DONT WANT TO TALK"]]
+  "2": [["home","HOME"],["dentist","DENTIST"],["books","BOOKS"],["kitchen","KITCHEN"],["shops","SHOPS"],["cafe","CAFÉ"],["airport","AIRPORT"],["therapy","THERAPY"],["hairdresser","HAIRDRESSER"],["gym","GYM"],["supermarket","SUPERMARKET"],["mosque","MOSQUE"],["temple","TEMPLE"],["funfair","FUNFAIR"],["hotel","HOTEL"],["hospital","HOSPITAL"]],
+  "3": [["help","HELP"],["wait","WAIT"],["thank you","THANK YOU"],["me time","ME TIME"],["hello","HELLO"],["okay","OKAY"],["sorry","SORRY"],["done","DONE"],["quiet","QUIET"],["stop","STOP"],["goodbye","GOODBYE"],["please","PLEASE"],["no thank you","NO THANKS"],["i dont know","DONT KNOW"],["my turn","MY TURN"],["share","SHARE"],["finished","FINISHED"],["well done","WELL DONE"],["what","WHAT"],["where","WHERE"],["your turn","YOUR TURN"],["try again","TRY AGAIN"],["i need some space","I NEED SPACE"],["i do not want to talk","I DONT WANT TO TALK"],["come here","COME HERE"]]
 };
 
 var reviewData = {}; // word -> {candidates:[], selected:idx|null, status:'unreviewed'|'approved'|'rejected'}
@@ -116,6 +116,7 @@ function renderRows(){
         return '<div class="cand '+sel+'" onclick="selectCandidate(\''+e.word.replace(/'/g,"\\'")+'\','+i+')">'
           +'<img src="'+c.image_url+'" loading="lazy">'
           +'<div class="meta">'+(c.repo_key||'')+'</div>'
+          +(/\.jpe?g/i.test(c.image_url)?'<div style="font-size:.55rem;color:#c66;font-weight:700">⚠ JPG — no transparency</div>':'')
           +'<div class="lic">'+(c.license||'')+'</div>'
           +'</div>';
       }).join('');
