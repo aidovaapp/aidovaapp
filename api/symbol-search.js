@@ -8,12 +8,16 @@
 // If/when ARASAAC grants separate commercial permission, 'arasaac' can
 // be added to ALLOWED_REPOS below.
 //
-// NOTE: repo_key values below (mulberry, twemoji, tawasol, coughdrop)
+// NOTE: repo_key values below (mulberry, tawasol, coughdrop)
 // are our best expectation based on OpenSymbols' documented library list —
 // worth confirming against a live search result (each result includes
 // "repo_key") before relying on this filter in production.
 
-const ALLOWED_REPOS = ['mulberry', 'twemoji', 'tawasol', 'coughdrop'];
+// Twemoji deliberately excluded: it's Twitter's own emoji set, not a real AAC
+// pictogram system — still gendered faces, skin tones, and stylistic detail
+// that proper AAC symbols (Mulberry, Tawasol) are specifically designed to
+// avoid, so including it defeated the purpose of moving away from emoji.
+const ALLOWED_REPOS = ['mulberry', 'tawasol', 'coughdrop'];
 
 let cachedToken = null;
 let cachedTokenAt = 0;
