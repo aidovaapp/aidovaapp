@@ -227,7 +227,7 @@ body.editing #app{padding-top:38px}
 .circ:active{transform:scale(.87)}
 .circ.pop{animation:pop .35s cubic-bezier(.36,.07,.19,.97)}
 @keyframes pop{0%{transform:scale(1)}35%{transform:scale(1.16) rotate(-3deg)}65%{transform:scale(.94) rotate(2deg)}85%{transform:scale(1.05)}100%{transform:scale(1)}}
-.ci{line-height:1;pointer-events:none}.cl{font-weight:900;text-align:center;line-height:1.1;color:#333;pointer-events:none;margin-top:3px;text-transform:uppercase}
+.ci{line-height:1;pointer-events:none}.ci img{width:1em;height:1em;object-fit:contain;vertical-align:middle;display:block}.cl{font-weight:900;text-align:center;line-height:1.1;color:#333;pointer-events:none;margin-top:3px;text-transform:uppercase}
 .cf{background:var(--col-cf,#FFCCBC)}.cn{background:var(--col-cn,#B3E5FC)}.cp{background:var(--col-cp,#FFF9C4)}.cs{background:var(--col-cs,#E1BEE7)}
 .col-swatch{width:28px;height:28px;border-radius:50%;border:2px solid transparent;cursor:pointer;flex-shrink:0;transition:transform .15s}
 .col-swatch:active{transform:scale(.88)}
@@ -2913,7 +2913,7 @@ function processSymbolFetchQueue(){
           builtinSymbolCache[item.word]=dataUrl;
           saveBuiltinSymbolCache();
           document.querySelectorAll('.circ[data-key="'+item.key+'"] .ci').forEach(function(span){
-            span.innerHTML='<img src="'+dataUrl+'" style="width:1.8rem;height:1.8rem;object-fit:contain">';
+            span.innerHTML='<img src="'+dataUrl+'" >';
           });
           nextInQueue();
         };
@@ -2937,14 +2937,19 @@ function mkCirc(icon,label,word,cat,clickFn,key){
   var el=document.createElement('div');el.className='circ '+cat;el.dataset.key=key||'';
   if(hiddenB[key])el.classList.add('hidden-btn');
   var iconHtml;
+  // Feelings (cat 'cf') excluded from auto symbol-matching: emotion words returned
+  // genuinely poor/inappropriate results in testing (e.g. stranger photos for
+  // "angry"/"lonely"). Needs manual curation before enabling here — concrete
+  // words in other categories aren't affected by this restriction.
+  var symbolEligible=(iconStyleDefault==='symbol'&&word&&cat!=='cf');
   if(icon&&icon.startsWith('TRAMP64:')){
     var b64=icon.substring(8);
-    iconHtml='<span class="ci"><img src="data:image/png;base64,'+b64+'" style="width:1.8rem;height:1.8rem;object-fit:contain"></span>';
-  } else if(iconStyleDefault==='symbol'&&word&&builtinSymbolCache[word]){
-    iconHtml='<span class="ci"><img src="'+builtinSymbolCache[word]+'" style="width:1.8rem;height:1.8rem;object-fit:contain"></span>';
+    iconHtml='<span class="ci"><img src="data:image/png;base64,'+b64+'" ></span>';
+  } else if(symbolEligible&&builtinSymbolCache[word]){
+    iconHtml='<span class="ci"><img src="'+builtinSymbolCache[word]+'" ></span>';
   } else {
     iconHtml='<span class="ci">'+icon+'</span>';
-    if(iconStyleDefault==='symbol'&&word&&builtinSymbolCache[word]===undefined){
+    if(symbolEligible&&builtinSymbolCache[word]===undefined){
       fetchBuiltinSymbol(word,key); // not cached yet — fetch in background, swaps in once ready
     }
   }
