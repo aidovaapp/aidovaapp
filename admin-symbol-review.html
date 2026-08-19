@@ -53,6 +53,7 @@
     <option value="rejected">No good match only</option>
   </select>
   <button onclick="fetchVisible()">🔍 Fetch symbols for visible rows</button>
+  <button onclick="clearAndRefetch()" style="background:#fff3f3;border-color:#e6b3b3;color:#c66">🗑️ Clear cache &amp; refetch visible</button>
   <button class="primary" onclick="exportResults()">⬇️ Export approved JSON</button>
   <span class="progress" id="progress"></span>
 </div>
@@ -136,44 +137,74 @@ function updateProgress(){
   document.getElementById('progress').textContent = done+' / '+all.length+' reviewed';
 }
 
+function clearAndRefetch(){
+  var catF = document.getElementById('catFilter').value;
+  var entries = allWordEntries().filter(function(e){return catF==='all'||e.cat===catF;});
+  entries.forEach(function(e){
+    if(reviewData[e.word]){
+      reviewData[e.word].candidates = null; // clear stale results, keep any approved/rejected decision intact
+    }
+  });
+  saveProgress();
+  fetchVisible();
+}
+
 function fetchVisible(){
   var catF = document.getElementById('catFilter').value;
   var entries = allWordEntries().filter(function(e){return catF==='all'||e.cat===catF;});
   var toFetch = entries.filter(function(e){return !reviewData[e.word] || !reviewData[e.word].candidates;});
-  fetchQueue(toFetch, 0);
+  fetchQueueConcurrent(toFetch);
 }
 
-function fetchQueue(list, i){
-  if(i>=list.length){renderRows();saveProgress();return;}
-  var e = list[i];
-  fetch('/api/symbol-search?q='+encodeURIComponent(e.word))
-    .then(function(r){return r.json();})
-    .then(function(results){
-      reviewData[e.word] = reviewData[e.word] || {selected:null,status:'unreviewed'};
-      reviewData[e.word].candidates = (results||[]).slice(0,6);
-      setTimeout(function(){fetchQueue(list,i+1);},200);
-    })
-    .catch(function(){
-      reviewData[e.word] = reviewData[e.word] || {selected:null,status:'unreviewed'};
-      reviewData[e.word].candidates = [];
-      setTimeout(function(){fetchQueue(list,i+1);},200);
-    });
-  // Show progress as it goes
-  if(i%5===0){document.getElementById('progress').textContent='Fetching... '+i+'/'+list.length;}
+function fetchQueueConcurrent(list){
+  var CONCURRENCY = 3;
+  var idx = 0, done = 0;
+  document.getElementById('progress').textContent = 'Fetching... 0/'+list.length;
+  function next(){
+    if(idx>=list.length)return;
+    var e = list[idx++];
+    fetch('/api/symbol-search?q='+encodeURIComponent(e.word))
+      .then(function(r){return r.json();})
+      .then(function(results){
+        reviewData[e.word] = reviewData[e.word] || {selected:null,status:'unreviewed'};
+        reviewData[e.word].candidates = (results||[]).slice(0,6);
+      })
+      .catch(function(){
+        reviewData[e.word] = reviewData[e.word] || {selected:null,status:'unreviewed'};
+        reviewData[e.word].candidates = [];
+      })
+      .finally(function(){
+        done++;
+        document.getElementById('progress').textContent = 'Fetching... '+done+'/'+list.length;
+        if(done===list.length){renderRows();saveProgress();}
+        next();
+      });
+  }
+  for(var i=0;i<CONCURRENCY;i++)next();
 }
 
 function selectCandidate(word, idx){
   reviewData[word] = reviewData[word] || {candidates:null,selected:null,status:'unreviewed'};
-  reviewData[word].selected = idx;
-  reviewData[word].status = 'approved';
+  if(reviewData[word].selected===idx && reviewData[word].status==='approved'){
+    // Clicking the already-selected one again deselects it
+    reviewData[word].selected = null;
+    reviewData[word].status = 'unreviewed';
+  }else{
+    reviewData[word].selected = idx;
+    reviewData[word].status = 'approved';
+  }
   saveProgress();
   renderRows();
 }
 
 function markNoMatch(word){
   reviewData[word] = reviewData[word] || {candidates:null,selected:null,status:'unreviewed'};
-  reviewData[word].selected = null;
-  reviewData[word].status = 'rejected';
+  if(reviewData[word].status==='rejected'){
+    reviewData[word].status = 'unreviewed';
+  }else{
+    reviewData[word].selected = null;
+    reviewData[word].status = 'rejected';
+  }
   saveProgress();
   renderRows();
 }
