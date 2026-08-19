@@ -175,7 +175,7 @@ function fetchQueueConcurrent(list){
       .then(function(r){return r.json();})
       .then(function(results){
         reviewData[e.word] = reviewData[e.word] || {selected:null,status:'unreviewed'};
-        reviewData[e.word].candidates = (results||[]).slice(0,6);
+        reviewData[e.word].candidates = (results||[]).slice(0,12);
       })
       .catch(function(){
         reviewData[e.word] = reviewData[e.word] || {selected:null,status:'unreviewed'};

@@ -58,31 +58,46 @@ module.exports = async (req, res) => {
 
   try {
     const token = await getAccessToken();
-    const searchUrl = 'https://www.opensymbols.org/api/v2/symbols'
-      + '?access_token=' + encodeURIComponent(token)
-      + '&q=' + encodeURIComponent(q)
-      + '&locale=' + encodeURIComponent(locale)
-      + '&safe=1';
 
-    const resp = await fetch(searchUrl);
+    // Search each allowed library separately (using OpenSymbols' "repo:" query
+    // filter) and combine the results. A single mixed search mostly returns
+    // results from libraries we don't allow (arasaac, twemoji, etc.), which
+    // then get discarded — searching per-repo means every result we fetch is
+    // actually usable, giving reviewers far more real choices per word.
+    const searches = await Promise.all(ALLOWED_REPOS.map(function (repo) {
+      const searchUrl = 'https://www.opensymbols.org/api/v2/symbols'
+        + '?access_token=' + encodeURIComponent(token)
+        + '&q=' + encodeURIComponent(q + ' repo:' + repo)
+        + '&locale=' + encodeURIComponent(locale)
+        + '&safe=1';
+      return fetch(searchUrl).then(function (resp) {
+        if (resp.status === 401) return { needsRetry: true, repo: repo };
+        if (!resp.ok) return [];
+        return resp.json();
+      }).catch(function () { return []; });
+    }));
 
-    if (resp.status === 401) {
-      // Token expired between our cache check and this call — retry once with a fresh token
+    // If any individual search hit an expired token, refresh once and retry those
+    const needsRetry = searches.some(function (r) { return r && r.needsRetry; });
+    let finalResults;
+    if (needsRetry) {
       cachedToken = null;
       const freshToken = await getAccessToken();
-      const retryUrl = searchUrl.replace(/access_token=[^&]+/, 'access_token=' + encodeURIComponent(freshToken));
-      const retryResp = await fetch(retryUrl);
-      if (!retryResp.ok) throw new Error('OpenSymbols search failed after retry (' + retryResp.status + ')');
-      const retryResults = await retryResp.json();
-      return res.status(200).json(filterResults(retryResults));
+      const retried = await Promise.all(ALLOWED_REPOS.map(function (repo) {
+        const retryUrl = 'https://www.opensymbols.org/api/v2/symbols'
+          + '?access_token=' + encodeURIComponent(freshToken)
+          + '&q=' + encodeURIComponent(q + ' repo:' + repo)
+          + '&locale=' + encodeURIComponent(locale)
+          + '&safe=1';
+        return fetch(retryUrl).then(function (resp) { return resp.ok ? resp.json() : []; }).catch(function () { return []; });
+      }));
+      finalResults = retried;
+    } else {
+      finalResults = searches;
     }
 
-    if (!resp.ok) {
-      throw new Error('OpenSymbols search failed (' + resp.status + ')');
-    }
-
-    const results = await resp.json();
-    return res.status(200).json(filterResults(results));
+    const combined = [].concat.apply([], finalResults.filter(function (r) { return Array.isArray(r); }));
+    return res.status(200).json(filterResults(combined));
 
   } catch (err) {
     console.error('Symbol search error:', err);
