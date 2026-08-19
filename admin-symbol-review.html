@@ -36,12 +36,11 @@
 <body>
 
 <h1>🖼️ Symbol Review</h1>
-<div class="sub">Pick the best symbol for each word, or mark "No good match" to keep emoji. This does NOT change the live app — it only builds a review file for Charmy to bake in once approved.</div>
+<div class="sub">Pick the best symbol for each word, or mark "No good match" to keep emoji. Covers Needs, Places, and Social (105 words) — Feelings is staying emoji-only for now, with custom symbols planned separately later. This does NOT change the live app — it only builds a review file for Charmy to bake in once approved.</div>
 
 <div class="toolbar">
   <select id="catFilter" onchange="renderRows()">
     <option value="all">All categories</option>
-    <option value="0">Feelings</option>
     <option value="1">Needs</option>
     <option value="2">Places</option>
     <option value="3">Social</option>
@@ -84,6 +83,7 @@ function saveProgress(){
 function allWordEntries(){
   var out=[];
   Object.keys(BTNS_WORDS).forEach(function(catId){
+    if(catId==='0')return; // Feelings excluded — staying emoji-only; custom symbols planned separately later
     BTNS_WORDS[catId].forEach(function(pair){
       out.push({cat:catId, word:pair[0], label:pair[1]});
     });
