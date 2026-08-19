@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aidova — Symbol Review (Admin)</title>
+<meta name="robots" content="noindex">
+<style>
+  *{box-sizing:border-box}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;background:#F5F7F5;margin:0;padding:20px;color:#222}
+  h1{color:#1B5E20;font-size:1.3rem;margin:0 0 4px}
+  .sub{color:#666;font-size:.85rem;margin-bottom:16px}
+  .toolbar{position:sticky;top:0;background:#F5F7F5;padding:10px 0;z-index:10;display:flex;gap:10px;align-items:center;flex-wrap:wrap;border-bottom:2px solid #ddd;margin-bottom:16px}
+  .toolbar select,.toolbar button{padding:8px 12px;border-radius:8px;border:1.5px solid #ccc;font-size:.85rem;cursor:pointer}
+  .toolbar button.primary{background:#2D6A4F;color:#fff;border:none;font-weight:700}
+  .progress{font-size:.8rem;color:#555;margin-left:auto}
+  .row{background:#fff;border-radius:14px;padding:14px;margin-bottom:10px;border:2px solid #eee;display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap}
+  .row.approved{border-color:#2D6A4F;background:#F3FBF5}
+  .row.rejected{border-color:#c66;background:#FBF3F3;opacity:.6}
+  .word-info{min-width:130px}
+  .word-info .label{font-weight:900;font-size:.95rem}
+  .word-info .emoji{font-size:1.6rem;margin:4px 0}
+  .word-info .cat{font-size:.65rem;color:#888;text-transform:uppercase}
+  .candidates{display:flex;gap:8px;flex-wrap:wrap;flex:1}
+  .cand{border:2px solid #eee;border-radius:10px;padding:6px;text-align:center;cursor:pointer;width:74px}
+  .cand.selected{border-color:#2D6A4F;background:#E8F5E9}
+  .cand img{width:44px;height:44px;object-fit:contain}
+  .cand .meta{font-size:.55rem;color:#888;line-height:1.2;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .cand .lic{font-size:.5rem;color:#aaa}
+  .loading{color:#aaa;font-size:.8rem;padding:10px}
+  .none-btn{border:2px dashed #ddd;border-radius:10px;padding:6px 10px;text-align:center;cursor:pointer;width:74px;display:flex;flex-direction:column;justify-content:center;align-items:center;font-size:.62rem;color:#888}
+  .none-btn.selected{border-color:#c66;background:#FBF3F3;color:#c66}
+  .status{font-size:1.3rem;margin-left:8px}
+</style>
+</head>
+<body>
+
+<h1>🖼️ Symbol Review</h1>
+<div class="sub">Pick the best symbol for each word, or mark "No good match" to keep emoji. This does NOT change the live app — it only builds a review file for Charmy to bake in once approved.</div>
+
+<div class="toolbar">
+  <select id="catFilter" onchange="renderRows()">
+    <option value="all">All categories</option>
+    <option value="0">Feelings</option>
+    <option value="1">Needs</option>
+    <option value="2">Places</option>
+    <option value="3">Social</option>
+  </select>
+  <select id="statusFilter" onchange="renderRows()">
+    <option value="all">All statuses</option>
+    <option value="unreviewed">Unreviewed only</option>
+    <option value="approved">Approved only</option>
+    <option value="rejected">No good match only</option>
+  </select>
+  <button onclick="fetchVisible()">🔍 Fetch symbols for visible rows</button>
+  <button class="primary" onclick="exportResults()">⬇️ Export approved JSON</button>
+  <span class="progress" id="progress"></span>
+</div>
+
+<div id="rows"></div>
+
+<script>
+var BTNS_WORDS = {
+  "0": [["I love you","I LOVE YOU"],["happy","HAPPY"],["sad","SAD"],["angry","ANGRY"],["in pain","IN PAIN"],["sleepy","SLEEPY"],["drowsy","DROWSY"],["scared","SCARED"],["frustrated","FRUSTRATED"],["heartbroken","HEARTBROKEN"],["excited","EXCITED"],["poorly","POORLY"],["bored","BORED"],["lonely","LONELY"],["worried","WORRIED"],["confused","CONFUSED"],["embarrassed","EMBARRASSED"],["proud","PROUD"],["calm","CALM"],["uneasy","UNEASY"],["jealous","JEALOUS"],["unwell","UNWELL"],["disgusted","DISGUSTED"],["nervous","NERVOUS"],["grateful","GRATEFUL"],["anxious","ANXIOUS"],["loved","LOVED"],["cross","CROSS"],["upset","UPSET"],["exhausted","EXHAUSTED"],["shocked","SHOCKED"],["crying","CRYING"],["disappointed","DISAPPOINTED"],["stressed","STRESSED"],["content","CONTENT"]],
+  "1": [["hungry","HUNGRY"],["thirsty","THIRSTY"],["toilet","TOILET"],["shower","SHOWER"],["bath","BATH"],["medicine","MEDICINE"],["hug","HUG"],["overwhelmed","OVERWHELMED"],["rest","REST"],["snack","SNACK"],["water","WATER"],["outside","OUTSIDE"],["clean","CLEAN"],["phone","PHONE"],["headphones","HEADPHONES"],["change","CHANGE"],["cuddle","CUDDLE"],["brush teeth","BRUSH TEETH"],["plaster","PLASTER"],["feel sick","FEEL SICK"],["hurt","HURT"],["cold","COLD"],["hot","HOT"],["tired","TIRED"],["pain","PAIN"],["wash","WASH"],["get dressed","GET DRESSED"],["move","MOVE"],["ear defenders","EAR DEFENDERS"]],
+  "2": [["home","HOME"],["school","SCHOOL"],["park","PARK"],["trampoline","TRAMPOLINE"],["car","CAR"],["bus","BUS"],["swim","SWIM"],["doctor","DOCTOR"],["dentist","DENTIST"],["cinema","CINEMA"],["books","BOOKS"],["TV","TV"],["play","PLAY"],["bedroom","BEDROOM"],["kitchen","KITCHEN"],["garden","GARDEN"],["hospital","HOSPITAL"],["shops","SHOPS"],["cafe","CAFÉ"],["library","LIBRARY"],["exercise","EXERCISE"],["art","ART"],["restaurant","RESTAURANT"],["airport","AIRPORT"],["therapy","THERAPY"],["party","PARTY"],["hairdresser","HAIRDRESSER"],["gym","GYM"],["beach","BEACH"],["supermarket","SUPERMARKET"],["church","CHURCH"],["mosque","MOSQUE"],["temple","TEMPLE"],["funfair","FUNFAIR"],["camping","CAMPING"],["football","FOOTBALL"],["train station","TRAIN STATION"],["hotel","HOTEL"],["aquarium","AQUARIUM"],["play centre","PLAY CENTRE"]],
+  "3": [["help","HELP"],["wait","WAIT"],["thank you","THANK YOU"],["me time","ME TIME"],["hello","HELLO"],["okay","OKAY"],["sorry","SORRY"],["done","DONE"],["quiet","QUIET"],["again","AGAIN"],["stop","STOP"],["goodbye","GOODBYE"],["please","PLEASE"],["no thank you","NO THANKS"],["i dont know","DONT KNOW"],["my turn","MY TURN"],["share","SHARE"],["come here","COME HERE"],["watch me","WATCH ME"],["finished","FINISHED"],["more","MORE"],["well done","WELL DONE"],["loud","LOUD"],["less","LESS"],["why","WHY"],["what","WHAT"],["who","WHO"],["where","WHERE"],["when","WHEN"],["how","HOW"],["good job","GOOD JOB"],["together","TOGETHER"],["your turn","YOUR TURN"],["try again","TRY AGAIN"],["i need some space","I NEED SPACE"],["i do not want to talk","I DONT WANT TO TALK"]]
+};
+
+var reviewData = {}; // word -> {candidates:[], selected:idx|null, status:'unreviewed'|'approved'|'rejected'}
+var STORAGE_KEY = 'aidova_symbol_review_v1';
+
+function loadSaved(){
+  try{
+    var saved = JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}');
+    Object.assign(reviewData, saved);
+  }catch(e){}
+}
+function saveProgress(){
+  try{localStorage.setItem(STORAGE_KEY, JSON.stringify(reviewData));}catch(e){}
+}
+
+function allWordEntries(){
+  var out=[];
+  Object.keys(BTNS_WORDS).forEach(function(catId){
+    BTNS_WORDS[catId].forEach(function(pair){
+      out.push({cat:catId, word:pair[0], label:pair[1]});
+    });
+  });
+  return out;
+}
+
+function renderRows(){
+  var catF = document.getElementById('catFilter').value;
+  var statusF = document.getElementById('statusFilter').value;
+  var entries = allWordEntries().filter(function(e){
+    if(catF!=='all' && e.cat!==catF) return false;
+    var st = (reviewData[e.word]&&reviewData[e.word].status)||'unreviewed';
+    if(statusF!=='all' && st!==statusF) return false;
+    return true;
+  });
+  var catNames={'0':'Feelings','1':'Needs','2':'Places','3':'Social'};
+  var wrap = document.getElementById('rows');
+  wrap.innerHTML = entries.map(function(e){
+    var rd = reviewData[e.word] || {candidates:null, selected:null, status:'unreviewed'};
+    var rowClass = rd.status==='approved'?'approved':(rd.status==='rejected'?'rejected':'');
+    var statusIcon = rd.status==='approved'?'✅':(rd.status==='rejected'?'🚫':'');
+    var candHtml;
+    if(!rd.candidates){
+      candHtml = '<div class="loading">Not fetched yet</div>';
+    }else if(!rd.candidates.length){
+      candHtml = '<div class="loading">No results found</div>';
+    }else{
+      candHtml = rd.candidates.map(function(c,i){
+        var sel = rd.selected===i ? 'selected' : '';
+        return '<div class="cand '+sel+'" onclick="selectCandidate(\''+e.word.replace(/'/g,"\\'")+'\','+i+')">'
+          +'<img src="'+c.image_url+'" loading="lazy">'
+          +'<div class="meta">'+(c.repo_key||'')+'</div>'
+          +'<div class="lic">'+(c.license||'')+'</div>'
+          +'</div>';
+      }).join('');
+    }
+    var noneSel = rd.status==='rejected' ? 'selected' : '';
+    candHtml += '<div class="none-btn '+noneSel+'" onclick="markNoMatch(\''+e.word.replace(/'/g,"\\'")+'\')">No good<br>match —<br>keep emoji</div>';
+    return '<div class="row '+rowClass+'" data-word="'+e.word+'">'
+      +'<div class="word-info"><div class="label">'+e.label+'</div><div class="cat">'+catNames[e.cat]+'</div><span class="status">'+statusIcon+'</span></div>'
+      +'<div class="candidates">'+candHtml+'</div>'
+      +'</div>';
+  }).join('');
+  updateProgress();
+}
+
+function updateProgress(){
+  var all = allWordEntries();
+  var done = all.filter(function(e){var rd=reviewData[e.word];return rd&&(rd.status==='approved'||rd.status==='rejected');}).length;
+  document.getElementById('progress').textContent = done+' / '+all.length+' reviewed';
+}
+
+function fetchVisible(){
+  var catF = document.getElementById('catFilter').value;
+  var entries = allWordEntries().filter(function(e){return catF==='all'||e.cat===catF;});
+  var toFetch = entries.filter(function(e){return !reviewData[e.word] || !reviewData[e.word].candidates;});
+  fetchQueue(toFetch, 0);
+}
+
+function fetchQueue(list, i){
+  if(i>=list.length){renderRows();saveProgress();return;}
+  var e = list[i];
+  fetch('/api/symbol-search?q='+encodeURIComponent(e.word))
+    .then(function(r){return r.json();})
+    .then(function(results){
+      reviewData[e.word] = reviewData[e.word] || {selected:null,status:'unreviewed'};
+      reviewData[e.word].candidates = (results||[]).slice(0,6);
+      setTimeout(function(){fetchQueue(list,i+1);},200);
+    })
+    .catch(function(){
+      reviewData[e.word] = reviewData[e.word] || {selected:null,status:'unreviewed'};
+      reviewData[e.word].candidates = [];
+      setTimeout(function(){fetchQueue(list,i+1);},200);
+    });
+  // Show progress as it goes
+  if(i%5===0){document.getElementById('progress').textContent='Fetching... '+i+'/'+list.length;}
+}
+
+function selectCandidate(word, idx){
+  reviewData[word] = reviewData[word] || {candidates:null,selected:null,status:'unreviewed'};
+  reviewData[word].selected = idx;
+  reviewData[word].status = 'approved';
+  saveProgress();
+  renderRows();
+}
+
+function markNoMatch(word){
+  reviewData[word] = reviewData[word] || {candidates:null,selected:null,status:'unreviewed'};
+  reviewData[word].selected = null;
+  reviewData[word].status = 'rejected';
+  saveProgress();
+  renderRows();
+}
+
+function exportResults(){
+  var out = {};
+  Object.keys(reviewData).forEach(function(word){
+    var rd = reviewData[word];
+    if(rd.status==='approved' && rd.selected!=null && rd.candidates && rd.candidates[rd.selected]){
+      out[word] = {
+        image_url: rd.candidates[rd.selected].image_url,
+        repo_key: rd.candidates[rd.selected].repo_key,
+        license: rd.candidates[rd.selected].license,
+        author: rd.candidates[rd.selected].author,
+        author_url: rd.candidates[rd.selected].author_url,
+        name: rd.candidates[rd.selected].name
+      };
+    }
+  });
+  var blob = new Blob([JSON.stringify(out,null,2)], {type:'application/json'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = 'aidova-approved-symbols.json';
+  a.click();
+}
+
+loadSaved();
+renderRows();
+</script>
+</body>
+</html>
