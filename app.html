@@ -4413,7 +4413,8 @@ function toggleHide(el,key){
   if(hiddenB[key]){
     delete hiddenB[key]; // restoring a hidden button is always free, no limit
   }else{
-    if(Object.keys(hiddenB).length>=hideLimit()){
+    var builtinHiddenCount=Object.keys(hiddenB).filter(function(k){return !k.startsWith('rec_');}).length;
+    if(builtinHiddenCount>=hideLimit()){
       var limitMsg=premium?'You\'ve used all 29 hides included with Premium. Upgrade to Premium Plus to hide unlimited buttons.':'You\'ve used your 1 free hide. Upgrade to Premium for 29 hides, or Premium Plus for unlimited.';
       alert(limitMsg);
       return;
