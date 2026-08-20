@@ -1867,6 +1867,7 @@ var breathPhase=0,breathCount=0,breathCycles=0,breathInterval=null,breathRunning
 var b5holdTimer=null,b5holding=false;
 
 function slots(){return premplus?54:premium?29:1;}
+function hideLimit(){return premplus?Infinity:premium?29:1;}
 
 // VOICE
 function getVoice(){
@@ -4409,7 +4410,16 @@ function closeReorder(){
 function showArrows(){} // no-op — replaced by reorder modal
 function toggleHide(el,key){
   if(!key)return;
-  if(hiddenB[key]){delete hiddenB[key];}else{hiddenB[key]=true;}
+  if(hiddenB[key]){
+    delete hiddenB[key]; // restoring a hidden button is always free, no limit
+  }else{
+    if(Object.keys(hiddenB).length>=hideLimit()){
+      var limitMsg=premium?'You\'ve used all 29 hides included with Premium. Upgrade to Premium Plus to hide unlimited buttons.':'You\'ve used your 1 free hide. Upgrade to Premium for 29 hides, or Premium Plus for unlimited.';
+      alert(limitMsg);
+      return;
+    }
+    hiddenB[key]=true;
+  }
   try{localStorage.setItem('aidova_hidden',JSON.stringify(hiddenB));}catch(e){}
   var pi=-1;
   if(key.startsWith('b'))pi=parseInt(key.charAt(1));
