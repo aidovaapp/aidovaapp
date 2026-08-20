@@ -36,7 +36,7 @@
 <body>
 
 <h1>🖼️ Symbol Review</h1>
-<div class="sub">Pick the best symbol for each word, or mark "No good match" to keep emoji. 52 words are approved and live in the app — this list has the 45 never-reviewed words plus 8 (rest, cuddle, change, cold, hospital, come here, hungry, thirsty) flagged for a second look, either for a confusing match, a visible background box, or artwork too sparse to read clearly at small size. The thumbnail preview here is roughly the size it'll appear on a real button — if a candidate looks small or unclear here, it will on the button too, so pick whichever fills its frame most clearly. This does NOT change the live app — it only builds a review file for Charmy to bake in once approved.</div>
+<div class="sub">Pick the best symbol for each word, or mark "No good match" to keep emoji. 60 words are approved and live in the app (8 of those are Aidova's own custom icons) — this list has the 45 remaining words still needing review. The thumbnail preview here is roughly the size it'll appear on a real button — if a candidate looks small or unclear here, it will on the button too, so pick whichever fills its frame most clearly. This does NOT change the live app — it only builds a review file for Charmy to bake in once approved.</div>
 
 <div class="toolbar">
   <select id="catFilter" onchange="renderRows()">
@@ -51,10 +51,6 @@
     <option value="approved">Approved only</option>
     <option value="rejected">No good match only</option>
   </select>
-  <select id="priorityFilter" onchange="renderRows()">
-    <option value="all">All words</option>
-    <option value="priority">⭐ Priority only (8 flagged)</option>
-  </select>
   <button onclick="fetchVisible()">🔍 Fetch symbols for visible rows</button>
   <button onclick="clearAndRefetch()" style="background:#fff3f3;border-color:#e6b3b3;color:#c66">🗑️ Clear cache &amp; refetch visible</button>
   <button class="primary" onclick="exportResults()">⬇️ Export approved JSON</button>
@@ -65,9 +61,9 @@
 
 <script>
 var BTNS_WORDS = {
-  "1": [["overwhelmed","OVERWHELMED"],["outside","OUTSIDE"],["clean","CLEAN"],["hurt","HURT"],["tired","TIRED"],["move","MOVE"],["rest","REST"],["cuddle","CUDDLE"],["change","CHANGE"],["cold","COLD"],["hungry","HUNGRY"],["thirsty","THIRSTY"]],
-  "2": [["home","HOME"],["dentist","DENTIST"],["books","BOOKS"],["kitchen","KITCHEN"],["shops","SHOPS"],["cafe","CAFÉ"],["airport","AIRPORT"],["therapy","THERAPY"],["hairdresser","HAIRDRESSER"],["gym","GYM"],["supermarket","SUPERMARKET"],["mosque","MOSQUE"],["temple","TEMPLE"],["funfair","FUNFAIR"],["hotel","HOTEL"],["hospital","HOSPITAL"]],
-  "3": [["help","HELP"],["wait","WAIT"],["thank you","THANK YOU"],["me time","ME TIME"],["hello","HELLO"],["okay","OKAY"],["sorry","SORRY"],["done","DONE"],["quiet","QUIET"],["stop","STOP"],["goodbye","GOODBYE"],["please","PLEASE"],["no thank you","NO THANKS"],["i dont know","DONT KNOW"],["my turn","MY TURN"],["share","SHARE"],["finished","FINISHED"],["well done","WELL DONE"],["what","WHAT"],["where","WHERE"],["your turn","YOUR TURN"],["try again","TRY AGAIN"],["i need some space","I NEED SPACE"],["i do not want to talk","I DONT WANT TO TALK"],["come here","COME HERE"]]
+  "1": [["overwhelmed","OVERWHELMED"],["outside","OUTSIDE"],["clean","CLEAN"],["hurt","HURT"],["tired","TIRED"],["move","MOVE"]],
+  "2": [["home","HOME"],["dentist","DENTIST"],["books","BOOKS"],["kitchen","KITCHEN"],["shops","SHOPS"],["cafe","CAFÉ"],["airport","AIRPORT"],["therapy","THERAPY"],["hairdresser","HAIRDRESSER"],["gym","GYM"],["supermarket","SUPERMARKET"],["mosque","MOSQUE"],["temple","TEMPLE"],["funfair","FUNFAIR"],["hotel","HOTEL"]],
+  "3": [["help","HELP"],["wait","WAIT"],["thank you","THANK YOU"],["me time","ME TIME"],["hello","HELLO"],["okay","OKAY"],["sorry","SORRY"],["done","DONE"],["quiet","QUIET"],["stop","STOP"],["goodbye","GOODBYE"],["please","PLEASE"],["no thank you","NO THANKS"],["i dont know","DONT KNOW"],["my turn","MY TURN"],["share","SHARE"],["finished","FINISHED"],["well done","WELL DONE"],["what","WHAT"],["where","WHERE"],["your turn","YOUR TURN"],["try again","TRY AGAIN"],["i need some space","I NEED SPACE"],["i do not want to talk","I DONT WANT TO TALK"]]
 };
 
 var reviewData = {}; // word -> {candidates:[], selected:idx|null, status:'unreviewed'|'approved'|'rejected'}
@@ -83,8 +79,6 @@ function saveProgress(){
   try{localStorage.setItem(STORAGE_KEY, JSON.stringify(reviewData));}catch(e){}
 }
 
-var PRIORITY_WORDS=['rest','cuddle','change','cold','hospital','come here','hungry','thirsty'];
-
 function allWordEntries(){
   var out=[];
   Object.keys(BTNS_WORDS).forEach(function(catId){
@@ -99,10 +93,8 @@ function allWordEntries(){
 function renderRows(){
   var catF = document.getElementById('catFilter').value;
   var statusF = document.getElementById('statusFilter').value;
-  var prioF = document.getElementById('priorityFilter').value;
   var entries = allWordEntries().filter(function(e){
     if(catF!=='all' && e.cat!==catF) return false;
-    if(prioF==='priority' && PRIORITY_WORDS.indexOf(e.word)===-1) return false;
     var st = (reviewData[e.word]&&reviewData[e.word].status)||'unreviewed';
     if(statusF!=='all' && st!==statusF) return false;
     return true;
@@ -132,7 +124,7 @@ function renderRows(){
     var noneSel = rd.status==='rejected' ? 'selected' : '';
     candHtml += '<div class="none-btn '+noneSel+'" onclick="markNoMatch(\''+e.word.replace(/'/g,"\\'")+'\')">No good<br>match —<br>keep emoji</div>';
     return '<div class="row '+rowClass+'" data-word="'+e.word+'">'
-      +'<div class="word-info"><div class="label">'+(PRIORITY_WORDS.indexOf(e.word)!==-1?'⭐ ':'')+e.label+'</div><div class="cat">'+catNames[e.cat]+'</div><span class="status">'+statusIcon+'</span></div>'
+      +'<div class="word-info"><div class="label">'+e.label+'</div><div class="cat">'+catNames[e.cat]+'</div><span class="status">'+statusIcon+'</span></div>'
       +'<div class="candidates">'+candHtml+'</div>'
       +'</div>';
   }).join('');
