@@ -2881,18 +2881,10 @@ function timerFinished(){
 // review tool. Only words in this list show a symbol; anything not yet
 // reviewed falls back to emoji (no more auto-picking the first live search
 // result, which produced inconsistent quality).
-// Aidova's own custom icons — consistent house style (same base figure,
-// same grey palette, no gender/ethnicity markers), replacing the need to
-// search external libraries for these specific words.
+// Aidova's own custom icons were tried here and pulled after feedback that
+// they didn't match the quality of the professional licensed symbols —
+// reverted to emoji fallback for these 8 words while reconsidering approach.
 var CURATED_SYMBOLS={
-  'hungry': '/icons/custom/hungry.svg',
-  'thirsty': '/icons/custom/thirsty.svg',
-  'rest': '/icons/custom/rest.svg',
-  'cuddle': '/icons/custom/cuddle.svg',
-  'change': '/icons/custom/change.svg',
-  'cold': '/icons/custom/cold.svg',
-  'hospital': '/icons/custom/hospital.svg',
-  'come here': '/icons/custom/come-here.svg',
   'toilet': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/toilet.svg',
   'shower': 'https://d18vdu4p71yql0.cloudfront.net/libraries/mulberry/shower 1 , to.svg.varianted-skin.svg',
   'bath': 'https://d18vdu4p71yql0.cloudfront.net/libraries/tawasol/Bathe.png',
