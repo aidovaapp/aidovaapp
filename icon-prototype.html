@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aidova — Custom Icon Prototype</title>
+<style>
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;background:#F5F7F5;margin:0;padding:24px;color:#222}
+  h1{color:#1B5E20;font-size:1.2rem;margin:0 0 6px}
+  .sub{color:#666;font-size:.85rem;margin-bottom:24px;max-width:600px}
+  .row{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:30px}
+  .circ{width:110px;height:110px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,.09);text-align:center}
+  .circ svg{width:48px;height:48px}
+  .circ .lbl{font-weight:900;font-size:.68rem;color:#333;text-transform:uppercase;margin-top:4px}
+  .needs{background:#FFE0B2}
+  .places{background:#B3E5FC}
+  .social{background:#F8BBD0}
+  .feelings{background:#FFF59D}
+  h2{font-size:.95rem;color:#444;margin:0 0 12px}
+</style>
+</head>
+<body>
+
+<h1>Custom stick-figure icon prototype</h1>
+<div class="sub">Same base figure (circle head, simple limbs, two-tone grey) reused across every icon — no gender, ethnicity, or hair details anywhere. Shown here on real Aidova button colours so it's a true comparison, not a mockup.</div>
+
+<h2>Needs</h2>
+<div class="row">
+  <div class="circ needs">
+    <svg viewBox="0 0 100 100"><circle cx="50" cy="28" r="14" fill="#607D8B"/><path d="M50 42 L50 68 M50 50 L34 62 M50 50 L66 62 M50 68 L38 90 M50 68 L62 90" stroke="#607D8B" stroke-width="6" stroke-linecap="round" fill="none"/><ellipse cx="50" cy="60" rx="8" ry="10" fill="#90A4AE"/></svg>
+    <div class="lbl">Hungry</div>
+  </div>
+  <div class="circ needs">
+    <svg viewBox="0 0 100 100"><path d="M38 20 Q50 10 62 20 L62 50 Q62 65 50 65 Q38 65 38 50 Z" fill="#607D8B"/><path d="M45 30 L55 30 M45 40 L55 40" stroke="#B3E5FC" stroke-width="4" stroke-linecap="round"/></svg>
+    <div class="lbl">Thirsty</div>
+  </div>
+  <div class="circ needs">
+    <svg viewBox="0 0 100 100"><circle cx="50" cy="28" r="14" fill="#607D8B"/><path d="M50 42 L50 68 M50 50 L34 62 M50 50 L66 62 M50 68 L38 90 M50 68 L62 90" stroke="#607D8B" stroke-width="6" stroke-linecap="round" fill="none"/><path d="M50 42 Q65 45 68 60" stroke="#EF5350" stroke-width="5" stroke-linecap="round" fill="none"/></svg>
+    <div class="lbl">Rest</div>
+  </div>
+</div>
+
+<h2>Places</h2>
+<div class="row">
+  <div class="circ places">
+    <svg viewBox="0 0 100 100"><path d="M20 50 L50 20 L80 50 L80 85 L20 85 Z" fill="#607D8B"/><rect x="42" y="60" width="16" height="25" fill="#B3E5FC"/></svg>
+    <div class="lbl">Home</div>
+  </div>
+  <div class="circ places">
+    <svg viewBox="0 0 100 100"><rect x="30" y="55" width="40" height="10" rx="3" fill="#607D8B"/><circle cx="35" cy="72" r="7" fill="#607D8B"/><circle cx="65" cy="72" r="7" fill="#607D8B"/><rect x="35" y="35" width="30" height="20" rx="3" fill="#90A4AE"/></svg>
+    <div class="lbl">Hospital</div>
+  </div>
+  <div class="circ places">
+    <svg viewBox="0 0 100 100"><circle cx="50" cy="28" r="14" fill="#607D8B"/><path d="M50 42 L50 68 M50 50 L34 62 M50 50 L66 62 M50 68 L38 90 M50 68 L62 90" stroke="#607D8B" stroke-width="6" stroke-linecap="round" fill="none"/><circle cx="20" cy="70" r="5" fill="#EF5350"/><circle cx="80" cy="70" r="5" fill="#EF5350"/></svg>
+    <div class="lbl">Come here</div>
+  </div>
+</div>
+
+<h2>Feelings (shown for style comparison only — Feelings stays emoji)</h2>
+<div class="row">
+  <div class="circ feelings">
+    <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="32" fill="#607D8B"/><circle cx="38" cy="42" r="4" fill="#FFF59D"/><circle cx="62" cy="42" r="4" fill="#FFF59D"/><path d="M35 60 Q50 72 65 60" stroke="#FFF59D" stroke-width="4" stroke-linecap="round" fill="none"/></svg>
+    <div class="lbl">Happy</div>
+  </div>
+  <div class="circ feelings">
+    <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="32" fill="#607D8B"/><circle cx="38" cy="42" r="4" fill="#FFF59D"/><circle cx="62" cy="42" r="4" fill="#FFF59D"/><path d="M35 66 Q50 54 65 66" stroke="#FFF59D" stroke-width="4" stroke-linecap="round" fill="none"/></svg>
+    <div class="lbl">Sad</div>
+  </div>
+</div>
+
+</body>
+</html>
