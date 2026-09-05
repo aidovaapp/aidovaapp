@@ -1,6 +1,15 @@
 <svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-<circle cx="50" cy="24" r="13" fill="#607D8B"/>
-<path d="M50 37 L50 62 M50 45 L30 55 M50 45 L64 58 M50 62 L38 90 M50 62 L62 90" stroke="#607D8B" stroke-width="6" stroke-linecap="round" fill="none"/>
-<ellipse cx="50" cy="58" rx="9" ry="11" fill="#90A4AE"/>
-<path d="M45 21 Q50 26 55 21" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+<g transform="translate(-3.0,-4.5)">
+<circle cx="50" cy="66" r="30" fill="#EDEDED" stroke="#000" stroke-width="1.8"/>
+<circle cx="50" cy="66" r="21" fill="none" stroke="#000" stroke-width="1.4"/>
+<g transform="translate(19,20) scale(1.5)" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M18 4a3 3 0 0 1 2 5.235v8.765a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-8.764a3 3 0 0 1 1.824 -5.231h12.176v-.005" fill="#D9A055"/>
+</g>
+<g transform="translate(52,10) scale(1.55)" stroke="#000" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none">
+<path d="M3 21s9.834 -3.489 12.684 -6.34a4.487 4.487 0 0 0 0 -6.344a4.483 4.483 0 0 0 -6.342 0c-2.86 2.861 -6.347 12.689 -6.347 12.689l.005 -.005" fill="#F0873C"/>
+<path d="M9 13l-1.5 -1.5"/><path d="M16 14l-2 -2"/>
+<path d="M22 8s-1.14 -2 -3 -2c-1.406 0 -3 2 -3 2s1.14 2 3 2s3 -2 3 -2" fill="#5BA85E"/>
+<path d="M16 2s-2 1.14 -2 3s2 3 2 3s2 -1.577 2 -3c0 -1.86 -2 -3 -2 -3" fill="#5BA85E"/>
+</g>
+</g>
 </svg>
