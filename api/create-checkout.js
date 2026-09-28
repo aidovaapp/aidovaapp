@@ -28,8 +28,8 @@ module.exports = async (req, res) => {
       subscription_data: {
         trial_period_days: 30
       },
-      success_url: 'https://aidova.app/?session_id={CHECKOUT_SESSION_ID}&status=success',
-      cancel_url: 'https://aidova.app/?status=cancelled',
+      success_url: 'https://aidova.app/app?session_id={CHECKOUT_SESSION_ID}&status=success',
+      cancel_url: 'https://aidova.app/app?status=cancelled',
       metadata: { plan }
     });
     return res.status(200).json({ url: session.url, sessionId: session.id });

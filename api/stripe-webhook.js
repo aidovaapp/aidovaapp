@@ -9,6 +9,10 @@ const supabase = createClient(
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
+// Device limits — must match verify-licence.js and the Plans/Help copy
+const PREMIUM_DEVICE_LIMIT = 3;
+const PREMPLUS_DEVICE_LIMIT = 5;
+
 function generateKey() {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   let key = 'AID-';
@@ -21,6 +25,18 @@ function generateKey() {
   return key;
 }
 
+// Stripe's signature check needs the request body exactly as Stripe sent it.
+// Vercel parses JSON bodies automatically, which changes the bytes and makes
+// every signature check fail (HTTP 400). Read the untouched raw body instead.
+function getRawBody(req) {
+  return new Promise((resolve, reject) => {
+    const chunks = [];
+    req.on('data', (chunk) => chunks.push(typeof chunk === 'string' ? Buffer.from(chunk) : chunk));
+    req.on('end', () => resolve(Buffer.concat(chunks)));
+    req.on('error', reject);
+  });
+}
+
 const PRICE_TO_PLAN = {
   'price_1TbpNRI7FTUsbtqREBfAwCZd': 'premium',
   'price_1TbpNRI7FTUsbtqRqFY53VLG': 'premium',
@@ -28,10 +44,21 @@ const PRICE_TO_PLAN = {
   'price_1TbpNRI7FTUsbtqRqmzoNP8D': 'premplus'
 };
 
+// Throws if Supabase returned an error, so Stripe retries the event later
+// (e.g. while a paused Supabase project is waking up).
+function check(result, what) {
+  if (result.error && result.error.code !== 'PGRST116') { // PGRST116 = no rows found
+    throw new Error(`${what}: ${result.error.message}`);
+  }
+  return result.data;
+}
+
 async function sendLicenceEmail(email, licenceKey, planName) {
+  const deviceLimit = planName === 'Premium Plus' ? PREMPLUS_DEVICE_LIMIT : PREMIUM_DEVICE_LIMIT;
   await sgMail.send({
     to: email,
-    from: 'hello@aidova.app',
+    from: { email: 'hello@aidova.app', name: 'Aidova Support' },
+    replyTo: 'aidovaapp@gmail.com',
     subject: 'Your Aidova licence key — save this safely',
     html: `
       <div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;padding:24px">
@@ -45,10 +72,10 @@ async function sendLicenceEmail(email, licenceKey, planName) {
           <div style="font-size:1.6rem;font-weight:bold;letter-spacing:4px;color:#2D6A4F;font-family:monospace">${licenceKey}</div>
         </div>
         <p><strong>⚠️ Please save this key safely</strong> — you will need it to activate ${planName} on any device.</p>
-        <p><strong>Device limit:</strong> ${planName === 'Premium Plus' ? 'Up to 10 devices' : 'Up to 3 devices'}. To switch devices, remove one from Settings → Plans → Manage devices.</p>
+        <p><strong>Device limit:</strong> Up to ${deviceLimit} devices.</p>
         <p><strong>To activate on any device:</strong></p>
         <ol style="line-height:2">
-          <li>Open <a href="https://aidova.app/app" style="color:#2D6A4F">aidova.app/app</a></li>
+          <li>Open <a href="https://aidova.app/app" style="color:#2D6A4F">aidova.app/app</a> or the Aidova Android app</li>
           <li>Tap ⚙️ Settings</li>
           <li>Tap Plans &amp; Upgrade</li>
           <li>Tap <strong>"Have a code? Enter it here"</strong></li>
@@ -56,11 +83,38 @@ async function sendLicenceEmail(email, licenceKey, planName) {
         </ol>
         <p>If you ever lose your key, tap <strong>"Resend my key"</strong> on the Plans screen and enter this email address.</p>
         <hr style="border:none;border-top:1px solid #eee;margin:24px 0">
-        <p style="color:#888;font-size:0.85rem">Your subscription auto-renews after the 30-day trial. Cancel anytime at <a href="mailto:hello@aidova.app" style="color:#2D6A4F">hello@aidova.app</a></p>
+        <p style="color:#888;font-size:0.85rem">Your subscription auto-renews after the 30-day trial. To cancel, reply to this email or contact <a href="mailto:aidovaapp@gmail.com" style="color:#2D6A4F">aidovaapp@gmail.com</a></p>
         <p style="color:#888;font-size:0.85rem">Aidova by CHEWAID® · JMC Collective Ltd · <a href="https://aidova.app/terms" style="color:#2D6A4F">Terms</a> · <a href="https://aidova.app/privacy" style="color:#2D6A4F">Privacy</a></p>
       </div>
     `
   });
+}
+
+// Newer Stripe API versions (2025-03-31+) moved the subscription ID on invoices
+function invoiceSubscriptionId(invoice) {
+  return invoice.subscription
+    || invoice.parent?.subscription_details?.subscription
+    || null;
+}
+
+async function deactivateLicence(filterColumn, filterValue, extraFields) {
+  const licence = check(
+    await supabase.from('licences').select('licence_key').eq(filterColumn, filterValue).maybeSingle(),
+    'find licence'
+  );
+  if (!licence) return;
+  check(
+    await supabase.from('licences')
+      .update({ status: 'inactive', updated_at: new Date().toISOString(), ...(extraFields || {}) })
+      .eq('licence_key', licence.licence_key),
+    'deactivate licence'
+  );
+  check(
+    await supabase.from('licence_devices')
+      .update({ is_active: false })
+      .eq('licence_key', licence.licence_key),
+    'deactivate devices'
+  );
 }
 
 module.exports = async (req, res) => {
@@ -70,7 +124,8 @@ module.exports = async (req, res) => {
   let event;
 
   try {
-    event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
+    const rawBody = await getRawBody(req);
+    event = stripe.webhooks.constructEvent(rawBody, sig, process.env.STRIPE_WEBHOOK_SECRET);
   } catch (err) {
     console.error('Webhook signature error:', err.message);
     return res.status(400).json({ error: `Webhook error: ${err.message}` });
@@ -86,134 +141,108 @@ module.exports = async (req, res) => {
         const email = session.customer_details?.email;
         const customerId = session.customer;
         const subscriptionId = session.subscription;
-
-        const subscription = await stripe.subscriptions.retrieve(subscriptionId);
-        const priceId = subscription.items.data[0]?.price?.id;
-        const plan = PRICE_TO_PLAN[priceId] || 'premium';
-        const deviceLimit = plan === 'premplus' ? 10 : 3;
-
         if (!email) break;
 
-        // Check if licence already exists for this email + plan
-        const { data: existing } = await supabase
-          .from('licences')
-          .select('licence_key')
-          .eq('email', email.toLowerCase())
-          .eq('plan', plan)
-          .single();
+        const subscription = await stripe.subscriptions.retrieve(subscriptionId);
 
-        if (existing) {
-          // Reactivate existing licence
-          await supabase.from('licences')
-            .update({ 
-              status: 'active', 
-              refunded_at: null,
-              stripe_subscription_id: subscriptionId,
-              updated_at: new Date().toISOString()
-            })
-            .eq('licence_key', existing.licence_key);
-          await sendLicenceEmail(email, existing.licence_key, plan === 'premplus' ? 'Premium Plus' : 'Premium');
+        // Stripe retries failed events for up to 3 days. If the subscription has
+        // been cancelled since (e.g. a duplicate sign-up), don't issue a key.
+        if (!['trialing', 'active'].includes(subscription.status)) {
+          console.log(`Skipping licence for ${email}: subscription ${subscriptionId} is ${subscription.status}`);
           break;
         }
 
-        // Generate unique key
-        let licenceKey;
-        let isUnique = false;
-        while (!isUnique) {
-          licenceKey = generateKey();
-          const { data: check } = await supabase
-            .from('licences').select('id').eq('licence_key', licenceKey).single();
-          if (!check) isUnique = true;
+        const priceId = subscription.items.data[0]?.price?.id;
+        const plan = PRICE_TO_PLAN[priceId] || 'premium';
+        const deviceLimit = plan === 'premplus' ? PREMPLUS_DEVICE_LIMIT : PREMIUM_DEVICE_LIMIT;
+        const planName = plan === 'premplus' ? 'Premium Plus' : 'Premium';
+
+        // Existing licence for this email + plan? Reactivate it and resend the same key.
+        const existing = check(
+          await supabase.from('licences').select('licence_key')
+            .eq('email', email.toLowerCase()).eq('plan', plan).maybeSingle(),
+          'look up existing licence'
+        );
+
+        if (existing) {
+          check(
+            await supabase.from('licences').update({
+              status: 'active',
+              refunded_at: null,
+              stripe_customer_id: customerId,
+              stripe_subscription_id: subscriptionId,
+              updated_at: new Date().toISOString()
+            }).eq('licence_key', existing.licence_key),
+            'reactivate licence'
+          );
+          await sendLicenceEmail(email, existing.licence_key, planName);
+          console.log(`Licence reactivated: ${existing.licence_key} for ${email} (${plan})`);
+          break;
         }
 
-        // Save licence with device limit
-        await supabase.from('licences').insert({
-          email: email.toLowerCase(),
-          licence_key: licenceKey,
-          plan: plan,
-          stripe_customer_id: customerId,
-          stripe_subscription_id: subscriptionId,
-          status: 'active',
-          device_limit: deviceLimit
-        });
+        // Generate a unique key
+        let licenceKey;
+        for (let tries = 0; tries < 10; tries++) {
+          const candidate = generateKey();
+          const clash = check(
+            await supabase.from('licences').select('id').eq('licence_key', candidate).maybeSingle(),
+            'check key uniqueness'
+          );
+          if (!clash) { licenceKey = candidate; break; }
+        }
+        if (!licenceKey) throw new Error('Could not generate a unique licence key');
 
-        await sendLicenceEmail(email, licenceKey, plan === 'premplus' ? 'Premium Plus' : 'Premium');
+        check(
+          await supabase.from('licences').insert({
+            email: email.toLowerCase(),
+            licence_key: licenceKey,
+            plan: plan,
+            stripe_customer_id: customerId,
+            stripe_subscription_id: subscriptionId,
+            status: 'active',
+            device_limit: deviceLimit
+          }),
+          'save licence'
+        );
+
+        await sendLicenceEmail(email, licenceKey, planName);
         console.log(`Licence created: ${licenceKey} for ${email} (${plan}, ${deviceLimit} devices)`);
         break;
       }
 
       case 'customer.subscription.deleted':
       case 'customer.subscription.paused': {
-        const subscription = event.data.object;
-        // Deactivate licence
-        await supabase.from('licences')
-          .update({ status: 'inactive', updated_at: new Date().toISOString() })
-          .eq('stripe_subscription_id', subscription.id);
-        // Deactivate all devices
-        const { data: licence } = await supabase
-          .from('licences').select('licence_key')
-          .eq('stripe_subscription_id', subscription.id).single();
-        if (licence) {
-          await supabase.from('licence_devices')
-            .update({ is_active: false })
-            .eq('licence_key', licence.licence_key);
-        }
+        await deactivateLicence('stripe_subscription_id', event.data.object.id);
         break;
       }
 
       case 'customer.subscription.resumed':
       case 'invoice.payment_succeeded': {
         const obj = event.data.object;
-        const subId = obj.subscription || obj.id;
+        const subId = event.type === 'customer.subscription.resumed' ? obj.id : invoiceSubscriptionId(obj);
         if (subId) {
-          await supabase.from('licences')
-            .update({ status: 'active', updated_at: new Date().toISOString() })
-            .eq('stripe_subscription_id', subId);
+          check(
+            await supabase.from('licences')
+              .update({ status: 'active', updated_at: new Date().toISOString() })
+              .eq('stripe_subscription_id', subId),
+            'activate licence'
+          );
         }
         break;
       }
 
       case 'invoice.payment_failed': {
-        const invoice = event.data.object;
-        if (invoice.subscription) {
-          await supabase.from('licences')
-            .update({ status: 'inactive', updated_at: new Date().toISOString() })
-            .eq('stripe_subscription_id', invoice.subscription);
-          // Deactivate all devices
-          const { data: licence } = await supabase
-            .from('licences').select('licence_key')
-            .eq('stripe_subscription_id', invoice.subscription).single();
-          if (licence) {
-            await supabase.from('licence_devices')
-              .update({ is_active: false })
-              .eq('licence_key', licence.licence_key);
-          }
+        const subId = invoiceSubscriptionId(event.data.object);
+        if (subId) {
+          await deactivateLicence('stripe_subscription_id', subId);
         }
         break;
       }
 
       case 'charge.refunded': {
         const charge = event.data.object;
-        const customerId = charge.customer;
-        if (customerId) {
-          // Find subscription for this customer
-          const { data: licence } = await supabase
-            .from('licences').select('licence_key')
-            .eq('stripe_customer_id', customerId).single();
-          if (licence) {
-            // Mark as refunded — deactivates key permanently
-            await supabase.from('licences')
-              .update({ 
-                status: 'inactive',
-                refunded_at: new Date().toISOString(),
-                updated_at: new Date().toISOString()
-              })
-              .eq('licence_key', licence.licence_key);
-            // Deactivate all devices immediately
-            await supabase.from('licence_devices')
-              .update({ is_active: false })
-              .eq('licence_key', licence.licence_key);
-          }
+        if (charge.customer) {
+          await deactivateLicence('stripe_customer_id', charge.customer, { refunded_at: new Date().toISOString() });
         }
         break;
       }
@@ -222,6 +251,7 @@ module.exports = async (req, res) => {
     return res.status(200).json({ received: true });
 
   } catch (err) {
+    // 500 tells Stripe to retry this event later
     console.error('Webhook handler error:', err);
     return res.status(500).json({ error: err.message });
   }
