@@ -1,5 +1,5 @@
 const { createClient } = require('@supabase/supabase-js');
-const sgMail = require('@sendgrid/mail');
+const { sendEmail } = require('./_email');
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
@@ -40,12 +40,9 @@ module.exports = async (req, res) => {
     // Send email with licence key
     const planName = data.plan.includes('plus') ? 'Premium Plus' : 'Premium';
     
-    // Use SendGrid if available, otherwise log (replace with your email provider)
-    if (process.env.SENDGRID_API_KEY) {
-      sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-      await sgMail.send({
+    {
+      await sendEmail({
         to: email.toLowerCase(),
-        from: 'hello@aidova.app',
         subject: 'Your Aidova licence key',
         html: `
           <div style="font-family:Arial,sans-serif;max-width:500px;margin:0 auto;padding:20px">
@@ -62,7 +59,7 @@ module.exports = async (req, res) => {
               <li>Tap "Have a code? Enter it here"</li>
               <li>Enter your licence key above</li>
             </ol>
-            <p style="color:#888;font-size:12px">Please save this key safely. If you need help, email hello@aidova.app</p>
+            <p style="color:#888;font-size:12px">Please save this key safely. If you need help, email aidovaapp@gmail.com</p>
             <p style="color:#888;font-size:12px">Aidova by CHEWAID® · JMC Collective Ltd</p>
           </div>
         `

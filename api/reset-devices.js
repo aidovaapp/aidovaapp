@@ -1,42 +1,35 @@
 const { createClient } = require('@supabase/supabase-js');
 const crypto = require('crypto');
+const { sendEmail } = require('./_email');
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_SECRET_KEY
 );
 
-// Simple email sender via SendGrid
+// Sends the device-reset confirmation email via Resend
 async function sendResetEmail(email, resetToken, licenceKey) {
   const resetUrl = `https://aidova.app/api/confirm-reset?token=${resetToken}&key=${licenceKey}`;
-  
-  const response = await fetch('https://api.sendgrid.com/v3/mail/send', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${process.env.SENDGRID_API_KEY}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      personalizations: [{ to: [{ email }] }],
-      from: { email: 'hello@aidova.app', name: 'Aidova' },
+  try {
+    await sendEmail({
+      to: email,
       subject: 'Reset your Aidova device activations',
-      content: [{
-        type: 'text/html',
-        value: `
+      html: `
           <p>Hi,</p>
           <p>We received a request to reset all device activations for your Aidova licence key: <strong>${licenceKey}</strong></p>
           <p>Click the button below to confirm. This will remove all devices from your licence so you can activate on a new device.</p>
           <p><a href="${resetUrl}" style="background:#2D6A4F;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;display:inline-block;font-weight:bold">Reset my devices</a></p>
           <p>This link expires in 1 hour.</p>
           <p>If you did not request this, please ignore this email — your licence is safe.</p>
-          <p>Need help? Email hello@aidova.app</p>
+          <p>Need help? Email aidovaapp@gmail.com</p>
           <p>— The Aidova team</p>
         `
-      }]
-    })
-  });
-  
-  return response.ok;
+    });
+    return true;
+  } catch (err) {
+    console.error('Reset email failed:', err.message);
+    return false;
+  }
 }
 
 module.exports = async (req, res) => {

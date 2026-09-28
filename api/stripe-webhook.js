@@ -1,13 +1,11 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const { createClient } = require('@supabase/supabase-js');
-const sgMail = require('@sendgrid/mail');
+const { sendEmail } = require('./_email');
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_SECRET_KEY
 );
-
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 // Device limits — must match verify-licence.js and the Plans/Help copy
 const PREMIUM_DEVICE_LIMIT = 3;
@@ -55,10 +53,8 @@ function check(result, what) {
 
 async function sendLicenceEmail(email, licenceKey, planName) {
   const deviceLimit = planName === 'Premium Plus' ? PREMPLUS_DEVICE_LIMIT : PREMIUM_DEVICE_LIMIT;
-  await sgMail.send({
+  await sendEmail({
     to: email,
-    from: { email: 'hello@aidova.app', name: 'Aidova Support' },
-    replyTo: 'aidovaapp@gmail.com',
     subject: 'Your Aidova licence key — save this safely',
     html: `
       <div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;padding:24px">
