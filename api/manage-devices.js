@@ -4,7 +4,7 @@ const supabase = createClient(
   process.env.SUPABASE_SECRET_KEY
 );
 
-const PREMIUM_DEVICE_LIMIT = 3;
+const PREMIUM_DEVICE_LIMIT = 2;
 const PREMPLUS_DEVICE_LIMIT = 5;
 
 module.exports = async (req, res) => {

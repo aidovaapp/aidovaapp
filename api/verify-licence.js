@@ -6,7 +6,7 @@ const supabase = createClient(
 );
 
 const MAX_ATTEMPTS_PER_HOUR = 5;
-const PREMIUM_DEVICE_LIMIT = 3;
+const PREMIUM_DEVICE_LIMIT = 2;
 const PREMPLUS_DEVICE_LIMIT = 5;
 
 async function checkRateLimit(ip) {

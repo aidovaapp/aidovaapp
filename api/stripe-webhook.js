@@ -8,7 +8,7 @@ const supabase = createClient(
 );
 
 // Device limits — must match verify-licence.js and the Plans/Help copy
-const PREMIUM_DEVICE_LIMIT = 3;
+const PREMIUM_DEVICE_LIMIT = 2;
 const PREMPLUS_DEVICE_LIMIT = 5;
 
 function generateKey() {
