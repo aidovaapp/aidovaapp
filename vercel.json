@@ -3,19 +3,55 @@
     {
       "source": "/sw.js",
       "headers": [
-        { "key": "Service-Worker-Allowed", "value": "/" }
+        {
+          "key": "Service-Worker-Allowed",
+          "value": "/"
+        }
       ]
     }
   ],
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/$1" },
-    { "source": "/privacy", "destination": "/privacy.html" },
-    { "source": "/terms", "destination": "/terms.html" },
-    { "source": "/accessibility", "destination": "/accessibility.html" },
-    { "source": "/schools", "destination": "/schools.html" },
-    { "source": "/support", "destination": "/support.html" },
-    { "source": "/app", "destination": "/app.html" },
-    { "source": "/.well-known/assetlinks.json", "destination": "/.well-known/assetlinks.json" },
-    { "source": "/screenshots/:file", "destination": "/screenshots/:file" }
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    },
+    {
+      "source": "/privacy",
+      "destination": "/privacy.html"
+    },
+    {
+      "source": "/terms",
+      "destination": "/terms.html"
+    },
+    {
+      "source": "/accessibility",
+      "destination": "/accessibility.html"
+    },
+    {
+      "source": "/schools",
+      "destination": "/schools.html"
+    },
+    {
+      "source": "/support",
+      "destination": "/support.html"
+    },
+    {
+      "source": "/app",
+      "destination": "/app.html"
+    },
+    {
+      "source": "/.well-known/assetlinks.json",
+      "destination": "/.well-known/assetlinks.json"
+    },
+    {
+      "source": "/screenshots/:file",
+      "destination": "/screenshots/:file"
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/keep-alive",
+      "schedule": "0 8 * * *"
+    }
   ]
 }
