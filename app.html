@@ -244,7 +244,7 @@ body.editing .ce{border:2px dashed #E0E0E0}
 @media(min-width:600px){.hidden-grid{grid-template-columns:repeat(4,1fr)}}
 @media(min-width:900px){.hidden-grid{grid-template-columns:repeat(5,1fr)}}
 .circ.hidden-card{opacity:.5;filter:grayscale(.5);position:relative}
-.restore-badge{position:absolute;top:-6px;right:-6px;background:#2D6A4F;color:#fff;border:none;border-radius:50%;width:22px;height:22px;font-size:.6rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:5;pointer-events:all;box-shadow:0 2px 4px rgba(0,0,0,.3)}
+.restore-badge{position:absolute;top:-6px;right:-6px;background:#2D6A4F;color:#fff;border:none;border-radius:50%;width:32px;height:32px;font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:5;pointer-events:all;box-shadow:0 2px 4px rgba(0,0,0,.3)}
 .circ.edit-on{outline:3px dashed #1B5E20 !important;outline-offset:2px;border:2px solid rgba(0,0,0,.07) !important}
 .circ.cr.edit-on{border:2px dashed #A5D6A7 !important;outline:3px dashed #1B5E20 !important;outline-offset:2px}
 .circ.ce.edit-on{border:2px dashed #E0E0E0 !important;outline:3px dashed #1B5E20 !important;outline-offset:2px}
@@ -412,7 +412,7 @@ body.editing .ce{border:2px dashed #E0E0E0}
 </div>
 <div id="app">
   <div id="kbar" style="display:none;background:#B71C1C;color:white;font-size:.75rem;font-weight:700;padding:8px 12px;text-align:center;cursor:pointer;position:relative;z-index:200" onclick="exitKioskPrompt()">🔒 KIOSK MODE — Tap here to exit (PIN required)</div>
-  <div id="editbar"><span>✏️ Tap button to hide · Hold to delete</span><div style="display:flex;gap:0"><button onclick="openReorder()">☰ Reorder</button><button onclick="exitEdit()">Done ✓</button></div></div>
+  <div id="editbar"><span>✏️ Tap to hide · Hold for voice &amp; more</span><div style="display:flex;gap:0"><button onclick="openReorder()">☰ Reorder</button><button onclick="exitEdit()">Done ✓</button></div></div>
   <div id="sentbar">
     <div id="sentwords"><span class="ph">Tap buttons to build a sentence...</span></div>
     <button class="sent-btn" id="sent-speak" onclick="speakSentence()">▶ Speak</button>
@@ -446,10 +446,10 @@ body.editing .ce{border:2px dashed #E0E0E0}
   </div>
   <div id="pw">
     <div id="pt">
-      <div class="page"><div class="grid" id="g0"></div><div class="hidden-section" id="hs0"><div class="hidden-section-title" onclick="toggleHiddenSection(0)"><span>👁 Hidden buttons (<span id="hcount0">0</span>)</span><span id="harrow0">▶</span></div><div class="hidden-grid" id="hg0" style="display:none"></div></div></div>
-      <div class="page"><div class="grid" id="g1"></div><div class="hidden-section" id="hs1"><div class="hidden-section-title" onclick="toggleHiddenSection(1)"><span>👁 Hidden buttons (<span id="hcount1">0</span>)</span><span id="harrow1">▶</span></div><div class="hidden-grid" id="hg1" style="display:none"></div></div></div>
-      <div class="page"><div class="grid" id="g2"></div><div class="hidden-section" id="hs2"><div class="hidden-section-title" onclick="toggleHiddenSection(2)"><span>👁 Hidden buttons (<span id="hcount2">0</span>)</span><span id="harrow2">▶</span></div><div class="hidden-grid" id="hg2" style="display:none"></div></div></div>
-      <div class="page"><div class="grid" id="g3"></div><div class="hidden-section" id="hs3"><div class="hidden-section-title" onclick="toggleHiddenSection(3)"><span>👁 Hidden buttons (<span id="hcount3">0</span>)</span><span id="harrow3">▶</span></div><div class="hidden-grid" id="hg3" style="display:none"></div></div></div>
+      <div class="page"><div class="grid" id="g0"></div><div class="hidden-section" id="hs0"><div class="hidden-section-title" onclick="toggleHiddenSection(0)"><span>👁 Hidden buttons (<span id="hcount0">0</span>) · tap one to show it again</span><span id="harrow0">▶</span></div><div class="hidden-grid" id="hg0" style="display:none"></div></div></div>
+      <div class="page"><div class="grid" id="g1"></div><div class="hidden-section" id="hs1"><div class="hidden-section-title" onclick="toggleHiddenSection(1)"><span>👁 Hidden buttons (<span id="hcount1">0</span>) · tap one to show it again</span><span id="harrow1">▶</span></div><div class="hidden-grid" id="hg1" style="display:none"></div></div></div>
+      <div class="page"><div class="grid" id="g2"></div><div class="hidden-section" id="hs2"><div class="hidden-section-title" onclick="toggleHiddenSection(2)"><span>👁 Hidden buttons (<span id="hcount2">0</span>) · tap one to show it again</span><span id="harrow2">▶</span></div><div class="hidden-grid" id="hg2" style="display:none"></div></div></div>
+      <div class="page"><div class="grid" id="g3"></div><div class="hidden-section" id="hs3"><div class="hidden-section-title" onclick="toggleHiddenSection(3)"><span>👁 Hidden buttons (<span id="hcount3">0</span>) · tap one to show it again</span><span id="harrow3">▶</span></div><div class="hidden-grid" id="hg3" style="display:none"></div></div></div>
     </div>
   </div>
 </div>
@@ -3102,6 +3102,7 @@ function showBuiltinMenu(icon,label,word,key){
     try{localStorage.setItem('aidova_hidden',JSON.stringify(hiddenB));}catch(er){}
     var pi=-1;if(key.startsWith('b'))pi=parseInt(key.charAt(1));
     if(pi>=0){renderPage(pi,BTNS[pi],['cf','cn','cp','cs'][pi]);}
+    resize();
     setTimeout(function(){document.querySelectorAll('.circ').forEach(function(c){c.classList.add('edit-on');});},30);
   });
   var c=document.createElement('button');
@@ -3344,7 +3345,11 @@ function renderHiddenSection(pi){
       else{el.innerHTML='<span class="ci">'+sv.icon+'</span><span class="cl">'+sv.label+'</span>';}
     }
     var rb=document.createElement('button');rb.className='restore-badge';rb.textContent='↩';rb.title='Restore';
-    (function(it){rb.addEventListener('click',function(e){e.stopPropagation();restoreHidden(it);});}) (item);
+    (function(it){
+      rb.addEventListener('click',function(e){e.stopPropagation();restoreHidden(it);});
+      el.title='Tap to show this button again';
+      el.addEventListener('click',function(){restoreHidden(it);}); // tapping anywhere on a hidden button restores it
+    })(item);
     el.appendChild(rb);
     hg.appendChild(el);
   });
@@ -3365,6 +3370,7 @@ function restoreHidden(item){
   var cats=['cf','cn','cp','cs'];
   var pi=item.pi!==undefined?item.pi:(item.key?parseInt(item.key.charAt(1)):-1);
   if(pi>=0){renderPage(pi,BTNS[pi],cats[pi]);}else{renderAll();}
+  resize(); // keep buttons at the correct size after redrawing
   if(editMode){document.querySelectorAll('.circ').forEach(function(c){c.classList.add('edit-on');});showArrows();}
 }
 function renderTopBtns(){
@@ -4509,6 +4515,7 @@ function toggleHide(el,key){
   else if(key.startsWith('rec_'))pi=parseInt((key.split('-')[1]||'0'));
   var cats=['cf','cn','cp','cs'];
   if(pi>=0){renderPage(pi,BTNS[pi],cats[pi]);}else{renderAll();}
+  resize(); // keep buttons at the correct size after redrawing
   if(editMode){document.querySelectorAll('.circ').forEach(function(c){c.classList.add('edit-on');});showArrows();}
 }
 function resetLayout(){requirePin(function(){if(!confirm('Restore all hidden buttons and reset order?\nCustom buttons and premium kept.'))return;localStorage.removeItem('aidova_hidden');['0','1','2','3'].forEach(function(i){localStorage.removeItem('aidova_ord_'+i);});hiddenB={};renderAll();closePanel();alert('✅ Layout reset.');});}
@@ -5221,6 +5228,7 @@ function toggleHideRec(rkey,pi){
   if(hiddenB[rkey]){delete hiddenB[rkey];}else{hiddenB[rkey]=true;}
   try{localStorage.setItem('aidova_hidden',JSON.stringify(hiddenB));}catch(e){}
   renderRec(pi);
+  resize(); // keep buttons at the correct size after redrawing
   if(editMode){document.querySelectorAll('.circ').forEach(function(c){c.classList.add('edit-on');});}
 }
 
