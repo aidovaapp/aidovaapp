@@ -656,7 +656,7 @@ body.editing .ce{border:2px dashed #E0E0E0}
     <div class="hbox hprem"><div class="htitle">🎨 Button colours <span style="background:#FFE082;color:#5D4037;border-radius:8px;padding:2px 7px;font-size:.68rem">PREMIUM</span></div><div class="htext">Three ways to change colours:<br><br><b>1. Single button</b> — pick a colour swatch when adding or editing a custom button.<br><b>2. Whole category</b> — Settings → Display → Button Colours → pick a colour under any category.<br><b>3. All at once</b> — same section → 🪣 Apply one colour to all → one tap changes everything.<br><br>Tap ↺ Reset to restore the original pastel colours.</div></div>
     <div class="hbox hprem"><div class="htitle">🌍 Customise buttons &amp; phrases <span style="background:#FFE082;color:#5D4037;border-radius:8px;padding:2px 7px;font-size:.68rem">PREMIUM</span></div><div class="htext">Settings → <b>Customise</b> → <b>Edit top buttons</b>.<br><br>Change the label and spoken phrase for the 5 top buttons and all 6 emergency phrases — <b>in any language</b>.<br><br>Example: I AM → मैं हूँ · I WANT → मुझे चाहिए · HELP ME → مدد کرو</div></div>
     <div class="hbox hprem"><div class="htitle">📅 Visual Schedule <span style="background:#FFE082;color:#5D4037;border-radius:8px;padding:2px 7px;font-size:.68rem">PREMIUM</span></div><div class="htext">Tap 📅 in the top bar. <b>PIN protected</b> — only carers can edit.<br><br><b>To set up:</b> tap ✏️ Edit → pick emoji or photo → type activity → add time → tap Add ✓.<br><br><b>Daily use:</b> child taps each card to tick it off ✓ (turns green). Next activity highlighted in blue. Tap <b>Reset ticks</b> each morning.<br><br>Helps reduce anxiety around transitions.</div></div>
-    <div class="hbox hprem"><div class="htitle">🎙️ Voice recording <span style="background:#FFE082;color:#5D4037;border-radius:8px;padding:2px 7px;font-size:.68rem">PREMIUM</span></div><div class="htext">Record your own voice for any button in <b>any language</b>.<br><br><b>Custom buttons:</b> Edit mode → tap the button → select <b>Record voice</b><br><b>Built-in buttons:</b> Edit mode → hold button 1 second → tap Cancel on delete prompt → voice record opens<br><br>Tap 🎙️, speak clearly (max 3 seconds), tap ▶ Preview then Save ✓.</div></div>
+    <div class="hbox hprem"><div class="htitle">🎙️ Voice recording <span style="background:#FFE082;color:#5D4037;border-radius:8px;padding:2px 7px;font-size:.68rem">PREMIUM</span></div><div class="htext">Record your own voice for any button in <b>any language</b>.<br><br><b>Custom buttons:</b> Edit mode → tap the button → select <b>Record voice</b><br><b>Built-in buttons:</b> Edit mode → hold the button → tap <b>Record my voice</b><br><br>Tap 🎙️, speak clearly (up to 5 seconds — enough to say a word in two languages, e.g. "Water… su"), tap ▶ Preview then Save ✓.</div></div>
     <div class="hbox hprem"><div class="htitle">🔒 Carer lock &amp; Kiosk mode <span style="background:#FFE082;color:#5D4037;border-radius:8px;padding:2px 7px;font-size:.68rem">PREMIUM</span></div><div class="htext"><b>Carer lock:</b> Settings → Lock with PIN → set a 4-digit PIN. Child cannot access settings while locked.<br><br><b>Kiosk mode:</b> Fullscreen — child cannot leave the app. A red bar appears at the top while active.<br><br><b>To exit kiosk mode:</b><br>1. Tap the <b>red bar</b> at the top → enter your PIN<br>2. Or tap the <b>Aidova logo 7 times</b> → enter your PIN<br><br>If you have forgotten your PIN, please contact <b>hello@aidova.app</b> for support.</div></div>
     <div class="hbox hprem"><div class="htitle">📄 Print / Export board as PDF <span style="background:#FFE082;color:#5D4037;border-radius:8px;padding:2px 7px;font-size:.68rem">PREMIUM</span></div><div class="htext">Settings → <b>Print / Export Board</b> → tap <b>Export current category as PDF</b>.<br><br>Generates a printable PDF of your child's current board — handy for school, hospital visits, or as a paper backup when the device isn't available.</div></div>
     <div class="hbox hpremplus"><div class="htitle">📊 Word Report <span style="background:#1B5E20;color:#fff;border-radius:8px;padding:2px 7px;font-size:.68rem">PREMIUM PLUS</span></div><div class="htext">Settings → <b>Word Report</b> shows the last 40 words tapped with weekly counts and a frequency bar.<br><br><b>⏱ Recent tab</b> — words in order tapped, most recent first. See what your child has been communicating today.<br><b>🏆 Top Words tab</b> — words ranked by how often tapped this week. Great for spotting which words to add as permanent buttons or sharing with an SLT.<br><br>All data stays entirely on your device and is never sent anywhere.</div></div>
@@ -1095,7 +1095,7 @@ body.editing .ce{border:2px dashed #E0E0E0}
   <div class="vrecbox">
     <h2>🎙️ Record your voice</h2>
     <div class="vrec-word" id="vrec-word">HAPPY</div>
-    <div style="font-size:.65rem;color:#aaa;margin-bottom:4px">Tap ⏹️ to stop when done · Max 3 seconds · Allow mic when asked</div>
+    <div style="font-size:.65rem;color:#aaa;margin-bottom:4px">Tap ⏹️ to stop when done · Max 5 seconds · Allow mic when asked</div>
     <div class="vrec-status" id="vrec-status">Tap the mic to start</div>
     <div class="vrec-mic" id="vrec-mic" onclick="toggleRec()">🎙️</div>
     <div class="vrec-btns">
@@ -3045,23 +3045,71 @@ function mkCirc(icon,label,word,cat,clickFn,key){
     if(editMode&&!held){toggleHide(el,key);return;}
     if(!editMode){anim(el,e);if(clickFn)clickFn();}
   });
-  el.addEventListener('touchstart',function(){
+  function holdStart(){
     held=false;
     pt=setTimeout(function(){
       held=true;
-      if(editMode&&confirm('Delete "'+label+'" from layout?\n\nIt will be permanently removed.')){
-        hiddenB[key]=true;
-        try{localStorage.setItem('aidova_hidden',JSON.stringify(hiddenB));}catch(er){}
-        var pi=-1;if(key.startsWith('b'))pi=parseInt(key.charAt(1));
-        if(pi>=0){renderPage(pi,BTNS[pi],['cf','cn','cp','cs'][pi]);}
-        setTimeout(function(){document.querySelectorAll('.circ').forEach(function(c){c.classList.add('edit-on');});},30);
-      }
-    },1000);
-  },{passive:true});
-  el.addEventListener('touchend',function(){clearTimeout(pt);setTimeout(function(){held=false;},100);},{passive:true});
+      if(editMode)showBuiltinMenu(icon,label,word,key);
+    },700);
+  }
+  function holdEnd(){clearTimeout(pt);setTimeout(function(){held=false;},100);}
+  el.addEventListener('touchstart',holdStart,{passive:true});
+  el.addEventListener('touchend',holdEnd,{passive:true});
   el.addEventListener('touchmove',function(){clearTimeout(pt);},{passive:true});
+  el.addEventListener('mousedown',holdStart);
+  el.addEventListener('mouseup',holdEnd);
+  el.addEventListener('mouseleave',function(){clearTimeout(pt);});
   el.addEventListener('contextmenu',function(e){e.preventDefault();});
   return el;
+}
+// Edit-mode options for built-in buttons: record own voice, play/remove it, or delete
+function showBuiltinMenu(icon,label,word,key){
+  var old=document.getElementById('builtin-menu-sheet');if(old)old.remove();
+  var font='-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif';
+  var sheet=document.createElement('div');
+  sheet.id='builtin-menu-sheet';
+  sheet.style.cssText='position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);display:flex;align-items:flex-end';
+  sheet.onclick=function(e){if(e.target===sheet)sheet.remove();};
+  var box=document.createElement('div');
+  box.style.cssText='background:#fff;border-radius:24px 24px 0 0;width:100%;padding:18px 16px 40px;animation:sup .3s cubic-bezier(.34,1.2,.64,1)';
+  var title=document.createElement('div');
+  title.style.cssText='font-family:'+font+';font-size:.88rem;font-weight:900;color:#333;margin-bottom:14px';
+  var iconText=(icon&&icon.indexOf('TRAMP64:')===0)?'':(icon+' ');
+  title.textContent=iconText+label;
+  box.appendChild(title);
+  function addBtn(text,bg,fg,fn){
+    var b=document.createElement('button');
+    b.textContent=text;
+    b.style.cssText='width:100%;padding:12px;border:none;border-radius:12px;background:'+bg+';color:'+fg+';font-family:'+font+';font-weight:900;font-size:.85rem;cursor:pointer;margin-bottom:8px;text-align:left';
+    b.onclick=function(){sheet.remove();fn();};
+    box.appendChild(b);
+  }
+  var hasRec=!!voiceData[key];
+  var isPrem=premium||premplus;
+  addBtn(hasRec?'🎙️ Re-record my voice':'🎙️ Record my voice'+(isPrem?'':' (Premium)'),'#E8F5E9','#1B5E20',function(){openVrec(label,word,key);});
+  if(hasRec){
+    addBtn('🔊 Play my recording','#E3F2FD','#0D47A1',function(){say(word,key,label);});
+    addBtn('↩ Use the app voice again','#FFF8E1','#5D4037',function(){
+      delete voiceData[key];
+      try{localStorage.setItem('aidova_voices',JSON.stringify(voiceData));}catch(e){}
+      alert('✅ "'+label+'" will use the app voice again.');
+    });
+  }
+  addBtn('🗑️ Delete from layout','#FFEBEE','#B71C1C',function(){
+    if(!confirm('Delete "'+label+'" from layout?\n\nIt will be permanently removed.'))return;
+    hiddenB[key]=true;
+    try{localStorage.setItem('aidova_hidden',JSON.stringify(hiddenB));}catch(er){}
+    var pi=-1;if(key.startsWith('b'))pi=parseInt(key.charAt(1));
+    if(pi>=0){renderPage(pi,BTNS[pi],['cf','cn','cp','cs'][pi]);}
+    setTimeout(function(){document.querySelectorAll('.circ').forEach(function(c){c.classList.add('edit-on');});},30);
+  });
+  var c=document.createElement('button');
+  c.textContent='Cancel';
+  c.style.cssText='width:100%;padding:10px;border:none;border-radius:12px;background:#eee;color:#666;font-family:'+font+';font-weight:900;font-size:.85rem;cursor:pointer';
+  c.onclick=function(){sheet.remove();};
+  box.appendChild(c);
+  sheet.appendChild(box);
+  document.body.appendChild(sheet);
 }
 function renderGrid(id,data,cat){
   // Legacy call — now handled by renderPage
@@ -5186,7 +5234,7 @@ function deleteRecBtn(key,label,pi){
 function openVrec(label,word,key){
   if(!premium&&!premplus){closePanel();showPlans();return;}
   vrecKey=key;recBlob=null;audioChunks=[];
-  document.getElementById('vrec-word').textContent=label;document.getElementById('vrec-status').textContent='Tap 🎙️ and say it in your language';
+  document.getElementById('vrec-word').textContent=label;document.getElementById('vrec-status').textContent='Tap 🎙️ and say it — you can say it in two languages';
   document.getElementById('vrec-mic').textContent='🎙️';document.getElementById('vrec-mic').classList.remove('rec');
   document.getElementById('vrecmod').classList.add('open');
 }
@@ -5201,7 +5249,7 @@ function startRec(){
     mediaRec.start(100);
     document.getElementById('vrec-mic').textContent='⏹️ Stop';
     document.getElementById('vrec-mic').classList.add('rec');
-    var tl=3;
+    var tl=5;
     document.getElementById('vrec-status').textContent='🔴 Recording... tap ⏹️ Stop anytime ('+tl+'s max)';
     recCountdown=setInterval(function(){tl--;if(tl<=0){clearInterval(recCountdown);stopRecording();}else{document.getElementById('vrec-status').textContent='🔴 Recording... tap ⏹️ Stop anytime ('+tl+'s)';}},1000);
   }).catch(function(){typeFallback();});
