@@ -882,6 +882,7 @@ body.editing .ce{border:2px dashed #E0E0E0}
     <div class="ps" onclick="toggleSection('sec-iconstyle',this)"><span>🖼️ Icon Style</span><span class="ps-arrow">▶</span></div>
     <div class="ps-body closed" id="sec-iconstyle">
       <div style="font-size:.72rem;color:#888;margin-bottom:8px">Which style should new buttons use by default? You can always switch to the other tab when adding a specific button.</div>
+      <div style="font-size:.72rem;color:#1B5E20;background:#E8F5E9;border-radius:8px;padding:8px 10px;margin-bottom:8px;line-height:1.5">🆕 <b>Coming soon:</b> proper AAC symbols for all the built-in buttons. We're adding them gradually, so for now most buttons still show emoji even when Symbols is selected.</div>
       <div style="display:flex;gap:8px">
         <button class="vbig" id="istyle-btn-symbol" onclick="setIconStyleDefault('symbol')" style="flex:1;padding:10px;border:2px solid #2D6A4F;border-radius:10px;background:#2D6A4F;color:#fff;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.8rem;cursor:pointer">🖼️ Symbols</button>
         <button class="vbig" id="istyle-btn-emoji" onclick="setIconStyleDefault('emoji')" style="flex:1;padding:10px;border:2px solid #eee;border-radius:10px;background:#eee;color:#555;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.8rem;cursor:pointer">😊 Emoji</button>
@@ -950,10 +951,10 @@ body.editing .ce{border:2px dashed #E0E0E0}
     </div>
 
     <!-- PREMIUM PLUS FEATURES -->
-    <div class="ps" onclick="toggleSection('sec-layout',this)"><span>✏️ Edit Layout <span style="background:#1B5E20;color:#fff;border-radius:6px;padding:1px 6px;font-size:.65rem;font-weight:900;text-transform:none" data-tier="premplus">PREMIUM PLUS</span></span><span class="ps-arrow">▶</span></div>
+    <div class="ps" onclick="toggleSection('sec-layout',this)"><span>✏️ Edit Layout <span style="background:#FFE082;color:#5D4037;border-radius:6px;padding:1px 6px;font-size:.65rem;font-weight:900;text-transform:none" data-tier="premium">PREMIUM</span></span><span class="ps-arrow">▶</span></div>
     <div class="ps-body closed" id="sec-layout">
       <div class="sr">
-        <div><div class="sl">Edit layout</div><div class="ss">Hide &amp; reorder buttons</div></div>
+        <div><div class="sl">Edit layout</div><div class="ss">Hide buttons &amp; record your voice · Reorder with Premium Plus</div></div>
         <button class="pbtn" onclick="startEdit()" style="background:#1B5E20;color:#fff">Edit</button>
       </div>
       <div class="sr" style="border:none">
