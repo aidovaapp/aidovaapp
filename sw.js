@@ -1,4 +1,4 @@
-var CACHE='aidova-v55';
+var CACHE='aidova-v56';
 self.addEventListener('install',function(e){
   self.skipWaiting();
   e.waitUntil(
@@ -10,7 +10,8 @@ self.addEventListener('install',function(e){
         '/app','/app.html',
         '/sounds/rain.mp3','/sounds/ocean.mp3','/sounds/forest.mp3',
         '/sounds/fire.mp3','/sounds/piano.mp3','/sounds/guitar.mp3',
-        '/sounds/forestmelody.mp3'
+        '/sounds/forestmelody.mp3',
+        '/sounds/softnoise.mp3','/sounds/brownnoise.mp3'
       ];
       return Promise.all(files.map(function(f){
         return c.add(f).catch(function(err){console.log('Precache failed for',f,err);});
