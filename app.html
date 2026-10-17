@@ -2890,6 +2890,40 @@ function timerFinished(){
 // they didn't match the quality of the professional licensed symbols —
 // reverted to emoji fallback for these 8 words while reconsidering approach.
 var CURATED_SYMBOLS={
+  'happy': '/icons/custom/happy.png',
+  'sad': '/icons/custom/sad.png',
+  'angry': '/icons/custom/angry.png',
+  'scared': '/icons/custom/scared.png',
+  'shocked': '/icons/custom/shocked.png',
+  'excited': '/icons/custom/excited.png',
+  'in pain': '/icons/custom/in-pain.png',
+  'sleepy': '/icons/custom/sleepy.png',
+  'drowsy': '/icons/custom/drowsy.png',
+  'exhausted': '/icons/custom/exhausted.png',
+  'upset': '/icons/custom/upset.png',
+  'disappointed': '/icons/custom/disappointed.png',
+  'lonely': '/icons/custom/lonely.png',
+  'worried': '/icons/custom/worried.png',
+  'stressed': '/icons/custom/stressed.png',
+  'cross': '/icons/custom/cross.png',
+  'frustrated': '/icons/custom/frustrated.png',
+  'jealous': '/icons/custom/jealous.png',
+  'tired': '/icons/custom/tired.png',
+  'rest': '/icons/custom/rest.png',
+  'cuddle': '/icons/custom/cuddle.png',
+  'cold': '/icons/custom/cold.png',
+  'help': '/icons/custom/help.png',
+  'thank you': '/icons/custom/thank-you.png',
+  'please': '/icons/custom/please.png',
+  'sorry': '/icons/custom/sorry.png',
+  'quiet': '/icons/custom/quiet.png',
+  'no thank you': '/icons/custom/no-thank-you.png',
+  'i dont know': '/icons/custom/i-dont-know.png',
+  'my turn': '/icons/custom/my-turn.png',
+  'your turn': '/icons/custom/your-turn.png',
+  'share': '/icons/custom/share.png',
+  'i need some space': '/icons/custom/i-need-some-space.png',
+  'i do not want to talk': '/icons/custom/i-do-not-want-to-talk.png',
   'change': '/icons/custom/change.svg',
   'move': '/icons/custom/move.svg',
   'stop': '/icons/custom/stop.svg',
@@ -3032,7 +3066,7 @@ function mkCirc(icon,label,word,cat,clickFn,key){
   // genuinely poor/inappropriate results in testing (e.g. stranger photos for
   // "angry"/"lonely"). Needs manual curation before enabling here — concrete
   // words in other categories aren't affected by this restriction.
-  var symbolEligible=(iconStyleDefault==='symbol'&&word&&cat!=='cf'&&CURATED_SYMBOLS[word]);
+  var symbolEligible=(iconStyleDefault==='symbol'&&word&&CURATED_SYMBOLS[word]);
   if(icon&&icon.startsWith('TRAMP64:')){
     var b64=icon.substring(8);
     iconHtml='<span class="ci"><img src="data:image/png;base64,'+b64+'" ></span>';
