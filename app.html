@@ -3091,9 +3091,12 @@ function mkCirc(icon,label,word,cat,clickFn,key){
   // "angry"/"lonely"). Needs manual curation before enabling here — concrete
   // words in other categories aren't affected by this restriction.
   var symbolEligible=(iconStyleDefault==='symbol'&&word&&CURATED_SYMBOLS[word]);
-  if(icon&&icon.startsWith('TRAMP64:')){
+  if(icon&&icon.startsWith('TRAMP64:')&&!(symbolEligible&&builtinSymbolCache[word])){
     var b64=icon.substring(8);
     iconHtml='<span class="ci"><img src="data:image/png;base64,'+b64+'" ></span>';
+    if(symbolEligible&&builtinSymbolCache[word]===undefined){
+      fetchBuiltinSymbol(word,key); // swap in the character icon once ready
+    }
   } else if(symbolEligible&&builtinSymbolCache[word]){
     iconHtml='<span class="ci"><img src="'+builtinSymbolCache[word]+'" ></span>';
   } else {
