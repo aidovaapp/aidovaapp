@@ -1,4 +1,4 @@
-var CACHE='aidova-v79';
+var CACHE='aidova-v80';
 self.addEventListener('install',function(e){
   self.skipWaiting();
   e.waitUntil(
