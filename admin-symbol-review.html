@@ -36,7 +36,7 @@
 <body>
 
 <h1>🖼️ Symbol Review</h1>
-<div class="sub">Pick the best symbol for each word, or mark "No good match" to keep emoji. 116 words are approved and live in the app. The 7 left here (overwhelmed, clean, hurt, me time, okay, come here, good job) are waiting on their character icons.</div>
+<div class="sub">Pick the best symbol for each word, or mark "No good match" to keep emoji. 139 words are approved and live in the app. Only "hurt" is left here, waiting on its character icon.</div>
 
 <div class="toolbar">
   <select id="catFilter" onchange="renderRows()">
@@ -60,8 +60,8 @@
 
 <script>
 var BTNS_WORDS = {
-  "1": [["overwhelmed","OVERWHELMED"],["clean","CLEAN"],["hurt","HURT"]],
-  "3": [["me time","ME TIME"],["okay","OKAY"],["come here","COME HERE"],["good job","GOOD JOB"]]
+  "1": [["hurt","HURT"]],
+  "3": []
 };
 
 var reviewData = {}; // word -> {candidates:[], selected:idx|null, status:'unreviewed'|'approved'|'rejected'}
