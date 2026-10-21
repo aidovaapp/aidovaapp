@@ -884,7 +884,7 @@ body.editing .ce{border:2px dashed #E0E0E0}
     <div class="ps" onclick="toggleSection('sec-iconstyle',this)"><span>🖼️ Icon Style</span><span class="ps-arrow">▶</span></div>
     <div class="ps-body closed" id="sec-iconstyle">
       <div style="font-size:.72rem;color:#888;margin-bottom:8px">Which style should new buttons use by default? You can always switch to the other tab when adding a specific button.</div>
-      <div style="font-size:.72rem;color:#1B5E20;background:#E8F5E9;border-radius:8px;padding:8px 10px;margin-bottom:8px;line-height:1.5">🆕 <b>Coming soon:</b> proper AAC symbols for all the built-in buttons. We're adding them gradually, so for now most buttons still show emoji even when Symbols is selected.</div>
+      <div style="font-size:.72rem;color:#1B5E20;background:#E8F5E9;border-radius:8px;padding:8px 10px;margin-bottom:8px;line-height:1.5">🆕 All the built-in buttons now have Aidova's own symbols. Choose <b>Symbols</b> to see them, or <b>Emoji</b> for the classic look.</div>
       <div style="display:flex;gap:8px">
         <button class="vbig" id="istyle-btn-symbol" onclick="setIconStyleDefault('symbol')" style="flex:1;padding:10px;border:2px solid #2D6A4F;border-radius:10px;background:#2D6A4F;color:#fff;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.8rem;cursor:pointer">🖼️ Symbols</button>
         <button class="vbig" id="istyle-btn-emoji" onclick="setIconStyleDefault('emoji')" style="flex:1;padding:10px;border:2px solid #eee;border-radius:10px;background:#eee;color:#555;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.8rem;cursor:pointer">😊 Emoji</button>
@@ -1212,10 +1212,10 @@ var emergPhrases=JSON.parse(localStorage.getItem('aidova_emergphrases')||'null')
   {label:'CALL CARER',    speak:'Calling my carer now. Please wait.',     emoji:'📞'}
 ]; // 0=small 1=normal 2=large
 var voiceGender=localStorage.getItem('aidova_vgender')||'f';
-var iconStyleDefault=localStorage.getItem('aidova_iconstyle')||'emoji';
-function setIconStyleDefault(style){
+var iconStyleDefault=localStorage.getItem('aidova_iconstyle')||'symbol'; // built-in buttons default to Aidova's own symbols
+function setIconStyleDefault(style,noSave){
   iconStyleDefault=style;
-  localStorage.setItem('aidova_iconstyle',style);
+  if(!noSave)localStorage.setItem('aidova_iconstyle',style);
   var bs=document.getElementById('istyle-btn-symbol'),be=document.getElementById('istyle-btn-emoji');
   if(bs){bs.style.background=style==='symbol'?'#2D6A4F':'#eee';bs.style.color=style==='symbol'?'#fff':'#555';bs.style.borderColor=style==='symbol'?'#2D6A4F':'#eee';}
   if(be){be.style.background=style==='emoji'?'#2D6A4F':'#eee';be.style.color=style==='emoji'?'#fff':'#555';be.style.borderColor=style==='emoji'?'#2D6A4F':'#eee';}
@@ -5004,7 +5004,7 @@ var emojiPickerCat='people';
 function openEmojiPicker(){
   document.getElementById('emojipicker').style.display='flex';
   document.getElementById('emoji-search').value='';
-  setPickerMode(iconStyleDefault);
+  setPickerMode(localStorage.getItem('aidova_iconstyle')||'emoji');
   buildEmojiCatTabs();
   renderEmojiGrid(emojiPickerCat,null);
   setTimeout(function(){document.getElementById('emoji-search').focus();},300);
@@ -5406,7 +5406,7 @@ if(kiosk){document.getElementById('ktog').classList.add('on');enableKiosk();}
 if(premplus)document.getElementById('pstat').textContent='🌟 Premium Plus';
 else if(premium)document.getElementById('pstat').textContent='⭐ Premium';
 setVoiceGender(voiceGender,true);
-setIconStyleDefault(iconStyleDefault);
+setIconStyleDefault(iconStyleDefault,true);
 populateLangSelect();
 applyBtnSize();
 // Set volume slider to saved value
