@@ -3033,12 +3033,23 @@ var CURATED_SYMBOLS={
 };
 
 var builtinSymbolCache=(function(){try{return JSON.parse(localStorage.getItem('aidova_builtin_symbols')||'{}');}catch(e){return {};}})();
+// Remember which image URL each cached symbol came from, so when an icon is replaced
+// (e.g. a library picture swapped for a character icon) the old cached copy is dropped.
+var builtinSymbolSrc=(function(){try{return JSON.parse(localStorage.getItem('aidova_builtin_symbols_src')||'{}');}catch(e){return {};}})();
+(function(){
+  var changed=false;
+  Object.keys(builtinSymbolCache).forEach(function(w){
+    if(!CURATED_SYMBOLS[w]||builtinSymbolSrc[w]!==CURATED_SYMBOLS[w]){delete builtinSymbolCache[w];changed=true;}
+  });
+  if(changed){try{localStorage.setItem('aidova_builtin_symbols',JSON.stringify(builtinSymbolCache));}catch(e){}}
+})();
 var symbolFetchQueue=[];
 var symbolFetchQueued={};
 var symbolFetchRunning=false;
 
 function saveBuiltinSymbolCache(){
   try{localStorage.setItem('aidova_builtin_symbols',JSON.stringify(builtinSymbolCache));}catch(e){}
+  try{localStorage.setItem('aidova_builtin_symbols_src',JSON.stringify(builtinSymbolSrc));}catch(e){}
 }
 
 function fetchBuiltinSymbol(word,key){
@@ -3067,13 +3078,14 @@ function processSymbolFetchQueue(){
       dataUrl=c.toDataURL('image/png');
     }catch(e){dataUrl=approvedUrl;}
     builtinSymbolCache[item.word]=dataUrl;
+    builtinSymbolSrc[item.word]=approvedUrl;
     saveBuiltinSymbolCache();
     document.querySelectorAll('.circ[data-key="'+item.key+'"] .ci').forEach(function(span){
       span.innerHTML='<img src="'+dataUrl+'" >';
     });
     nextInQueue();
   };
-  img.onerror=function(){builtinSymbolCache[item.word]=null;saveBuiltinSymbolCache();nextInQueue();};
+  img.onerror=function(){builtinSymbolCache[item.word]=null;builtinSymbolSrc[item.word]=approvedUrl;saveBuiltinSymbolCache();nextInQueue();};
   img.src=approvedUrl;
 }
 
