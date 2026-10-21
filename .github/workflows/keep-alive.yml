@@ -1,0 +1,13 @@
+name: Keep database awake
+
+on:
+  schedule:
+    - cron: '17 */6 * * *'   # every 6 hours (UTC)
+  workflow_dispatch:         # lets you run it by hand from the Actions tab
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call keep-alive endpoint
+        run: curl -fsS --retry 3 --retry-delay 10 https://www.aidova.app/api/keep-alive
