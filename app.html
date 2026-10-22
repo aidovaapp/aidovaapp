@@ -202,7 +202,7 @@ body.editing #app{padding-top:38px}
 @media(min-width:600px){#big4{gap:10px}}
 .bb{border:none;border-radius:12px;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:800;cursor:pointer;box-shadow:0 3px 8px rgba(0,0,0,.1);transition:transform .12s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;line-height:1;padding:8px 3px;min-height:54px}
 .bb:active{transform:scale(.91)}
-.bi{font-size:clamp(1rem,2.8vw,1.5rem)}.bl{font-size:clamp(.6rem,1.6vw,.82rem);font-weight:900}
+.bi{font-size:clamp(1rem,2.8vw,1.5rem)}.bi.hasimg{display:flex;line-height:0}.bsy{width:clamp(34px,9vw,46px);height:clamp(34px,9vw,46px);object-fit:contain;display:block}.bl{font-size:clamp(.6rem,1.6vw,.82rem);font-weight:900}
 #b1{background:#A5D6A7;color:#1B5E20}#b2{background:#FFE082;color:#5D4037}
 #b3{background:#C8E6C9;color:#1B5E20}#b4{background:#FFCDD2;color:#B71C1C}
 #b5{background:#B71C1C;color:#fff;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
@@ -1248,6 +1248,7 @@ function setIconStyleDefault(style,noSave){
   for(var pi=0;pi<4;pi++){
     if(BTNS[pi])renderPage(pi,BTNS[pi],cats[pi]);
   }
+  renderTopBtns();
   resize(); // re-apply correct button/icon sizing to the freshly rebuilt buttons
 }
 var voiceLang=localStorage.getItem('aidova_vlang')||'';
@@ -3531,6 +3532,7 @@ function restoreHidden(item){
   resize(); // keep buttons at the correct size after redrawing
   if(editMode){document.querySelectorAll('.circ').forEach(function(c){c.classList.add('edit-on');});showArrows();}
 }
+var TOP_SYMS=[{emoji:'🧍',src:'/icons/custom/i-am.png?v=1'},{emoji:'🙋',src:'/icons/custom/i-want.png?v=1'},{emoji:'✅',src:'/icons/custom/yes.png?v=2'},{emoji:'❌',src:'/icons/custom/no.png?v=1'},{emoji:'🆘',src:'/icons/custom/help-me.png?v=1'}];
 function renderTopBtns(){
   var ids=['b1','b2','b3','b4','b5'];
   ids.forEach(function(id,i){
@@ -3538,7 +3540,11 @@ function renderTopBtns(){
     if(!btn||!topBtns[i])return;
     var bi=btn.querySelector('.bi');
     var bl=btn.querySelector('.bl');
-    if(bi)bi.textContent=topBtns[i].emoji;
+    var sym=TOP_SYMS[i];
+    if(bi){
+      if(iconStyleDefault==='symbol'&&sym&&topBtns[i].emoji===sym.emoji){bi.innerHTML='<img class="bsy" src="'+sym.src+'" alt="">';bi.classList.add('hasimg');}
+      else{bi.textContent=topBtns[i].emoji;bi.classList.remove('hasimg');}
+    }
     if(bl)bl.textContent=topBtns[i].label;
   });
 }
