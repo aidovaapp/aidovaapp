@@ -3074,7 +3074,7 @@ var CURATED_SYMBOLS={
   'together': '/icons/custom/together.png'
 };
 Object.keys(CURATED_SYMBOLS).forEach(function(k){var u=CURATED_SYMBOLS[k];if(u&&u.indexOf("/icons/custom/")===0)CURATED_SYMBOLS[k]=u+(u.indexOf("?")<0?"?":"&")+"d=2";}); // outline-darkening cache bust
-["stop","cinema","beach","train station","finished","more","less"].forEach(function(k){CURATED_SYMBOLS[k]+="&e=1";});
+["stop","cinema","beach","train station","finished","more","less","what","where","why"].forEach(function(k){CURATED_SYMBOLS[k]+="&e=1";});
 
 var builtinSymbolCache=(function(){try{return JSON.parse(localStorage.getItem('aidova_builtin_symbols')||'{}');}catch(e){return {};}})();
 // Remember which image URL each cached symbol came from, so when an icon is replaced
