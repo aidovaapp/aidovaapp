@@ -229,6 +229,7 @@ body.editing #app{padding-top:38px}
 @keyframes pop{0%{transform:scale(1)}35%{transform:scale(1.16) rotate(-3deg)}65%{transform:scale(.94) rotate(2deg)}85%{transform:scale(1.05)}100%{transform:scale(1)}}
 .ci{line-height:1;pointer-events:none}.ci img{width:1.6em;height:1.6em;object-fit:contain;vertical-align:middle;display:block}.ci img.sy{width:1.15em;height:1.15em}.cl{font-weight:900;text-align:center;line-height:1.1;color:#333;pointer-events:none;margin-top:1px;text-transform:uppercase;max-width:80%}
 .cf{background:var(--col-cf,#FFCCBC)}.cn{background:var(--col-cn,#B3E5FC)}.cp{background:var(--col-cp,#FFF9C4)}.cs{background:var(--col-cs,#E1BEE7)}
+body.sq .circ{border-radius:20px;padding:5px 3px 3px}body.sq .cl{order:-1;max-width:94%;margin:0 0 1px}body.sq .ci img.sy{width:1.38em;height:1.38em}body.sq .ci{flex:0 0 auto}
 .col-swatch{width:28px;height:28px;border-radius:50%;border:2px solid transparent;cursor:pointer;flex-shrink:0;transition:transform .15s}
 .col-swatch:active{transform:scale(.88)}
 .col-swatch.sel{border-color:#333;transform:scale(1.15)}
@@ -889,6 +890,11 @@ body.editing .ce{border:2px dashed #E0E0E0}
         <button class="vbig" id="istyle-btn-symbol" onclick="setIconStyleDefault('symbol')" style="flex:1;padding:10px;border:2px solid #2D6A4F;border-radius:10px;background:#2D6A4F;color:#fff;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.8rem;cursor:pointer">🖼️ Symbols</button>
         <button class="vbig" id="istyle-btn-emoji" onclick="setIconStyleDefault('emoji')" style="flex:1;padding:10px;border:2px solid #eee;border-radius:10px;background:#eee;color:#555;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.8rem;cursor:pointer">😊 Emoji</button>
       </div>
+      <div style="font-size:.72rem;color:#888;margin:12px 0 6px">Button shape</div>
+      <div style="display:flex;gap:8px">
+        <button class="vbig" id="shape-btn-sq" onclick="setButtonShape('sq')" style="flex:1;padding:10px;border:2px solid #2D6A4F;border-radius:10px;background:#2D6A4F;color:#fff;font-weight:900;font-size:.8rem;cursor:pointer">▢ Rounded squares</button>
+        <button class="vbig" id="shape-btn-circ" onclick="setButtonShape('circ')" style="flex:1;padding:10px;border:2px solid #eee;border-radius:10px;background:#eee;color:#555;font-weight:900;font-size:.8rem;cursor:pointer">⬤ Circles</button>
+      </div>
     </div>
 
     <!-- Symbol Credits — attribution for CC-licensed AAC symbols in use -->
@@ -1213,6 +1219,16 @@ var emergPhrases=JSON.parse(localStorage.getItem('aidova_emergphrases')||'null')
 ]; // 0=small 1=normal 2=large
 var voiceGender=localStorage.getItem('aidova_vgender')||'f';
 var iconStyleDefault=localStorage.getItem('aidova_iconstyle')||'symbol'; // built-in buttons default to Aidova's own symbols
+var buttonShape=localStorage.getItem('aidova_shape')||'sq';
+function setButtonShape(shape,noSave){
+  buttonShape=shape;
+  if(!noSave)localStorage.setItem('aidova_shape',shape);
+  document.body.classList.toggle('sq',shape==='sq');
+  var a=document.getElementById('shape-btn-sq'),b=document.getElementById('shape-btn-circ');
+  if(a){var on=shape==='sq';a.style.background=on?'#2D6A4F':'#eee';a.style.color=on?'#fff':'#555';a.style.borderColor=on?'#2D6A4F':'#eee';}
+  if(b){var on2=shape==='circ';b.style.background=on2?'#2D6A4F':'#eee';b.style.color=on2?'#fff':'#555';b.style.borderColor=on2?'#2D6A4F':'#eee';}
+  if(!noSave)resize();
+}
 function setIconStyleDefault(style,noSave){
   iconStyleDefault=style;
   if(!noSave)localStorage.setItem('aidova_iconstyle',style);
@@ -1985,7 +2001,7 @@ function resizeApply(sz,cols,gap,avW){
   document.querySelectorAll('.circ').forEach(function(c){c.style.width=sz+'px';c.style.height=sz+'px';});
   document.querySelectorAll('.ci').forEach(function(e){e.style.fontSize=Math.round(sz*.50)+'px';});
   document.querySelectorAll('.cl').forEach(function(e){
-    var fs=Math.max(9,Math.round(sz*.105));e.style.fontSize=fs+'px';
+    var fs=Math.max(9,Math.round(sz*(document.body.classList.contains('sq')?.115:.105)));e.style.fontSize=fs+'px';
     var lim=sz*.78,g=0;
     while(e.scrollWidth>e.clientWidth+1&&fs>7&&g++<8){fs--;e.style.fontSize=fs+'px';}
   });
@@ -5411,6 +5427,7 @@ if(premplus)document.getElementById('pstat').textContent='🌟 Premium Plus';
 else if(premium)document.getElementById('pstat').textContent='⭐ Premium';
 setVoiceGender(voiceGender,true);
 setIconStyleDefault(iconStyleDefault,true);
+setButtonShape(buttonShape,true);
 populateLangSelect();
 applyBtnSize();
 // Set volume slider to saved value
