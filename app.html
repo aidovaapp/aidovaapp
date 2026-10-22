@@ -1427,10 +1427,10 @@ function renderFolderGrid(items){
   g.innerHTML=items.map(function(it,i){
     var iconHtml=it.isPhoto&&it.icon&&it.icon.indexOf('data:')===0
       ?'<img src="'+it.icon+'" style="width:55%;height:55%;object-fit:cover;border-radius:50%">'
-      :'<span style="font-size:1.6rem;line-height:1;display:flex;align-items:center;justify-content:center;width:32px;height:32px">'+it.icon+'</span>';
-    return '<div onclick="tapFolderBtn('+i+')" style="border-radius:50%;aspect-ratio:1;background:'+bg+';border:2px solid rgba(0,0,0,.07);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.08);transition:transform .12s;overflow:hidden;max-width:72px;margin:0 auto" onmousedown="this.style.transform=\'scale(.87)\'" onmouseup="this.style.transform=\'\'" ontouchstart="this.style.transform=\'scale(.87)\'" ontouchend="this.style.transform=\'\'">'
+      :'<span style="font-size:1.9rem;line-height:1;display:flex;align-items:center;justify-content:center;width:38px;height:38px">'+it.icon+'</span>';
+    return '<div onclick="tapFolderBtn('+i+')" style="border-radius:'+(buttonShape==='sq'?'20px':'50%')+';aspect-ratio:1;background:'+bg+';border:3px solid rgba(35,50,65,.6);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.08);transition:transform .12s;overflow:hidden;max-width:72px;margin:0 auto" onmousedown="this.style.transform=\'scale(.87)\'" onmouseup="this.style.transform=\'\'" ontouchstart="this.style.transform=\'scale(.87)\'" ontouchend="this.style.transform=\'\'">'
       +iconHtml
-      +'<span style="font-size:.48rem;font-weight:900;text-align:center;line-height:1.1;color:#333;margin-top:1px;text-transform:uppercase;padding:0 2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:95%">'+it.label+'</span>'
+      +'<span style="font-size:.62rem;font-weight:900;text-align:center;line-height:1.1;color:#333;margin-top:2px;padding:0 2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:92%">'+fmtLabel(it.label)+'</span>'
       +'</div>';
   }).join('');
 }
@@ -1824,25 +1824,37 @@ function photoToDataURL(srcDataUrl,px){
   });
 }
 
+function symbolToDataURL(word){
+  return new Promise(function(resolve){
+    if(iconStyleDefault!=='symbol'||!word||!CURATED_SYMBOLS[word]){resolve(null);return;}
+    if(builtinSymbolCache[word]&&builtinSymbolCache[word].indexOf('data:')===0){resolve(builtinSymbolCache[word]);return;}
+    var im=new Image();
+    im.onload=function(){try{var c=document.createElement('canvas');c.width=c.height=140;c.getContext('2d').drawImage(im,0,0,140,140);resolve(c.toDataURL('image/png'));}catch(e){resolve(null);}};
+    im.onerror=function(){resolve(null);};
+    im.src=CURATED_SYMBOLS[word];
+  });
+}
 async function exportBoardPDF(){
   if(!premium&&!premplus){closePanel();showPlans();return;}
   if(typeof window.jspdf==='undefined'){alert('PDF tool still loading — please try again in a moment.');return;}
   var pi=curTab;
   var cats=['Feelings','Needs','Places','Social'];
   var items=[];
-  BTNS[pi].forEach(function(d,i){
-    var key='b'+pi+'_'+i;
-    if(!hiddenB[key])items.push({label:d.l,img:emojiToDataURL(d.i.indexOf('TRAMP64:')===0?'🤸':d.i)});
-  });
+  for(var bi=0;bi<BTNS[pi].length;bi++){
+    var d=BTNS[pi][bi],key='b'+pi+'_'+bi;
+    if(hiddenB[key])continue;
+    var symImg=await symbolToDataURL(d.w);
+    items.push({label:fmtLabel(d.l),img:symImg||emojiToDataURL(d.i.indexOf('TRAMP64:')===0?'🤸':d.i)});
+  }
   var n=slots();
   for(var s=0;s<n;s++){
     var sv=recData[activeP+'-'+pi+'-'+s];
     if(sv&&!hiddenB['rec_'+activeP+'-'+pi+'-'+s]){
       if(sv.isPhoto&&sv.icon&&sv.icon.indexOf('data:')===0){
         var photoImg=await photoToDataURL(sv.icon);
-        items.push({label:sv.label,img:photoImg||emojiToDataURL('📷')});
+        items.push({label:fmtLabel(sv.label),img:photoImg||emojiToDataURL('📷')});
       }else{
-        items.push({label:sv.label,img:emojiToDataURL(sv.icon)});
+        items.push({label:fmtLabel(sv.label),img:emojiToDataURL(sv.icon)});
       }
     }
   }
@@ -1852,13 +1864,13 @@ async function exportBoardPDF(){
   doc.text('Aidova — '+cats[pi]+' ('+(profiles[activeP]?profiles[activeP].n:'Profile')+')',14,16);
   doc.setFontSize(9);
   doc.text('Generated '+new Date().toLocaleDateString('en-GB'),14,22);
-  var x=14,y=30,colW=58,rowH=30,col=0,iconPx=16;
+  var x=14,y=30,colW=58,rowH=30,col=0,iconPx=17;
   items.forEach(function(it){
     doc.setDrawColor(200);
     doc.roundedRect(x,y,colW-4,rowH-4,2,2);
-    if(it.img)doc.addImage(it.img,'PNG',x+(colW-4)/2-iconPx/2,y+3,iconPx,iconPx);
+    if(it.img)doc.addImage(it.img,'PNG',x+(colW-4)/2-iconPx/2,y+1.5,iconPx,iconPx);
     doc.setFontSize(8);
-    doc.text(it.label,x+(colW-4)/2,y+rowH-9,{maxWidth:colW-8,align:'center'});
+    doc.text(it.label,x+(colW-4)/2,y+rowH-6,{maxWidth:colW-8,align:'center'});
     col++;
     if(col>=3){col=0;x=14;y+=rowH;}else{x+=colW;}
     if(y>260){doc.addPage();y=20;x=14;col=0;}
