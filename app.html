@@ -3089,10 +3089,11 @@ function fetchBuiltinSymbol(word,key){
   processSymbolFetchQueue();
 }
 
+var symbolFetchActive=0;
 function processSymbolFetchQueue(){
-  if(symbolFetchRunning||!symbolFetchQueue.length)return;
-  symbolFetchRunning=true;
-  var item=symbolFetchQueue.shift();
+  while(symbolFetchActive<6&&symbolFetchQueue.length){symbolFetchActive++;fetchOneSymbol(symbolFetchQueue.shift());}
+}
+function fetchOneSymbol(item){
   var approvedUrl=CURATED_SYMBOLS[item.word];
   if(!approvedUrl){nextInQueue();return;}
   var img=new Image();
@@ -3118,8 +3119,8 @@ function processSymbolFetchQueue(){
 }
 
 function nextInQueue(){
-  symbolFetchRunning=false;
-  setTimeout(processSymbolFetchQueue,150); // small gap between requests to stay well under any rate limit
+  symbolFetchActive=Math.max(0,symbolFetchActive-1);
+  processSymbolFetchQueue(); // icons are our own files, so several can load at once
 }
 
 var TINT_GROUPS=[
