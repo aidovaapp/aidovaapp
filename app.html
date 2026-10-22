@@ -241,7 +241,7 @@ body.sq .circ{border-radius:20px;padding:5px 3px 3px}body.sq .cl{order:-1;max-wi
 .col-swatch:active{transform:scale(.88)}
 .col-swatch.sel{border-color:#333;transform:scale(1.15)}
 .col-row{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 10px}
-.cr{background:#E8F5E9;border:2px solid #A5D6A7}.ce{background:#FAFAFA;border:2px solid #E0E0E0}
+.cr{background:#E8F5E9;border:3px solid rgba(35,50,65,.6)}.ce{background:#FAFAFA;border:2px solid #E0E0E0}
 body.editing .cr{border:2px dashed #A5D6A7}
 body.editing .ce{border:2px dashed #E0E0E0}
 .circ.hidden-btn{opacity:.35;filter:grayscale(1)}
@@ -897,7 +897,7 @@ body.editing .ce{border:2px dashed #E0E0E0}
         <button class="vbig" id="istyle-btn-symbol" onclick="setIconStyleDefault('symbol')" style="flex:1;padding:10px;border:2px solid #2D6A4F;border-radius:10px;background:#2D6A4F;color:#fff;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.8rem;cursor:pointer">🖼️ Symbols</button>
         <button class="vbig" id="istyle-btn-emoji" onclick="setIconStyleDefault('emoji')" style="flex:1;padding:10px;border:2px solid #eee;border-radius:10px;background:#eee;color:#555;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.8rem;cursor:pointer">😊 Emoji</button>
       </div>
-      <div style="font-size:.72rem;color:#555;background:#F4F4F4;border-radius:8px;padding:8px 10px;margin:12px 0 8px;line-height:1.55"><b>Colours:</b> each button is tinted by its meaning. In Feelings, green is good feelings, blue is low feelings, red is angry or hurting, purple is afraid. Needs, Places and Social have their own groups. To use one colour for a whole tab instead, go to Settings → Button Colours and pick it. Pick the first swatch to go back to the meaning colours.</div>
+      <div style="font-size:.72rem;color:#555;background:#F4F4F4;border-radius:8px;padding:8px 10px;margin:12px 0 8px;line-height:1.55"><b>Colours:</b> each button is tinted by its meaning. In Feelings, green is good feelings, blue is low feelings, red is angry or hurting, purple is afraid. Needs, Places and Social have their own groups. With Premium you can use one colour for a whole tab instead: go to Settings → Button Colours and pick it. Pick the first swatch to go back to the meaning colours.</div>
       <div style="font-size:.72rem;color:#888;margin:4px 0 6px">Button shape</div>
       <div style="display:flex;gap:8px">
         <button class="vbig" id="shape-btn-sq" onclick="setButtonShape('sq')" style="flex:1;padding:10px;border:2px solid #2D6A4F;border-radius:10px;background:#2D6A4F;color:#fff;font-weight:900;font-size:.8rem;cursor:pointer">▢ Rounded squares</button>
@@ -3303,12 +3303,12 @@ function renderPage(pi,data,cat){
           if(sv.colour){el.style.background=sv.colour;}
           else{el.style.background=catCols[pi]||DEFAULT_CAT_COLS[pi];}
           if(sv.isFolder){
-            el.style.boxShadow='0 0 0 3px #2D6A4F, 0 3px 10px rgba(0,0,0,.09)';el.style.border='2px solid rgba(0,0,0,.07)';
-            el.innerHTML='<span style="font-size:clamp(1rem,2.8vw,1.3rem);line-height:1">'+sv.icon+'</span><span class="cl">'+sv.label+'</span>';
+            el.style.boxShadow='0 0 0 3px #2D6A4F, 0 3px 10px rgba(0,0,0,.09)';el.style.border='3px solid rgba(35,50,65,.6)';
+            el.innerHTML='<span style="font-size:clamp(1rem,2.8vw,1.3rem);line-height:1">'+sv.icon+'</span><span class="cl">'+fmtLabel(sv.label)+'</span>';
           }else if(sv.isPhoto&&sv.icon&&sv.icon.indexOf('data:')===0){
-            el.innerHTML='<img src="'+sv.icon+'" style="width:58%;height:58%;object-fit:cover;border-radius:50%;margin-bottom:3px"><span class="cl">'+sv.label+'</span>';
+            el.innerHTML='<img src="'+sv.icon+'" style="width:58%;height:58%;object-fit:cover;border-radius:50%;margin-bottom:3px"><span class="cl">'+fmtLabel(sv.label)+'</span>';
           }else{
-            el.innerHTML='<span class="ci">'+sv.icon+'</span><span class="cl">'+sv.label+'</span>';
+            el.innerHTML='<span class="ci">'+sv.icon+'</span><span class="cl">'+fmtLabel(sv.label)+'</span>';
           }
           el.addEventListener('click',function(e){if(editMode){if(sv.isFolder)showFolderEditMenu(pi,s);else showRecMenu(pi,s,ckey);return;}anim(el,e);if(sv.isFolder){openFolder(pi,s,sv.icon,sv.label);return;}say(sv.word,rkey,sv.label);addToSent(sv.word,sv.label);addToRecents(sv.isPhoto&&sv.icon?sv.icon:sv.icon,sv.label,sv.word,rkey,''+cat);});
           var pt=null,held=false;
@@ -3337,8 +3337,8 @@ function renderPage(pi,data,cat){
           var el=document.createElement('div');
           el.className='circ cr';el.dataset.key=rkey;el.dataset.slot=s;el.dataset.pi=pi;
           if(sv.colour){el.style.background=sv.colour;}else{el.style.background=catCols[pi]||DEFAULT_CAT_COLS[pi];}
-          if(sv.isFolder){el.style.boxShadow='0 0 0 3px #2D6A4F, 0 3px 10px rgba(0,0,0,.09)';el.style.border='2px solid rgba(0,0,0,.07)';if(sv.isPhoto&&sv.icon&&sv.icon.indexOf('data:')===0){el.innerHTML='<img src="'+sv.icon+'" style="width:58%;height:58%;object-fit:cover;border-radius:50%;margin-bottom:3px"><span class="cl">'+sv.label+'</span>';}else{el.innerHTML='<span style="font-size:clamp(1rem,2.8vw,1.3rem);line-height:1">'+sv.icon+'</span><span class="cl">'+sv.label+'</span>';}}else if(sv.isPhoto&&sv.icon&&sv.icon.indexOf('data:')===0){el.innerHTML='<img src="'+sv.icon+'" style="width:58%;height:58%;object-fit:cover;border-radius:50%;margin-bottom:3px"><span class="cl">'+sv.label+'</span>';}
-          else{el.innerHTML='<span class="ci">'+sv.icon+'</span><span class="cl">'+sv.label+'</span>';}
+          if(sv.isFolder){el.style.boxShadow='0 0 0 3px #2D6A4F, 0 3px 10px rgba(0,0,0,.09)';el.style.border='3px solid rgba(35,50,65,.6)';if(sv.isPhoto&&sv.icon&&sv.icon.indexOf('data:')===0){el.innerHTML='<img src="'+sv.icon+'" style="width:58%;height:58%;object-fit:cover;border-radius:50%;margin-bottom:3px"><span class="cl">'+fmtLabel(sv.label)+'</span>';}else{el.innerHTML='<span style="font-size:clamp(1rem,2.8vw,1.3rem);line-height:1">'+sv.icon+'</span><span class="cl">'+fmtLabel(sv.label)+'</span>';}}else if(sv.isPhoto&&sv.icon&&sv.icon.indexOf('data:')===0){el.innerHTML='<img src="'+sv.icon+'" style="width:58%;height:58%;object-fit:cover;border-radius:50%;margin-bottom:3px"><span class="cl">'+fmtLabel(sv.label)+'</span>';}
+          else{el.innerHTML='<span class="ci">'+sv.icon+'</span><span class="cl">'+fmtLabel(sv.label)+'</span>';}
           el.addEventListener('click',function(e){if(editMode){if(sv.isFolder)showFolderEditMenu(pi,s);else showRecMenu(pi,s,activeP+'-'+pi+'-'+s);return;}anim(el,e);if(sv.isFolder){openFolder(pi,s,sv.icon,sv.label);return;}say(sv.word,rkey,sv.label);addToSent(sv.word,sv.label);addToRecents(sv.isPhoto&&sv.icon?sv.icon:sv.icon,sv.label,sv.word,rkey,''+cat);});
           var pt=null,held=false;
           el.addEventListener('touchstart',function(){held=false;pt=setTimeout(function(){held=true;if(editMode)showRecMenu(pi,s,activeP+'-'+pi+'-'+s);},600);},{passive:true});
@@ -3388,8 +3388,8 @@ function renderPage(pi,data,cat){
           var el=document.createElement('div');
           el.className='circ cr';el.dataset.key=rkey;el.dataset.slot=s;el.dataset.pi=pi;
           if(sv.colour){el.style.background=sv.colour;}else{el.style.background=catCols[pi]||DEFAULT_CAT_COLS[pi];}
-          if(sv.isFolder){el.style.boxShadow='0 0 0 3px #2D6A4F, 0 3px 10px rgba(0,0,0,.09)';el.style.border='2px solid rgba(0,0,0,.07)';if(sv.isPhoto&&sv.icon&&sv.icon.indexOf('data:')===0){el.innerHTML='<img src="'+sv.icon+'" style="width:58%;height:58%;object-fit:cover;border-radius:50%;margin-bottom:3px"><span class="cl">'+sv.label+'</span>';}else{el.innerHTML='<span style="font-size:clamp(1rem,2.8vw,1.3rem);line-height:1">'+sv.icon+'</span><span class="cl">'+sv.label+'</span>';}}else if(sv.isPhoto&&sv.icon&&sv.icon.indexOf('data:')===0){el.innerHTML='<img src="'+sv.icon+'" style="width:58%;height:58%;object-fit:cover;border-radius:50%;margin-bottom:3px"><span class="cl">'+sv.label+'</span>';}
-          else{el.innerHTML='<span class="ci">'+sv.icon+'</span><span class="cl">'+sv.label+'</span>';}
+          if(sv.isFolder){el.style.boxShadow='0 0 0 3px #2D6A4F, 0 3px 10px rgba(0,0,0,.09)';el.style.border='3px solid rgba(35,50,65,.6)';if(sv.isPhoto&&sv.icon&&sv.icon.indexOf('data:')===0){el.innerHTML='<img src="'+sv.icon+'" style="width:58%;height:58%;object-fit:cover;border-radius:50%;margin-bottom:3px"><span class="cl">'+fmtLabel(sv.label)+'</span>';}else{el.innerHTML='<span style="font-size:clamp(1rem,2.8vw,1.3rem);line-height:1">'+sv.icon+'</span><span class="cl">'+fmtLabel(sv.label)+'</span>';}}else if(sv.isPhoto&&sv.icon&&sv.icon.indexOf('data:')===0){el.innerHTML='<img src="'+sv.icon+'" style="width:58%;height:58%;object-fit:cover;border-radius:50%;margin-bottom:3px"><span class="cl">'+fmtLabel(sv.label)+'</span>';}
+          else{el.innerHTML='<span class="ci">'+sv.icon+'</span><span class="cl">'+fmtLabel(sv.label)+'</span>';}
           el.addEventListener('click',function(e){if(editMode){if(sv.isFolder)showFolderEditMenu(pi,s);else showRecMenu(pi,s,key);return;}anim(el,e);if(sv.isFolder){openFolder(pi,s,sv.icon,sv.label);return;}say(sv.word,rkey,sv.label);addToSent(sv.word,sv.label);addToRecents(sv.isPhoto&&sv.icon?sv.icon:sv.icon,sv.label,sv.word,rkey,''+cat);});
           var pt=null,held=false;
           el.addEventListener('touchstart',function(){held=false;pt=setTimeout(function(){held=true;if(editMode)showRecMenu(pi,s,key);},600);},{passive:true});
@@ -3487,8 +3487,8 @@ function renderHiddenSection(pi){
       var sv=item.sv;
       if(sv.colour){el.style.background=sv.colour;}
       else{el.style.background=catCols[pi]||DEFAULT_CAT_COLS[pi];}
-      if(sv.isFolder){el.style.boxShadow='0 0 0 3px #2D6A4F, 0 3px 10px rgba(0,0,0,.09)';el.style.border='2px solid rgba(0,0,0,.07)';if(sv.isPhoto&&sv.icon&&sv.icon.indexOf('data:')===0){el.innerHTML='<img src="'+sv.icon+'" style="width:58%;height:58%;object-fit:cover;border-radius:50%;margin-bottom:3px"><span class="cl">'+sv.label+'</span>';}else{el.innerHTML='<span style="font-size:clamp(1rem,2.8vw,1.3rem);line-height:1">'+sv.icon+'</span><span class="cl">'+sv.label+'</span>';}}else if(sv.isPhoto&&sv.icon&&sv.icon.indexOf('data:')===0){el.innerHTML='<img src="'+sv.icon+'" style="width:58%;height:58%;object-fit:cover;border-radius:50%;margin-bottom:3px"><span class="cl">'+sv.label+'</span>';}
-      else{el.innerHTML='<span class="ci">'+sv.icon+'</span><span class="cl">'+sv.label+'</span>';}
+      if(sv.isFolder){el.style.boxShadow='0 0 0 3px #2D6A4F, 0 3px 10px rgba(0,0,0,.09)';el.style.border='3px solid rgba(35,50,65,.6)';if(sv.isPhoto&&sv.icon&&sv.icon.indexOf('data:')===0){el.innerHTML='<img src="'+sv.icon+'" style="width:58%;height:58%;object-fit:cover;border-radius:50%;margin-bottom:3px"><span class="cl">'+fmtLabel(sv.label)+'</span>';}else{el.innerHTML='<span style="font-size:clamp(1rem,2.8vw,1.3rem);line-height:1">'+sv.icon+'</span><span class="cl">'+fmtLabel(sv.label)+'</span>';}}else if(sv.isPhoto&&sv.icon&&sv.icon.indexOf('data:')===0){el.innerHTML='<img src="'+sv.icon+'" style="width:58%;height:58%;object-fit:cover;border-radius:50%;margin-bottom:3px"><span class="cl">'+fmtLabel(sv.label)+'</span>';}
+      else{el.innerHTML='<span class="ci">'+sv.icon+'</span><span class="cl">'+fmtLabel(sv.label)+'</span>';}
     }
     var rb=document.createElement('button');rb.className='restore-badge';rb.textContent='↩';rb.title='Restore';
     (function(it){
