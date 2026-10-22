@@ -223,11 +223,11 @@ body.editing #app{padding-top:38px}
 @media(min-width:900px){.grid{grid-template-columns:repeat(5,1fr)}}
 @media(min-width:1100px){.grid{grid-template-columns:repeat(6,1fr)}}
 .sec{font-size:.6rem;font-weight:900;color:#bbb;text-transform:uppercase;letter-spacing:.5px}
-.circ{border-radius:50%;aspect-ratio:1;border:2px solid rgba(0,0,0,.07);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;user-select:none;-webkit-user-select:none;position:relative;overflow:visible;box-shadow:0 3px 10px rgba(0,0,0,.09);transition:transform .12s;padding:4px}
+.circ{border-radius:50%;aspect-ratio:1;border:3px solid rgba(35,50,65,.6);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;user-select:none;-webkit-user-select:none;position:relative;overflow:visible;box-shadow:0 3px 10px rgba(0,0,0,.09);transition:transform .12s;padding:4px}
 .circ:active{transform:scale(.87)}
 .circ.pop{animation:pop .35s cubic-bezier(.36,.07,.19,.97)}
 @keyframes pop{0%{transform:scale(1)}35%{transform:scale(1.16) rotate(-3deg)}65%{transform:scale(.94) rotate(2deg)}85%{transform:scale(1.05)}100%{transform:scale(1)}}
-.ci{line-height:1;pointer-events:none}.ci img{width:1.6em;height:1.6em;object-fit:contain;vertical-align:middle;display:block}.cl{font-weight:900;text-align:center;line-height:1.1;color:#333;pointer-events:none;margin-top:3px;text-transform:uppercase}
+.ci{line-height:1;pointer-events:none}.ci img{width:1.6em;height:1.6em;object-fit:contain;vertical-align:middle;display:block}.ci img.sy{width:1.15em;height:1.15em}.cl{font-weight:900;text-align:center;line-height:1.1;color:#333;pointer-events:none;margin-top:1px;text-transform:uppercase;max-width:80%}
 .cf{background:var(--col-cf,#FFCCBC)}.cn{background:var(--col-cn,#B3E5FC)}.cp{background:var(--col-cp,#FFF9C4)}.cs{background:var(--col-cs,#E1BEE7)}
 .col-swatch{width:28px;height:28px;border-radius:50%;border:2px solid transparent;cursor:pointer;flex-shrink:0;transition:transform .15s}
 .col-swatch:active{transform:scale(.88)}
@@ -1984,7 +1984,11 @@ function resizeApply(sz,cols,gap,avW){
   });
   document.querySelectorAll('.circ').forEach(function(c){c.style.width=sz+'px';c.style.height=sz+'px';});
   document.querySelectorAll('.ci').forEach(function(e){e.style.fontSize=Math.round(sz*.50)+'px';});
-  document.querySelectorAll('.cl').forEach(function(e){e.style.fontSize=Math.max(9,Math.round(sz*.11))+'px';});
+  document.querySelectorAll('.cl').forEach(function(e){
+    var fs=Math.max(9,Math.round(sz*.105));e.style.fontSize=fs+'px';
+    var lim=sz*.78,g=0;
+    while(e.scrollWidth>e.clientWidth+1&&fs>7&&g++<8){fs--;e.style.fontSize=fs+'px';}
+  });
 }
 function say(w,vkey,label){
   trackUsage(w,label||w);
@@ -3072,7 +3076,7 @@ function processSymbolFetchQueue(){
   img.onload=function(){
     var dataUrl;
     try{
-      var c=document.createElement('canvas'),MAX=100,w=img.width,h=img.height;
+      var c=document.createElement('canvas'),MAX=140,w=img.width,h=img.height;
       if(w>h){if(w>MAX){h=h*MAX/w;w=MAX;}}else{if(h>MAX){w=w*MAX/h;h=MAX;}}
       c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);
       dataUrl=c.toDataURL('image/png');
@@ -3081,7 +3085,7 @@ function processSymbolFetchQueue(){
     builtinSymbolSrc[item.word]=approvedUrl;
     saveBuiltinSymbolCache();
     document.querySelectorAll('.circ[data-key="'+item.key+'"] .ci').forEach(function(span){
-      span.innerHTML='<img src="'+dataUrl+'" >';
+      span.innerHTML='<img class="sy" src="'+dataUrl+'" >';
     });
     nextInQueue();
   };
@@ -3105,12 +3109,12 @@ function mkCirc(icon,label,word,cat,clickFn,key){
   var symbolEligible=(iconStyleDefault==='symbol'&&word&&CURATED_SYMBOLS[word]);
   if(icon&&icon.startsWith('TRAMP64:')&&!(symbolEligible&&builtinSymbolCache[word])){
     var b64=icon.substring(8);
-    iconHtml='<span class="ci"><img src="data:image/png;base64,'+b64+'" ></span>';
+    iconHtml='<span class="ci"><img class="sy" src="data:image/png;base64,'+b64+'" ></span>';
     if(symbolEligible&&builtinSymbolCache[word]===undefined){
       fetchBuiltinSymbol(word,key); // swap in the character icon once ready
     }
   } else if(symbolEligible&&builtinSymbolCache[word]){
-    iconHtml='<span class="ci"><img src="'+builtinSymbolCache[word]+'" ></span>';
+    iconHtml='<span class="ci"><img class="sy" src="'+builtinSymbolCache[word]+'" ></span>';
   } else {
     iconHtml='<span class="ci">'+icon+'</span>';
     if(symbolEligible&&builtinSymbolCache[word]===undefined){
