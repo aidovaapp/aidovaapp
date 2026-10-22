@@ -346,26 +346,26 @@ nav {
 }
 .demo-btn {
   background: #FDD5D5;
-  border-radius: 50%;
+  border-radius: 18px;
+  border: 3px solid rgba(35,50,65,.6);
   aspect-ratio: 1;
   cursor: pointer;
   transition: all .2s;
-  border: none;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 5px;
+  justify-content: flex-start;
+  gap: 2px;
   box-shadow: 0 4px 12px rgba(0,0,0,.08);
-  padding: 8px;
+  padding: 5px 3px 3px;
+  min-width: 0;
 }
+.demo-btn img { flex: 1; min-height: 0; width: 100%; object-fit: contain; }
+.demo-btn.fg-g { background: #CFEBD3; } .demo-btn.fg-b { background: #CDE0F5; } .demo-btn.fg-r { background: #F7D3CE; }
+.demo-btn.fg-p { background: #E3D6F2; } .demo-btn.fg-y { background: #FFF0B3; }
 .demo-btn:hover { transform: scale(1.08); box-shadow: 0 8px 24px rgba(0,0,0,.15); }
 .demo-btn:active { transform: scale(.95); }
-.demo-btn .emoji { font-size: 1.7rem; line-height: 1; }
-.demo-btn .label { font-size: .55rem; font-weight: 800; color: var(--dark); letter-spacing: .04em; text-align: center; line-height: 1.2; }
-.demo-btn.needs { background: #C8E6FA; }
-.demo-btn.places { background: #FFF3C4; }
-.demo-btn.social { background: #DDD0F0; }
+.demo-btn .label { font-size: clamp(.62rem,2.6vw,.8rem); font-weight: 800; color: var(--dark); text-align: center; line-height: 1.15; }
 .demo-speak {
   background: var(--green);
   color: white;
@@ -658,7 +658,6 @@ footer { background: var(--dark); padding: 48px 24px; text-align: center; }
 /* ── MOBILE ── */
 @media (max-width: 600px) {
   .demo-grid { grid-template-columns: repeat(4, 1fr); gap: 8px; }
-  .demo-btn .emoji { font-size: 1.5rem; }
   .hero-btns { flex-direction: column; align-items: center; }
   .btn-primary, .btn-secondary { width: 100%; max-width: 300px; justify-content: center; }
   .plans-grid { grid-template-columns: 1fr; }
@@ -875,26 +874,26 @@ footer { background: var(--dark); padding: 48px 24px; text-align: center; }
   <div class="section-label">Try it now</div>
   <h2 class="section-title">Say something instantly.<br>No typing. No setup.</h2>
   <p class="section-sub">Tap any button → it speaks aloud. Tap multiple to build a full sentence — then press Speak.</p>
-  <p style="font-size:.82rem;color:var(--grey);margin-bottom:8px;font-style:italic">Try it: tap <strong>I WANT</strong> then <strong>HUG</strong> → press Speak ▶</p>
-  <p style="font-size:.78rem;color:var(--grey);margin-bottom:24px;font-style:italic">Example layout — children, adults and care settings all use different setups in the real app.</p>
+  <p style="font-size:.82rem;color:var(--grey);margin-bottom:8px;font-style:italic">Try it: tap <strong>Hungry</strong> then <strong>Thirsty</strong> → press Speak ▶</p>
+  <p style="font-size:.78rem;color:var(--grey);margin-bottom:24px;font-style:italic">Example layout — buttons are coloured by meaning (green good, red hurting or stop, purple afraid or calming, yellow activities). Children, adults and care settings all use different setups in the real app.</p>
 
   <div class="demo-grid" id="demoGrid">
-    <button class="demo-btn" onclick="speak('happy')"><span class="emoji">😊</span><span class="label">HAPPY</span></button>
-    <button class="demo-btn" onclick="speak('sad')"><span class="emoji">😢</span><span class="label">SAD</span></button>
-    <button class="demo-btn" onclick="speak('scared')"><span class="emoji">😨</span><span class="label">SCARED</span></button>
-    <button class="demo-btn" onclick="speak('excited')"><span class="emoji">🤩</span><span class="label">EXCITED</span></button>
-    <button class="demo-btn needs" onclick="speak('hungry')"><span class="emoji">🍽️</span><span class="label">HUNGRY</span></button>
-    <button class="demo-btn needs" onclick="speak('thirsty')"><span class="emoji">💧</span><span class="label">THIRSTY</span></button>
-    <button class="demo-btn needs" onclick="speak('tired')"><span class="emoji">😴</span><span class="label">TIRED</span></button>
-    <button class="demo-btn needs" onclick="speak('hug')"><span class="emoji">🤗</span><span class="label">HUG</span></button>
-    <button class="demo-btn places" onclick="speak('home')"><span class="emoji">🏠</span><span class="label">HOME</span></button>
-    <button class="demo-btn places" onclick="speak('park')"><span class="emoji">🌳</span><span class="label">PARK</span></button>
-    <button class="demo-btn places" onclick="speak('school')"><span class="emoji">🏫</span><span class="label">SCHOOL</span></button>
-    <button class="demo-btn places" onclick="speak('doctor')"><span class="emoji">🏥</span><span class="label">DOCTOR</span></button>
-    <button class="demo-btn social" onclick="speak('thank you')"><span class="emoji">🙏</span><span class="label">THANKS</span></button>
-    <button class="demo-btn social" onclick="speak('help')"><span class="emoji">🆘</span><span class="label">HELP</span></button>
-    <button class="demo-btn social" onclick="speak('stop')"><span class="emoji">✋</span><span class="label">STOP</span></button>
-    <button class="demo-btn social" onclick="speak('more')"><span class="emoji">➕</span><span class="label">MORE</span></button>
+    <button class="demo-btn fg-g" onclick="speak('happy')"><span class="label">Happy</span><img src="/icons/custom/happy.png" alt="" width="256" height="256" loading="lazy"></button>
+    <button class="demo-btn fg-b" onclick="speak('sad')"><span class="label">Sad</span><img src="/icons/custom/sad.png" alt="" width="256" height="256" loading="lazy"></button>
+    <button class="demo-btn fg-p" onclick="speak('scared')"><span class="label">Scared</span><img src="/icons/custom/scared.png" alt="" width="256" height="256" loading="lazy"></button>
+    <button class="demo-btn fg-g" onclick="speak('excited')"><span class="label">Excited</span><img src="/icons/custom/excited.png" alt="" width="256" height="256" loading="lazy"></button>
+    <button class="demo-btn fg-g" onclick="speak('hungry')"><span class="label">Hungry</span><img src="/icons/custom/hungry.png" alt="" width="256" height="256" loading="lazy"></button>
+    <button class="demo-btn fg-g" onclick="speak('thirsty')"><span class="label">Thirsty</span><img src="/icons/custom/thirsty.png" alt="" width="256" height="256" loading="lazy"></button>
+    <button class="demo-btn fg-p" onclick="speak('tired')"><span class="label">Tired</span><img src="/icons/custom/tired.png" alt="" width="256" height="256" loading="lazy"></button>
+    <button class="demo-btn fg-p" onclick="speak('hug')"><span class="label">Hug</span><img src="/icons/custom/hug.png" alt="" width="256" height="256" loading="lazy"></button>
+    <button class="demo-btn fg-g" onclick="speak('home')"><span class="label">Home</span><img src="/icons/custom/home.png" alt="" width="256" height="256" loading="lazy"></button>
+    <button class="demo-btn fg-y" onclick="speak('park')"><span class="label">Park</span><img src="/icons/custom/park.png" alt="" width="256" height="256" loading="lazy"></button>
+    <button class="demo-btn fg-g" onclick="speak('school')"><span class="label">School</span><img src="/icons/custom/school.png" alt="" width="256" height="256" loading="lazy"></button>
+    <button class="demo-btn fg-r" onclick="speak('doctor')"><span class="label">Doctor</span><img src="/icons/custom/doctor.png" alt="" width="256" height="256" loading="lazy"></button>
+    <button class="demo-btn fg-g" onclick="speak('thank you')"><span class="label">Thank you</span><img src="/icons/custom/thank-you.png" alt="" width="256" height="256" loading="lazy"></button>
+    <button class="demo-btn fg-r" onclick="speak('help')"><span class="label">Help</span><img src="/icons/custom/help.png" alt="" width="256" height="256" loading="lazy"></button>
+    <button class="demo-btn fg-r" onclick="speak('stop')"><span class="label">Stop</span><img src="/icons/custom/stop.png" alt="" width="256" height="256" loading="lazy"></button>
+    <button class="demo-btn fg-y" onclick="speak('more')"><span class="label">More</span><img src="/icons/custom/more.png" alt="" width="256" height="256" loading="lazy"></button>
   </div>
   <button class="demo-speak" id="speakBtn" onclick="speakAll()">▶ Speak</button>
 </section>
