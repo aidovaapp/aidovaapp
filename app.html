@@ -3080,6 +3080,7 @@ Object.keys(CURATED_SYMBOLS).forEach(function(k){var u=CURATED_SYMBOLS[k];if(u&&
 ["home","school","park","trampoline","car","bus","swim","doctor"].forEach(function(k){CURATED_SYMBOLS[k]+="&g=1";});
 ["dentist","cinema","books","TV","play","bedroom","kitchen","garden"].forEach(function(k){CURATED_SYMBOLS[k]+="&g=2";});
 ["hospital","shops","cafe","library","exercise","art","restaurant","airport"].forEach(function(k){CURATED_SYMBOLS[k]+="&g=3";});
+["church","mosque","temple","funfair","camping","football","train station","hotel"].forEach(function(k){CURATED_SYMBOLS[k]+="&g=4";});
 
 var builtinSymbolCache=(function(){try{return JSON.parse(localStorage.getItem('aidova_builtin_symbols')||'{}');}catch(e){return {};}})();
 // Remember which image URL each cached symbol came from, so when an icon is replaced
