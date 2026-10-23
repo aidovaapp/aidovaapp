@@ -978,10 +978,10 @@ body.editing .ce{border:2px dashed #E0E0E0}
     </div>
 
     <!-- PREMIUM PLUS FEATURES -->
-    <div class="ps" onclick="toggleSection('sec-layout',this)"><span>✏️ Edit Layout <span style="background:#FFE082;color:#5D4037;border-radius:6px;padding:1px 6px;font-size:.65rem;font-weight:900;text-transform:none" data-tier="premium">PREMIUM</span></span><span class="ps-arrow">▶</span></div>
+    <div class="ps" onclick="toggleSection('sec-layout',this)"><span>✏️ Edit Layout <span style="background:#FFE082;color:#5D4037;border-radius:6px;padding:1px 6px;font-size:.65rem;font-weight:900;text-transform:none" data-tier="layout">1 FREE · MORE WITH PREMIUM</span></span><span class="ps-arrow">▶</span></div>
     <div class="ps-body closed" id="sec-layout">
       <div class="sr">
-        <div><div class="sl">Edit layout</div><div class="ss">Hide buttons &amp; record your voice · Reorder with Premium Plus</div></div>
+        <div><div class="sl">Edit layout</div><div class="ss">Add your own button &amp; hide buttons · Free: 1 custom button and 1 hide · Premium: more buttons &amp; your voice · Reorder with Premium Plus</div></div>
         <button class="pbtn" onclick="startEdit()" style="background:#1B5E20;color:#fff">Edit</button>
       </div>
       <div class="sr" style="border:none">
@@ -1920,6 +1920,9 @@ var breathPhase=0,breathCount=0,breathCycles=0,breathInterval=null,breathRunning
 var b5holdTimer=null,b5holding=false;
 
 function slots(){return premplus?100:premium?30:1;}
+// Free plan: 1 custom button in total (the taster), across all tabs.
+function customCount(){var pre=activeP+'-';return Object.keys(recData).filter(function(k){return k.indexOf(pre)===0&&recData[k];}).length;}
+function canAddCustom(){return premium||premplus||customCount()<1;}
 function hideLimit(){return premplus?Infinity:premium?30:1;}
 
 // VOICE
@@ -3442,11 +3445,11 @@ function renderPage(pi,data,cat){
 
       // ADD slots in edit mode
       var usedSlotsM={};filledSlots.forEach(function(s){usedSlotsM[s]=true;});
-      if(editMode){
+      if(editMode&&canAddCustom()){
         var addShown=0;
         for(var ei=0;ei<n;ei++){
           if(!usedSlotsM[ei]){
-            if(addShown>=3)break;
+            if(addShown>=((premium||premplus)?3:1))break;
             addShown++;
             (function(es){
               var ae=document.createElement('div');ae.className='circ ce';ae.dataset.slot=es;
@@ -3461,13 +3464,13 @@ function renderPage(pi,data,cat){
   }
 
   // ADD slots for unified path (edit mode)
-  if(unified&&n>0&&editMode){
+  if(unified&&n>0&&editMode&&canAddCustom()){
     var usedSlotsU2={};
     unified.filter(function(x){return x.t==='c';}).forEach(function(x){usedSlotsU2[x.s]=true;});
     var addShownU=0;
     for(var ei2=0;ei2<n;ei2++){
       if(!usedSlotsU2[ei2]&&!recData[activeP+'-'+pi+'-'+ei2]){
-        if(addShownU>=3)break;addShownU++;
+        if(addShownU>=((premium||premplus)?3:1))break;addShownU++;
         (function(es){
           var ae=document.createElement('div');ae.className='circ ce';ae.dataset.slot=es;
           if(locked){ae.innerHTML='<span class="ci" style="font-size:1.1rem;color:#ccc">🔒</span><span class="cl" style="color:#ccc">LOCKED</span>';ae.addEventListener('click',function(){requirePin(function(){openRec(pi,es);});});}
@@ -3719,6 +3722,10 @@ function updateSettingsBadges(){
   panel.querySelectorAll('[data-tier="premium"]').forEach(function(el){
     if(premium||premplus){el.style.background='#2D6A4F';el.style.color='#fff';el.textContent='✓ Active';}
     else{el.style.background='#FFE082';el.style.color='#5D4037';el.textContent='PREMIUM';}
+  });
+  panel.querySelectorAll('[data-tier="layout"]').forEach(function(el){
+    if(premium||premplus){el.style.background='#2D6A4F';el.style.color='#fff';el.textContent='✓ Active';}
+    else{el.style.background='#E8F5E9';el.style.color='#2D6A4F';el.textContent='1 FREE · MORE WITH PREMIUM';}
   });
   panel.querySelectorAll('[data-tier="premplus"]').forEach(function(el){
     if(premplus){el.style.background='#2D6A4F';el.style.color='#fff';el.textContent='✓ Active';}
@@ -4465,7 +4472,6 @@ function enterCode(){
 
 // EDIT MODE
 function startEdit(){
-  if(!premium&&!premplus){showPlans();return;}
   closePanel();editMode=true;
   document.getElementById('editbar').classList.add('open');
   // Only Premium Plus gets Reorder
@@ -4476,7 +4482,7 @@ function startEdit(){
   setTimeout(function(){
     document.querySelectorAll('.circ').forEach(function(c){c.classList.add('edit-on');});
     resize();
-    showSuggestionBanner(curTab);
+    if(premium||premplus)showSuggestionBanner(curTab);
   },50);
 }
 function exitEdit(){
@@ -5455,7 +5461,9 @@ function applySymbolSelection(dataUrl,label,r){
 }
 
 function onPhoto(inp){var f=inp.files[0];if(!f)return;var r=new FileReader();r.onload=function(e){var img=new Image();img.onload=function(){var c=document.createElement('canvas'),MAX=200,w=img.width,h=img.height;if(w>h){if(w>MAX){h=h*MAX/w;w=MAX;}}else{if(h>MAX){w=w*MAX/h;h=MAX;}}c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);photoUrl=c.toDataURL('image/jpeg',.7);var pv=document.getElementById('pprev');pv.src=photoUrl;pv.style.display='block';document.getElementById('phint').style.display='none';document.getElementById('spkrow').style.display='block';selEmoji='📷';document.getElementById('eprev').textContent='📷';};img.src=e.target.result;};r.readAsDataURL(f);}
-function openRec(pi,s){recPg=pi;recSl=s;photoUrl=null;selEmoji='🎤';selLabel='';selBtnColour='';
+function openRec(pi,s){
+  if(!recData[activeP+'-'+pi+'-'+s]&&!canAddCustom()){alert('Your free plan includes 1 custom button. Upgrade to Premium for 30 per category.');closePanel();showPlans();return;}
+  recPg=pi;recSl=s;photoUrl=null;selEmoji='🎤';selLabel='';selBtnColour='';
   document.getElementById('eprev').textContent='🎤';
   document.getElementById('emoji-selected-label').textContent='';
   var btn=document.querySelector('#recmod button[onclick="openEmojiPicker()"]');
@@ -5481,6 +5489,7 @@ function saveRec(){
   function afterSave(){
     closeRec();
     var cats=['cf','cn','cp','cs'];
+    if(!premium&&!premplus){[0,1,2,3].forEach(function(q){if(q!==recPg)renderPage(q,BTNS[q],cats[q]);});}
     renderPage(recPg,BTNS[recPg],cats[recPg]);
     if(editMode){setTimeout(function(){document.querySelectorAll('.circ').forEach(function(c){c.classList.add('edit-on');});},30);}
     resize();
