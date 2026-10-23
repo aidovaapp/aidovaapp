@@ -947,6 +947,17 @@ body.editing .ce{border:2px dashed #E0E0E0}
       </div>
     </div>
 
+    <!-- BACKUP & RESTORE — FREE -->
+    <div class="ps" onclick="toggleSection('sec-backup',this)"><span>💾 Backup &amp; Restore <span style="background:#E8F5E9;color:#2D6A4F;border-radius:6px;padding:1px 6px;font-size:.65rem;font-weight:900;text-transform:none">FREE</span></span><span class="ps-arrow">▶</span></div>
+    <div class="ps-body closed" id="sec-backup">
+      <div style="font-size:.68rem;color:#888;margin:6px 0 8px">Saves every profile's buttons, pictures, recorded voices, folders, schedule and settings into one file. Keep it somewhere safe (email it to yourself, or save it to Files or Google Drive). If the device is lost or the app is reinstalled, restore the file to get the board back exactly as it was.</div>
+      <div id="backup-last" style="font-size:.7rem;color:#2D6A4F;font-weight:700;margin-bottom:8px"></div>
+      <button class="pbtn" onclick="saveBackup()" style="width:100%;background:#2D6A4F;color:#fff;padding:10px;margin-bottom:8px">💾 Save backup file</button>
+      <button class="pbtn" onclick="startRestore()" style="width:100%;background:#E3F2FD;color:#0D47A1;padding:10px">📂 Restore from backup file</button>
+      <input type="file" id="backup-file" accept=".json,.aidova,application/json,text/plain" style="display:none" onchange="restoreBackupFile(this)">
+      <div style="font-size:.62rem;color:#999;margin-top:8px">Your subscription is not stored in the backup. On a new device use Restore Purchases or your licence key.</div>
+    </div>
+
     <!-- PDF EXPORT — PREMIUM -->
     <div class="ps" onclick="toggleSection('sec-export',this)"><span>📄 Print / Export Board <span style="background:#FFE082;color:#5D4037;border-radius:6px;padding:1px 6px;font-size:.65rem;font-weight:900;text-transform:none" data-tier="premium">PREMIUM</span></span><span class="ps-arrow">▶</span></div>
     <div class="ps-body closed" id="sec-export">
@@ -3645,6 +3656,7 @@ document.getElementById('pw').addEventListener('touchend',function(e){var dx=e.c
 
 // PANEL
 function toggleSection(id,header){
+  if(id==='sec-backup')showLastBackup();
   var body=document.getElementById(id);if(!body)return;
   var arrow=header?header.querySelector('.ps-arrow'):null;
   var closed=body.classList.contains('closed');
@@ -4758,6 +4770,69 @@ function emergCall(){
   },1500);
 }
 
+// ---- Backup & restore (free) ----
+// Everything Aidova keeps lives in localStorage under keys starting "aidova".
+// Purchase/licence state and download caches are left out: subscriptions are
+// restored through the store or licence key (so a backup file can never unlock
+// Premium), and symbol caches re-download by themselves.
+var BACKUP_SKIP=['aidova_premium','aidova_premplus','aidova_sub_expires','aidova_sub_id','aidova_licence_key','aidova_licence_checked','aidova_licence_email','aidova_customer_id','aidova_used_codes','aidova_device_id','aidova_pending_session','aidova_builtin_symbols','aidova_builtin_symbols_src','aidova_open_count','aidova_review_done','aidova_last_backup'];
+function backupKeys(){return Object.keys(localStorage).filter(function(k){return k.indexOf('aidova')===0&&BACKUP_SKIP.indexOf(k)<0;});}
+function showLastBackup(){var el=document.getElementById('backup-last');if(!el)return;var t=localStorage.getItem('aidova_last_backup');el.textContent=t?('Last backup saved: '+new Date(parseInt(t,10)).toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'})):'No backup saved on this device yet.';}
+async function saveBackup(){
+  var data={};backupKeys().forEach(function(k){data[k]=localStorage.getItem(k);});
+  var d=new Date(),pad=function(n){return(n<10?'0':'')+n;};
+  var payload={app:'aidova',format:1,created:d.toISOString(),profiles:(profiles||[]).map(function(p){return p.n;}),data:data};
+  var text=JSON.stringify(payload);
+  var filename='aidova-backup-'+d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'.json';
+  var blob=new Blob([text],{type:'application/json'});
+  var done=function(){try{localStorage.setItem('aidova_last_backup',String(Date.now()));}catch(e){}showLastBackup();};
+  // Inside the iPhone app a normal download does not work, so use the share sheet
+  // (Save to Files, Mail, AirDrop). Phones in a browser also get the share sheet when available.
+  if(navigator.share&&navigator.canShare){
+    try{
+      var file=new File([blob],filename,{type:'application/json'});
+      if(navigator.canShare({files:[file]})){await navigator.share({files:[file],title:'Aidova backup'});done();return;}
+    }catch(e){if(e&&e.name==='AbortError')return;}
+  }
+  try{
+    var url=URL.createObjectURL(blob),a=document.createElement('a');
+    a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();
+    setTimeout(function(){URL.revokeObjectURL(url);},4000);
+    done();
+    alert('✅ Backup saved as '+filename+'.\n\nIt is in your Downloads. Keep a copy somewhere safe, such as your email or cloud storage.');
+  }catch(e){alert('Sorry, the backup could not be saved on this device.');}
+}
+function startRestore(){
+  var go=function(){var f=document.getElementById('backup-file');f.value='';f.click();};
+  if(locked&&savedPin)requirePin(go);else go();
+}
+function restoreBackupFile(input){
+  var f=input.files&&input.files[0];if(!f)return;
+  var r=new FileReader();
+  r.onload=function(){
+    var p;try{p=JSON.parse(r.result);}catch(e){alert('This file is not an Aidova backup.');return;}
+    if(!p||p.app!=='aidova'||!p.data||typeof p.data!=='object'){alert('This file is not an Aidova backup.');return;}
+    if(p.format>1){alert('This backup was made by a newer version of Aidova. Please refresh the app and try again.');return;}
+    var incoming={};Object.keys(p.data).forEach(function(k){if(k.indexOf('aidova')===0&&BACKUP_SKIP.indexOf(k)<0&&typeof p.data[k]==='string')incoming[k]=p.data[k];});
+    if(!Object.keys(incoming).length){alert('This backup is empty.');return;}
+    var when=p.created?new Date(p.created).toLocaleString(undefined,{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}):'an unknown date';
+    var names=(p.profiles&&p.profiles.length)?('\nProfiles: '+p.profiles.join(', ')):'';
+    if(!confirm('Restore this backup from '+when+'?'+names+'\n\nThe board on this device will be replaced by the one in the backup. Your subscription is not affected.'))return;
+    var old={};backupKeys().forEach(function(k){old[k]=localStorage.getItem(k);});
+    try{
+      Object.keys(old).forEach(function(k){localStorage.removeItem(k);});
+      Object.keys(incoming).forEach(function(k){localStorage.setItem(k,incoming[k]);});
+    }catch(e){
+      // Not enough space: put everything back as it was.
+      Object.keys(incoming).forEach(function(k){try{localStorage.removeItem(k);}catch(x){}});
+      Object.keys(old).forEach(function(k){try{localStorage.setItem(k,old[k]);}catch(x){}});
+      alert('Sorry, there was not enough storage space on this device to restore the backup. Nothing has been changed.');return;
+    }
+    alert('✅ Backup restored. Aidova will now reload.');location.reload();
+  };
+  r.onerror=function(){alert('Sorry, that file could not be read.');};
+  r.readAsText(f);
+}
 function factoryReset(){if(!confirm('Factory reset?\n\nClears everything including PIN and custom buttons.'))return;Object.keys(localStorage).filter(function(k){return k.startsWith('aidova');}).forEach(function(k){localStorage.removeItem(k);});location.reload();}
 
 // CUSTOM BUTTON
