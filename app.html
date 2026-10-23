@@ -662,7 +662,7 @@ body.editing .ce{border:2px dashed #E0E0E0}
     <div class="hbox"><div class="htitle">👤 Profiles <span style="background:#E8F5E9;color:#2D6A4F;border-radius:8px;padding:2px 7px;font-size:.68rem">FREE — 1 profile</span></div><div class="htext">Settings → <b>Profiles</b>. Each profile has its own custom buttons and settings.<br><br><b>Free:</b> 1 profile on 1 device<br><b>Premium:</b> 2 profiles, usable on up to 2 devices<br><b>Premium Plus:</b> unlimited profiles, usable on up to 5 devices<br><br>Great for families where more than one child uses the same device, or for schools sharing one tablet across several learners.</div></div>
     <div class="hbox" style="background:#E8F5E9;border-left-color:#2D6A4F"><div class="htitle">🛠️ Setting up for your child <span style="background:#E8F5E9;color:#2D6A4F;border-radius:8px;padding:2px 7px;font-size:.68rem">RECOMMENDED</span></div><div class="htext">Aidova has 140 built-in buttons — more than most children need. The best experience comes from <b>curating the app for your child</b>:<br><br><b>Step 1 — Hide unused buttons:</b> Settings → Edit layout → tap any button to hide it. Start with the buttons most relevant to your child's daily life. You can restore any at any time.<br><br><b>Step 2 — Add personal buttons:</b> Add custom buttons for family members, favourite foods, activities (Premium).<br><br><b>Step 3 — Lock the app:</b> Once set up, enable Carer lock or Kiosk mode so your child can't accidentally change anything (Premium).<br><br><b>Step 4 — Use Search:</b> Teach your child to tap 🔍 when they can't find a button — it searches everything instantly.</div></div>
     <div class="hbox hprem"><div class="htitle">📁 Folders <span style="background:#FFE082;color:#5D4037;border-radius:8px;padding:2px 7px;font-size:.68rem">PREMIUM</span></div><div class="htext">Folders group related buttons together so the main board stays clean. Example: tap a "Drinks" folder → choose Water, Milk, or Juice. Only the chosen drink speaks — the folder itself never speaks.<br><br><b>To add a folder:</b> Edit mode → tap an ADD slot → choose "📁 Create a folder" → pick an emoji, give it a name → tap Create. Then add buttons inside immediately.<br><br><b>Ready-made starter folders:</b> When you tap ADD in edit mode, Aidova offers 5 pre-built folders (Drinks, Food, Family, Activities, Places) ready to add in one tap.<br><br><b>To open a folder (user):</b> Tap the button with the green ring → sub-buttons appear → tap one to speak → tap ✕ or switch category to close.<br><br><b>Premium:</b> up to 5 buttons per folder · <b>Premium Plus:</b> up to 15 buttons per folder + your own photos on folder buttons</div></div>
-    <div class="hbox hprem"><div class="htitle">⭐ Custom buttons <span style="background:#FFE082;color:#5D4037;border-radius:8px;padding:2px 7px;font-size:.68rem">PREMIUM</span></div><div class="htext">In edit mode, tap any <b>+ ADD</b> slot → pick an emoji from the library → type the label in any language → choose a colour → Save ✓.<br><br>Custom buttons appear seamlessly after built-ins — no gap, no new row.<br><br><b>Free:</b> 1 custom slot · emoji only<br><b>Premium:</b> 30 slots per category · emoji + any language label<br><b>Premium Plus:</b> 100 slots per category · emoji or your own photo</div></div>
+    <div class="hbox hprem"><div class="htitle">⭐ Custom buttons <span style="background:#FFE082;color:#5D4037;border-radius:8px;padding:2px 7px;font-size:.68rem">PREMIUM</span></div><div class="htext">In edit mode, tap any <b>+ ADD</b> slot → pick an Aidova picture (or emoji) from the library → type the label in any language → choose a colour → Save ✓.<br><br>Custom buttons appear seamlessly after built-ins — no gap, no new row.<br><br><b>Free:</b> 1 custom slot · emoji only<br><b>Premium:</b> 30 slots per category · emoji + any language label<br><b>Premium Plus:</b> 100 slots per category · emoji or your own photo</div></div>
     <div class="hbox hprem"><div class="htitle">🎨 Button colours <span style="background:#FFE082;color:#5D4037;border-radius:8px;padding:2px 7px;font-size:.68rem">PREMIUM</span></div><div class="htext">Three ways to change colours:<br><br><b>1. Single button</b> — pick a colour swatch when adding or editing a custom button.<br><b>2. Whole category</b> — Settings → Display → Button Colours → pick a colour under any category.<br><b>3. All at once</b> — same section → 🪣 Apply one colour to all → one tap changes everything.<br><br>Tap ↺ Reset to restore the original pastel colours.</div></div>
     <div class="hbox hprem"><div class="htitle">🌍 Customise buttons &amp; phrases <span style="background:#FFE082;color:#5D4037;border-radius:8px;padding:2px 7px;font-size:.68rem">PREMIUM</span></div><div class="htext">Settings → <b>Customise</b> → <b>Edit top buttons</b>.<br><br>Change the label and spoken phrase for the 5 top buttons and all 6 emergency phrases — <b>in any language</b>.<br><br>Example: I AM → मैं हूँ · I WANT → मुझे चाहिए · HELP ME → مدد کرو</div></div>
     <div class="hbox hprem"><div class="htitle">📅 Visual Schedule <span style="background:#FFE082;color:#5D4037;border-radius:8px;padding:2px 7px;font-size:.68rem">PREMIUM</span></div><div class="htext">Tap 📅 in the top bar. <b>PIN protected</b> — only carers can edit.<br><br><b>To set up:</b> tap ✏️ Edit → pick emoji or photo → type activity → add time → tap Add ✓.<br><br><b>Daily use:</b> child taps each card to tick it off ✓ (turns green). Next activity highlighted in blue. Tap <b>Reset ticks</b> each morning.<br><br>Helps reduce anxiety around transitions.</div></div>
@@ -1095,14 +1095,16 @@ body.editing .ce{border:2px dashed #E0E0E0}
       <div style="display:flex;gap:6px;margin-bottom:8px">
         <button id="picker-tab-emoji" onclick="setPickerMode('emoji')" style="flex:1;padding:8px;border:none;border-radius:10px;background:#2D6A4F;color:#fff;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.78rem;cursor:pointer">😊 Emoji</button>
         <button id="picker-tab-symbol" onclick="setPickerMode('symbol')" style="flex:1;padding:8px;border:none;border-radius:10px;background:#eee;color:#666;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.78rem;cursor:pointer">🖼️ Symbols</button>
+        <button id="picker-tab-aidova" onclick="setPickerMode('aidova')" style="flex:1;padding:8px;border:none;border-radius:10px;background:#eee;color:#666;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.78rem;cursor:pointer">✨ Aidova</button>
       </div>
       <div style="display:flex;gap:8px;align-items:center">
-        <input id="emoji-search" type="text" placeholder="🔍 Search emoji..." oninput="if(pickerMode==='emoji')filterEmoji(this.value);else searchSymbols(this.value.trim())" style="flex:1;padding:9px 12px;border:2px solid #ddd;border-radius:10px;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-size:.88rem;outline:none">
+        <input id="emoji-search" type="text" placeholder="🔍 Search emoji..." oninput="if(pickerMode==='emoji')filterEmoji(this.value);else if(pickerMode==='aidova')renderLib(this.value);else searchSymbols(this.value.trim())" style="flex:1;padding:9px 12px;border:2px solid #ddd;border-radius:10px;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-size:.88rem;outline:none">
         <button onclick="closeEmojiPicker()" style="border:none;background:#eee;color:#666;border-radius:10px;padding:9px 14px;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.82rem;cursor:pointer">✕</button>
       </div>
       <div id="emoji-cat-tabs" style="display:flex;gap:4px;overflow-x:auto;padding:8px 0 4px;-webkit-overflow-scrolling:touch;scrollbar-width:none"></div>
     </div>
     <div id="emoji-grid-wrap" style="flex:1;overflow-y:auto;padding:4px 10px 24px;-webkit-overflow-scrolling:touch"></div>
+    <div id="lib-grid-wrap" style="display:none;flex:1;overflow-y:auto;padding:4px 10px 24px;-webkit-overflow-scrolling:touch"></div>
     <div id="symbol-grid-wrap" style="display:none;flex:1;overflow-y:auto;padding:4px 10px 24px;-webkit-overflow-scrolling:touch"></div>
   </div>
 </div>
@@ -5106,7 +5108,7 @@ var emojiPickerCat='people';
 function openEmojiPicker(){
   document.getElementById('emojipicker').style.display='flex';
   document.getElementById('emoji-search').value='';
-  setPickerMode(localStorage.getItem('aidova_iconstyle')||'emoji');
+  setPickerMode(window._emojiPickerTarget?(localStorage.getItem('aidova_iconstyle')||'emoji'):'aidova');
   buildEmojiCatTabs();
   renderEmojiGrid(emojiPickerCat,null);
   setTimeout(function(){document.getElementById('emoji-search').focus();},300);
@@ -5222,25 +5224,63 @@ function onEmojiSel(sel){if(!sel.value)return;var p=sel.value.split('|');selEmoj
 var pickerMode='emoji';
 var symbolSearchTimer=null;
 function setPickerMode(mode){
+  if(mode==='aidova'&&window._emojiPickerTarget)mode='emoji';
   pickerMode=mode;
-  var tabE=document.getElementById('picker-tab-emoji'),tabS=document.getElementById('picker-tab-symbol');
+  var tabs={emoji:document.getElementById('picker-tab-emoji'),symbol:document.getElementById('picker-tab-symbol'),aidova:document.getElementById('picker-tab-aidova')};
+  Object.keys(tabs).forEach(function(k){var t=tabs[k];if(!t)return;var on=k===mode;t.style.background=on?'#2D6A4F':'#eee';t.style.color=on?'#fff':'#666';});
+  if(tabs.aidova)tabs.aidova.style.display=window._emojiPickerTarget?'none':'';
   var catTabs=document.getElementById('emoji-cat-tabs');
-  var eGrid=document.getElementById('emoji-grid-wrap'),sGrid=document.getElementById('symbol-grid-wrap');
+  var eGrid=document.getElementById('emoji-grid-wrap'),sGrid=document.getElementById('symbol-grid-wrap'),lGrid=document.getElementById('lib-grid-wrap');
   var search=document.getElementById('emoji-search');
+  catTabs.style.display=mode==='emoji'?'':'none';
+  eGrid.style.display=mode==='emoji'?'':'none';
+  sGrid.style.display=mode==='symbol'?'':'none';
+  lGrid.style.display=mode==='aidova'?'':'none';
   if(mode==='emoji'){
-    tabE.style.background='#2D6A4F';tabE.style.color='#fff';
-    tabS.style.background='#eee';tabS.style.color='#666';
-    catTabs.style.display='';eGrid.style.display='';sGrid.style.display='none';
     search.placeholder='🔍 Search emoji...';
+  }else if(mode==='aidova'){
+    search.placeholder='🔍 Search Aidova pictures (e.g. apple)...';
+    renderLib(search.value);
   }else{
-    tabE.style.background='#eee';tabE.style.color='#666';
-    tabS.style.background='#2D6A4F';tabS.style.color='#fff';
-    catTabs.style.display='none';eGrid.style.display='none';sGrid.style.display='';
     search.placeholder='🔍 Search symbols (e.g. water, happy)...';
     var q=search.value.trim();
     if(q)searchSymbols(q);
     else document.getElementById('symbol-grid-wrap').innerHTML='<div style="text-align:center;padding:30px 20px;color:#aaa;font-size:.8rem">Type a word to search proper AAC symbols</div>';
   }
+}
+
+// Aidova's own picture library (Premium picker). Each entry becomes a normal custom button.
+var LIB_ICONS=[{g:"Food and drink",f:"food/apple",l:"apple"},{g:"Food and drink",f:"food/banana",l:"banana"},{g:"Food and drink",f:"food/biscuit",l:"biscuit"},{g:"Food and drink",f:"food/cake",l:"cake"},{g:"Food and drink",f:"food/cereal",l:"cereal"},{g:"Food and drink",f:"food/cheese",l:"cheese"},{g:"Food and drink",f:"food/chips",l:"chips"},{g:"Food and drink",f:"food/chocolate",l:"chocolate"},{g:"Food and drink",f:"food/crisps",l:"crisps"},{g:"Food and drink",f:"food/egg",l:"egg"},{g:"Food and drink",f:"food/grapes",l:"grapes"},{g:"Food and drink",f:"food/ice-cream",l:"ice-cream"},{g:"Food and drink",f:"food/juice",l:"juice"},{g:"Food and drink",f:"food/milk",l:"milk"},{g:"Food and drink",f:"food/orange",l:"orange"},{g:"Food and drink",f:"food/pasta",l:"pasta"},{g:"Food and drink",f:"food/pizza",l:"pizza"},{g:"Food and drink",f:"food/rice",l:"rice"},{g:"Food and drink",f:"food/sandwich",l:"sandwich"},{g:"Food and drink",f:"food/soup",l:"soup"},{g:"Food and drink",f:"food/strawberry",l:"strawberry"},{g:"Food and drink",f:"food/tea",l:"tea"},{g:"Food and drink",f:"food/toast",l:"toast"},{g:"Food and drink",f:"food/yoghurt",l:"yoghurt"}];
+function renderLib(q){
+  var wrap=document.getElementById('lib-grid-wrap');if(!wrap)return;
+  q=(q||'').trim().toLowerCase();
+  var list=LIB_ICONS.filter(function(i){return !q||i.l.indexOf(q)>-1;});
+  if(!list.length){wrap.innerHTML='<div style="text-align:center;padding:20px;color:#aaa;font-size:.8rem">No pictures found</div>';return;}
+  var cur='';var html='';
+  list.forEach(function(i){
+    if(i.g!==cur){cur=i.g;html+='<div style="grid-column:1/-1;font-size:.7rem;font-weight:900;color:#2D6A4F;padding:6px 2px 0;text-transform:uppercase;letter-spacing:.04em">'+i.g+'</div>';}
+    html+='<div onclick="pickLibIcon(\''+i.f+'\',\''+i.l.replace(/-/g,' ')+'\')" style="display:flex;flex-direction:column;align-items:center;padding:6px 2px;border-radius:10px;cursor:pointer;gap:2px"><img src="/icons/library/'+i.f+'.png" alt="" style="width:52px;height:52px;object-fit:contain"><span style="font-size:.6rem;color:#555;font-weight:700;text-align:center;line-height:1.2">'+i.l.replace(/-/g,' ')+'</span></div>';
+  });
+  wrap.innerHTML='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(70px,1fr));gap:4px">'+html+'</div>';
+}
+function pickLibIcon(f,label){
+  var img=new Image();
+  img.onload=function(){
+    var c=document.createElement('canvas');c.width=c.height=128;var x=c.getContext('2d');
+    var sc=100/Math.max(img.width,img.height),w=img.width*sc,h=img.height*sc;
+    x.drawImage(img,(128-w)/2,(128-h)/2,w,h);
+    photoUrl=c.toDataURL('image/png');
+    var pv=document.getElementById('pprev');pv.src=photoUrl;pv.style.display='block';
+    document.getElementById('phint').style.display='none';
+    document.getElementById('spkrow').style.display='block';
+    selEmoji='📷';selLabel=label;
+    document.getElementById('eprev').innerHTML='<img src="'+photoUrl+'" style="width:40px;height:40px;object-fit:contain">';
+    document.getElementById('emoji-selected-label').textContent=label;
+    var ml=document.getElementById('mlabel');if(!ml.value.trim())ml.value=label.toUpperCase();
+    var ms=document.getElementById('mspeak');if(!ms.value.trim())ms.value=label;
+    closeEmojiPicker();
+  };
+  img.src='/icons/library/'+f+'.png';
 }
 
 function searchSymbols(q){
