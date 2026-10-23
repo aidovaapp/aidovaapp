@@ -3074,7 +3074,7 @@ var CURATED_SYMBOLS={
   'how': '/icons/custom/how.png',
   'together': '/icons/custom/together.png'
 };
-Object.keys(CURATED_SYMBOLS).forEach(function(k){var u=CURATED_SYMBOLS[k];if(u&&u.indexOf("/icons/custom/")===0)CURATED_SYMBOLS[k]=u+(u.indexOf("?")<0?"?":"&")+"d=2";}); // outline-darkening cache bust
+Object.keys(CURATED_SYMBOLS).forEach(function(k){var u=CURATED_SYMBOLS[k];if(u&&u.indexOf("/icons/custom/")===0)CURATED_SYMBOLS[k]=u+(u.indexOf("?")<0?"?":"&")+"d=3";}); // outline-darkening cache bust
 ["stop","cinema","beach","train station","finished","more","less","what","where","why","who","when","how"].forEach(function(k){CURATED_SYMBOLS[k]+="&e=1";});
 ["what","when","how","who","done"].forEach(function(k){CURATED_SYMBOLS[k]+="&f=1";});
 
@@ -3536,7 +3536,7 @@ function restoreHidden(item){
   resize(); // keep buttons at the correct size after redrawing
   if(editMode){document.querySelectorAll('.circ').forEach(function(c){c.classList.add('edit-on');});showArrows();}
 }
-var TOP_SYMS=[{emoji:'🧍',src:'/icons/custom/i-am.png?v=1&d=2&h=1'},{emoji:'🙋',src:'/icons/custom/i-want.png?v=1&d=2&h=1'},{emoji:'✅',src:'/icons/custom/yes.png?v=2&d=2&h=1'},{emoji:'❌',src:'/icons/custom/no.png?v=1&d=2&h=1'},{emoji:'🆘',src:'/icons/custom/help-me.png?v=1&d=2&h=1'}];
+var TOP_SYMS=[{emoji:'🧍',src:'/icons/custom/i-am.png?v=1&d=3&h=1'},{emoji:'🙋',src:'/icons/custom/i-want.png?v=1&d=3&h=1'},{emoji:'✅',src:'/icons/custom/yes.png?v=2&d=3&h=1'},{emoji:'❌',src:'/icons/custom/no.png?v=1&d=3&h=1'},{emoji:'🆘',src:'/icons/custom/help-me.png?v=1&d=3&h=1'}];
 function renderTopBtns(){
   var ids=['b1','b2','b3','b4','b5'];
   ids.forEach(function(id,i){
