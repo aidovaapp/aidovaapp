@@ -2016,7 +2016,8 @@ function resizeApply(sz,cols,gap,avW){
       g.style.gridTemplateColumns='repeat('+cols+','+sz+'px)';
     }else{
       g.style.width='100%';
-      g.style.gridTemplateColumns='repeat('+cols+',1fr)';
+      g.style.gridTemplateColumns='repeat('+cols+','+sz+'px)';
+      g.style.justifyContent='center'; // centre the buttons on wide screens
     }
   });
   document.querySelectorAll('.circ').forEach(function(c){c.style.width=sz+'px';c.style.height=sz+'px';});
@@ -3585,7 +3586,7 @@ function resize(){
     var sz;
     if(btnSize<2){
       var szByH=Math.floor((avH-(4-1)*gap)/4);
-      sz=Math.min(szByW,szByH);
+      sz=Math.min(szByW,Math.max(szByH,100)); // short laptop windows: keep buttons readable, the page scrolls
     }else{
       sz=szByW;
     }
