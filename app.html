@@ -152,6 +152,21 @@ body.adult.dark .page,body.adult.dark #pw{background:#0D2020}
 body.editing #app{padding-top:38px}
 #editbar{display:none;position:fixed;top:0;left:0;right:0;z-index:150;background:#1B5E20;color:#fff;font-size:.75rem;font-weight:900;padding:8px 12px;align-items:center;justify-content:space-between;box-shadow:0 2px 10px rgba(0,0,0,.2)}
 #editbar.open{display:flex}
+#coreov{display:none;position:fixed;inset:0;z-index:390;background:#F7F7F4;flex-direction:column;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif}
+#coreov.open{display:flex}
+#coreov .bh{display:flex;align-items:center;gap:8px;padding:12px 12px 8px;background:#2D6A4F;color:#fff}
+#coreov .bh h2{flex:1;margin:0;font-size:1.05rem;font-weight:900}
+#coreov .bh button{border:none;background:#fff;color:#2D6A4F;border-radius:10px;font-weight:900;font-size:.85rem;padding:8px 12px;cursor:pointer;font-family:inherit}
+#coreov .bsent{display:flex;align-items:center;gap:6px;padding:6px 12px;background:#E8F5E9;min-height:44px}
+#coreov .bsent div{flex:1;font-size:.95rem;font-weight:700;color:#1B5E20;overflow-x:auto;white-space:nowrap}
+#coreov .bsent button{border:none;border-radius:10px;padding:8px 12px;font-weight:900;font-family:inherit;cursor:pointer}
+#coreov .cgrid{flex:1;overflow-y:auto;padding:8px;display:grid;grid-template-columns:repeat(6,1fr);gap:6px;align-content:start}
+@media(min-width:700px){#coreov .cgrid{grid-template-columns:repeat(8,1fr)}}
+#coreov .bd-btn{border-radius:14px;aspect-ratio:auto;min-height:74px}
+#coreov .bd-btn img{width:44px;height:44px}
+#coreov .bd-btn .be{font-size:1.6rem}
+#coreov .bd-btn .bl2{font-size:.78rem}
+body.adult #coreov .bh{background:#00695C}
 #boardsov{display:none;position:fixed;inset:0;z-index:400;background:#F7F7F4;flex-direction:column;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif}
 #boardsov.open{display:flex}
 #boardsov .bh{display:flex;align-items:center;gap:8px;padding:12px 12px 8px;background:#2D6A4F;color:#fff}
@@ -482,6 +497,7 @@ body.editing .ce{border:2px dashed #E0E0E0}
     <button class="tab" data-i="1" onclick="goTab(1,this)"><span class="tem">🍎</span><span class="tlb">Needs</span></button>
     <button class="tab" data-i="2" onclick="goTab(2,this)"><span class="tem">🏠</span><span class="tlb">Places</span></button>
     <button class="tab" data-i="3" onclick="goTab(3,this)"><span class="tem">🤝</span><span class="tlb">Social</span></button>
+    <button class="tab" id="tab-words" onclick="openCore()" style="display:none"><span class="tem">🔤</span><span class="tlb">Words</span></button>
   </div>
   <div id="pw">
     <div id="pt">
@@ -694,6 +710,7 @@ body.editing .ce{border:2px dashed #E0E0E0}
     <div class="hbox" style="background:#E8F5E9;border-left-color:#2D6A4F"><div class="htitle">🛠️ Setting up for your child <span style="background:#E8F5E9;color:#2D6A4F;border-radius:8px;padding:2px 7px;font-size:.68rem">RECOMMENDED</span></div><div class="htext">Aidova has 140 built-in buttons — more than most children need. The best experience comes from <b>curating the app for your child</b>:<br><br><b>Step 1 — Hide unused buttons:</b> Settings → Edit layout → tap any button to hide it. Start with the buttons most relevant to your child's daily life. You can restore any at any time.<br><br><b>Step 2 — Add personal buttons:</b> Add custom buttons for family members, favourite foods, activities (Premium).<br><br><b>Step 3 — Lock the app:</b> Once set up, enable Carer lock or Kiosk mode so your child can't accidentally change anything (Premium).<br><br><b>Step 4 — Use Search:</b> Teach your child to tap 🔍 when they can't find a button — it searches everything instantly.</div></div>
     <div class="hbox hprem"><div class="htitle">📁 Folders <span style="background:#FFE082;color:#5D4037;border-radius:8px;padding:2px 7px;font-size:.68rem">PREMIUM</span></div><div class="htext">Folders group related buttons together so the main board stays clean. Example: tap a "Drinks" folder → choose Water, Milk, or Juice. Only the chosen drink speaks — the folder itself never speaks.<br><br><b>To add a folder:</b> Edit mode → tap an ADD slot → choose "📁 Create a folder" → pick an emoji, give it a name → tap Create. Then add buttons inside immediately.<br><br><b>Ready-made starter folders:</b> When you tap ADD in edit mode, Aidova offers 5 pre-built folders (Drinks, Food, Family, Activities, Places) ready to add in one tap.<br><br><b>To open a folder (user):</b> Tap the button with the green ring → sub-buttons appear → tap one to speak → tap ✕ or switch category to close.<br><br><b>Premium:</b> up to 5 buttons per folder · <b>Premium Plus:</b> up to 15 buttons per folder + your own photos on folder buttons</div></div>
     <div class="hbox hprem"><div class="htitle">⭐ Custom buttons <span style="background:#FFE082;color:#5D4037;border-radius:8px;padding:2px 7px;font-size:.68rem">PREMIUM</span></div><div class="htext">Free plan: Settings → Edit Layout → <b>Add your free button</b>, then pick the tab. Premium: in edit mode, tap any <b>+ ADD</b> slot → pick an Aidova picture (or emoji) from the library → type the label in any language → choose a colour → Save ✓.<br><br>Custom buttons appear seamlessly after built-ins — no gap, no new row.<br><br><b>Free:</b> 1 custom slot · emoji only<br><b>Premium:</b> 30 slots per category · emoji or Aidova pictures + any language label<br><b>Premium Plus:</b> 100 slots per category · emoji, Aidova pictures or your own photo</div></div>
+    <div class="hbox" style="background:#FFFDE7;border-left-color:#F9A825"><div class="htitle">🔤 Words tab <span style="background:#E8F5E9;color:#2D6A4F;border-radius:8px;padding:2px 7px;font-size:.68rem">FREE · OPTIONAL</span></div><div class="htext">For building your own sentences with small words like <b>I, you, go, like, not, it, in, more</b>. It is off unless you turn it on: Settings → Display → <b>Words tab</b>. A 🔤 Words tab then appears next to Social.<br><br>The words never move, so the hand learns where each one is. Colours group them: yellow people, green actions, blue describing words, pink little words, purple questions. Tap words, then ▶ Speak, for example "I" + "like" + "it". Use Model mode to show your child how.</div></div>
     <div class="hbox hprem"><div class="htitle">📋 Boards <span style="background:#FFE082;color:#5D4037;border-radius:8px;padding:2px 7px;font-size:.68rem">PREMIUM</span></div><div class="htext">Tap <b>📋</b> at the top for 19 ready-made boards: mealtime, bath time, bedtime, getting dressed, school, doctor, shopping, park, playtime, going out, toilet routine and dentist, plus Care &amp; health boards for talking, pain, comfort in bed, personal care, daily choices, people and medical. Tap buttons to speak them and build a sentence, then ▶ Speak.</div></div>
     <div class="hbox" style="background:#F3E5F5;border-left-color:#6A1B9A"><div class="htitle">🎓 Model mode <span style="background:#E8F5E9;color:#2D6A4F;border-radius:8px;padding:2px 7px;font-size:.68rem">FREE</span></div><div class="htext">Children learn to use their talker by watching you use it, just as they learn speech by hearing it.<br><br>Settings → <b>Model Mode</b> → Start. Say a short sentence out loud and tap each word on the board as you say it, for example "I want… drink". Each button lights up and speaks. Tap <b>▶ Show again</b> to replay the words in order, then let your child have a go. Tap <b>Done ✓</b> when finished.<br><br>Words you tap in model mode are not added to your child's word report or recent words.</div></div>
     <div class="hbox hprem"><div class="htitle">🎨 Button colours <span style="background:#FFE082;color:#5D4037;border-radius:8px;padding:2px 7px;font-size:.68rem">PREMIUM</span></div><div class="htext">Three ways to change colours:<br><br><b>1. Single button</b> — pick a colour swatch when adding or editing a custom button.<br><b>2. Whole category</b> — Settings → Display → Button Colours → pick a colour under any category.<br><b>3. All at once</b> — same section → 🪣 Apply one colour to all → one tap changes everything.<br><br>Tap ↺ Reset to restore the original pastel colours.</div></div>
@@ -862,6 +879,10 @@ body.editing .ce{border:2px dashed #E0E0E0}
         <div id="look-seg" style="display:flex;background:#F0F0F0;border-radius:10px;padding:3px;gap:3px;margin-top:4px">
           <button data-l="playful" onclick="setLook('playful')" style="flex:1;padding:8px;border:none;border-radius:8px;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.8rem;cursor:pointer">🎈 Playful</button>
           <button data-l="grown" onclick="setLook('grown')" style="flex:1;padding:8px;border:none;border-radius:8px;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.8rem;cursor:pointer">🧑 Grown-up</button>
+        </div>
+        <div id="words-row" style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px">
+          <div><div class="sl">🔤 Words tab</div><div class="ss">Optional. Adds about 50 small words (I, go, like, not, it, in…) in fixed places for building your own sentences. Leave off to keep things simple.</div></div>
+          <button class="tog" id="wordstog" onclick="toggleWords()"></button>
         </div>
       </div>
       <div class="sr" style="border:none;padding:6px 0">
@@ -2340,6 +2361,7 @@ function addToRecents(icon,label,word,vkey,cat){
   try{localStorage.setItem('aidova_recents',JSON.stringify(recentsData));}catch(e){}
 }
 function updateSentBar(){
+  try{coreSentSync();}catch(e){}
   var el=document.getElementById('sentwords');if(!el)return;
   if(!sentWords.length){el.innerHTML='<span class="ph">Tap buttons to build a sentence...</span>';return;}
   el.innerHTML=sentWords.map(function(w){return '<span class="sw">'+w.display+'</span>';}).join('');
@@ -3336,6 +3358,7 @@ function applyMode(noRender){
   MODE_TABS[adult?'adult':'child'].forEach(function(t,i){var tb=tabs[i];if(!tb)return;var e=tb.querySelector('.tem'),l=tb.querySelector('.tlb');if(e)e.textContent=t[0];if(l)l.textContent=t[1];});
   modeSwapText(grown);
   var seg=document.getElementById('mode-seg');if(seg)renderModeSeg();
+  try{applyWordsTab();}catch(e){}
   if(!noRender&&document.getElementById('app').classList.contains('ready')){renderAll();if(typeof resize==='function')resize();}
 }
 // Help and settings text speak about "your child"; in Adult mode say "the person you support".
@@ -3908,7 +3931,7 @@ function renderAcctCard(){
 
 function updateSettingsBadges(){
   var panel=document.getElementById('panel');if(!panel)return;
-  try{renderModeSeg();}catch(e){}
+  try{renderModeSeg();applyWordsTab();}catch(e){}
   try{renderFreeBtnRow();}catch(e){}
   // Use data-tier attributes for reliable matching
   panel.querySelectorAll('[data-tier="premium"]').forEach(function(el){
@@ -5198,6 +5221,71 @@ function bdTap(i,j,el){
 }
 function bdSpeak(){if(!boardSent.length)return;say(boardSent.join('. '));}
 function bdClear(){boardSent=[];var d=document.getElementById('bd-sent');if(d)d.textContent='Tap a button to speak';if(typeof clearSentence==='function')clearSentence();}
+// ===== WORDS TAB (optional, free, Everyday board only): core words in fixed places =====
+function cSvg(inner){return 'data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">'+inner+'</svg>');}
+var CN='#0C1626',CA='#2D6A4F';
+function cArrow(rot){return '<g transform="rotate('+rot+' 32 32)"><path d="M32 52 L32 16" stroke="'+CA+'" stroke-width="7" stroke-linecap="round"/><path d="M18 28 L32 13 L46 28" fill="none" stroke="'+CA+'" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></g>';}
+var BOX='<rect x="12" y="26" width="40" height="28" rx="4" fill="#FFE0B2" stroke="'+CN+'" stroke-width="3"/>';
+var BALL='<circle cx="32" cy="18" r="8" fill="#EF5350" stroke="'+CN+'" stroke-width="3"/>';
+var CSVG={
+ up:cSvg(cArrow(0)),down:cSvg(cArrow(180)),
+ in:cSvg('<path d="M10 24 L10 54 L54 54 L54 24" fill="#FFE0B2" stroke="'+CN+'" stroke-width="3" stroke-linejoin="round"/><circle cx="32" cy="42" r="8" fill="#EF5350" stroke="'+CN+'" stroke-width="3"/><path d="M32 6 L32 24 M25 18 L32 25 L39 18" fill="none" stroke="'+CA+'" stroke-width="4" stroke-linecap="round"/>'),
+ out:cSvg('<path d="M6 34 L6 58 L40 58 L40 34" fill="#FFE0B2" stroke="'+CN+'" stroke-width="3" stroke-linejoin="round"/><circle cx="48" cy="16" r="8" fill="#EF5350" stroke="'+CN+'" stroke-width="3"/><path d="M24 44 L40 24 M30 23 L41 23 L41 34" fill="none" stroke="'+CA+'" stroke-width="4" stroke-linecap="round"/>'),
+ on:cSvg(BOX+BALL.replace('cy="18"','cy="17"')),
+ off:cSvg(BOX+'<circle cx="52" cy="12" r="8" fill="#EF5350" stroke="'+CN+'" stroke-width="3"/><path d="M30 22 L44 14" stroke="'+CA+'" stroke-width="4" stroke-linecap="round"/>'),
+ not:cSvg('<circle cx="32" cy="32" r="24" fill="none" stroke="#E53935" stroke-width="7"/><path d="M15 15 L49 49" stroke="#E53935" stroke-width="7" stroke-linecap="round"/>'),
+ here:cSvg('<ellipse cx="32" cy="52" rx="20" ry="6" fill="#C8E6C9" stroke="'+CN+'" stroke-width="3"/><path d="M32 8 L32 40 M22 30 L32 41 L42 30" fill="none" stroke="'+CA+'" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>'),
+ there:cSvg('<path d="M8 50 L50 18 M36 16 L51 17 L48 32" fill="none" stroke="'+CA+'" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="54" cy="12" r="5" fill="#C8E6C9" stroke="'+CN+'" stroke-width="3"/>'),
+ same:cSvg('<circle cx="20" cy="32" r="12" fill="#64B5F6" stroke="'+CN+'" stroke-width="3"/><circle cx="44" cy="32" r="12" fill="#64B5F6" stroke="'+CN+'" stroke-width="3"/>'),
+ different:cSvg('<circle cx="18" cy="32" r="12" fill="#64B5F6" stroke="'+CN+'" stroke-width="3"/><rect x="34" y="20" width="24" height="24" rx="3" fill="#FFB74D" stroke="'+CN+'" stroke-width="3"/>'),
+ all:cSvg([14,32,50].map(function(x){return '<circle cx="'+x+'" cy="24" r="8" fill="#EF5350" stroke="'+CN+'" stroke-width="3"/><circle cx="'+x+'" cy="44" r="8" fill="#EF5350" stroke="'+CN+'" stroke-width="3"/>';}).join('')),
+ some:cSvg([14,32,50].map(function(x,i){return '<circle cx="'+x+'" cy="24" r="8" fill="'+(i<2?'#EF5350':'#fff')+'" stroke="'+CN+'" stroke-width="3"/><circle cx="'+x+'" cy="44" r="8" fill="'+(i<1?'#EF5350':'#fff')+'" stroke="'+CN+'" stroke-width="3"/>';}).join('')),
+ big:cSvg('<circle cx="22" cy="40" r="6" fill="#FFB74D" stroke="'+CN+'" stroke-width="3"/><circle cx="42" cy="32" r="18" fill="#FFB74D" stroke="'+CN+'" stroke-width="3"/>'),
+ that:cSvg('<path d="M8 44 L40 28 M30 22 L42 27 L36 38" fill="none" stroke="'+CA+'" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><rect x="44" y="12" width="14" height="14" rx="3" fill="#FFB74D" stroke="'+CN+'" stroke-width="3"/>'),
+ it:cSvg('<rect x="18" y="18" width="28" height="28" rx="5" fill="#FFB74D" stroke="'+CN+'" stroke-width="3"/>')
+};
+// [label, picture, colour group] — positions never change
+var CORE_COL={p:'#FFF59D',a:'#C8E6C9',d:'#BBDEFB',l:'#F8BBD0',q:'#E1BEE7',o:'#FFE0B2'};
+var CORE_WORDS=[
+ ['I','c:my turn','p'],['you','c:your turn','p'],['me','c:my turn','p'],['my','🙋','p'],['it','s:it','p'],['that','s:that','p'],['we','c:together','p'],['he / she','👤','p'],
+ ['want','c:I want','a'],['like','👍','a'],['go','actions/walk','a'],['stop','c:stop','a'],['help','c:help','a'],['get','✋','a'],['make','c:art','a'],['look','actions/look','a'],
+ ['open','actions/open','a'],['put','👐','a'],['play','c:play','a'],['come','c:come here','a'],['give','actions/give','a'],['need','❗','a'],['feel','c:content','a'],['do','🛠️','a'],
+ ['more','c:more','d'],['all','s:all','d'],['some','s:some','d'],['same','s:same','d'],['different','s:different','d'],['good','c:good job','d'],['bad','👎','d'],['big','s:big','d'],
+ ['not','s:not','l'],['in','s:in','l'],['on','s:on','l'],['up','s:up','l'],['down','s:down','l'],['off','s:off','l'],['out','s:out','l'],['here','s:here','l'],['there','s:there','l'],['now','⏰','l'],
+ ['what','c:what','q'],['where','c:where','q'],['who','c:who','q'],['when','c:when','q'],['why','c:why','q'],['how','c:how','q'],
+ ['again','c:again','o'],['finished','c:finished','o']
+];
+function corePic(ref){
+  if(ref.indexOf('s:')===0)return CSVG[ref.slice(2)];
+  if(ref==='c:I want')return '/icons/custom/i-want.png';
+  return bdPic(ref);
+}
+function wordsOn(){var p=profiles&&profiles[activeP];return !!(p&&p.core)&&curMode()!=='adult';}
+function applyWordsTab(){
+  var t=document.getElementById('tab-words');if(t)t.style.display=wordsOn()?'':'none';
+  var tg=document.getElementById('wordstog');if(tg)tg.classList.toggle('on',!!(profiles[activeP]&&profiles[activeP].core));
+  var row=document.getElementById('words-row');if(row)row.style.display=curMode()==='adult'?'none':'flex';
+  if(!wordsOn())closeCore();
+}
+function toggleWords(){var p=profiles[activeP];if(!p)return;p.core=!p.core;try{localStorage.setItem('aidova_profiles',JSON.stringify(profiles));}catch(e){}applyWordsTab();}
+function openCore(){
+  var ov=document.getElementById('coreov');
+  if(!ov){ov=document.createElement('div');ov.id='coreov';document.body.appendChild(ov);}
+  var h='<div class="bh"><h2>🔤 Words</h2><button onclick="closeCore()">‹ Back</button></div>';
+  h+='<div class="bsent"><div id="core-sent"></div><button onclick="speakSentence()" style="background:#2D6A4F;color:#fff">▶ Speak</button><button onclick="clearSentence()" style="background:#fff;color:#666">✕</button></div><div class="cgrid">';
+  CORE_WORDS.forEach(function(w,j){var src=corePic(w[1]);
+    var inner=src?'<img src="'+src+'" alt="">':'<span class="be">'+w[1]+'</span>';
+    h+='<button class="bd-btn" id="core-'+j+'" style="background:'+CORE_COL[w[2]]+'" onclick="coreTap('+j+',this)">'+inner+'<span class="bl2">'+w[0]+'</span></button>';});
+  h+='</div>';
+  ov.innerHTML=h;ov.classList.add('open');coreSentSync();
+}
+function closeCore(){var ov=document.getElementById('coreov');if(ov)ov.classList.remove('open');}
+function coreTap(j,el){
+  var w=CORE_WORDS[j][0];var sp=w==='he / she'?'he':w;
+  if(typeof anim==='function')anim(el,null);
+  say(sp,null,w.toUpperCase());addToSent(sp,w);
+}
+function coreSentSync(){var d=document.getElementById('core-sent');if(!d)return;d.textContent=sentWords.length?sentWords.map(function(x){return x.display;}).join(' '):'Tap words to build a sentence';}
 function factoryReset(){if(!confirm('Factory reset?\n\nClears everything including PIN and custom buttons.'))return;Object.keys(localStorage).filter(function(k){return k.startsWith('aidova');}).forEach(function(k){localStorage.removeItem(k);});location.reload();}
 
 // CUSTOM BUTTON
