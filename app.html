@@ -231,7 +231,7 @@ body.modelling #app{padding-top:38px}
 #sentbar{flex-shrink:0;background:#fff;border-bottom:1px solid #E8E8E8;padding:6px 8px;display:flex;align-items:center;gap:6px;min-height:46px}
 #sentwords{flex:1;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:800;font-size:.85rem;color:#333;display:flex;align-items:center;flex-wrap:wrap;gap:4px;min-height:28px}
 #sentwords .sw{background:#E8F5E9;color:#2D6A4F;border-radius:20px;padding:3px 9px;font-size:.8rem;font-weight:900;white-space:nowrap}
-#sentwords .ph{color:#ccc;font-size:.78rem;font-style:italic}
+#sentwords .ph{color:#ccc;font-size:.78rem;font-style:italic;width:auto;height:auto;background:none;border-radius:0;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .sent-btn{border:none;border-radius:10px;cursor:pointer;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.75rem;padding:6px 9px;flex-shrink:0}
 #sent-speak{background:#2D6A4F;color:#fff}
 #sent-clear{background:#FFCDD2;color:#B71C1C}
@@ -3841,8 +3841,11 @@ function resize(){
   var cols=bestCols;
   var sz=Math.round(bestSz*tweak);
   if(btnSize<2){
-    var maxByW=Math.floor((avW-(cols-1)*gap)/cols);
-    sz=Math.min(sz,maxByW);
+    // Fill the width: smaller buttons get more columns instead of leaving empty strips at the sides.
+    var fitCols=Math.max(3,Math.min(8,Math.floor((avW+gap)/(sz+gap))));
+    if(fitCols>cols)cols=fitCols;
+    sz=Math.floor((avW-(cols-1)*gap)/cols);
+    if(btnSize===1){var szByH2=Math.floor((avH-(4-1)*gap)/4);if(cols===bestCols)sz=Math.min(sz,Math.max(szByH2,100),Math.floor((avW-(cols-1)*gap)/cols));}
   }
   // Large mode: cap so minimum 3 columns always fit on screen width
   if(btnSize===2){
