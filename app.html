@@ -828,9 +828,12 @@ body.editing .ce{border:2px dashed #E0E0E0}
         <div><div class="sl">Dark mode</div><div class="ss">Easier on eyes at night</div></div>
         <button class="tog" id="darktog" onclick="toggleDark()"></button>
       </div>
-      <div class="sr">
-        <div><div class="sl">Adult mode</div><div class="ss">Deep teal theme — for teens &amp; adults</div></div>
-        <button class="tog" id="adulttog" onclick="toggleAdult()"></button>
+      <div class="sr" style="display:block">
+        <div><div class="sl">Buttons for <span id="mode-who"></span></div><div class="ss">Child: feelings, needs, places, play. Adult: care, comfort, conversation, people. Each profile can have its own.</div></div>
+        <div id="mode-seg" style="display:flex;background:#F0F0F0;border-radius:10px;padding:3px;gap:3px;margin-top:8px">
+          <button data-m="child" onclick="setMode('child')" style="flex:1;padding:8px;border:none;border-radius:8px;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.8rem;cursor:pointer">🧒 Child</button>
+          <button data-m="adult" onclick="setMode('adult')" style="flex:1;padding:8px;border:none;border-radius:8px;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.8rem;cursor:pointer">🧑 Adult</button>
+        </div>
       </div>
       <div class="sr" style="border:none;padding:6px 0">
         <div><div class="sl">Button size</div><div class="ss" id="size-label">Normal</div></div>
@@ -1283,7 +1286,7 @@ function setIconStyleDefault(style,noSave){
 }
 var voiceLang=localStorage.getItem('aidova_vlang')||'';
 var darkMode=localStorage.getItem('aidova_dark')==='true';
-var adultMode=localStorage.getItem('aidova_adult')==='true';
+var adultMode=false; // now set per profile by applyMode() (Child / Adult board)
 var carerPhone=localStorage.getItem('aidova_carer_phone')||'';
 var locked=localStorage.getItem('aidova_locked')==='true';
 var savedPin=localStorage.getItem('aidova_pin')||'';
@@ -1870,10 +1873,10 @@ async function exportBoardPDF(){
   if(!premium&&!premplus){closePanel();showPlans();return;}
   if(typeof window.jspdf==='undefined'){alert('PDF tool still loading — please try again in a moment.');return;}
   var pi=curTab;
-  var cats=['Feelings','Needs','Places','Social'];
+  var cats=catNames();
   var items=[];
   for(var bi=0;bi<BTNS[pi].length;bi++){
-    var d=BTNS[pi][bi],key='b'+pi+'_'+bi;
+    var d=BTNS[pi][bi],key=bk(pi,bi);
     if(hiddenB[key])continue;
     var symImg=await symbolToDataURL(d.w);
     items.push({label:fmtLabel(d.l),img:symImg||emojiToDataURL(d.i.indexOf('TRAMP64:')===0?'🤸':d.i)});
@@ -2077,7 +2080,7 @@ function tapTopBtn(i){
   var vkey='topbtn_'+i;
   say(btn.speak||btn.label, voiceData[vkey]?vkey:null, btn.label);addToRecents(btn.icon||'🔝',btn.label,btn.speak||btn.label,voiceData[vkey]?vkey:null,'cf');
   addToSent(btn.speak||btn.label, btn.label);
-  if(i===2)doConfetti();
+  if(i===2&&!adultMode)doConfetti();
   anim(document.getElementById('b'+(i+1)),null);
 }
 
@@ -3213,6 +3216,119 @@ var TINT_GROUPS=[
 var TINT_MAP=[{},{},{},{}];
 TINT_GROUPS.forEach(function(grp,i){Object.keys(grp).forEach(function(k){grp[k].forEach(function(w){TINT_MAP[i][w]=k;});});});
 var CAT_IDX={cf:0,cn:1,cp:2,cs:3};
+// ===== ADULT BOARD (free) — used when the active profile is set to Adult =====
+// b = existing picture/tint word to reuse, s = library picture path. Items without b/s show their emoji
+// until the new adult pictures are added.
+var BTNS_CHILD=BTNS;
+var BTNS_ADULT={
+  0:[{i:'🙂',l:"I'M FINE",w:"I'm fine",b:'okay'},{i:'😊',l:'HAPPY',w:"I'm happy",b:'happy'},{i:'😢',l:'SAD',w:'I feel sad',b:'sad'},
+     {i:'😟',l:'WORRIED',w:"I'm worried",b:'worried'},{i:'😰',l:'ANXIOUS',w:'I feel anxious',b:'anxious'},{i:'😤',l:'FRUSTRATED',w:"I'm frustrated",b:'frustrated'},
+     {i:'😡',l:'ANGRY',w:"I'm angry",b:'angry'},{i:'😨',l:'SCARED',w:"I'm scared",b:'scared'},{i:'😔',l:'LONELY',w:'I feel lonely',b:'lonely'},
+     {i:'🥱',l:'BORED',w:"I'm bored",b:'bored'},{i:'😩',l:'TIRED',w:"I'm tired",b:'tired'},{i:'😫',l:'EXHAUSTED',w:"I'm exhausted",b:'exhausted'},
+     {i:'😣',l:'IN PAIN',w:"I'm in pain",b:'in pain'},{i:'🥴',l:'UNWELL',w:'I feel unwell',b:'unwell'},{i:'🤢',l:'FEEL SICK',w:'I feel sick',b:'feel sick'},
+     {i:'😕',l:'CONFUSED',w:"I'm confused",b:'confused'},{i:'😳',l:'EMBARRASSED',w:"I'm embarrassed",b:'embarrassed'},{i:'🥺',l:'UPSET',w:"I'm upset",b:'upset'},
+     {i:'😭',l:'TEARFUL',w:'I feel like crying',b:'crying'},{i:'😌',l:'CALM',w:'I feel calm',b:'calm'},{i:'🙂',l:'CONTENT',w:"I'm content",b:'content'},
+     {i:'😇',l:'GRATEFUL',w:"I'm grateful",b:'grateful'},{i:'🥰',l:'LOVED',w:'I feel loved',b:'loved'},{i:'❤️',l:'I LOVE YOU',w:'I love you',b:'I love you'},
+     {i:'🫠',l:'STRESSED',w:"I'm stressed",b:'stressed'},{i:'🌀',l:'OVERWHELMED',w:"I'm overwhelmed",b:'overwhelmed'},{i:'😬',l:'NERVOUS',w:"I'm nervous",b:'nervous'},
+     {i:'😓',l:'DISAPPOINTED',w:"I'm disappointed",b:'disappointed'},{i:'💔',l:'HEARTBROKEN',w:"I'm heartbroken",b:'heartbroken'},{i:'🤯',l:'SHOCKED',w:"I'm shocked",b:'shocked'}],
+  1:[{i:'🚽',l:'TOILET',w:'I need the toilet',b:'toilet'},{i:'💧',l:'THIRSTY',w:"I'm thirsty",b:'thirsty'},{i:'🍽️',l:'HUNGRY',w:"I'm hungry",b:'hungry'},
+     {i:'🥤',l:'WATER',w:'Water please',b:'water'},{i:'🍵',l:'CUP OF TEA',w:'A cup of tea please',s:'/icons/library/food/tea.png'},{i:'☕',l:'COFFEE',w:'A coffee please'},
+     {i:'💊',l:'MEDICINE',w:'I need my medicine',b:'medicine'},{i:'🤕',l:'PAIN',w:"I'm in pain",b:'pain'},{i:'🥵',l:'TOO HOT',w:"I'm too hot",b:'hot'},
+     {i:'🥶',l:'TOO COLD',w:"I'm too cold",b:'cold'},{i:'⬆️',l:'SIT ME UP',w:'Please sit me up'},{i:'⬇️',l:'LIE ME DOWN',w:'Please lie me down'},
+     {i:'🔄',l:'TURN ME OVER',w:'Please turn me over'},{i:'🛏️',l:'PILLOW',w:'Can I have a pillow'},{i:'🧣',l:'BLANKET',w:'Can I have a blanket'},
+     {i:'👓',l:'GLASSES',w:'My glasses please'},{i:'🦻',l:'HEARING AID',w:'My hearing aid please'},{i:'🦷',l:'DENTURES',w:'My dentures please'},
+     {i:'🧼',l:'WASH',w:'I would like a wash',b:'wash'},{i:'🚿',l:'SHOWER',w:'I would like a shower',b:'shower'},{i:'🪥',l:'BRUSH TEETH',w:'I want to brush my teeth',b:'brush teeth'},
+     {i:'🪒',l:'SHAVE',w:'I would like a shave'},{i:'💇',l:'BRUSH HAIR',w:'Please brush my hair',s:'/icons/library/actions/brush-hair.png'},{i:'👕',l:'GET DRESSED',w:'I want to get dressed',b:'get dressed'},
+     {i:'👚',l:'CLEAN CLOTHES',w:'I need clean clothes'},{i:'🛌',l:'REST',w:'I need to rest',b:'rest'},{i:'🌙',l:"CAN'T SLEEP",w:"I can't sleep"},
+     {i:'🦟',l:'ITCHY',w:"I'm itchy"},{i:'💡',l:'LIGHT',w:'Light on or off please'},{i:'🔔',l:'CALL THE NURSE',w:'Please call the nurse'},
+     {i:'🚪',l:'PRIVACY',w:'Privacy please'},{i:'🧍',l:'HELP ME UP',w:'Please help me up'},{i:'♿',l:'WHEELCHAIR',w:'I need my wheelchair'},
+     {i:'🦯',l:'WALKING FRAME',w:'I need my walking frame'},{i:'🪟',l:'FRESH AIR',w:'Can I have some fresh air'},{i:'🌳',l:'OUTSIDE',w:'I want to go outside',b:'outside'}],
+  2:[{i:'✅',l:'I UNDERSTAND',w:'I understand you'},{i:'💭',l:"CAN'T FIND THE WORD",w:"I can't find the word"},{i:'⏳',l:'PLEASE WAIT',w:"Please wait, I'm thinking",b:'wait'},
+     {i:'🔁',l:'SAY IT AGAIN',w:'Please say it again'},{i:'🐢',l:'SLOWER PLEASE',w:'Slower please'},{i:'✍️',l:'WRITE IT DOWN',w:'Please write it down'},
+     {i:'❓',l:'ASK ME YES OR NO',w:'Please ask me yes or no questions'},{i:'🤷',l:"I DON'T KNOW",w:"I don't know",b:'i dont know'},{i:'😕',l:"DON'T UNDERSTAND",w:"I don't understand",b:'confused'},
+     {i:'💬',l:'I WANT TO TALK',w:'I want to talk'},{i:'👍',l:"THAT'S RIGHT",w:"That's right"},{i:'👎',l:"THAT'S WRONG",w:"That's wrong"},
+     {i:'↪️',l:'SOMETHING ELSE',w:"It's something else"},{i:'➕',l:'MORE',w:'More please',b:'more'},{i:'➖',l:'LESS',w:'Less please',b:'less'},
+     {i:'✋',l:'STOP',w:'Stop please',b:'stop'},{i:'✔️',l:'FINISHED',w:"I've finished",b:'finished'},{i:'🙏',l:'THANK YOU',w:'Thank you',b:'thank you'},
+     {i:'🙂',l:'PLEASE',w:'Please',b:'please'},{i:'😔',l:'SORRY',w:"I'm sorry",b:'sorry'},{i:'👋',l:'HELLO',w:'Hello',b:'hello'},
+     {i:'👋',l:'GOODBYE',w:'Goodbye',b:'goodbye'},{i:'🙅',l:'LEAVE ME ALONE',w:'Please leave me alone',b:'i need some space'},{i:'🤐',l:"DON'T WANT TO TALK",w:"I don't want to talk right now",b:'i do not want to talk'},
+     {i:'🤫',l:'QUIET PLEASE',w:'Quiet please',b:'quiet'},{i:'🔊',l:'TOO LOUD',w:"It's too loud",b:'loud'},{i:'❓',l:'WHAT?',w:'What?',b:'what'},
+     {i:'📍',l:'WHERE?',w:'Where?',b:'where'},{i:'🕐',l:'WHEN?',w:'When?',b:'when'},{i:'👤',l:'WHO?',w:'Who?',b:'who'},
+     {i:'🤔',l:'WHY?',w:'Why?',b:'why'},{i:'🔧',l:'HOW?',w:'How?',b:'how'}],
+  3:[{i:'👨‍👩‍👧',l:'FAMILY',w:'I want my family'},{i:'🤝',l:'FRIEND',w:'I want to see my friend'},{i:'💞',l:'PARTNER',w:'I want my partner'},
+     {i:'🧒',l:'CHILDREN',w:'I want to see my children'},{i:'🧑‍⚕️',l:'NURSE',w:'I need the nurse'},{i:'🤲',l:'CARER',w:'I need my carer'},
+     {i:'🩺',l:'DOCTOR',w:'I want to see the doctor',b:'doctor'},{i:'🙋',l:'VISITOR',w:'Is someone visiting me?'},{i:'💗',l:'I MISS YOU',w:'I miss you'},
+     {i:'📱',l:'PHONE CALL',w:'I want to make a phone call',b:'phone'},{i:'📹',l:'VIDEO CALL',w:'I want a video call'},{i:'🕐',l:'WHEN ARE THEY COMING?',w:'When are they coming?',b:'when'},
+     {i:'🏠',l:'HOME',w:'I want to go home',b:'home'},{i:'🏥',l:'HOSPITAL',w:'Hospital',b:'hospital'},{i:'🛏️',l:'BEDROOM',w:'Bedroom',b:'bedroom'},
+     {i:'🍳',l:'KITCHEN',w:'Kitchen',b:'kitchen'},{i:'🌷',l:'GARDEN',w:'I want to go in the garden',b:'garden'},{i:'🛍️',l:'SHOPS',w:'I want to go to the shops',b:'shops'},
+     {i:'🌳',l:'PARK',w:'I want to go to the park',b:'park'},{i:'☕',l:'CAFE',w:"Let's go to a cafe",b:'cafe'},{i:'💇',l:'HAIRDRESSER',w:'Hairdresser',b:'hairdresser'},
+     {i:'🦷',l:'DENTIST',w:'Dentist',b:'dentist'},{i:'⛪',l:'CHURCH',w:'Church',b:'church'},{i:'🕌',l:'MOSQUE',w:'Mosque',b:'mosque'},
+     {i:'🛕',l:'TEMPLE',w:'Temple',b:'temple'},{i:'🚗',l:'CAR',w:'Car',b:'car'},{i:'🚌',l:'BUS',w:'Bus',b:'bus'},
+     {i:'📺',l:'TV',w:'I want to watch TV',b:'TV'},{i:'📻',l:'RADIO',w:'Radio on please'},{i:'🎵',l:'MUSIC',w:'I want to listen to music'},
+     {i:'📰',l:'NEWSPAPER',w:'Can I have the newspaper'},{i:'📖',l:'READ',w:'I want to read',s:'/icons/library/actions/read.png'},{i:'🚶',l:'WALK',w:'I want to go for a walk',s:'/icons/library/actions/walk.png'}]
+};
+// Point adult phrases at existing pictures and feeling colours.
+(function(){
+  [0,1,2,3].forEach(function(pi){BTNS_ADULT[pi].forEach(function(d){
+    var path=d.s||(d.b&&CURATED_SYMBOLS[d.b]);
+    if(path&&!CURATED_SYMBOLS[d.w])CURATED_SYMBOLS[d.w]=path;
+    if(d.b){var bl=d.b.toLowerCase();for(var k=0;k<4;k++){if(TINT_MAP[k][bl]){TINT_MAP[pi][d.w.toLowerCase()]=TINT_MAP[k][bl];break;}}}
+  });});
+})();
+BTNS=(curMode()==='adult')?BTNS_ADULT:BTNS_CHILD;
+var MODE_TABS={child:[['😊','Feelings'],['🍎','Needs'],['🏠','Places'],['🤝','Social']],adult:[['😊','Feelings'],['🛏️','Care'],['💬','Talking'],['👨‍👩‍👧','People']]};
+function curMode(){var p=profiles&&profiles[activeP];return(p&&p.m==='adult')?'adult':'child';}
+function modeSfx(){return curMode()==='adult'?'a':'';}
+function bk(pi,i){return(curMode()==='adult'?'a':'b')+pi+'_'+i;}
+function catNames(){return MODE_TABS[curMode()].map(function(t){return t[1];});}
+function applyMode(noRender){
+  var adult=curMode()==='adult';
+  BTNS=adult?BTNS_ADULT:BTNS_CHILD;
+  adultMode=adult;
+  document.body.classList.toggle('adult',adult);
+  var tabs=document.querySelectorAll('.tab');
+  MODE_TABS[adult?'adult':'child'].forEach(function(t,i){var tb=tabs[i];if(!tb)return;var e=tb.querySelector('.tem'),l=tb.querySelector('.tlb');if(e)e.textContent=t[0];if(l)l.textContent=t[1];});
+  modeSwapText(adult);
+  var seg=document.getElementById('mode-seg');if(seg)renderModeSeg();
+  if(!noRender&&document.getElementById('app').classList.contains('ready')){renderAll();if(typeof resize==='function')resize();}
+}
+// Help and settings text speak about "your child"; in Adult mode say "the person you support".
+function modeSwapText(adult){
+  var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,null);var n;
+  while((n=w.nextNode())){
+    if(n._aidovaOrig===undefined){if(!/your child|Your child|for your child/.test(n.nodeValue))continue;n._aidovaOrig=n.nodeValue;}
+    n.nodeValue=adult?n._aidovaOrig.replace(/your child's/g,"their").replace(/Your child's/g,'Their').replace(/your child/g,'the person you support').replace(/Your child/g,'The person you support'):n._aidovaOrig;
+  }
+}
+function setMode(m,fromChooser){
+  var p=profiles[activeP];if(!p)return;
+  p.m=m;
+  if(m==='adult'&&/^Child \d+$/.test(p.n))p.n=p.n.replace('Child','Person');
+  if(m==='adult'&&p.a==='🧒')p.a='🧑';
+  try{localStorage.setItem('aidova_profiles',JSON.stringify(profiles));localStorage.setItem('aidova_mode_set','1');}catch(e){}
+  if(m==='adult'&&!localStorage.getItem('aidova_btnsize')&&typeof setBtnSize==='function'){setBtnSize(2);var sl=document.getElementById('size-slider');if(sl)sl.value=2;}
+  applyMode();
+  if(typeof renderProfiles==='function')renderProfiles();
+}
+function renderModeSeg(){
+  var seg=document.getElementById('mode-seg');if(!seg)return;var m=curMode();
+  seg.querySelectorAll('button').forEach(function(b){var on=b.dataset.m===m;b.style.background=on?'#2D6A4F':'transparent';b.style.color=on?'#fff':'#666';});
+  var who=document.getElementById('mode-who');if(who){var p=profiles[activeP];who.textContent=p?p.n:'';}
+}
+function showModeChooser(){
+  if(document.getElementById('mode-chooser'))return;
+  var font='-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif';
+  var ov=document.createElement('div');ov.id='mode-chooser';
+  ov.style.cssText='position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;padding:20px';
+  ov.innerHTML='<div style="background:#fff;border-radius:22px;max-width:380px;width:100%;padding:22px 18px;font-family:'+font+';text-align:center">'
+    +'<div style="font-size:1.15rem;font-weight:900;color:#222;margin-bottom:6px">Who will use Aidova?</div>'
+    +'<div style="font-size:.8rem;color:#666;margin-bottom:16px">This chooses the starting buttons. You can change it any time in Settings.</div>'
+    +'<button data-m="child" style="width:100%;padding:16px;border:none;border-radius:14px;background:#FFF3E0;color:#5D4037;font-family:'+font+';font-weight:900;font-size:1rem;margin-bottom:10px;cursor:pointer;text-align:left">🧒 A child<div style="font-size:.75rem;font-weight:600;color:#8D6E63;margin-top:3px">Feelings, needs, places, school and play</div></button>'
+    +'<button data-m="adult" style="width:100%;padding:16px;border:none;border-radius:14px;background:#E0F2F1;color:#004D40;font-family:'+font+';font-weight:900;font-size:1rem;cursor:pointer;text-align:left">🧑 An adult<div style="font-size:.75rem;font-weight:600;color:#00695C;margin-top:3px">Care, comfort, conversation and people. Good after a stroke, illness or for older people</div></button>'
+    +'</div>';
+  ov.querySelectorAll('button').forEach(function(b){b.onclick=function(){setMode(b.dataset.m,true);ov.remove();};});
+  document.body.appendChild(ov);
+}
+
 function applyFeelTint(){
   var b=document.body;b.classList.add('tint');
   [0,1,2,3].forEach(function(i){
@@ -3310,7 +3426,7 @@ function showBuiltinMenu(icon,label,word,key){
     if(!confirm('Delete "'+label+'" from layout?\n\nIt will be permanently removed.'))return;
     hiddenB[key]=true;
     try{localStorage.setItem('aidova_hidden',JSON.stringify(hiddenB));}catch(er){}
-    var pi=-1;if(key.startsWith('b'))pi=parseInt(key.charAt(1));
+    var pi=-1;if(/^[ab]\d/.test(key))pi=parseInt(key.charAt(1));
     if(pi>=0){renderPage(pi,BTNS[pi],['cf','cn','cp','cs'][pi]);}
     resize();
     setTimeout(function(){document.querySelectorAll('.circ').forEach(function(c){c.classList.add('edit-on');});},30);
@@ -3343,14 +3459,14 @@ function renderPage(pi,data,cat){
 
   // Check for unified order (set when reorder has been used)
   var unified=null;
-  try{var uo=localStorage.getItem('aidova_unified_'+activeP+'_'+pi);if(uo)unified=JSON.parse(uo);}catch(e){}
+  try{var uo=localStorage.getItem('aidova_unified_'+activeP+'_'+modeSfx()+pi);if(uo)unified=JSON.parse(uo);}catch(e){}
 
   if(unified&&unified.length){
     // Render in unified order — mix of built-ins and customs
     unified.forEach(function(item){
       if(item.t==='b'){
         var d=data[item.i];if(!d)return;
-        var key='b'+pi+'_'+item.i;
+        var key=bk(pi,item.i);
         if(hiddenB[key])return;
         (function(d,key){
           g.appendChild(mkCirc(d.i,d.l,d.w,cat,function(){say(d.w,key,d.l);addToSent(d.w,d.l);addToRecents(d.i,d.l,d.w,key,''+cat);},key));
@@ -3387,7 +3503,7 @@ function renderPage(pi,data,cat){
     var usedBuiltin=unified.filter(function(x){return x.t==='b';}).map(function(x){return x.i;});
     data.forEach(function(d,i){
       if(usedBuiltin.indexOf(i)>=0)return;
-      var key='b'+pi+'_'+i;if(hiddenB[key])return;
+      var key=bk(pi,i);if(hiddenB[key])return;
       (function(d,key){g.appendChild(mkCirc(d.i,d.l,d.w,cat,function(){say(d.w,key,d.l);addToSent(d.w,d.l);addToRecents(d.i,d.l,d.w,key,''+cat);},key));})(d,key);
     });
     // Any custom buttons not in unified order
@@ -3416,7 +3532,7 @@ function renderPage(pi,data,cat){
     // No unified order — use legacy separate built-in + custom rendering
 
     // --- BUILT-IN BUTTONS ---
-    var saved=null;try{var sv0=localStorage.getItem('aidova_ord_'+pi);if(sv0)saved=JSON.parse(sv0);}catch(e){}
+    var saved=null;try{var sv0=localStorage.getItem('aidova_ord_'+modeSfx()+pi);if(sv0)saved=JSON.parse(sv0);}catch(e){}
     var ord=data;
     if(saved&&saved.length){
       var mapped=saved.map(function(i){return data[i];}).filter(Boolean);
@@ -3427,14 +3543,14 @@ function renderPage(pi,data,cat){
     ord.forEach(function(d){
       var origIdx=BTNS[pi].indexOf(d);
       if(origIdx<0){for(var xi=0;xi<BTNS[pi].length;xi++){if(BTNS[pi][xi].l===d.l&&BTNS[pi][xi].i===d.i){origIdx=xi;break;}}}
-      var key='b'+pi+'_'+origIdx;
+      var key=bk(pi,origIdx);
       if(hiddenB[key])return;
       (function(d,key){g.appendChild(mkCirc(d.i,d.l,d.w,cat,function(){say(d.w,key,d.l);addToSent(d.w,d.l);addToRecents(d.i,d.l,d.w,key,''+cat);},key));})(d,key);
     });
 
     // --- CUSTOM BUTTONS ---
     if(n>0){
-      var recOrd=null;try{var ro=localStorage.getItem('aidova_record_'+activeP+'_'+pi);if(ro)recOrd=JSON.parse(ro);}catch(e){}
+      var recOrd=null;try{var ro=localStorage.getItem('aidova_record_'+activeP+'_'+modeSfx()+pi);if(ro)recOrd=JSON.parse(ro);}catch(e){}
       var allSlots=[];for(var si2=0;si2<n;si2++)allSlots.push(si2);
       if(recOrd&&recOrd.length){
         var ordSet=recOrd.filter(function(x){return x<n;});
@@ -3521,7 +3637,7 @@ function renderHiddenSection(pi){
   hg.innerHTML='';
   var items=[];
   // Built-in hidden
-  var saved=null;try{var sv2=localStorage.getItem('aidova_ord_'+pi);if(sv2)saved=JSON.parse(sv2);}catch(e){}
+  var saved=null;try{var sv2=localStorage.getItem('aidova_ord_'+modeSfx()+pi);if(sv2)saved=JSON.parse(sv2);}catch(e){}
   var ord=BTNS[pi];
   if(saved&&saved.length){
     var mapped2=saved.map(function(i){return BTNS[pi][i];}).filter(Boolean);
@@ -3530,7 +3646,7 @@ function renderHiddenSection(pi){
     ord=mapped2.concat(missing2);
   }
   ord.forEach(function(d,bi){
-    var key='b'+pi+'_'+bi;
+    var key=bk(pi,bi);
     if(hiddenB[key])items.push({type:'builtin',d:d,key:key,cat:cat,pi:pi});
   });
   // Custom hidden
@@ -3605,11 +3721,11 @@ function renderProfiles(){
   profiles.forEach(function(p,i){
     var el=document.createElement('div');el.className='pc'+(i===activeP?' on':'');
     el.innerHTML='<span style="font-size:1.4rem">'+p.a+'</span><span>'+p.n+'</span>';
-    el.onclick=function(){activeP=i;localStorage.setItem('aidova_activep',i);renderAll();renderProfiles();};
+    el.onclick=function(){activeP=i;localStorage.setItem('aidova_activep',i);applyMode(true);renderAll();renderProfiles();renderModeSeg();};
     row.appendChild(el);
   });
   var maxProf=premplus?99:premium?2:1;
-  if(profiles.length<maxProf){var a=document.createElement('div');a.className='pc padd';a.innerHTML='<span style="font-size:1.4rem">➕</span><span>Add</span>';a.onclick=function(){var n=prompt('Child name:');if(!n)return;profiles.push({n:n,a:['👦','👧','🧒','🧑','👶'][profiles.length%5]});localStorage.setItem('aidova_profiles',JSON.stringify(profiles));renderProfiles();};row.appendChild(a);}
+  if(profiles.length<maxProf){var a=document.createElement('div');a.className='pc padd';a.innerHTML='<span style="font-size:1.4rem">➕</span><span>Add</span>';a.onclick=function(){var n=prompt('Name:');if(!n)return;profiles.push({n:n,a:['👦','👧','🧒','🧑','👶'][profiles.length%5]});localStorage.setItem('aidova_profiles',JSON.stringify(profiles));renderProfiles();};row.appendChild(a);}
   else if(!premium&&!premplus){var ul=document.createElement('div');ul.className='pc padd';ul.style.opacity='.5';ul.innerHTML='<span style="font-size:1.4rem">🔒</span><span style="font-size:.6rem">Premium for 2+</span>';ul.onclick=function(){closePanel();showPlans();};row.appendChild(ul);}
   else if(premium&&!premplus){var ul2=document.createElement('div');ul2.className='pc padd';ul2.style.opacity='.5';ul2.innerHTML='<span style="font-size:1.4rem">🔒</span><span style="font-size:.6rem">Plus for unlimited</span>';ul2.onclick=function(){closePanel();showPlans();};row.appendChild(ul2);}
 }
@@ -3739,6 +3855,7 @@ function renderAcctCard(){
 
 function updateSettingsBadges(){
   var panel=document.getElementById('panel');if(!panel)return;
+  try{renderModeSeg();}catch(e){}
   try{renderFreeBtnRow();}catch(e){}
   // Use data-tier attributes for reliable matching
   panel.querySelectorAll('[data-tier="premium"]').forEach(function(el){
@@ -4526,7 +4643,7 @@ function openReorder(){
   if(!premplus){showPlans();return;}
   // Use currently visible tab
   reorderPi=curTab||0;
-  var cats=['Feelings','Needs','Places','Social'];
+  var cats=catNames();
   document.getElementById('reorder-title').textContent='Reorder — '+cats[reorderPi];
   buildReorderList();
   document.getElementById('reordermod').classList.add('open');
@@ -4538,14 +4655,14 @@ function buildReorderList(){
   reorderItems=[];
 
   // Built-in buttons in current saved order
-  var saved=null;try{var sv=localStorage.getItem('aidova_ord_'+reorderPi);if(sv)saved=JSON.parse(sv);}catch(e){}
+  var saved=null;try{var sv=localStorage.getItem('aidova_ord_'+modeSfx()+reorderPi);if(sv)saved=JSON.parse(sv);}catch(e){}
   var data=BTNS[reorderPi];
   var ord=data;if(saved&&saved.length===data.length)ord=saved.map(function(i){return data[i];});
   ord.forEach(function(d,bi){
     var origIdx=-1;
     for(var x=0;x<data.length;x++){if(data[x].l===d.l&&data[x].i===d.i){origIdx=x;break;}}
     if(origIdx<0)origIdx=bi;
-    var key='b'+reorderPi+'_'+origIdx;
+    var key=bk(reorderPi,origIdx);
     if(hiddenB[key])return;
     reorderItems.push({type:'builtin',emoji:d.i,label:d.l,key:key,origIdx:origIdx});
   });
@@ -4553,7 +4670,7 @@ function buildReorderList(){
   // Custom buttons in saved order
   var n=slots();
   if(n>0){
-    var recOrd=null;try{var ro=localStorage.getItem('aidova_record_'+activeP+'_'+reorderPi);if(ro)recOrd=JSON.parse(ro);}catch(e){}
+    var recOrd=null;try{var ro=localStorage.getItem('aidova_record_'+activeP+'_'+modeSfx()+reorderPi);if(ro)recOrd=JSON.parse(ro);}catch(e){}
     var allSlots=[];for(var si=0;si<n;si++)allSlots.push(si);
     if(recOrd&&recOrd.length){var os=recOrd.filter(function(x){return x<n;});var rs=allSlots.filter(function(x){return os.indexOf(x)<0;});allSlots=os.concat(rs);}
     allSlots.forEach(function(s){
@@ -4701,9 +4818,9 @@ function closeReorder(){
   });
 
   try{
-    localStorage.setItem('aidova_ord_'+reorderPi,JSON.stringify(builtinOrder));
-    localStorage.setItem('aidova_record_'+activeP+'_'+reorderPi,JSON.stringify(customOrder));
-    localStorage.setItem('aidova_unified_'+activeP+'_'+reorderPi,JSON.stringify(unifiedOrder));
+    localStorage.setItem('aidova_ord_'+modeSfx()+reorderPi,JSON.stringify(builtinOrder));
+    localStorage.setItem('aidova_record_'+activeP+'_'+modeSfx()+reorderPi,JSON.stringify(customOrder));
+    localStorage.setItem('aidova_unified_'+activeP+'_'+modeSfx()+reorderPi,JSON.stringify(unifiedOrder));
   }catch(e){}
 
   document.getElementById('reordermod').classList.remove('open');
@@ -4732,14 +4849,14 @@ function toggleHide(el,key){
   }
   try{localStorage.setItem('aidova_hidden',JSON.stringify(hiddenB));}catch(e){}
   var pi=-1;
-  if(key.startsWith('b'))pi=parseInt(key.charAt(1));
+  if(/^[ab]\d/.test(key))pi=parseInt(key.charAt(1));
   else if(key.startsWith('rec_'))pi=parseInt((key.split('-')[1]||'0'));
   var cats=['cf','cn','cp','cs'];
   if(pi>=0){renderPage(pi,BTNS[pi],cats[pi]);}else{renderAll();}
   resize(); // keep buttons at the correct size after redrawing
   if(editMode){document.querySelectorAll('.circ').forEach(function(c){c.classList.add('edit-on');});showArrows();}
 }
-function resetLayout(){requirePin(function(){if(!confirm('Restore all hidden buttons and reset order?\nCustom buttons and premium kept.'))return;localStorage.removeItem('aidova_hidden');['0','1','2','3'].forEach(function(i){localStorage.removeItem('aidova_ord_'+i);});hiddenB={};renderAll();closePanel();alert('✅ Layout reset.');});}
+function resetLayout(){requirePin(function(){if(!confirm('Restore all hidden buttons and reset order?\nCustom buttons and premium kept.'))return;localStorage.removeItem('aidova_hidden');['0','1','2','3','a0','a1','a2','a3'].forEach(function(i){localStorage.removeItem('aidova_ord_'+i);});hiddenB={};renderAll();closePanel();alert('✅ Layout reset.');});}
 // EMERGENCY SCREEN
 function openEmerg(){
   var grid=document.getElementById('emerg-grid');
@@ -4862,7 +4979,7 @@ function restoreBackupFile(input){
   r.readAsText(f);
 }
 // ---- Free plan: 1 custom button, placed in the tab the carer chooses ----
-var TAB_NAMES=['😊 Feelings','🍎 Needs','🏠 Places','🤝 Social'];
+function tabNamesNow(){return MODE_TABS[curMode()].map(function(t){return t[0]+' '+t[1];});}
 function freeBtnInfo(){var pre=activeP+'-';var k=Object.keys(recData).filter(function(x){return x.indexOf(pre)===0&&recData[x];})[0];if(!k)return null;var pi=parseInt(k.split('-')[1],10);return{key:k,pi:pi,label:recData[k].label||''};}
 function renderFreeBtnRow(){
   var row=document.getElementById('free-btn-row');if(!row)return;
@@ -4870,7 +4987,7 @@ function renderFreeBtnRow(){
   row.style.display='';
   var info=freeBtnInfo();
   if(info){
-    row.innerHTML='<div><div class="sl">Your free button</div><div class="ss">'+escHtmlFree(info.label)+' · in '+TAB_NAMES[info.pi].replace(/^\S+\s/,'')+' · To change or delete it, tap Edit below</div></div><button class="pbtn" onclick="closePanel();showPlans()" style="background:#FFE082;color:#5D4037">More</button>';
+    row.innerHTML='<div><div class="sl">Your free button</div><div class="ss">'+escHtmlFree(info.label)+' · in '+tabNamesNow()[info.pi].replace(/^\S+\s/,'')+' · To change or delete it, tap Edit below</div></div><button class="pbtn" onclick="closePanel();showPlans()" style="background:#FFE082;color:#5D4037">More</button>';
   }else{
     row.innerHTML='<div><div class="sl">Add your free button</div><div class="ss">The free plan includes 1 button of your own. Choose which tab it goes in.</div></div><button class="pbtn" onclick="chooseFreeBtnTab()" style="background:#2D6A4F;color:#fff">Add</button>';
   }
@@ -4886,7 +5003,7 @@ function chooseFreeBtnTab(){
   var box=document.createElement('div');
   box.style.cssText='background:#fff;border-radius:24px 24px 0 0;width:100%;padding:18px 16px 40px';
   box.innerHTML='<div style="font-family:'+font+';font-size:.95rem;font-weight:900;color:#333;margin-bottom:4px">Where should your button go?</div><div style="font-family:'+font+';font-size:.75rem;color:#777;margin-bottom:14px">Your free plan includes 1 button of your own. It will appear at the end of the tab you choose.</div>';
-  TAB_NAMES.forEach(function(name,pi){
+  tabNamesNow().forEach(function(name,pi){
     var b=document.createElement('button');b.textContent=name;
     b.style.cssText='width:100%;padding:14px;border:none;border-radius:12px;background:'+(DEFAULT_CAT_COLS[pi]||'#eee')+';color:#222;font-family:'+font+';font-weight:900;font-size:.95rem;cursor:pointer;margin-bottom:8px;text-align:left';
     b.onclick=function(){sheet.remove();closePanel();goTab(pi,null);openRec(pi,0);};
@@ -5773,6 +5890,7 @@ applyBtnSize();
   if(lbl)lbl.textContent=pct+'%';
 })();
 applyDark();
+applyMode(true);
 applyAdult();
 applyCatColours();
 checkReturnFromStripe();
@@ -5786,6 +5904,7 @@ setTimeout(function(){
     document.getElementById('splash').style.display='none';
     document.getElementById('app').classList.add('ready');
     renderAll();
+    if(!localStorage.getItem('aidova_mode_set'))showModeChooser();
     maybeShowSetup();
     maybeShowReviewPrompt();
     checkSavedLicence();
