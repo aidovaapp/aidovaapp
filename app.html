@@ -829,10 +829,15 @@ body.editing .ce{border:2px dashed #E0E0E0}
         <button class="tog" id="darktog" onclick="toggleDark()"></button>
       </div>
       <div class="sr" style="display:block">
-        <div><div class="sl">Buttons for <span id="mode-who"></span></div><div class="ss">Child: feelings, needs, places, play. Adult: care, comfort, conversation, people. Each profile can have its own.</div></div>
+        <div><div class="sl">Buttons for <span id="mode-who"></span></div><div class="ss">Everyday: feelings, needs, places, social, for learning to communicate at any age. Care &amp; health: comfort, care and conversation, for adults who have lost speech. Each profile can have its own.</div></div>
         <div id="mode-seg" style="display:flex;background:#F0F0F0;border-radius:10px;padding:3px;gap:3px;margin-top:8px">
-          <button data-m="child" onclick="setMode('child')" style="flex:1;padding:8px;border:none;border-radius:8px;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.8rem;cursor:pointer">🧒 Child</button>
-          <button data-m="adult" onclick="setMode('adult')" style="flex:1;padding:8px;border:none;border-radius:8px;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.8rem;cursor:pointer">🧑 Adult</button>
+          <button data-m="child" onclick="setMode('child')" style="flex:1;padding:8px;border:none;border-radius:8px;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.8rem;cursor:pointer">💬 Everyday</button>
+          <button data-m="adult" onclick="setMode('adult')" style="flex:1;padding:8px;border:none;border-radius:8px;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.8rem;cursor:pointer">🏥 Care &amp; health</button>
+        </div>
+        <div class="ss" style="margin-top:10px">Look</div>
+        <div id="look-seg" style="display:flex;background:#F0F0F0;border-radius:10px;padding:3px;gap:3px;margin-top:4px">
+          <button data-l="playful" onclick="setLook('playful')" style="flex:1;padding:8px;border:none;border-radius:8px;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.8rem;cursor:pointer">🎈 Playful</button>
+          <button data-l="grown" onclick="setLook('grown')" style="flex:1;padding:8px;border:none;border-radius:8px;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.8rem;cursor:pointer">🧑 Grown-up</button>
         </div>
       </div>
       <div class="sr" style="border:none;padding:6px 0">
@@ -3284,6 +3289,10 @@ var BTNS_ADULT={
 })();
 BTNS=(curMode()==='adult')?BTNS_ADULT:BTNS_CHILD;
 var MODE_TABS={child:[['😊','Feelings'],['🍎','Needs'],['🏠','Places'],['🤝','Social']],adult:[['😊','Feelings'],['🛏️','Care'],['💬','Talking'],['👨‍👩‍👧','People']]};
+// Look is separate from the buttons: Playful (bright, confetti) or Grown-up (teal, calmer wording).
+// Old installs that had the 'Adult mode' theme switched on keep a grown-up look.
+(function(){try{if(localStorage.getItem('aidova_adult')==='true'){var ch=false;profiles.forEach(function(p){if(!p.look){p.look='grown';ch=true;}});if(ch)localStorage.setItem('aidova_profiles',JSON.stringify(profiles));localStorage.removeItem('aidova_adult');}}catch(e){}})();
+function curLook(){var p=profiles&&profiles[activeP];if(p&&p.look)return p.look;return(p&&p.m==='adult')?'grown':'playful';}
 function curMode(){var p=profiles&&profiles[activeP];return(p&&p.m==='adult')?'adult':'child';}
 function modeSfx(){return curMode()==='adult'?'a':'';}
 function bk(pi,i){return(curMode()==='adult'?'a':'b')+pi+'_'+i;}
@@ -3291,12 +3300,13 @@ function catNames(){return MODE_TABS[curMode()].map(function(t){return t[1];});}
 function applyMode(noRender){
   var adult=curMode()==='adult';
   BTNS=adult?BTNS_ADULT:BTNS_CHILD;
-  adultMode=adult;
+  var grown=curLook()==='grown';
+  adultMode=grown;
   topBtns=loadTopBtns();
-  document.body.classList.toggle('adult',adult);
+  document.body.classList.toggle('adult',grown);
   var tabs=document.querySelectorAll('.tab');
   MODE_TABS[adult?'adult':'child'].forEach(function(t,i){var tb=tabs[i];if(!tb)return;var e=tb.querySelector('.tem'),l=tb.querySelector('.tlb');if(e)e.textContent=t[0];if(l)l.textContent=t[1];});
-  modeSwapText(adult);
+  modeSwapText(grown);
   var seg=document.getElementById('mode-seg');if(seg)renderModeSeg();
   if(!noRender&&document.getElementById('app').classList.contains('ready')){renderAll();if(typeof resize==='function')resize();}
 }
@@ -3308,19 +3318,23 @@ function modeSwapText(adult){
     n.nodeValue=adult?n._aidovaOrig.replace(/your child's/g,"their").replace(/Your child's/g,'Their').replace(/your child/g,'the person you support').replace(/Your child/g,'The person you support'):n._aidovaOrig;
   }
 }
-function setMode(m,fromChooser){
+function setMode(m,look){
   var p=profiles[activeP];if(!p)return;
-  p.m=m;
-  if(m==='adult'&&/^Child \d+$/.test(p.n))p.n=p.n.replace('Child','Person');
-  if(m==='adult'&&p.a==='🧒')p.a='🧑';
+  if(m)p.m=m;
+  if(look)p.look=look;
+  var grownNow=(p.look||(p.m==='adult'?'grown':'playful'))==='grown';
+  if(grownNow&&/^Child \d+$/.test(p.n))p.n=p.n.replace('Child','Person');
+  if(grownNow&&p.a==='🧒')p.a='🧑';
   try{localStorage.setItem('aidova_profiles',JSON.stringify(profiles));localStorage.setItem('aidova_mode_set','1');}catch(e){}
   if(m==='adult'&&!localStorage.getItem('aidova_btnsize')&&typeof setBtnSize==='function'){setBtnSize(2);var sl=document.getElementById('size-slider');if(sl)sl.value=2;}
   applyMode();
   if(typeof renderProfiles==='function')renderProfiles();
 }
+function setLook(l){setMode(null,l);}
 function renderModeSeg(){
   var seg=document.getElementById('mode-seg');if(!seg)return;var m=curMode();
   seg.querySelectorAll('button').forEach(function(b){var on=b.dataset.m===m;b.style.background=on?'#2D6A4F':'transparent';b.style.color=on?'#fff':'#666';});
+  var ls=document.getElementById('look-seg');if(ls){var lk=curLook();ls.querySelectorAll('button').forEach(function(b){var on=b.dataset.l===lk;b.style.background=on?'#2D6A4F':'transparent';b.style.color=on?'#fff':'#666';});}
   var who=document.getElementById('mode-who');if(who){var p=profiles[activeP];who.textContent=p?p.n:'';}
 }
 function showModeChooser(){
@@ -3330,11 +3344,12 @@ function showModeChooser(){
   ov.style.cssText='position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;padding:20px';
   ov.innerHTML='<div style="background:#fff;border-radius:22px;max-width:380px;width:100%;padding:22px 18px;font-family:'+font+';text-align:center">'
     +'<div style="font-size:1.15rem;font-weight:900;color:#222;margin-bottom:6px">Who will use Aidova?</div>'
-    +'<div style="font-size:.8rem;color:#666;margin-bottom:16px">This chooses the starting buttons. You can change it any time in Settings.</div>'
-    +'<button data-m="child" style="width:100%;padding:16px;border:none;border-radius:14px;background:#FFF3E0;color:#5D4037;font-family:'+font+';font-weight:900;font-size:1rem;margin-bottom:10px;cursor:pointer;text-align:left">🧒 A child<div style="font-size:.75rem;font-weight:600;color:#8D6E63;margin-top:3px">Feelings, needs, places, school and play</div></button>'
-    +'<button data-m="adult" style="width:100%;padding:16px;border:none;border-radius:14px;background:#E0F2F1;color:#004D40;font-family:'+font+';font-weight:900;font-size:1rem;cursor:pointer;text-align:left">🧑 An adult<div style="font-size:.75rem;font-weight:600;color:#00695C;margin-top:3px">Care, comfort, conversation and people. Good after a stroke, illness or for older people</div></button>'
+    +'<div style="font-size:.8rem;color:#666;margin-bottom:16px">Choose what fits best. You can change the buttons and the look any time in Settings.</div>'
+    +'<button data-m="child" data-l="playful" style="width:100%;padding:14px;border:none;border-radius:14px;background:#FFF3E0;color:#5D4037;font-family:'+font+';font-weight:900;font-size:.95rem;margin-bottom:10px;cursor:pointer;text-align:left">🧒 A child learning to communicate<div style="font-size:.74rem;font-weight:600;color:#8D6E63;margin-top:3px">Autism, learning disability, speech delay. Everyday words with a bright, playful look.</div></button>'
+    +'<button data-m="child" data-l="grown" style="width:100%;padding:14px;border:none;border-radius:14px;background:#E8EAF6;color:#1A237E;font-family:'+font+';font-weight:900;font-size:.95rem;margin-bottom:10px;cursor:pointer;text-align:left">🧑 A teenager or adult learning to communicate<div style="font-size:.74rem;font-weight:600;color:#3949AB;margin-top:3px">Autism, learning disability, cerebral palsy, Down syndrome. Everyday words with a grown-up look.</div></button>'
+    +'<button data-m="adult" data-l="grown" style="width:100%;padding:14px;border:none;border-radius:14px;background:#E0F2F1;color:#004D40;font-family:'+font+';font-weight:900;font-size:.95rem;margin-bottom:10px;cursor:pointer;text-align:left">🏥 An adult who has lost speech or needs care<div style="font-size:.74rem;font-weight:600;color:#00695C;margin-top:3px">After a stroke or brain injury, dementia, Parkinson\'s, MND, surgery, hospital or care home. Care, comfort and conversation.</div></button>'
     +'</div>';
-  ov.querySelectorAll('button').forEach(function(b){b.onclick=function(){setMode(b.dataset.m,true);ov.remove();};});
+  ov.querySelectorAll('button').forEach(function(b){b.onclick=function(){setMode(b.dataset.m,b.dataset.l);ov.remove();};});
   document.body.appendChild(ov);
 }
 
