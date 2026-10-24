@@ -152,6 +152,13 @@ body.adult.dark .page,body.adult.dark #pw{background:#0D2020}
 body.editing #app{padding-top:38px}
 #editbar{display:none;position:fixed;top:0;left:0;right:0;z-index:150;background:#1B5E20;color:#fff;font-size:.75rem;font-weight:900;padding:8px 12px;align-items:center;justify-content:space-between;box-shadow:0 2px 10px rgba(0,0,0,.2)}
 #editbar.open{display:flex}
+#modelbar{display:none;position:fixed;top:0;left:0;right:0;z-index:150;background:#6A1B9A;color:#fff;font-size:.75rem;font-weight:900;padding:8px 10px;align-items:center;justify-content:space-between;gap:6px;box-shadow:0 2px 10px rgba(0,0,0,.2)}
+#modelbar.open{display:flex}
+#modelbar button{border:none;background:#fff;color:#6A1B9A;border-radius:8px;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.76rem;padding:6px 10px;cursor:pointer;margin-left:4px;white-space:nowrap}
+#modelbar button:disabled{opacity:.5}
+body.modelling #app{padding-top:38px}
+.model-glow{animation:mglow 1.5s ease-out !important;position:relative;z-index:3}
+@keyframes mglow{0%{transform:scale(1);box-shadow:0 0 0 0 rgba(255,179,0,.95)}20%{transform:scale(1.12);box-shadow:0 0 0 8px rgba(255,179,0,.85)}45%{transform:scale(1.04);box-shadow:0 0 0 14px rgba(255,179,0,.15)}65%{transform:scale(1.1);box-shadow:0 0 0 8px rgba(255,179,0,.8)}100%{transform:scale(1);box-shadow:0 0 0 16px rgba(255,179,0,0)}}
 #editbar button{border:none;background:#fff;color:#1B5E20;border-radius:8px;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.78rem;padding:6px 14px;cursor:pointer;margin-left:6px}
 /* Reorder modal */
 #plansmod{display:none;position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.6);align-items:flex-end;justify-content:center}
@@ -420,6 +427,7 @@ body.editing .ce{border:2px dashed #E0E0E0}
 </div>
 <div id="app">
   <div id="kbar" style="display:none;background:#B71C1C;color:white;font-size:.75rem;font-weight:700;padding:8px 12px;text-align:center;cursor:pointer;position:relative;z-index:200" onclick="exitKioskPrompt()">🔒 KIOSK MODE — Tap here to exit (PIN required)</div>
+  <div id="modelbar"><span>🎓 Model mode</span><div style="display:flex"><button id="model-replay" onclick="replayModel()">▶ Show again</button><button onclick="clearModel()">Clear</button><button onclick="stopModel()">Done ✓</button></div></div>
   <div id="editbar"><span>✏️ Tap to hide · Hold for voice &amp; more</span><div style="display:flex;gap:0"><button onclick="openReorder()">☰ Reorder</button><button onclick="exitEdit()">Done ✓</button></div></div>
   <div id="sentbar">
     <div id="sentwords"><span class="ph">Tap buttons to build a sentence...</span></div>
@@ -663,6 +671,7 @@ body.editing .ce{border:2px dashed #E0E0E0}
     <div class="hbox" style="background:#E8F5E9;border-left-color:#2D6A4F"><div class="htitle">🛠️ Setting up for your child <span style="background:#E8F5E9;color:#2D6A4F;border-radius:8px;padding:2px 7px;font-size:.68rem">RECOMMENDED</span></div><div class="htext">Aidova has 140 built-in buttons — more than most children need. The best experience comes from <b>curating the app for your child</b>:<br><br><b>Step 1 — Hide unused buttons:</b> Settings → Edit layout → tap any button to hide it. Start with the buttons most relevant to your child's daily life. You can restore any at any time.<br><br><b>Step 2 — Add personal buttons:</b> Add custom buttons for family members, favourite foods, activities (Premium).<br><br><b>Step 3 — Lock the app:</b> Once set up, enable Carer lock or Kiosk mode so your child can't accidentally change anything (Premium).<br><br><b>Step 4 — Use Search:</b> Teach your child to tap 🔍 when they can't find a button — it searches everything instantly.</div></div>
     <div class="hbox hprem"><div class="htitle">📁 Folders <span style="background:#FFE082;color:#5D4037;border-radius:8px;padding:2px 7px;font-size:.68rem">PREMIUM</span></div><div class="htext">Folders group related buttons together so the main board stays clean. Example: tap a "Drinks" folder → choose Water, Milk, or Juice. Only the chosen drink speaks — the folder itself never speaks.<br><br><b>To add a folder:</b> Edit mode → tap an ADD slot → choose "📁 Create a folder" → pick an emoji, give it a name → tap Create. Then add buttons inside immediately.<br><br><b>Ready-made starter folders:</b> When you tap ADD in edit mode, Aidova offers 5 pre-built folders (Drinks, Food, Family, Activities, Places) ready to add in one tap.<br><br><b>To open a folder (user):</b> Tap the button with the green ring → sub-buttons appear → tap one to speak → tap ✕ or switch category to close.<br><br><b>Premium:</b> up to 5 buttons per folder · <b>Premium Plus:</b> up to 15 buttons per folder + your own photos on folder buttons</div></div>
     <div class="hbox hprem"><div class="htitle">⭐ Custom buttons <span style="background:#FFE082;color:#5D4037;border-radius:8px;padding:2px 7px;font-size:.68rem">PREMIUM</span></div><div class="htext">Free plan: Settings → Edit Layout → <b>Add your free button</b>, then pick the tab. Premium: in edit mode, tap any <b>+ ADD</b> slot → pick an Aidova picture (or emoji) from the library → type the label in any language → choose a colour → Save ✓.<br><br>Custom buttons appear seamlessly after built-ins — no gap, no new row.<br><br><b>Free:</b> 1 custom slot · emoji only<br><b>Premium:</b> 30 slots per category · emoji or Aidova pictures + any language label<br><b>Premium Plus:</b> 100 slots per category · emoji, Aidova pictures or your own photo</div></div>
+    <div class="hbox" style="background:#F3E5F5;border-left-color:#6A1B9A"><div class="htitle">🎓 Model mode <span style="background:#E8F5E9;color:#2D6A4F;border-radius:8px;padding:2px 7px;font-size:.68rem">FREE</span></div><div class="htext">Children learn to use their talker by watching you use it, just as they learn speech by hearing it.<br><br>Settings → <b>Model Mode</b> → Start. Say a short sentence out loud and tap each word on the board as you say it, for example "I want… drink". Each button lights up and speaks. Tap <b>▶ Show again</b> to replay the words in order, then let your child have a go. Tap <b>Done ✓</b> when finished.<br><br>Words you tap in model mode are not added to your child's word report or recent words.</div></div>
     <div class="hbox hprem"><div class="htitle">🎨 Button colours <span style="background:#FFE082;color:#5D4037;border-radius:8px;padding:2px 7px;font-size:.68rem">PREMIUM</span></div><div class="htext">Three ways to change colours:<br><br><b>1. Single button</b> — pick a colour swatch when adding or editing a custom button.<br><b>2. Whole category</b> — Settings → Display → Button Colours → pick a colour under any category.<br><b>3. All at once</b> — same section → 🪣 Apply one colour to all → one tap changes everything.<br><br>Tap ↺ Reset to restore the original pastel colours.</div></div>
     <div class="hbox hprem"><div class="htitle">🌍 Customise buttons &amp; phrases <span style="background:#FFE082;color:#5D4037;border-radius:8px;padding:2px 7px;font-size:.68rem">PREMIUM</span></div><div class="htext">Settings → <b>Customise</b> → <b>Edit top buttons</b>.<br><br>Change the label and spoken phrase for the 5 top buttons and all 6 emergency phrases — <b>in any language</b>.<br><br>Example: I AM → मैं हूँ · I WANT → मुझे चाहिए · HELP ME → مدد کرو</div></div>
     <div class="hbox hprem"><div class="htitle">📅 Visual Schedule <span style="background:#FFE082;color:#5D4037;border-radius:8px;padding:2px 7px;font-size:.68rem">PREMIUM</span></div><div class="htext">Tap 📅 in the top bar. <b>PIN protected</b> — only carers can edit.<br><br><b>To set up:</b> tap ✏️ Edit → pick emoji or photo → type activity → add time → tap Add ✓.<br><br><b>Daily use:</b> child taps each card to tick it off ✓ (turns green). Next activity highlighted in blue. Tap <b>Reset ticks</b> each morning.<br><br>Helps reduce anxiety around transitions.</div></div>
@@ -956,6 +965,13 @@ body.editing .ce{border:2px dashed #E0E0E0}
       <button class="pbtn" onclick="startRestore()" style="width:100%;background:#E3F2FD;color:#0D47A1;padding:10px">📂 Restore from backup file</button>
       <input type="file" id="backup-file" accept=".json,.aidova,application/json,text/plain" style="display:none" onchange="restoreBackupFile(this)">
       <div style="font-size:.62rem;color:#999;margin-top:8px">Your subscription is not stored in the backup. On a new device use Restore Purchases or your licence key.</div>
+    </div>
+
+    <!-- MODEL MODE — FREE -->
+    <div class="ps" onclick="toggleSection('sec-model',this)"><span>🎓 Model Mode <span style="background:#E8F5E9;color:#2D6A4F;border-radius:6px;padding:1px 6px;font-size:.65rem;font-weight:900;text-transform:none">FREE</span></span><span class="ps-arrow">▶</span></div>
+    <div class="ps-body closed" id="sec-model">
+      <div style="font-size:.68rem;color:#888;margin:6px 0 8px">Children learn to use their talker by watching you use it. Turn on model mode, then tap the words on your child's board as you say them out loud. Each button lights up and speaks so your child sees where it is. Tap <b>▶ Show again</b> to replay the words in order. What you tap in model mode is not counted in your child's word report.</div>
+      <button class="pbtn" onclick="startModel()" style="width:100%;background:#6A1B9A;color:#fff;padding:10px">🎓 Start model mode</button>
     </div>
 
     <!-- PDF EXPORT — PREMIUM -->
@@ -1288,6 +1304,7 @@ var recentsData=JSON.parse(localStorage.getItem('aidova_recents')||'[]'); // [{i
 var RECENTS_MAX=40;
 
 function trackUsage(word,label){
+  if(typeof modelMode!=='undefined'&&modelMode)return; // modelling by the carer is not the child's own use
   if(!premium&&!premplus)return; // Plus/Premium feature only — no tracking for free users
   var pk=activeP;
   if(!usageData[pk])usageData[pk]={};
@@ -2046,6 +2063,7 @@ function resizeApply(sz,cols,gap,avW){
   });
 }
 function say(w,vkey,label){
+  if(modelMode)recordModel(w,vkey,label);
   trackUsage(w,label||w);
   if(vkey&&voiceData[vkey]){var d=voiceData[vkey];if(d.indexOf('TTS:')===0){w=d.substring(4);}else{try{new Audio(d).play();return;}catch(e){}}}
   window.speechSynthesis.cancel();
@@ -2273,6 +2291,7 @@ function addToSent(speak,display){
 }
 
 function addToRecents(icon,label,word,vkey,cat){
+  if(typeof modelMode!=='undefined'&&modelMode)return;
   recentsData=recentsData.filter(function(r){return r.word!==word;});
   recentsData.unshift({icon:icon,label:label,word:word,vkey:vkey||'',cat:cat||''});
   if(recentsData.length>RECENTS_MAX)recentsData=recentsData.slice(0,RECENTS_MAX);
@@ -4878,6 +4897,66 @@ function chooseFreeBtnTab(){
   c.onclick=function(){sheet.remove();};box.appendChild(c);
   sheet.appendChild(box);document.body.appendChild(sheet);
 }
+// ---- Model mode (free): carer taps words, buttons light up, can replay in order ----
+var modelMode=false,modelSeq=[],modelLastEl=null,modelPlaying=false;
+document.addEventListener('click',function(e){if(!modelMode)return;var t=e.target&&e.target.closest?e.target.closest('.circ,.bb'):null;modelLastEl=t;},true);
+function modelGlow(el){if(!el)return;el.classList.remove('model-glow');void el.offsetWidth;el.classList.add('model-glow');setTimeout(function(){el.classList.remove('model-glow');},1550);}
+function recordModel(w,vkey,label){
+  if(modelPlaying)return;
+  var el=modelLastEl;modelLastEl=null;
+  if(!el)return; // e.g. the Speak button, not a word button
+  setTimeout(function(){modelGlow(el);},380); // after the normal tap bounce
+  var pg=el.closest('[id^="g"]');var pi=pg?parseInt(pg.id.slice(1),10):curTab;
+  modelSeq.push({w:w,vkey:vkey||null,label:label||w,id:el.id||'',key:(el.dataset&&el.dataset.key)||'',pi:isNaN(pi)?curTab:pi});
+  updateModelBar();
+}
+function updateModelBar(){var b=document.getElementById('model-replay');if(!b)return;b.textContent=modelPlaying?'… Showing':('▶ Show again'+(modelSeq.length?' ('+modelSeq.length+')':''));b.disabled=modelPlaying||!modelSeq.length;}
+function startModel(){
+  if(editMode)exitEdit();
+  closePanel();modelMode=true;modelSeq=[];
+  document.getElementById('modelbar').classList.add('open');document.body.classList.add('modelling');
+  updateModelBar();if(typeof resize==='function')resize();
+}
+function stopModel(){
+  modelMode=false;modelPlaying=false;modelSeq=[];
+  document.getElementById('modelbar').classList.remove('open');document.body.classList.remove('modelling');
+  try{window.speechSynthesis.cancel();}catch(e){}
+  if(typeof clearSentence==='function')clearSentence();
+  if(typeof resize==='function')resize();
+}
+function clearModel(){modelSeq=[];if(typeof clearSentence==='function')clearSentence();updateModelBar();}
+function modelSpeakWait(w,vkey){
+  return new Promise(function(res){
+    var done=false;function fin(){if(!done){done=true;res();}}
+    setTimeout(fin,6000);
+    if(vkey&&voiceData[vkey]){var d=voiceData[vkey];if(d.indexOf('TTS:')===0){w=d.substring(4);}else{try{var a=new Audio(d);a.onended=fin;a.onerror=fin;var pr=a.play();if(pr&&pr.catch)pr.catch(fin);return;}catch(e){}}}
+    try{
+      window.speechSynthesis.cancel();
+      var u=new SpeechSynthesisUtterance(w);var v=getVoice();if(v){u.voice=v;u.lang=v.lang||'en-GB';}else{u.lang='en-GB';}
+      u.rate=0.88;u.volume=vol;u.onend=fin;u.onerror=fin;window.speechSynthesis.speak(u);
+    }catch(e){fin();}
+  });
+}
+function modelFind(it){
+  if(it.id)return document.getElementById(it.id);
+  if(!it.key)return null;
+  var g=document.getElementById('g'+it.pi);if(!g)return null;
+  var all=g.querySelectorAll('.circ');for(var i=0;i<all.length;i++){if(all[i].dataset.key===it.key)return all[i];}
+  return null;
+}
+async function replayModel(){
+  if(modelPlaying||!modelSeq.length)return;
+  modelPlaying=true;updateModelBar();
+  var wait=function(ms){return new Promise(function(r){setTimeout(r,ms);});};
+  for(var i=0;i<modelSeq.length&&modelMode;i++){
+    var it=modelSeq[i];var el=modelFind(it);
+    if(el&&!it.id){if(curTab!==it.pi){goTab(it.pi,null);await wait(350);}try{el.scrollIntoView({block:'center',behavior:'smooth'});}catch(e){}await wait(350);}
+    if(el)modelGlow(el);
+    await modelSpeakWait(it.w,it.vkey);
+    await wait(300);
+  }
+  modelPlaying=false;updateModelBar();
+}
 function factoryReset(){if(!confirm('Factory reset?\n\nClears everything including PIN and custom buttons.'))return;Object.keys(localStorage).filter(function(k){return k.startsWith('aidova');}).forEach(function(k){localStorage.removeItem(k);});location.reload();}
 
 // CUSTOM BUTTON
@@ -5613,7 +5692,7 @@ function cancelVrec(){stopRecording();document.getElementById('vrecmod').classLi
 function saveVrec(){if(!recBlob){alert('Please record your voice first.');return;}var r=new FileReader();r.onload=function(e){voiceData[vrecKey]=e.target.result;try{localStorage.setItem('aidova_voices',JSON.stringify(voiceData));document.getElementById('vrecmod').classList.remove('open');alert('✅ Voice saved!');}catch(err){alert('Recording too large. Please record a shorter clip.');}vrecKey=null;recBlob=null;};r.readAsDataURL(recBlob);}
 
 // ANIMATIONS
-function anim(el,e){var r=el.getBoundingClientRect();var rp=document.createElement('div');rp.className='ripple';var sz=Math.max(r.width,r.height);rp.style.cssText='width:'+sz+'px;height:'+sz+'px;left:'+((e.clientX||r.left+sz/2)-r.left-sz/2)+'px;top:'+((e.clientY||r.top+sz/2)-r.top-sz/2)+'px';el.appendChild(rp);setTimeout(function(){rp.remove();},500);el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop');setTimeout(function(){el.classList.remove('pop');},380);}
+function anim(el,e){var r=el.getBoundingClientRect();var rp=document.createElement('div');rp.className='ripple';var sz=Math.max(r.width,r.height);rp.style.cssText='width:'+sz+'px;height:'+sz+'px;left:'+(((e&&e.clientX)||r.left+sz/2)-r.left-sz/2)+'px;top:'+(((e&&e.clientY)||r.top+sz/2)-r.top-sz/2)+'px';el.appendChild(rp);setTimeout(function(){rp.remove();},500);el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop');setTimeout(function(){el.classList.remove('pop');},380);}
 function doConfetti(){var cols=['#FF6B6B','#4CAF50','#FF9800','#2196F3','#9C27B0','#FFD700'];for(var i=0;i<16;i++){(function(i){var c=document.createElement('div');c.className='conf';c.style.cssText='left:'+(15+Math.random()*70)+'vw;top:35%;background:'+cols[i%cols.length]+';animation-delay:'+(Math.random()*.2)+'s';document.body.appendChild(c);setTimeout(function(){c.remove();},1400);})(i);}}
 
 
