@@ -5178,7 +5178,7 @@ function openBoards(){
 function closeBoards(){var ov=document.getElementById('boardsov');if(ov)ov.classList.remove('open');boardSent=[];}
 function openBoard(i){
   if(!(premium||premplus)){closeBoards();showPlans();return;}
-  var b=BOARDS[i];var ov=document.getElementById('boardsov');boardSent=[];
+  var b=BOARDS[i];var ov=document.getElementById('boardsov');if(!ov){ov=document.createElement('div');ov.id='boardsov';document.body.appendChild(ov);}ov.classList.add('open');boardSent=[];
   var h='<div class="bh"><button onclick="openBoards()">‹ Boards</button><h2>'+b.n+'</h2><button onclick="closeBoards()">Close</button></div>';
   h+='<div class="bsent"><div id="bd-sent">Tap a button to speak</div><button onclick="bdSpeak()" style="background:#2D6A4F;color:#fff">▶ Speak</button><button onclick="bdClear()" style="background:#fff;color:#666">✕</button></div>';
   h+='<div class="bbody"><div class="bgrid">';
