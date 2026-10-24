@@ -152,6 +152,28 @@ body.adult.dark .page,body.adult.dark #pw{background:#0D2020}
 body.editing #app{padding-top:38px}
 #editbar{display:none;position:fixed;top:0;left:0;right:0;z-index:150;background:#1B5E20;color:#fff;font-size:.75rem;font-weight:900;padding:8px 12px;align-items:center;justify-content:space-between;box-shadow:0 2px 10px rgba(0,0,0,.2)}
 #editbar.open{display:flex}
+#boardsov{display:none;position:fixed;inset:0;z-index:400;background:#F7F7F4;flex-direction:column;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif}
+#boardsov.open{display:flex}
+#boardsov .bh{display:flex;align-items:center;gap:8px;padding:12px 12px 8px;background:#2D6A4F;color:#fff}
+#boardsov .bh h2{flex:1;margin:0;font-size:1.05rem;font-weight:900}
+#boardsov .bh button{border:none;background:#fff;color:#2D6A4F;border-radius:10px;font-weight:900;font-size:.85rem;padding:8px 12px;cursor:pointer;font-family:inherit}
+#boardsov .bbody{flex:1;overflow-y:auto;padding:10px 12px 30px}
+#boardsov .bgrp{font-size:.72rem;font-weight:900;color:#2D6A4F;text-transform:uppercase;letter-spacing:.05em;margin:12px 2px 6px}
+#boardsov .blist{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+#boardsov .bcard{display:flex;align-items:center;gap:8px;background:#fff;border:none;border-radius:14px;padding:8px 10px;cursor:pointer;text-align:left;font-family:inherit;box-shadow:0 1px 4px rgba(0,0,0,.08);position:relative}
+#boardsov .bcard img{width:44px;height:44px;flex-shrink:0}
+#boardsov .bcard b{font-size:.85rem;color:#222;display:block}
+#boardsov .bcard span{font-size:.68rem;color:#888}
+#boardsov .block{position:absolute;top:6px;right:8px;font-size:.8rem}
+#boardsov .bsent{display:flex;align-items:center;gap:6px;padding:6px 12px;background:#E8F5E9;min-height:44px}
+#boardsov .bsent div{flex:1;font-size:.9rem;font-weight:700;color:#1B5E20;overflow-x:auto;white-space:nowrap}
+#boardsov .bsent button{border:none;border-radius:10px;padding:8px 12px;font-weight:900;font-family:inherit;cursor:pointer}
+#boardsov .bgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:10px}
+.bd-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;aspect-ratio:1;border:none;border-radius:50%;cursor:pointer;font-family:inherit;padding:6px;box-shadow:0 2px 6px rgba(0,0,0,.08)}
+.bd-btn img{width:62%;height:62%;object-fit:contain;pointer-events:none}
+.bd-btn .be{font-size:2rem;line-height:1.2;pointer-events:none}
+.bd-btn .bl2{font-size:.7rem;font-weight:900;color:#222;margin-top:2px;text-align:center;line-height:1.1;pointer-events:none}
+body.adult #boardsov .bh{background:#00695C}
 #modelbar{display:none;position:fixed;top:0;left:0;right:0;z-index:150;background:#6A1B9A;color:#fff;font-size:.75rem;font-weight:900;padding:8px 10px;align-items:center;justify-content:space-between;gap:6px;box-shadow:0 2px 10px rgba(0,0,0,.2)}
 #modelbar.open{display:flex}
 #modelbar button{border:none;background:#fff;color:#6A1B9A;border-radius:8px;font-family:-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;font-weight:900;font-size:.76rem;padding:6px 10px;cursor:pointer;margin-left:4px;white-space:nowrap}
@@ -439,6 +461,7 @@ body.editing .ce{border:2px dashed #E0E0E0}
       <div class="blogo" id="logotap"><div class="bdot">💬</div>Aidova</div>
       <div class="bcred" id="bcred">by <b>CHEW</b><span class="g">AID</span>®</div>
       <div style="display:flex;gap:2px;align-items:center">
+        <button class="topbtn" id="boardsbtn" onclick="openBoards()" title="Boards">📋</button>
         <button class="topbtn" id="schedbtn" onclick="openSched()">📅</button>
         <button class="topbtn" id="breathbtn" onclick="openBreath()">🧘</button>
         <button class="topbtn" id="timerbtn" onclick="openTimer()">⏱️</button>
@@ -671,6 +694,7 @@ body.editing .ce{border:2px dashed #E0E0E0}
     <div class="hbox" style="background:#E8F5E9;border-left-color:#2D6A4F"><div class="htitle">🛠️ Setting up for your child <span style="background:#E8F5E9;color:#2D6A4F;border-radius:8px;padding:2px 7px;font-size:.68rem">RECOMMENDED</span></div><div class="htext">Aidova has 140 built-in buttons — more than most children need. The best experience comes from <b>curating the app for your child</b>:<br><br><b>Step 1 — Hide unused buttons:</b> Settings → Edit layout → tap any button to hide it. Start with the buttons most relevant to your child's daily life. You can restore any at any time.<br><br><b>Step 2 — Add personal buttons:</b> Add custom buttons for family members, favourite foods, activities (Premium).<br><br><b>Step 3 — Lock the app:</b> Once set up, enable Carer lock or Kiosk mode so your child can't accidentally change anything (Premium).<br><br><b>Step 4 — Use Search:</b> Teach your child to tap 🔍 when they can't find a button — it searches everything instantly.</div></div>
     <div class="hbox hprem"><div class="htitle">📁 Folders <span style="background:#FFE082;color:#5D4037;border-radius:8px;padding:2px 7px;font-size:.68rem">PREMIUM</span></div><div class="htext">Folders group related buttons together so the main board stays clean. Example: tap a "Drinks" folder → choose Water, Milk, or Juice. Only the chosen drink speaks — the folder itself never speaks.<br><br><b>To add a folder:</b> Edit mode → tap an ADD slot → choose "📁 Create a folder" → pick an emoji, give it a name → tap Create. Then add buttons inside immediately.<br><br><b>Ready-made starter folders:</b> When you tap ADD in edit mode, Aidova offers 5 pre-built folders (Drinks, Food, Family, Activities, Places) ready to add in one tap.<br><br><b>To open a folder (user):</b> Tap the button with the green ring → sub-buttons appear → tap one to speak → tap ✕ or switch category to close.<br><br><b>Premium:</b> up to 5 buttons per folder · <b>Premium Plus:</b> up to 15 buttons per folder + your own photos on folder buttons</div></div>
     <div class="hbox hprem"><div class="htitle">⭐ Custom buttons <span style="background:#FFE082;color:#5D4037;border-radius:8px;padding:2px 7px;font-size:.68rem">PREMIUM</span></div><div class="htext">Free plan: Settings → Edit Layout → <b>Add your free button</b>, then pick the tab. Premium: in edit mode, tap any <b>+ ADD</b> slot → pick an Aidova picture (or emoji) from the library → type the label in any language → choose a colour → Save ✓.<br><br>Custom buttons appear seamlessly after built-ins — no gap, no new row.<br><br><b>Free:</b> 1 custom slot · emoji only<br><b>Premium:</b> 30 slots per category · emoji or Aidova pictures + any language label<br><b>Premium Plus:</b> 100 slots per category · emoji, Aidova pictures or your own photo</div></div>
+    <div class="hbox hprem"><div class="htitle">📋 Boards <span style="background:#FFE082;color:#5D4037;border-radius:8px;padding:2px 7px;font-size:.68rem">PREMIUM</span></div><div class="htext">Tap <b>📋</b> at the top for 19 ready-made boards: mealtime, bath time, bedtime, getting dressed, school, doctor, shopping, park, playtime, going out, toilet routine and dentist, plus Care &amp; health boards for talking, pain, comfort in bed, personal care, daily choices, people and medical. Tap buttons to speak them and build a sentence, then ▶ Speak.</div></div>
     <div class="hbox" style="background:#F3E5F5;border-left-color:#6A1B9A"><div class="htitle">🎓 Model mode <span style="background:#E8F5E9;color:#2D6A4F;border-radius:8px;padding:2px 7px;font-size:.68rem">FREE</span></div><div class="htext">Children learn to use their talker by watching you use it, just as they learn speech by hearing it.<br><br>Settings → <b>Model Mode</b> → Start. Say a short sentence out loud and tap each word on the board as you say it, for example "I want… drink". Each button lights up and speaks. Tap <b>▶ Show again</b> to replay the words in order, then let your child have a go. Tap <b>Done ✓</b> when finished.<br><br>Words you tap in model mode are not added to your child's word report or recent words.</div></div>
     <div class="hbox hprem"><div class="htitle">🎨 Button colours <span style="background:#FFE082;color:#5D4037;border-radius:8px;padding:2px 7px;font-size:.68rem">PREMIUM</span></div><div class="htext">Three ways to change colours:<br><br><b>1. Single button</b> — pick a colour swatch when adding or editing a custom button.<br><b>2. Whole category</b> — Settings → Display → Button Colours → pick a colour under any category.<br><b>3. All at once</b> — same section → 🪣 Apply one colour to all → one tap changes everything.<br><br>Tap ↺ Reset to restore the original pastel colours.</div></div>
     <div class="hbox hprem"><div class="htitle">🌍 Customise buttons &amp; phrases <span style="background:#FFE082;color:#5D4037;border-radius:8px;padding:2px 7px;font-size:.68rem">PREMIUM</span></div><div class="htext">Settings → <b>Customise</b> → <b>Edit top buttons</b>.<br><br>Change the label and spoken phrase for the 5 top buttons and all 6 emergency phrases — <b>in any language</b>.<br><br>Example: I AM → मैं हूँ · I WANT → मुझे चाहिए · HELP ME → مدد کرو</div></div>
@@ -5045,7 +5069,7 @@ function chooseFreeBtnTab(){
 }
 // ---- Model mode (free): carer taps words, buttons light up, can replay in order ----
 var modelMode=false,modelSeq=[],modelLastEl=null,modelPlaying=false;
-document.addEventListener('click',function(e){if(!modelMode)return;var t=e.target&&e.target.closest?e.target.closest('.circ,.bb'):null;modelLastEl=t;},true);
+document.addEventListener('click',function(e){if(!modelMode)return;var t=e.target&&e.target.closest?e.target.closest('.circ,.bb,.bd-btn'):null;modelLastEl=t;},true);
 function modelGlow(el){if(!el)return;el.classList.remove('model-glow');void el.offsetWidth;el.classList.add('model-glow');setTimeout(function(){el.classList.remove('model-glow');},1550);}
 function recordModel(w,vkey,label){
   if(modelPlaying)return;
@@ -5103,6 +5127,77 @@ async function replayModel(){
   }
   modelPlaying=false;updateModelBar();
 }
+// ===== BOARDS (Premium): ready-made activity boards =====
+// Each item: 'Label|picture|spoken words'. picture = 'c:word' (built-in icon), a library path ('home/cup'), or an emoji.
+var BOARDS=[
+ {g:'e',id:'meal',n:'Mealtime',c:'#FFE0B2',it:['Hungry|c:hungry','Thirsty|c:thirsty','Eat|actions/eat','Drink|actions/drink','Water|c:water','Juice|food/juice','Milk|food/milk','Cup|home/cup','Plate|home/plate','Bowl|home/bowl','Spoon|home/spoon','Fork|home/fork','More|c:more','Finished|c:finished','Too hot|c:hot','Help|c:help']},
+ {g:'e',id:'bath',n:'Bath time',c:'#B3E5FC',it:['Bath|c:bath','Wash|c:wash','Water|c:water','Towel|home/towel','Soap|home/soap','Shampoo|home/shampoo','Bubbles|play/bubbles','Bath duck|home/bath-duck','Too hot|c:hot','Too cold|c:cold','More|c:more','Stop|c:stop','Finished|c:finished','Help|c:help']},
+ {g:'e',id:'bed',n:'Bedtime',c:'#D1C4E9',it:['Sleep|actions/sleep','Tired|c:tired','Bed|care/bed','Teddy|play/teddy','Pyjamas|clothes/pyjamas','Read|actions/read','Story|c:books','Cuddle|c:cuddle','Toilet|c:toilet','Brush teeth|c:brush teeth','Water|c:water','Light|care/lamp',"Can't sleep|care/cant-sleep|I can't sleep"]},
+ {g:'e',id:'dress',n:'Getting dressed',c:'#C8E6C9',it:['Get dressed|c:get dressed','T-shirt|clothes/t-shirt','Jumper|clothes/jumper','Trousers|clothes/trousers','Socks|clothes/socks','Shoes|clothes/shoes','Coat|clothes/coat','Hat|clothes/hat','Pyjamas|clothes/pyjamas','Too hot|c:hot','Too cold|c:cold','Help|c:help','Finished|c:finished']},
+ {g:'e',id:'school',n:'School',c:'#FFF9C4',it:['School|c:school','Teacher|people/teacher','Read|actions/read','Write|actions/write','Draw|actions/draw','Pencil|school/pencil','Listen|actions/listen','Look|actions/look','Sit|actions/sit','Wait|c:wait','Help|c:help','My turn|c:my turn','Your turn|c:your turn','Toilet|c:toilet','Play|c:play','Finished|c:finished']},
+ {g:'e',id:'doctor',n:'Doctor',c:'#FFCDD2',it:['Doctor|people/doctor','Medicine|c:medicine','Pain|c:pain','Hurt|c:hurt','Head|body/pain-head|My head hurts','Tummy|body/pain-tummy|My tummy hurts','Feel sick|c:feel sick','Plaster|c:plaster','Injection|body/injection','Blood test|body/blood-test','Scared|c:scared','Stop|c:stop','Wait|c:wait','Finished|c:finished']},
+ {g:'e',id:'shop',n:'Shopping',c:'#F8BBD0',it:['Shops|c:shops','Supermarket|c:supermarket','Trolley|school/trolley','Money|school/money','Snack|c:snack','Biscuit|food/biscuit','Crisps|food/crisps','More|c:more','Wait|c:wait','Help|c:help','Toilet|c:toilet','No thank you|c:no thank you','Home|c:home','Finished|c:finished']},
+ {g:'e',id:'park',n:'Park',c:'#DCEDC8',it:['Park|c:park','Outside|c:outside','Run|actions/run','Jump|actions/jump','Swing|play/swing','Slide|play/slide','Ball|play/ball','Football|c:football','Play|c:play','My turn|c:my turn','Your turn|c:your turn','Again|c:again','Stop|c:stop','Finished|c:finished']},
+ {g:'e',id:'play',n:'Playtime',c:'#FFE082',it:['Play|c:play','Ball|play/ball','Blocks|play/blocks','Doll|play/doll','Teddy|play/teddy','Toy car|play/toy-car','Puzzle|play/puzzle','Bubbles|play/bubbles','Share|c:share','Give|actions/give','Together|c:together','My turn|c:my turn','Your turn|c:your turn','Again|c:again','Finished|c:finished']},
+ {g:'e',id:'out',n:'Going out',c:'#B2DFDB',it:['Car|c:car','Bus|c:bus','Train|c:train station','Where?|c:where','When?|c:when','Wait|c:wait','Coat|clothes/coat','Headphones|c:headphones','Snack|c:snack','Toilet|c:toilet','Home|c:home','Stop|c:stop']},
+ {g:'e',id:'toilet',n:'Toilet routine',c:'#E1F5FE',it:['Toilet|c:toilet','Toilet paper|home/toilet-paper','Flush|home/flush','Wash hands|actions/wash-hands','Soap|home/soap','Towel|home/towel','Help|c:help','Wait|c:wait','Clean|c:clean','Finished|c:finished']},
+ {g:'e',id:'dentist',n:'Dentist',c:'#E0F7FA',it:['Dentist|c:dentist','Open wide|home/open-wide','Rinse|home/rinse-cup','Toothbrush|home/toothbrush','Brush teeth|c:brush teeth','Mouth hurts|body/pain-mouth|My mouth hurts','Scared|c:scared','Stop|c:stop','Wait|c:wait','Finished|c:finished','Well done|c:well done']},
+ {g:'h',id:'talk',n:'Talking with me',c:'#E8EAF6',it:['I understand|talking/i-understand|I understand you',"Can't find the word|talking/cant-find-the-word|I can't find the word",'Please wait|c:wait|Please wait, I am thinking','Say it again|talking/say-it-again|Please say it again','Slower please|talking/slower-please','Write it down|talking/write-it-down|Please write it down','Ask me yes or no|talking/ask-me-yes-or-no|Please ask me yes or no questions',"That's right|talking/thats-right","That's wrong|talking/thats-wrong",'Something else|talking/something-else|It is something else','I want to talk|talking/i-want-to-talk',"I don't know|c:i dont know","What's happening?|people/what-is-happening"]},
+ {g:'h',id:'pain',n:'Pain',c:'#FFCDD2',it:['Head|body/pain-head|My head hurts','Chest|body/pain-chest|My chest hurts','Tummy|body/pain-tummy|My tummy hurts','Back|body/pain-back|My back hurts','Arm|body/pain-arm|My arm hurts','Hand|body/pain-hand|My hand hurts','Leg|body/pain-leg|My leg hurts','Foot|body/pain-foot|My foot hurts','Mouth|body/pain-mouth|My mouth hurts','Throat|body/pain-throat|My throat hurts','A little|body/pain-a-little|It hurts a little','A lot|body/pain-a-lot|It hurts a lot','Worst ever|body/pain-worst|It is the worst pain','Getting worse|body/getting-worse|It is getting worse','Getting better|body/getting-better|It is getting better']},
+ {g:'h',id:'bedcomf',n:'Comfort in bed',c:'#D1C4E9',it:['Sit me up|care/sit-me-up|Please sit me up','Lie me down|care/lie-me-down|Please lie me down','Turn me over|care/turn-me-over|Please turn me over','Pillow|care/pillow|Can I have a pillow','Blanket|care/blanket|Can I have a blanket','Too hot|c:hot|I am too hot','Too cold|c:cold|I am too cold','Light|care/lamp|Light on or off please','Call the nurse|care/call-bell|Please call the nurse',"Can't sleep|care/cant-sleep|I can't sleep",'Itchy|care/itchy|I am itchy','Feel sick|c:feel sick|I feel sick','Water|c:water|Water please']},
+ {g:'h',id:'pcare',n:'Personal care',c:'#B3E5FC',it:['Wash|c:wash|I would like a wash','Shower|c:shower|I would like a shower','Shave|care/shave|I would like a shave','Brush hair|actions/brush-hair|Please brush my hair','Brush teeth|c:brush teeth|I want to brush my teeth','Dentures|care/dentures|My dentures please','Glasses|care/glasses|My glasses please','Hearing aid|care/hearing-aid|My hearing aid please','Toilet|c:toilet|I need the toilet','Clean clothes|care/clean-clothes|I need clean clothes','Towel|home/towel','Privacy please|care/privacy-please']},
+ {g:'h',id:'choice',n:'Daily choices',c:'#FFE0B2',it:['Tea|food/tea|A cup of tea please','Coffee|care/coffee|A coffee please','Biscuit|food/biscuit|A biscuit please','TV|c:TV|I want to watch TV','Radio|care/radio|Radio on please','Music|care/music|I want to listen to music','Newspaper|care/newspaper|Can I have the newspaper','Fresh air|care/window|Can I have some fresh air','Garden|c:garden|I want to go in the garden','Walk|actions/walk|I want to go for a walk','Wheelchair|care/wheelchair|I need my wheelchair','Walking frame|care/walking-frame|I need my walking frame','Bed|care/bed|I want to go to bed']},
+ {g:'h',id:'people',n:'People',c:'#F8BBD0',it:['Family|people/family|I want my family','Friend|people/friend|I want to see my friend','Partner|people/partner|I want my partner','Children|people/children|I want to see my children','Nurse|people/nurse|I need the nurse','Carer|people/carer|I need my carer','Doctor|people/doctor|I want to see the doctor','Visitor|people/visitor-flowers|Is someone visiting me?','Phone call|c:phone|I want to make a phone call','Video call|care/video-call|I want a video call','I miss you|people/i-miss-you','When are they coming?|c:when']},
+ {g:'h',id:'medical',n:'Medical',c:'#E0F2F1',it:['Medicine|c:medicine|I need my medicine','Tablets|care/tablets','Injection|body/injection','Blood test|body/blood-test','Blood pressure|body/blood-pressure',"What's happening?|people/what-is-happening",'Is it serious?|c:worried|Is it serious?','When can I go home?|c:home|When can I go home?','Doctor|people/doctor|I want to see the doctor','Nurse|people/nurse|I need the nurse','Getting worse|body/getting-worse|It is getting worse','Getting better|body/getting-better|It is getting better']}
+];
+function bdPic(ref){
+  if(!ref)return null;
+  if(ref.indexOf('c:')===0){var p=CURATED_SYMBOLS[ref.slice(2)];return p||null;}
+  if(/^[a-z]+\/[a-z0-9-]+$/.test(ref))return '/icons/library/'+ref+'.png';
+  return null;
+}
+function bdItem(str){var a=str.split('|');return{l:a[0],pic:a[1]||'',w:a[2]||a[0]};}
+var boardSent=[];
+function openBoards(){
+  var ov=document.getElementById('boardsov');
+  if(!ov){ov=document.createElement('div');ov.id='boardsov';document.body.appendChild(ov);}
+  var paid=premium||premplus;
+  var groups=curMode()==='adult'?['h','e']:['e','h'];
+  var names={e:'Everyday',h:'Care & health'};
+  var h='<div class="bh"><h2>📋 Boards</h2><button onclick="closeBoards()">Close</button></div><div class="bbody">';
+  if(!paid)h+='<div style="background:#FFF8E1;border-radius:12px;padding:10px 12px;font-size:.8rem;color:#5D4037;margin-bottom:4px">Ready-made boards for everyday moments. <b>Premium</b> unlocks all 19. <button onclick="closeBoards();showPlans()" style="border:none;background:#FFE082;border-radius:8px;padding:4px 8px;font-weight:900;font-family:inherit;margin-left:4px;cursor:pointer">See plans</button></div>';
+  groups.forEach(function(g){
+    h+='<div class="bgrp">'+names[g]+'</div><div class="blist">';
+    BOARDS.forEach(function(b,i){if(b.g!==g)return;var it=bdItem(b.it[0]);var src=bdPic(it.pic);
+      h+='<button class="bcard" style="background:'+b.c+'" onclick="openBoard('+i+')">'+(src?'<img src="'+src+'" alt="">':'')+'<div><b>'+b.n+'</b><span>'+b.it.length+' buttons</span></div>'+(paid?'':'<span class="block">🔒</span>')+'</button>';});
+    h+='</div>';
+  });
+  h+='</div>';
+  ov.innerHTML=h;ov.classList.add('open');
+}
+function closeBoards(){var ov=document.getElementById('boardsov');if(ov)ov.classList.remove('open');boardSent=[];}
+function openBoard(i){
+  if(!(premium||premplus)){closeBoards();showPlans();return;}
+  var b=BOARDS[i];var ov=document.getElementById('boardsov');boardSent=[];
+  var h='<div class="bh"><button onclick="openBoards()">‹ Boards</button><h2>'+b.n+'</h2><button onclick="closeBoards()">Close</button></div>';
+  h+='<div class="bsent"><div id="bd-sent">Tap a button to speak</div><button onclick="bdSpeak()" style="background:#2D6A4F;color:#fff">▶ Speak</button><button onclick="bdClear()" style="background:#fff;color:#666">✕</button></div>';
+  h+='<div class="bbody"><div class="bgrid">';
+  b.it.forEach(function(s,j){var it=bdItem(s);var src=bdPic(it.pic);
+    var inner=src?'<img src="'+src+'" alt="">':'<span class="be">'+(it.pic||'💬')+'</span>';
+    h+='<button class="bd-btn" id="bd-'+b.id+'-'+j+'" style="background:'+b.c+'" onclick="bdTap('+i+','+j+',this)">'+inner+'<span class="bl2">'+it.l+'</span></button>';});
+  h+='</div></div>';
+  ov.innerHTML=h;
+}
+function bdTap(i,j,el){
+  var it=bdItem(BOARDS[i].it[j]);
+  if(typeof anim==='function')anim(el,null);
+  say(it.w,null,it.l.toUpperCase());
+  boardSent.push(it.w);
+  if(typeof addToSent==='function')addToSent(it.w,it.l);
+  var d=document.getElementById('bd-sent');if(d)d.textContent=boardSent.join(' · ');
+}
+function bdSpeak(){if(!boardSent.length)return;say(boardSent.join('. '));}
+function bdClear(){boardSent=[];var d=document.getElementById('bd-sent');if(d)d.textContent='Tap a button to speak';if(typeof clearSentence==='function')clearSentence();}
 function factoryReset(){if(!confirm('Factory reset?\n\nClears everything including PIN and custom buttons.'))return;Object.keys(localStorage).filter(function(k){return k.startsWith('aidova');}).forEach(function(k){localStorage.removeItem(k);});location.reload();}
 
 // CUSTOM BUTTON
@@ -5884,10 +5979,10 @@ function closeSetup(){
   try{localStorage.setItem('aidova_setup_seen','true');}catch(e){}
 }
 function maybeShowWhatsNew(){
-  try{if(localStorage.getItem('aidova_whatsnew')==='89'||!localStorage.getItem('aidova_setup_seen'))return;}catch(e){return;}
+  try{if(localStorage.getItem('aidova_whatsnew')==='138'||!localStorage.getItem('aidova_setup_seen'))return;}catch(e){return;}
   var d=document.createElement('div');d.id='whatsnew';
   d.style.cssText='position:fixed;left:12px;right:12px;bottom:12px;z-index:900;background:#2D6A4F;color:#fff;border-radius:14px;padding:14px 16px;font-size:.8rem;line-height:1.5;box-shadow:0 6px 24px rgba(0,0,0,.3)';
-  d.innerHTML='<b>✨ What is new</b><br>Places now show the place itself (home, school, bus, hospital and 36 more). Every picture has a bolder outline and clearer expression marks, and the top row (I am, I want, Yes, No, Help me) now has pictures too. You can change the colours or go back to circles in <b>Settings → Icon Style</b>.<div style="margin-top:10px"><button onclick="this.parentNode.parentNode.remove();try{localStorage.setItem(\'aidova_whatsnew\',\'89\')}catch(e){}" style="padding:8px 16px;border:none;border-radius:10px;background:#fff;color:#2D6A4F;font-weight:900;cursor:pointer">Got it</button></div>';
+  d.innerHTML='<b>✨ What is new</b><br><b>📋 Boards</b>: ready-made boards for mealtime, bath, bedtime, the doctor and more (Premium). <b>🎓 Model mode</b>: show your child where words are (free). <b>💾 Backup</b>: save the whole board to a file (free). New <b>Care &amp; health</b> buttons for adults who have lost speech: Settings → Display.<div style="margin-top:10px"><button onclick="this.parentNode.parentNode.remove();try{localStorage.setItem(\'aidova_whatsnew\',\'138\')}catch(e){}" style="padding:8px 16px;border:none;border-radius:10px;background:#fff;color:#2D6A4F;font-weight:900;cursor:pointer">Got it</button></div>';
   document.body.appendChild(d);
 }
 function maybeShowSetup(){
