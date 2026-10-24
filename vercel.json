@@ -36,6 +36,10 @@
       "destination": "/support.html"
     },
     {
+      "source": "/getting-started",
+      "destination": "/getting-started.html"
+    },
+    {
       "source": "/app",
       "destination": "/app.html"
     },
