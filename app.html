@@ -1243,13 +1243,26 @@ var DEFAULT_CAT_COLS={0:'#FFCCBC',1:'#B3E5FC',2:'#FFF9C4',3:'#E1BEE7'};
 var catCols=JSON.parse(localStorage.getItem('aidova_catcols')||'{}');
 var selBtnColour=''; // colour selected in add/edit modal
 var btnSize=parseInt(localStorage.getItem('aidova_btnsize')||'1');
-var topBtns=JSON.parse(localStorage.getItem('aidova_topbtns')||'null')||[
+var TOP_CHILD=[
   {label:'I AM',    speak:'I am',    emoji:'🧍'},
   {label:'I WANT',  speak:'I want',  emoji:'🙋'},
   {label:'YES',     speak:'yes',     emoji:'✅'},
   {label:'NO',      speak:'no',      emoji:'❌'},
   {label:'HELP ME', speak:'help me', emoji:'🆘'}
 ];
+// Adult buttons already speak whole phrases, so "I am" / "I want" are replaced by the two
+// quick replies adults with aphasia need most.
+var TOP_ADULT=[
+  {label:'WAIT',        speak:"Please wait, I'm thinking", emoji:'⏳'},
+  {label:"DON'T KNOW",  speak:"I don't know",             emoji:'🤷'},
+  {label:'YES',     speak:'yes',     emoji:'✅'},
+  {label:'NO',      speak:'no',      emoji:'❌'},
+  {label:'HELP ME', speak:'help me', emoji:'🆘'}
+];
+function topKey(){return (typeof curMode==='function'&&curMode()==='adult')?'aidova_topbtns_a':'aidova_topbtns';}
+function topVkey(i){return ((typeof curMode==='function'&&curMode()==='adult')?'topbtnA_':'topbtn_')+i;}
+function loadTopBtns(){var adult=(typeof curMode==='function'&&curMode()==='adult');var saved=null;try{saved=JSON.parse(localStorage.getItem(topKey())||'null');}catch(e){}return saved||JSON.parse(JSON.stringify(adult?TOP_ADULT:TOP_CHILD));}
+var topBtns=JSON.parse(localStorage.getItem('aidova_topbtns')||'null')||JSON.parse(JSON.stringify(TOP_CHILD));
 var emergPhrases=JSON.parse(localStorage.getItem('aidova_emergphrases')||'null')||[
   {label:'I NEED HELP',   speak:'I need help. I need help. I need help.', emoji:'🆘'},
   {label:'I AM HURT',     speak:'I am hurt. I am hurt. Please help me.',  emoji:'🤕'},
@@ -2077,7 +2090,7 @@ function say(w,vkey,label){
 // TOP BUTTON HANDLER
 function tapTopBtn(i){
   var btn=topBtns[i];if(!btn)return;
-  var vkey='topbtn_'+i;
+  var vkey=topVkey(i);
   say(btn.speak||btn.label, voiceData[vkey]?vkey:null, btn.label);addToRecents(btn.icon||'🔝',btn.label,btn.speak||btn.label,voiceData[vkey]?vkey:null,'cf');
   addToSent(btn.speak||btn.label, btn.label);
   if(i===2&&!adultMode)doConfetti();
@@ -2093,7 +2106,7 @@ function openCustomBtns(){
   if(idx===5){openCustomEmerg();return;}
   if(idx<0||idx>4)return;
   var cur=topBtns[idx];
-  var vkey='topbtn_'+idx;
+  var vkey=topVkey(idx);
 
   // Ask what they want to do
   var action=prompt('Button: '+cur.emoji+' '+cur.label+'\n\nWhat would you like to do?\n\n1. Change label (text shown on button)\n2. Change spoken phrase (text to speech)\n3. Record your voice (best for other languages)\n4. Clear recorded voice (use text to speech again)\n\nEnter 1, 2, 3 or 4:');
@@ -2104,7 +2117,7 @@ function openCustomBtns(){
     var newLabel=prompt('New label for button (any language):',cur.label);
     if(!newLabel||!newLabel.trim())return;
     topBtns[idx].label=newLabel.trim();
-    try{localStorage.setItem('aidova_topbtns',JSON.stringify(topBtns));}catch(e){}
+    try{localStorage.setItem(topKey(),JSON.stringify(topBtns));}catch(e){}
     renderTopBtns();
     alert('✅ Label updated to: "'+topBtns[idx].label+'"');
 
@@ -2112,7 +2125,7 @@ function openCustomBtns(){
     var newSpeak=prompt('New spoken phrase (any language — use your keyboard to type in Hindi, Urdu, Arabic etc):',cur.speak);
     if(!newSpeak||!newSpeak.trim())return;
     topBtns[idx].speak=newSpeak.trim();
-    try{localStorage.setItem('aidova_topbtns',JSON.stringify(topBtns));}catch(e){}
+    try{localStorage.setItem(topKey(),JSON.stringify(topBtns));}catch(e){}
     alert('✅ Phrase updated to: "'+topBtns[idx].speak+'"\n\nTip: For best pronunciation in other languages, use option 3 to record your own voice instead.');
 
   }else if(action==='3'){
@@ -2149,15 +2162,9 @@ function openCustomEmerg(){
 
 function resetCustomBtns(){
   if(!confirm('Reset all top buttons and emergency phrases to English defaults?'))return;
-  localStorage.removeItem('aidova_topbtns');
+  localStorage.removeItem(topKey());
   localStorage.removeItem('aidova_emergphrases');
-  topBtns=JSON.parse(localStorage.getItem('aidova_topbtns')||'null')||[
-    {label:'I AM',    speak:'I am',    emoji:'🧍'},
-    {label:'I WANT',  speak:'I want',  emoji:'🙋'},
-    {label:'YES',     speak:'yes',     emoji:'✅'},
-    {label:'NO',      speak:'no',      emoji:'❌'},
-    {label:'HELP ME', speak:'help me', emoji:'🆘'}
-  ];
+  topBtns=loadTopBtns();
   emergPhrases=JSON.parse(localStorage.getItem('aidova_emergphrases')||'null')||[
     {label:'I NEED HELP',   speak:'I need help. I need help. I need help.', emoji:'🆘'},
     {label:'I AM HURT',     speak:'I am hurt. I am hurt. Please help me.',  emoji:'🤕'},
@@ -3243,9 +3250,9 @@ var BTNS_ADULT={
      {i:'🦟',l:'ITCHY',w:"I'm itchy"},{i:'💡',l:'LIGHT',w:'Light on or off please'},{i:'🔔',l:'CALL THE NURSE',w:'Please call the nurse'},
      {i:'🚪',l:'PRIVACY',w:'Privacy please'},{i:'🧍',l:'HELP ME UP',w:'Please help me up'},{i:'♿',l:'WHEELCHAIR',w:'I need my wheelchair'},
      {i:'🦯',l:'WALKING FRAME',w:'I need my walking frame'},{i:'🪟',l:'FRESH AIR',w:'Can I have some fresh air'},{i:'🌳',l:'OUTSIDE',w:'I want to go outside',b:'outside'}],
-  2:[{i:'✅',l:'I UNDERSTAND',w:'I understand you'},{i:'💭',l:"CAN'T FIND THE WORD",w:"I can't find the word"},{i:'⏳',l:'PLEASE WAIT',w:"Please wait, I'm thinking",b:'wait'},
+  2:[{i:'✅',l:'I UNDERSTAND',w:'I understand you'},{i:'💭',l:"CAN'T FIND THE WORD",w:"I can't find the word"},
      {i:'🔁',l:'SAY IT AGAIN',w:'Please say it again'},{i:'🐢',l:'SLOWER PLEASE',w:'Slower please'},{i:'✍️',l:'WRITE IT DOWN',w:'Please write it down'},
-     {i:'❓',l:'ASK ME YES OR NO',w:'Please ask me yes or no questions'},{i:'🤷',l:"I DON'T KNOW",w:"I don't know",b:'i dont know'},{i:'😕',l:"DON'T UNDERSTAND",w:"I don't understand",b:'confused'},
+     {i:'❓',l:'ASK ME YES OR NO',w:'Please ask me yes or no questions'},{i:'😕',l:"DON'T UNDERSTAND",w:"I don't understand",b:'confused'},
      {i:'💬',l:'I WANT TO TALK',w:'I want to talk'},{i:'👍',l:"THAT'S RIGHT",w:"That's right"},{i:'👎',l:"THAT'S WRONG",w:"That's wrong"},
      {i:'↪️',l:'SOMETHING ELSE',w:"It's something else"},{i:'➕',l:'MORE',w:'More please',b:'more'},{i:'➖',l:'LESS',w:'Less please',b:'less'},
      {i:'✋',l:'STOP',w:'Stop please',b:'stop'},{i:'✔️',l:'FINISHED',w:"I've finished",b:'finished'},{i:'🙏',l:'THANK YOU',w:'Thank you',b:'thank you'},
@@ -3284,6 +3291,7 @@ function applyMode(noRender){
   var adult=curMode()==='adult';
   BTNS=adult?BTNS_ADULT:BTNS_CHILD;
   adultMode=adult;
+  topBtns=loadTopBtns();
   document.body.classList.toggle('adult',adult);
   var tabs=document.querySelectorAll('.tab');
   MODE_TABS[adult?'adult':'child'].forEach(function(t,i){var tb=tabs[i];if(!tb)return;var e=tb.querySelector('.tem'),l=tb.querySelector('.tlb');if(e)e.textContent=t[0];if(l)l.textContent=t[1];});
@@ -3699,6 +3707,7 @@ function restoreHidden(item){
   resize(); // keep buttons at the correct size after redrawing
   if(editMode){document.querySelectorAll('.circ').forEach(function(c){c.classList.add('edit-on');});showArrows();}
 }
+var TOP_SYMS_ADULT=[{emoji:'⏳',src:'/icons/custom/wait.png'},{emoji:'🤷',src:'/icons/custom/i-dont-know.png'}];
 var TOP_SYMS=[{emoji:'🧍',src:'/icons/custom/i-am.png?v=1&d=3&h=1'},{emoji:'🙋',src:'/icons/custom/i-want.png?v=1&d=3&h=1'},{emoji:'✅',src:'/icons/custom/yes.png?v=2&d=3&h=1'},{emoji:'❌',src:'/icons/custom/no.png?v=1&d=3&h=1'},{emoji:'🆘',src:'/icons/custom/help-me.png?v=1&d=3&h=1'}];
 function renderTopBtns(){
   var ids=['b1','b2','b3','b4','b5'];
@@ -3707,7 +3716,7 @@ function renderTopBtns(){
     if(!btn||!topBtns[i])return;
     var bi=btn.querySelector('.bi');
     var bl=btn.querySelector('.bl');
-    var sym=TOP_SYMS[i];
+    var sym=(curMode()==='adult'&&i<2)?TOP_SYMS_ADULT[i]:TOP_SYMS[i];
     if(bi){
       if(iconStyleDefault==='symbol'&&sym&&topBtns[i].emoji===sym.emoji){bi.innerHTML='<img class="bsy" src="'+sym.src+'" alt="">';bi.classList.add('hasimg');}
       else{bi.textContent=topBtns[i].emoji;bi.classList.remove('hasimg');}
