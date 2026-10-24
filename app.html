@@ -3433,11 +3433,14 @@ function mkCirc(icon,label,word,cat,clickFn,key){
     }
   } else if(symbolEligible&&builtinSymbolCache[word]){
     iconHtml='<span class="ci"><img class="sy" src="'+builtinSymbolCache[word]+'" ></span>';
+  } else if(symbolEligible&&builtinSymbolCache[word]===undefined){
+    // Not saved on this device yet: show the picture straight away from its file (so new users
+    // never see emoji first), fall back to the emoji only if the picture cannot load (offline).
+    var em=String(icon||'').replace(/"/g,'&quot;');
+    iconHtml='<span class="ci"><img class="sy" src="'+CURATED_SYMBOLS[word]+'" data-em="'+em+'" onerror="this.parentNode.textContent=this.getAttribute(\'data-em\')"></span>';
+    fetchBuiltinSymbol(word,key); // save a small copy for offline use in the background
   } else {
     iconHtml='<span class="ci">'+icon+'</span>';
-    if(symbolEligible&&builtinSymbolCache[word]===undefined){
-      fetchBuiltinSymbol(word,key); // not cached yet — fetch in background, swaps in once ready
-    }
   }
   el.innerHTML=iconHtml+'<span class="cl">'+fmtLabel(label)+'</span>';
   var _ti=CAT_IDX[cat];
