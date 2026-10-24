@@ -1304,6 +1304,9 @@ function setIconStyleDefault(style,noSave){
 }
 var voiceLang=localStorage.getItem('aidova_vlang')||'';
 var darkMode=localStorage.getItem('aidova_dark')==='true';
+// Ask "Who will use Aidova?" only on a brand-new install. Anyone who already used the app
+// keeps their board (Everyday) and is never asked; they can change it in Settings.
+try{if(!localStorage.getItem('aidova_mode_set')&&(localStorage.getItem('aidova_setup_seen')||localStorage.getItem('aidova_open_count')||localStorage.getItem('aidova_profiles')||localStorage.getItem('aidova_rec')))localStorage.setItem('aidova_mode_set','1');}catch(e){}
 var adultMode=false; // now set per profile by applyMode() (Child / Adult board)
 var carerPhone=localStorage.getItem('aidova_carer_phone')||'';
 var locked=localStorage.getItem('aidova_locked')==='true';
